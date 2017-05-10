@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.wrapp.floatlabelededittext.FloatLabeledEditText
+xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:float="http://schemas.android.com/apk/res-auto"
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+float:fletPadding="2dp">
+<com.rengwuxian.materialedittext.MaterialEditText
+    android:id="@+id/hh_observer"
+    android:completionThreshold="1"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:imeOptions="actionNext|flagNoExtractUi"
+    android:nextFocusDown="@+id/hh_services"
+    android:inputType="text"
+    android:hint="@string/audit_observer"/>
+</com.wrapp.floatlabelededittext.FloatLabeledEditText>

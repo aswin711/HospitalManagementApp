@@ -1,0 +1,45 @@
+<!--
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    tools:context="com.xose.cqms.casesheet.ui.casesheet.CustomAuditObservationActivity"> -->
+
+    <android.support.design.widget.CoordinatorLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/background_light"
+        android:fitsSystemWindows="true"
+        tools:context="com.xose.cqms.event.ui.casesheet.CasesheetObservationActivity">
+        <ScrollView
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+                android:layout_height="match_parent">
+                <FrameLayout
+                    android:id="@+id/casesheet_observation_prompt_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </LinearLayout>
+        </ScrollView>
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/hh_observation_done"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="16dp"
+            android:clickable="true"
+            app:fabSize="normal"
+            android:src="@drawable/ic_done_white_24dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentStart="false"
+            android:visibility="gone"/>
+    </android.support.design.widget.CoordinatorLayout>

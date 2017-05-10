@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/background_light"
+    android:fitsSystemWindows="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingBottom="5dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:paddingTop="5dp">
+        <LinearLayout
+            android:id="@+id/prof_cat_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            style="@style/observation_text">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="@color/table_text_selector"
+                android:text="Profession Category"/>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@drawable/bootstrap_divider"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+                    <RadioGroup
+                        android:id="@+id/audit_hh_observation_prof_cat"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:text="Profession Category">
+                            <RadioButton android:id="@+id/hh_prof_cat_nurse"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:textAppearance="?android:attr/textAppearanceMedium"
+                                style="@style/observation_row"
+                                android:background="@drawable/item_default_row"
+                                android:text="Nurse/Midwife"/>
+                    <!--
+                            <ImageView
+                                android:contentDescription="Selected"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:paddingTop="2sp"
+                                android:layout_gravity="right"
+                                android:paddingBottom="2sp"
+                                android:layout_marginLeft="10dp"
+                                android:background="@color/bootstrap_brand_success"
+                                android:scaleType="centerInside"
+                                android:src="@drawable/ic_done_white_24dp" />
+                                -->
+                            <RadioButton android:id="@+id/hh_prof_cat_aux"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                style="@style/observation_row"
+                                android:textAppearance="?android:attr/textAppearanceMedium"
+                                android:text="Auxiliary"/>
+                            <RadioButton android:id="@+id/hh_prof_cat_doc"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                style="@style/observation_row"
+                                android:textAppearance="?android:attr/textAppearanceMedium"
+                                android:text="Medical Doctor"/>
+                            <RadioButton android:id="@+id/hh_prof_cat_other"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                style="@style/observation_row"
+                                android:textAppearance="?android:attr/textAppearanceMedium"
+                                android:text="Other Health-care worker"/>
+                    </RadioGroup>
+                </LinearLayout>
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/indication_layout"
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:layout_height="wrap_content"
+            style="@style/observation_text"
+            android:visibility="gone">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="@color/table_text_selector"
+                android:text="Indication"/>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@drawable/bootstrap_divider"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:layout_marginTop="2dp">
+                <RadioGroup
+                    android:id="@+id/audit_hh_observation_indication"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:text="Indication">
+
+                        <RadioButton android:id="@+id/hh_ind_bef_pat"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            style="@style/observation_row"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:text="bef.pat: Before touching a patient"/>
+                        <RadioButton android:id="@+id/hh_ind_bef_asept"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            style="@style/observation_row"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:text="bef.asept: Before clean/aseptic procedure"/>
+                        <RadioButton android:id="@+id/hh_ind_aft_bf"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            style="@style/observation_row"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:text="aft.b.f: After body fluid exposure risk"/>
+                        <RadioButton android:id="@+id/hh_ind_aft_pat"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            style="@style/observation_row"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:text="aft.pat: After touching a patient"/>
+                        <RadioButton android:id="@+id/hh_ind_aft_p_surr"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            style="@style/observation_row"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:text="aft.p.surr: After touching patient surroundings"/>
+                </RadioGroup>
+            </LinearLayout>
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/hh_action_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            style="@style/observation_text"
+            android:visibility="gone">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="@color/table_text_selector"
+                android:text="Hand Hygiene Action"/>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@drawable/bootstrap_divider"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                style="@style/observation_row"
+                android:orientation="vertical">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="@dimen/observation_row_vertical_margin"
+                    android:orientation="horizontal">
+                    <CheckBox android:id="@+id/hh_action_hr"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="22sp"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:text="Hand Rub"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="@dimen/observation_row_vertical_margin"
+                    android:orientation="horizontal">
+                    <CheckBox android:id="@+id/hh_action_hw"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="22sp"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:text="Hand Wash"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="@dimen/observation_row_vertical_margin"
+                    android:orientation="horizontal">
+                        <RadioButton android:id="@+id/hh_action_no_action"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textSize="22sp"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:text="No Action"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    style="@style/observation_row"
+                    android:orientation="horizontal">
+                    <RadioButton android:id="@+id/hh_action_glows"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="22sp"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:text="Glouse used"/>
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/options_save_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:layout_marginTop="15dp">
+            <Button
+                android:id="@+id/prev_survey_btn"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="15dp"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                android:layout_marginRight="@dimen/activity_horizontal_margin"
+                android:layout_weight="0.50"
+                android:layout_gravity="left"
+                android:text="@string/prev_survey_btn"
+                style="@style/ShadowText"
+                android:background="@drawable/button_background_states"
+                android:padding="10dp"
+                android:textColor="@color/text"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:visibility="gone"
+                />
+            <Button
+                android:id="@+id/save_survey_btn"
+                android:layout_alignParentBottom="true"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="15dp"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                android:layout_marginRight="@dimen/activity_horizontal_margin"
+                android:layout_weight="0.50"
+                android:layout_gravity="right"
+                android:background="@drawable/button_background_states"
+                android:text="@string/save_survey_btn"
+                style="@style/ShadowText"
+                android:padding="10dp"
+                android:textColor="@color/text"
+                android:textSize="20sp"
+                android:textStyle="bold"/>
+        </LinearLayout>
+    </LinearLayout>
+</android.support.design.widget.CoordinatorLayout>

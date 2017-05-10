@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_alignBottom="@+id/navigation_drawer_list_header_linear_layout"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:scaleType="centerCrop"
+        android:src="@drawable/ic_launcher"/>
+
+    <LinearLayout
+        android:id="@+id/navigation_drawer_list_header_linear_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="left"
+        android:orientation="vertical"
+        android:padding="20dp">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_account_circle_black_36dp"/>
+
+        <TextView
+            android:id="@+id/navigation_drawer_list_header_user"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/base_margin_vertical_half"
+            android:fontFamily="sans-serif-light"
+            android:text="@string/Unknown_user"
+            android:textColor="@color/primary_text"
+            android:textAppearance="?android:attr/textAppearanceLarge"/>
+        <TextView
+            android:id="@+id/navigation_drawer_list_header_hospital"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/base_margin_vertical_half"
+            android:fontFamily="sans-serif-light"
+            android:text="@string/default_hospital_name"
+            android:textColor="@color/primary_text"
+            android:textAppearance="?android:attr/textAppearanceMedium"/>
+
+    </LinearLayout>
+</RelativeLayout>

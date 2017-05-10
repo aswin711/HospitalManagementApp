@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+
+   <style name="SignInEditText">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:autoText">false</item>
+        <item name="android:capitalize">none</item>
+        <item name="android:scrollHorizontally">true</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:padding">10dp</item>
+        <item name="android:textColor">@color/table_text</item>
+        <item name="android:textCursorDrawable">@drawable/edit_text_cursor</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:background">@drawable/edit_text_background</item>
+    </style>
+
+    <style name="ShadowText">
+        <item name="android:shadowColor">@color/text_shadow</item>
+        <item name="android:shadowDx">1</item>
+        <item name="android:shadowDy">1</item>
+        <item name="android:shadowRadius">1</item>
+    </style>
+
+
+    <style name="AvatarLarge">
+        <item name="android:layout_width">32dp</item>
+        <item name="android:layout_height">32dp</item>
+    </style>
+
+    <style name="AvatarMedium">
+        <item name="android:layout_width">24dp</item>
+        <item name="android:layout_height">24dp</item>
+    </style>
+
+    <style name="AvatarSmall">
+        <item name="android:layout_width">16dp</item>
+        <item name="android:layout_height">16dp</item>
+    </style>
+
+    <style name="ListView">
+        <item name="android:dividerHeight">2px</item>
+        <item name="android:divider">@drawable/bootstrap_divider</item>
+        <item name="android:cacheColorHint">@android:color/transparent</item>
+    </style>
+
+    <style name="ListSubtitleText">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/table_text_light</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+    </style>
+
+    <!-- Custom Spinner -->
+    <style name="Spinner">
+        <item name="android:indeterminate">true</item>
+        <item name="android:indeterminateDrawable">@drawable/spinner</item>
+        <item name="android:indeterminateDuration">2000</item>
+        <item name="android:indeterminateOnly">true</item>
+    </style>
+
+    <style name="ListSpinner" parent="Spinner">
+        <item name="android:layout_width">64dp</item>
+        <item name="android:layout_height">64dp</item>
+    </style>
+
+    <style name="ListItem">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:paddingLeft">10dp</item>
+        <item name="android:paddingRight">10dp</item>
+        <item name="android:paddingTop">10dp</item>
+        <item name="android:paddingBottom">10dp</item>
+        <item name="android:background">@drawable/list_item_background</item>
+    </style>
+
+    <style name="BootstrapButton">
+        <item name="android:background">@drawable/button_background_states</item>
+        <item name="android:layout_marginLeft">10dp</item>
+        <item name="android:layout_marginRight">10dp</item>
+        <item name="android:layout_marginTop">5dp</item>
+        <item name="android:layout_marginBottom">5dp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="TimerChronometer">
+        <item name="android:gravity">center_horizontal</item>
+        <item name="android:textSize">75sp</item>
+        <item name="android:textColor">#464646</item>
+    </style>
+
+    <style name="NavMenuButton">
+        <item name="android:textColor">@color/nav_text_selector</item>
+        <item name="android:background">@drawable/nav_menu_button_background_selector</item>
+    </style>
+ <!--Custom -->
+    <style name="spinner_style">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@drawable/gradient_spinner</item>
+        <item name="android:layout_margin">5dp</item>
+        <item name="android:paddingLeft">8dp</item>
+        <item name="android:paddingRight">20dp</item>
+        <item name="android:paddingTop">5dp</item>
+        <item name="android:paddingBottom">5dp</item>
+        <item name="android:popupBackground">#DFFFFFFF</item>
+    </style>
+    <style name="observation_text">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">#02030b</item>
+        <item name="android:layout_margin">2dp</item>
+        <item name="android:textSize">22sp</item>
+        <item name="android:shadowRadius">2</item>
+    </style>
+    <style name="observation_row">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">#02030b</item>
+        <item name="android:layout_margin">@dimen/observation_row_vertical_margin</item>
+        <item name="android:textAppearance">?android:attr/textAppearanceMedium</item>
+        <item name="android:textSize">22sp</item>
+        <item name="android:background">@drawable/item_default_row</item>
+    </style>
+
+    <!-- Float labeled Edit Text https://github.com/wrapp/floatlabelededittext/blob/master/example/src/main/res/values/styles.xml -->
+    <style name="floatlabelededittext">
+        <item name="android:textColor">#FF0000</item>
+    </style>
+
+
+    <!-- Android Material
+    https://github.com/rey5137/material/blob/master/app/src/main/res/values/styles.xml
+    -->
+    <style name="MenuItemRippleStyle" parent="Material.Drawable.Ripple.Wave">
+        <item name="rd_rippleColor">#902DA0FF</item>
+        <item name="rd_rippleAnimDuration">300</item>
+        <item name="rd_maskType">rectangle</item>
+        <item name="rd_cornerRadius">0dp</item>
+    </style>
+
+    <!-- AppBar Style -->
+
+    <style name="AppBar" parent="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+        <item name="selectableItemBackground">@null</item>
+    </style>
+
+    <!-- Navigator Drawable -->
+
+    <style name="NavigatorDrawableIcon" parent="Material.Drawable.NavigationDrawerIcon">
+        <item name="lmd_strokeSize">3dp</item>
+        <item name="lmd_padding">18dp</item>
+    </style>
+
+    <style name="NavigationDrawerDrawable">
+        <item name="nd_ripple">@style/ToolbarRippleStyle</item>
+        <item name="nd_icon">@style/NavigatorDrawableIcon</item>
+    </style>
+
+    <style name="ToolbarRippleStyle" parent="Material.Drawable.Ripple.Touch.MatchView.Light">
+        <item name="rd_backgroundColor">@android:color/transparent</item>
+        <item name="rd_rippleColor">#33FFFFFF</item>
+    </style>
+
+    <!-- SnackBar Style -->
+
+    <style name="SnackBarSingleLine" parent="Material.Widget.SnackBar.Mobile">
+        <item name="sb_text">This is single-line snackbar.</item>
+        <item name="sb_actionText">CLOSE</item>
+        <item name="sb_duration">0</item>
+    </style>
+
+    <style name="SnackBarMultiLine" parent="Material.Widget.SnackBar.Mobile.MultiLine">
+        <item name="sb_text">This is multi-line snackbar.\nIt will auto-close after 5s.</item>
+        <item name="sb_actionText"></item>
+        <item name="sb_duration">5000</item>
+    </style>
+
+    <style name="SimpleDialog" parent="Material.App.Dialog.Simple">
+        <item name="di_inAnimation">@anim/anim_scale_in</item>
+        <item name="di_outAnimation">@anim/anim_scale_out</item>
+    </style>
+
+    <style name="SimpleDialogLight" parent="Material.App.Dialog.Simple.Light">
+        <item name="di_inAnimation">@anim/anim_scale_in</item>
+        <item name="di_outAnimation">@anim/anim_scale_out</item>
+    </style>
+
+    <!-- ContactView -->
+    <style name="ContactView">
+        <item name="android:minHeight">56dp</item>
+        <item name="cv_buttonSize">0dp</item>
+        <item name="cv_avatarSize">40dp</item>
+        <item name="cv_spacing">8dp</item>
+        <item name="cv_nameTextAppearance">@style/TextAppearance.AppCompat.Subhead</item>
+        <item name="cv_nameTextColor">@color/abc_primary_text_material_light</item>
+        <item name="cv_addressTextAppearance">@style/TextAppearance.AppCompat.Body1</item>
+        <item name="cv_addressTextColor">@color/abc_primary_text_material_light</item>
+    </style>
+
+    <style name="ReplacementContactView" parent="Material.Drawable.Ripple.Wave.Light">
+        <item name="rd_cornerRadius">0dp</item>
+        <item name="rd_delayClick">none</item>
+
+        <item name="android:minHeight">56dp</item>
+        <item name="cv_buttonSize">0dp</item>
+        <item name="cv_avatarSize">40dp</item>
+        <item name="cv_spacing">8dp</item>
+        <item name="cv_nameTextAppearance">@style/TextAppearance.AppCompat.Subhead</item>
+        <item name="cv_nameTextColor">@color/abc_primary_text_material_light</item>
+        <item name="cv_addressTextAppearance">@style/TextAppearance.AppCompat.Body1</item>
+        <item name="cv_addressTextColor">@color/abc_primary_text_material_light</item>
+    </style>
+
+    <style name="SelectedContactView" parent="Material.Drawable.Ripple.Wave.Light">
+        <item name="android:background">#FF00B8D4</item>
+        <item name="rd_cornerRadius">0dp</item>
+        <item name="rd_delayClick">none</item>
+
+        <item name="android:minHeight">72dp</item>
+        <item name="cv_buttonSrc">@drawable/ic_cancel_white_24dp</item>
+        <item name="cv_buttonSize">48dp</item>
+        <item name="cv_nameTextColor">#FFFFFFFF</item>
+        <item name="cv_addressTextColor">#FFFFFFFF</item>
+        <item name="cv_avatarSize">40dp</item>
+        <item name="cv_spacing">8dp</item>
+        <item name="cv_nameTextAppearance">@style/TextAppearance.AppCompat.Subhead</item>
+        <item name="cv_addressTextAppearance">@style/TextAppearance.AppCompat.Body1</item>
+    </style>
+
+    <style name="ContactEditText" parent="Material.Widget.EditText.Light">
+        <item name="cet_spanHeight">32dp</item>
+        <item name="cet_spanMaxWidth">150dp</item>
+        <item name="cet_spanPaddingLeft">8dp</item>
+        <item name="cet_spanPaddingRight">12dp</item>
+        <item name="cet_spanTextSize">14sp</item>
+        <item name="cet_spanTextColor">@color/abc_primary_text_material_light</item>
+        <item name="cet_spanBackgroundColor">#FFE0E0E0</item>
+        <item name="cet_spanSpacing">4dp</item>
+    </style>
+
+    <!--START Splash Screen -->
+    <style name="FullscreenTheme" parent="android:Theme.NoTitleBar">
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowBackground">@null</item>
+        <item name="metaButtonBarStyle">@style/ButtonBar</item>
+        <item name="metaButtonBarButtonStyle">@style/ButtonBarButton</item>
+    </style>
+    <!-- Backward-compatible version of ?android:attr/buttonBarStyle -->
+    <style name="ButtonBar">
+        <item name="android:paddingLeft">2dp</item>
+        <item name="android:paddingTop">5dp</item>
+        <item name="android:paddingRight">2dp</item>
+        <item name="android:paddingBottom">0dp</item>
+        <item name="android:background">@android:drawable/bottom_bar</item>
+    </style>
+
+    <!-- Backward-compatible version of ?android:attr/buttonBarButtonStyle -->
+    <style name="ButtonBarButton" />
+    <!--END Splash Screen -->
+</resources>

@@ -1,0 +1,36 @@
+{
+  "project_info": {
+    "project_number": "139949962110",
+    "project_id": "cqms-debug"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:139949962110:android:d2a2e15a7088ce3c",
+		"client_id": "android:com.xose.cqms",
+        "android_client_info": {
+          "package_name": "com.xose.cqms"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCRShhtqTzXc2UMCEx9SYEZtem7PHk989A"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

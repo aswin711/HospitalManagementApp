@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<sync-adapter
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:contentAuthority="com.xose.cqms.event.sync.drugreaction.drugreactionsynccontentprovider"
+    android:accountType="com.xose.cqms.event"
+    android:userVisible="false"
+    android:supportsUploading="true"
+    android:allowParallelSyncs="false"
+    android:isAlwaysSyncable="true"
+    />

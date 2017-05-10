@@ -1,0 +1,159 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:float="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#e8eaf6"
+    android:orientation="vertical"
+    tools:context="com.xose.cqms.event.ui.incident.IncidentPersonDetailsFragment">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingBottom="10dp"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:paddingTop="5dp">
+            <com.wrapp.floatlabelededittext.FloatLabeledEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                float:fletPadding="2dp">
+                <com.rengwuxian.materialedittext.MaterialEditText
+                    android:id="@+id/person_involved_name"
+                    android:completionThreshold="1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:imeOptions="actionNext|flagNoExtractUi"
+                    android:inputType="textPersonName"
+                    android:hint="@string/person_involved_name"/>
+            </com.wrapp.floatlabelededittext.FloatLabeledEditText>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="2dp"
+                    android:paddingLeft="2dp"
+                    android:paddingRight="5dp"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textColor="@color/table_text"
+                    android:text="@string/person_type"/>
+
+                <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
+                    android:id="@+id/person_types"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/person_type" />
+            </LinearLayout>
+            <com.wrapp.floatlabelededittext.FloatLabeledEditText
+                android:id="@+id/patient_number_holder"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                float:fletPadding="2dp"
+                android:visibility="visible">
+                <com.rengwuxian.materialedittext.MaterialEditText
+                    android:id="@+id/patient_number"
+                    android:completionThreshold="1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:imeOptions="actionNext|flagNoExtractUi"
+                    android:inputType="textPersonName"
+                    android:hint="@string/patient_number"/>
+            </com.wrapp.floatlabelededittext.FloatLabeledEditText>
+
+        <LinearLayout
+            android:id="@+id/gender_holder"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="5dp"
+                android:paddingLeft="2dp"
+                android:paddingRight="5dp"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textColor="@color/table_text"
+                android:text="@string/patient_gender"/>
+
+            <RadioGroup
+                android:id="@+id/gender_grp"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <RadioButton android:id="@+id/gender_male"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/gender_male"
+                    android:layout_marginLeft="35dp" />
+                <RadioButton android:id="@+id/gender_female"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/gender_female"
+                    android:layout_marginLeft="35dp" />
+                <RadioButton android:id="@+id/gender_indeterminate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/gender_indeterminate"
+                    android:layout_marginLeft="35dp" />
+                <RadioButton android:id="@+id/gender_not_stated"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/gender_not_stated"
+                    android:layout_marginLeft="35dp" />
+            </RadioGroup>
+            </LinearLayout>
+            <com.wrapp.floatlabelededittext.FloatLabeledEditText
+                android:id="@+id/staff_id_no_holder"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                float:fletPadding="2dp"
+                android:visibility="gone">
+                <com.rengwuxian.materialedittext.MaterialEditText
+                    android:id="@+id/staff_id_no"
+                    android:completionThreshold="1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:imeOptions="actionNext|flagNoExtractUi"
+                    android:inputType="textPersonName"
+                    android:hint="@string/staff_id_no"/>
+            </com.wrapp.floatlabelededittext.FloatLabeledEditText>
+            <com.wrapp.floatlabelededittext.FloatLabeledEditText
+                android:id="@+id/staff_designation_holder"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                float:fletPadding="2dp"
+                android:visibility="gone">
+                <com.rengwuxian.materialedittext.MaterialEditText
+                    android:id="@+id/staff_designation"
+                    android:completionThreshold="1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:imeOptions="actionNext|flagNoExtractUi"
+                    android:inputType="textPersonName"
+                    android:hint="@string/staff_designation"/>
+            </com.wrapp.floatlabelededittext.FloatLabeledEditText>
+
+            <Button
+                android:id="@+id/incident_person_save"
+                style="@style/ShadowText"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="15dp"
+                android:background="@drawable/button_background_states"
+                android:gravity="center"
+                android:padding="10dp"
+                android:text="@string/incident_details_save"
+                android:textColor="@color/text"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

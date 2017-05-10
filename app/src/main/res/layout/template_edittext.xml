@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.wrapp.floatlabelededittext.FloatLabeledEditText
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:float="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    float:fletPadding="2dp">
+<com.rengwuxian.materialedittext.MaterialEditText
+    android:id="@+id/audit_remark_text"
+    android:completionThreshold="1"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:clickable="true"
+    android:editable="true"
+    android:elegantTextHeight="true"
+    android:imeOptions="actionDone|flagNoExtractUi"
+    android:inputType="textMultiLine"
+    android:lines="5"
+    android:scrollHorizontally="false"
+    android:gravity="top|left"/>
+</com.wrapp.floatlabelededittext.FloatLabeledEditText>

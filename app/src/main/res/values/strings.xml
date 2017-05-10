@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+
+    <string name="app_name">CQMS Events</string>
+    <string name="content_column">Content</string>
+    <string name="page_referrers">Referrers</string>
+    <string name="refresh_action">Refresh</string>
+    <string name="logout_action">Logout</string>
+    <string name="page_news">News</string>
+    <string name="page_users">Users</string>
+    <string name="page_hh_sessions">Hand Hygiene</string>
+    <string name="page_case_sheets">Case Sheet</string>
+    <string name="page_incident_reports">Incident Report</string>
+    <string name="page_medication_error">Medication Error</string>
+    <string name="page_adverse_drug_reaction">Drug Reaction</string>
+    <string name="hh_session_list_title_unit">Unit</string>
+    <string name="hh_session_list_title_status">Status</string>
+    <string name="hh_session_list_title_observer">Added By</string>
+    <string name="loading">Loading ...</string>
+    <string name="title_column">Title</string>
+    <string name="location_column">Location</string>
+    <string name="user_column">User</string>
+    <string name="date_column">Date</string>
+    <string name="error_loading_users">Loading users failed</string>
+    <string name="error_loading_news">Loading news failed</string>
+    <string name="error_loading_hh_session">Loading HH session failed</string>
+    <string name="error_loading_checkins">Loading check-ins failed</string>
+    <string name="no_records">No Records</string>
+    <string name="no_users">No Users</string>
+    <string name="no_news">No News</string>
+    <string name="no_hh_session">No Hand Hygiene audit sessions</string>
+    <string name="avatar">Avatar</string>
+    <string name="choose">Choose</string>
+
+    <string name="Unknown_user">Unknown User</string>
+    <string name="default_hospital_name">Hospital Name</string>
+
+    <!-- AuthenticatorActivity -->
+    <string name="label_email_address">Email Address</string>
+    <string name="label_password">Password</string>
+    <string name="label_sign_in">Sign In</string>
+    <string name="message_signing_in">Signing in…</string>
+    <string name="blank_field_warning">Please populate this field</string>
+    <string name="signup_link">New to CQMS? &lt;a href=http://www.dev.cqms.xose.co.in/faq>Click here&lt;/a> to learn more.</string>
+    <string name="recover_link">Forgot password?</string>
+    <string name="message_bad_credentials">Email Address or Password is incorrect</string>
+    <string name="message_auth_failed">Please enter a valid password</string>
+    <string name="message_auth_failed_new_account">Please enter a valid email address &amp; password</string>
+    <string name="message_bad_connection">Could not connect to server</string>
+
+    <string name="home">Home</string>
+    <string name="navigation_drawer_open">Drawer Open</string>
+    <string name="navigation_drawer_close">Drawer Close</string>
+    <string name="title_home">Home</string>
+    <string name="title_incident_report">Incident Report</string>
+    <string name="title_medication_error">Medication Error</string>
+    <string name="title_adverse_drug_reaction">Adverse Drug Reaction</string>
+    <string name="title_case_sheet">Case Sheet Audit</string>
+    <string name="title_hh_audit">Hand Hygiene Audit</string>
+    <string name="title_custom_audits">Custom Audits</string>
+    <string name="title_configuration">Settings</string>
+    <string name="title_activity_hhaudit_list">Hand Hygiene Audits</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_new_hh">New Audit Session</string>
+    <string name="title_activity_import_config">Import Configuration</string>
+    <string name="action_settings">Settings</string>
+
+<!-- TODO: Remove or change this placeholder text -->
+    <string name="title_activity_hhaudit">New Session</string>
+    <string name="audit_observer">Observer</string>
+    <string name="audit_hh_service">Service/Department</string>
+    <string name="audit_hh_specialty">Specialty</string>
+    <string name="audit_hh_specialty_other">Other (Specify)</string>
+    <string name="audit_hh_starttime">Start Time</string>
+    <string name="audit_hh_endtime">End Time</string>
+    <string name="audit_hh_period">Period</string>
+    <string name="audit_hh_period_pre">Pre-Intervention</string>
+    <string name="audit_hh_period_post">Post-Intervention</string>
+    <string name="audit_hh_sample">Sample Size</string>
+    <string name="audit_hh_start_session">Start Session</string>
+
+    <string-array name="hh_audit_specilties">
+        <item>Select a specialty</item>
+        <item>Medical, including dermatology, neurology, haematology, oncology, etc</item>
+        <item>Surgery, including neurosurgery, urology, EENT, ophthalmology, etc.</item>
+        <item>Mixed (medical &amp; surgical), including gynaecology</item>
+        <item>Obstetrics, including related surgery</item>
+        <item>Paediatrics, including related surgery</item>
+        <item>Intensive care &amp; resuscitation</item>
+        <item>Emergency unit</item>
+        <item>Long term care &amp; rehabilitation</item>
+        <item>Ambulatory care, including related surgery</item>
+        <item>Others (Specify)</item>
+    </string-array>
+    <string name="title_activity_hhsession_details">HH Session</string>
+    <string name="no_observations">No Observation added</string>
+    <string name="error_loading_observations">Could not load observations</string>
+    <string name="hh_obserations_title">Observations</string>
+    <string name="audit_hh_comple_session">Complete</string>
+    <string name="title_activity_hhobservation">HH Observation</string>
+    <string name="save_survey_btn">Continue</string>
+    <string name="prev_survey_btn">Previous</string>
+
+
+    <!-- Observation card layout-->
+    <string name="action_view">View Observation details</string>
+    <string name="action_delete">Delete Observation</string>
+
+    <!-- Notification -->
+    <string name="notification_no_wifi">Not connected to internet.</string>
+    <string name="notification_upload_title">CQMS : Data sync in progress</string>
+    <string name="notification_upload_description">Records are being uploaded into cloud</string>
+    <string name="notification_upload_completed_description">Records are successfully uploaded into cloud</string>
+    <string name="notification_upload_failed_description">Date Sync failed</string>
+    <string name="title_activity_hhoblist">HHOBListActivity</string>
+
+
+
+    <!--Case sheet audit -->
+    <string name="field_mandatory_error">This field is required</string>
+    <string name="title_activity_casesheet_audit">Open Case sheet Audit</string>
+    <string name="title_activity_casesheet_audit_list">Open Case sheet Audits</string>
+    <string name="audit_cs_start_audit">Start Audit</string>
+    <string name="no_cs_audits">No Case sheets audits</string>
+    <string name="title_activity_casesheet_observation">Case sheet audit Observations</string>
+    <string name="error_loading_casesheet_audit">Loading case sheet audits failed</string>
+    <string name="audit_cs_unit">Unit/Department</string>
+    <string name="audit_cs_specialty">Clinical Specialty</string>
+    <string name="audit_cs_number">Case sheet Number</string>
+
+
+
+
+
+    <string name="title_activity_incident_report_list">Incident Reports</string>
+    <string name="title_activity_incident_report">Incident Report</string>
+    <string name="no_incidents">No Incident reports</string>
+    <string name="error_loading_incidents">Failed loading Incident reports</string>
+
+    <string name="event_unit">Unit/Department</string>
+    <string name="event_time">Time of Event</string>
+    <string name="event_corrective_action">Immediate corrective action taken</string>
+    <string name="event_reported_by_name">Reported by (name)</string>
+    <string name="event_reported_by_designation">Reported by - Designation</string>
+
+    <string name="incident_type">Incident Type</string>
+    <string name="incident_level">Incident Level</string>
+    <string name="incident_level_near_miss">Near miss</string>
+    <string name="incident_level_harm">Actual harm</string>
+    <string name="incident_description">Incident description</string>
+    <string name="incident_details_save">Save and Continue</string>
+    <string name="person_type">Type of Personnel Involved</string>
+    <string-array name="type_person">
+        <item>Select type</item>
+        <item>Patient</item>
+        <item>Staff</item>
+        <item>Visitor</item>
+    </string-array>
+    <string name="person_involved_name">Name of Person Involved</string>
+    <string name="patient_number">Patient number</string>
+    <string name="patient_gender">Patient gender</string>
+    <string name="gender_male">Male</string>
+    <string name="gender_female">Female</string>
+    <string name="gender_indeterminate">Indeterminate</string>
+    <string name="gender_not_stated">Not stated/inadequately described</string>
+    <string name="staff_id_no">Staff Id/Number</string>
+    <string name="staff_designation">Staff desgination</string>
+
+<!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+
+    <!--Medication error -->
+    <string name="title_activity_medication_error_list">Medication Errors</string>
+    <string name="title_activity_medication_error">Medication Error Report</string>
+    <string name="no_medication_errors">No Medication errors</string>
+    <string name="error_loading_medication_errors">Failed loading Medication errors</string>
+
+    <!--Drug reaction error -->
+    <string name="title_activity_drug_reaction_list">Adverse Drug Reactions</string>
+    <string name="title_activity_drug_reaction">Adverse Drug Reaction</string>
+    <string name="no_drug_reactions">Adverse Drug reactions</string>
+    <string name="error_loading_drug_reactions">Failed loading Adverse Drug Reactions</string>
+
+</resources>
