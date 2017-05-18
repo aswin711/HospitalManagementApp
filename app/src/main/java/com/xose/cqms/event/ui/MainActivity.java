@@ -18,8 +18,10 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.LocalBroadcastManager;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.util.Log;
@@ -73,7 +75,7 @@ import timber.log.Timber;
  * If you need to remove the authentication from the application please see
  * {@link com.xose.cqms.event.authenticator.ApiKeyProvider#getAuthKey(android.app.Activity)}
  */
-public class MainActivity extends BootstrapActivity implements FragmentListener{
+public class MainActivity extends BootstrapActivity implements FragmentListener,NavigationView.OnNavigationItemSelectedListener{
 
     @Inject
     BootstrapServiceProvider serviceProvider;
@@ -153,11 +155,13 @@ public class MainActivity extends BootstrapActivity implements FragmentListener{
         super.onCreate(savedInstanceState);
         BootstrapApplication.component().inject(this);
         if (isTablet()) {
-            setContentView(R.layout.main_activity_tablet);
+            setContentView(R.layout.main_activity);
         } else {
             setContentView(R.layout.main_activity);
-            floatingActionButton = (FloatingActionButton) findViewById(R.id.floatingActionButton);
+
         }
+
+        floatingActionButton = (FloatingActionButton) findViewById(R.id.floatingActionButton);
 
         getSupportActionBar().setElevation(0);
         // View injection with Butterknife
@@ -165,44 +169,15 @@ public class MainActivity extends BootstrapActivity implements FragmentListener{
 
         // Set up navigation drawer
         title = drawerTitle = getTitle();
-        if (!isTablet()) {
-            drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-            drawerToggle = new ActionBarDrawerToggle(
-                    this,                    /* Host activity */
-                    drawerLayout,           /* DrawerLayout object */
-                    R.string.navigation_drawer_open,    /* "open drawer" description */
-                    R.string.navigation_drawer_close) { /* "close drawer" description */
 
-                /** Called when a drawer has settled in a completely closed state. */
-                public void onDrawerClosed(View view) {
-                    getSupportActionBar().setTitle(title);
-                    invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
-                    syncState();
-                }
+        DrawerLayout drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawerToggle = new ActionBarDrawerToggle(
+                this,drawerLayout,R.string.navigation_drawer_open,R.string.navigation_drawer_close);
+        drawerLayout.setDrawerListener(drawerToggle);
+        drawerToggle.syncState();
 
-                /** Called when a drawer has settled in a completely open state. */
-                public void onDrawerOpened(View drawerView) {
-                    getSupportActionBar().setTitle(drawerTitle);
-                    invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
-                    syncState();
-                }
-            };
-
-            if (!isTablet()) {
-                drawerToggle.syncState();
-            }
-
-            // Set the drawer toggle as the DrawerListener
-            drawerLayout.setDrawerListener(drawerToggle);
-            navigationDrawerFragment = (NavigationDrawerFragment)
-                    getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
-
-            // Set up the drawer.
-            navigationDrawerFragment.setUp(
-                    R.id.navigation_drawer,
-                    (DrawerLayout) findViewById(R.id.drawer_layout));
-        }
-
+        NavigationView navigationView = (NavigationView) findViewById(R.id.navigation_drawer);
+        navigationView.setNavigationItemSelectedListener(this);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
@@ -227,6 +202,54 @@ public class MainActivity extends BootstrapActivity implements FragmentListener{
         });
 
         // GCM registration //
+    }
+
+
+    @Override
+    public boolean onNavigationItemSelected(MenuItem menuItem) {
+        // Handle navigation view item clicks here.
+        Bundle bundle = new Bundle();
+        int id = menuItem.getItemId();
+
+        if (id == R.id.nav_home){
+           //
+        } else if (id == R.id.nav_incident_report) {
+            CarouselFragment fragment = new CarouselFragment();
+            bundle.putInt("id",1);
+            fragment.setArguments(bundle);
+            FragmentManager manager = getSupportFragmentManager();
+            manager.beginTransaction().replace(R.id.container,fragment).commit();
+
+
+
+
+        } else if (id == R.id.nav_medication_error) {
+            CarouselFragment fragment1 = new CarouselFragment();
+            bundle.putInt("id",0);
+            fragment1.setArguments(bundle);
+            FragmentManager manager1 = getSupportFragmentManager();
+            manager1.beginTransaction().replace(R.id.container,fragment1).commit();
+
+
+
+        } else if (id == R.id.nav_adverse_drug_error) {
+            CarouselFragment fragment2 = new CarouselFragment();
+            bundle.putInt("id",2);
+            fragment2.setArguments(bundle);
+            FragmentManager manager2 = getSupportFragmentManager();
+            manager2.beginTransaction().replace(R.id.container,fragment2).commit();
+
+
+
+        } else if (id == R.id.nav_sync_data) {
+            initiateSync();
+        } else if (id == R.id.nav_settings) {
+            navigateToConfig();
+        }
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
     }
 
     private boolean isTablet() {
@@ -316,7 +339,8 @@ public class MainActivity extends BootstrapActivity implements FragmentListener{
     @Override
     public boolean onOptionsItemSelected(final MenuItem item) {
 
-        if (!isTablet() && drawerToggle.onOptionsItemSelected(item)) {
+
+        if(drawerToggle.onOptionsItemSelected(item)){
             return true;
         }
 

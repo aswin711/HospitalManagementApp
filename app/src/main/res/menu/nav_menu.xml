@@ -6,7 +6,7 @@
 
         <item
             android:id="@+id/nav_home"
-            android:icon="@drawable/ic_home"
+            android:icon="@drawable/icon_home"
             android:title="Home"/>
         <item
             android:id="@+id/nav_incident_report"
@@ -19,7 +19,7 @@
         <item
             android:id="@+id/nav_adverse_drug_error"
             android:icon="@drawable/icon_drug"
-            android:title="Adverse Drug Error"/>
+            android:title="Adverse Drug Reaction"/>
         <item
             android:id="@+id/nav_sync_data"
             android:icon="@drawable/icon_sync"

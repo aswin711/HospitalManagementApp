@@ -69,6 +69,7 @@
 
     <!-- Material  https://github.com/rey5137/material -->
     <color name="colorPrimary">#8056e1</color>
+    <color name="colorPrimaryLight">#328056e1</color>
     <color name="colorPrimaryDark">#6843bd</color>
     <color name="colorAccent">#8056e1</color>
     <color name="colorControlNormal">#FF78909C</color>
@@ -122,4 +123,5 @@
 
     <!--Navigation Drawer -->
     <color name="navMenu">#212121</color>
+    <color name="navigation_seleceted">#fdf6e6</color>
 </resources>

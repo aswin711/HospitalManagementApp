@@ -6,7 +6,7 @@
 
     <item
         android:id="@+id/refresh"
-        android:icon="@drawable/ic_action_refresh"
+        android:icon="@drawable/icon_refresh"
         app:showAsAction="always"
         android:orderInCategory="20"
 
@@ -23,8 +23,7 @@
 -->
     <item
         android:id="@+id/logout"
-        app:showAsAction="never"
-        android:orderInCategory="20"
+        app:showAsAction="never"        android:orderInCategory="20"
         android:title="@string/logout_action" >
     </item>
 

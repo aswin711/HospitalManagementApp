@@ -168,7 +168,7 @@
                 android:padding="10dp"
                 android:text="@string/incident_details_save"
                 android:textColor="#fff"
-                android:textSize="20sp"
+                android:textSize="18dp"
                  />
         </LinearLayout>
     </ScrollView>

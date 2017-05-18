@@ -13,6 +13,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
+                android:background="#fff"
                 android:paddingBottom="10dp"
                 android:paddingLeft="15dp"
                 android:paddingRight="15dp"
@@ -55,7 +56,7 @@
                     android:padding="10dp"
                     android:text="@string/incident_details_save"
                     android:textColor="@color/text"
-                    android:textSize="20sp"
+                    android:textSize="18dp"
                      />
             </LinearLayout>
         </ScrollView>
