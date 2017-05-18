@@ -1,6 +1,7 @@
 package com.xose.cqms.event.ui.base;
 
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -19,13 +20,17 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.squareup.otto.Bus;
 import com.xose.cqms.event.BootstrapApplication;
 import com.xose.cqms.event.R;
 import com.xose.cqms.event.events.NavItemSelectedEvent;
+import com.xose.cqms.event.ui.MainActivity;
 import com.xose.cqms.event.util.PrefUtils;
+import com.xose.cqms.event.util.Toaster;
 import com.xose.cqms.event.util.UIUtils;
 
 import javax.inject.Inject;
@@ -35,7 +40,7 @@ import javax.inject.Inject;
  * See the <a href="https://developer.android.com/design/patterns/navigation-drawer.html#Interaction">
  * design guidelines</a> for a complete explanation of the behaviors implemented here.
  */
-public class NavigationDrawerFragment extends Fragment {
+public class NavigationDrawerFragment extends Fragment implements NavigationDrawerListAdapter.ItemClickListener {
 
     /**
      * Remember the position of the selected item.
@@ -55,12 +60,13 @@ public class NavigationDrawerFragment extends Fragment {
 
     private DrawerLayout drawerLayout;
     private ListView drawerListView;
-    private LinearLayout drawerView;
+    private RelativeLayout drawerView;
     private View fragmentContainerView;
 
     private int currentSelectedPosition = 0;
     private boolean fromSavedInstanceState;
     private boolean userLearnedDrawer;
+
 
     @Inject
     protected SharedPreferences prefs;
@@ -91,6 +97,16 @@ public class NavigationDrawerFragment extends Fragment {
 
     }
 
+    /*@Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if(context instanceof NavigationDrawerListAdapter.ItemClickListener){
+            itemClickListener = (NavigationDrawerListAdapter.ItemClickListener) context;
+        }else{
+            Toast.makeText(context, "Null", Toast.LENGTH_SHORT).show();
+        }
+    }*/
+
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -102,22 +118,30 @@ public class NavigationDrawerFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        drawerView = (LinearLayout) inflater.inflate(R.layout.fragment_navigation_drawer_container, container, false);
+        drawerView = (RelativeLayout) inflater.inflate(R.layout.fragment_navigation_drawer_container, container, false);
         drawerListView = (ListView) drawerView.findViewById(R.id.drawer_list);
         ((TextView) drawerView.findViewById(R.id.navigation_drawer_list_header_user)).setText(PrefUtils.getFromPrefs(getContext(), PrefUtils.PREFS_USER_DISPLAY_NAME, "User"));
         ((TextView) drawerView.findViewById(R.id.navigation_drawer_list_header_hospital)).setText(PrefUtils.getFromPrefs(getContext(), PrefUtils.PREFS_HOSP_DISPLAY_NAME, "Hospital"));
 
         //drawerListView = (ListView) inflater.inflate(R.layout.fragment_navigation_drawer, container, false);
-        drawerListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        /*drawerListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 selectItem(position);
             }
+        });*/
+
+        drawerListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String menu = (String) parent.getItemAtPosition(position);
+                Toast.makeText(getContext(), ""+menu, Toast.LENGTH_SHORT).show();
+
+            }
         });
-        drawerListView.setAdapter(new ArrayAdapter<String>(
-                getActivity(),
-                R.layout.drawer_list_item,
-                android.R.id.text1,
+
+
+        drawerListView.setAdapter(new NavigationDrawerListAdapter(
                 new String[]{
                         getString(R.string.title_home),
                         getString(R.string.title_incident_report),
@@ -125,10 +149,20 @@ public class NavigationDrawerFragment extends Fragment {
                         getString(R.string.title_adverse_drug_reaction),
                         getString(R.string.title_configuration),
                         "Sync Data"
-                }));
+                },
+                new int[]{
+                        R.drawable.ic_home,
+                        R.drawable.ic_home,
+                        R.drawable.ic_home,
+                        R.drawable.ic_home,
+                        R.drawable.ic_home,
+                        R.drawable.ic_home
+                },
+                (MainActivity) getActivity(),this));
         drawerListView.setItemChecked(currentSelectedPosition, true);
         return drawerView;
     }
+
 
     public boolean isDrawerOpen() {
         return drawerLayout != null && drawerLayout.isDrawerOpen(fragmentContainerView);
@@ -282,4 +316,8 @@ public class NavigationDrawerFragment extends Fragment {
     }
 
 
+    @Override
+    public void onClick(int position) {
+        selectItem(position);
+    }
 }

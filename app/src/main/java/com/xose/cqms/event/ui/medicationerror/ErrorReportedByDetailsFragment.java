@@ -176,7 +176,7 @@ public class ErrorReportedByDetailsFragment extends Fragment {
                 if (ConnectionUtils.isInternetAvaialable(getContext())) {
                     ServiceUtils.initiateSync(getContext(), MedicationErrorSyncContentProvider.AUTHORITY);
                 }
-                startActivity(new Intent(getActivity(), MedicationErrorListActivity.class));
+                //startActivity(new Intent(getActivity(), MedicationErrorListActivity.class));
                 getActivity().finish();
             } else {
                 Snackbar.make(getView().getRootView(), "Error while updating", Snackbar.LENGTH_LONG).show();

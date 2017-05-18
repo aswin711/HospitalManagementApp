@@ -3,7 +3,7 @@
         xmlns:float="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#e8eaf6"
+        android:background="#fff"
         android:orientation="vertical"
         tools:context="com.xose.cqms.event.ui.incident.ReportedByDetailsFragment">
         <ScrollView
@@ -50,13 +50,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginTop="15dp"
-                    android:background="@drawable/button_background_states"
+                    android:background="@color/colorPrimary"
                     android:gravity="center"
                     android:padding="10dp"
                     android:text="@string/incident_details_save"
                     android:textColor="@color/text"
                     android:textSize="20sp"
-                    android:textStyle="bold" />
+                     />
             </LinearLayout>
         </ScrollView>
     </LinearLayout>

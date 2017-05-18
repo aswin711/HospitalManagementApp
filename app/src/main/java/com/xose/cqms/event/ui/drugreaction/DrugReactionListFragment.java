@@ -2,6 +2,7 @@ package com.xose.cqms.event.ui.drugreaction;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -22,6 +23,7 @@ import com.xose.cqms.event.core.modal.event.drugreaction.AdverseDrugEvent;
 import com.xose.cqms.event.core.modal.event.incident.IncidentReport;
 import com.xose.cqms.event.sqlite.DataAccessException;
 import com.xose.cqms.event.sqlite.DatabaseHelper;
+import com.xose.cqms.event.ui.base.FragmentListener;
 import com.xose.cqms.event.ui.base.ItemListFragment;
 import com.xose.cqms.event.ui.base.ThrowableLoader;
 import com.xose.cqms.event.util.PrefUtils;
@@ -48,6 +50,8 @@ public class DrugReactionListFragment extends ItemListFragment<AdverseDrugEvent>
     @Inject
     protected DatabaseHelper databaseHelper;
 
+
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,6 +61,7 @@ public class DrugReactionListFragment extends ItemListFragment<AdverseDrugEvent>
     @Override
     public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
                              final Bundle savedInstanceState) {
+        //fragmentListener.viewFragment(2);
         return inflater.inflate(R.layout.record_list, null);
     }
 
@@ -64,7 +69,10 @@ public class DrugReactionListFragment extends ItemListFragment<AdverseDrugEvent>
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         setEmptyText(R.string.no_drug_reactions);
+
     }
+
+
 
     @Override
     protected void configureList(Activity activity, ListView listView) {

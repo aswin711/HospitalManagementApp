@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#e8eaf6"
+    android:background="#fff"
     android:orientation="vertical"
     tools:context="com.xose.cqms.event.ui.incident.IncidentDetailsFragment">
     <ScrollView
@@ -23,7 +23,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
-                <TextView
+                <!--<TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingBottom="2dp"
@@ -31,7 +31,7 @@
                     android:paddingRight="5dp"
                     android:textAppearance="?android:attr/textAppearanceSmall"
                     android:textColor="@color/table_text"
-                    android:text="@string/event_unit"/>
+                    android:text="@string/event_unit"/>-->
 
                 <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
                     android:id="@+id/incident_units"
@@ -46,7 +46,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:visibility="gone">
-                <TextView
+                <!--<TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingBottom="2dp"
@@ -54,7 +54,7 @@
                     android:paddingRight="5dp"
                     android:textAppearance="?android:attr/textAppearanceSmall"
                     android:textColor="@color/table_text"
-                    android:text="@string/incident_type"/>
+                    android:text="@string/incident_type"/>-->
 
                 <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
                     android:id="@+id/incident_types"
@@ -64,7 +64,7 @@
             </LinearLayout>
 
 
-            <TextView
+            <!--<TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingBottom="5dp"
@@ -72,7 +72,7 @@
                 android:paddingRight="5dp"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:textColor="@color/table_text"
-                android:text="@string/event_time"/>
+                android:text="@string/event_time"/>-->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -129,7 +129,7 @@
             <com.wrapp.floatlabelededittext.FloatLabeledEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                float:fletPadding="2dp">
+                float:fletPadding="5dp">
                 <com.rengwuxian.materialedittext.MaterialEditText
                     android:id="@+id/event_description"
                     android:completionThreshold="1"
@@ -144,7 +144,8 @@
             <com.wrapp.floatlabelededittext.FloatLabeledEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                float:fletPadding="2dp">
+                float:fletPadding="5dp">
+
                 <com.rengwuxian.materialedittext.MaterialEditText
                     android:id="@+id/event_corrective_action"
                     android:completionThreshold="1"
@@ -162,13 +163,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="15dp"
-                android:background="@drawable/button_background_states"
+                android:background="@color/colorPrimary"
                 android:gravity="center"
                 android:padding="10dp"
                 android:text="@string/incident_details_save"
-                android:textColor="@color/text"
+                android:textColor="#fff"
                 android:textSize="20sp"
-                android:textStyle="bold" />
+                 />
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

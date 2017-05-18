@@ -17,6 +17,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.widget.DrawerLayout;
@@ -42,9 +43,14 @@ import com.xose.cqms.event.sync.drugreaction.DrugReactionSyncContentProvider;
 import com.xose.cqms.event.sync.incident.IncidentReportSyncContentProvider;
 import com.xose.cqms.event.sync.medicationerror.MedicationErrorSyncContentProvider;
 import com.xose.cqms.event.ui.base.BootstrapActivity;
+import com.xose.cqms.event.ui.base.FragmentListener;
 import com.xose.cqms.event.ui.base.NavigationDrawerFragment;
+import com.xose.cqms.event.ui.drugreaction.DrugReactionActivity;
 import com.xose.cqms.event.ui.drugreaction.DrugReactionListActivity;
+import com.xose.cqms.event.ui.incident.IncidentDetailsFragment;
+import com.xose.cqms.event.ui.incident.IncidentReportActivity;
 import com.xose.cqms.event.ui.incident.IncidentReportListActivity;
+import com.xose.cqms.event.ui.medicationerror.MedicationErrorActivity;
 import com.xose.cqms.event.ui.medicationerror.MedicationErrorListActivity;
 import com.xose.cqms.event.util.PrefUtils;
 import com.xose.cqms.event.util.SafeAsyncTask;
@@ -67,7 +73,7 @@ import timber.log.Timber;
  * If you need to remove the authentication from the application please see
  * {@link com.xose.cqms.event.authenticator.ApiKeyProvider#getAuthKey(android.app.Activity)}
  */
-public class MainActivity extends BootstrapActivity {
+public class MainActivity extends BootstrapActivity implements FragmentListener{
 
     @Inject
     BootstrapServiceProvider serviceProvider;
@@ -82,6 +88,7 @@ public class MainActivity extends BootstrapActivity {
     private CharSequence drawerTitle;
     private CharSequence title;
     private NavigationDrawerFragment navigationDrawerFragment;
+    private FloatingActionButton floatingActionButton;
 
     private List<IncidentReport> incidentReports;
     private Handler handler;
@@ -92,6 +99,10 @@ public class MainActivity extends BootstrapActivity {
      */
     private BroadcastReceiver mRegistrationBroadcastReceiver;
     private boolean isReceiverRegistered;
+    private int fragmentId;
+
+
+
 
     class IncidentReportContentObserver extends ContentObserver {
 
@@ -145,8 +156,10 @@ public class MainActivity extends BootstrapActivity {
             setContentView(R.layout.main_activity_tablet);
         } else {
             setContentView(R.layout.main_activity);
+            floatingActionButton = (FloatingActionButton) findViewById(R.id.floatingActionButton);
         }
 
+        getSupportActionBar().setElevation(0);
         // View injection with Butterknife
         ButterKnife.bind(this);
 
@@ -195,11 +208,34 @@ public class MainActivity extends BootstrapActivity {
         getSupportActionBar().setHomeButtonEnabled(true);
         checkAuth();
 
+        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                switch (fragmentId){
+                    case 1:
+                        startActivity(new Intent(getApplicationContext(), IncidentReportActivity.class));
+                        break;
+                    case 0:
+                        startActivity(new Intent(getApplicationContext(), MedicationErrorActivity.class));
+                        break;
+                    case 2:
+                        startActivity(new Intent(getApplicationContext(), DrugReactionActivity.class));
+                        break;
+
+                }
+            }
+        });
+
         // GCM registration //
     }
 
     private boolean isTablet() {
         return UIUtils.isTablet(this);
+    }
+
+    @Override
+    public void viewFragment(int id) {
+        fragmentId = id;
     }
 
     @Override
@@ -336,19 +372,36 @@ public class MainActivity extends BootstrapActivity {
 
     @Subscribe
     public void onNavigationItemSelected(NavItemSelectedEvent event) {
+        Bundle bundle = new Bundle();
         switch (event.getItemPosition()) {
             case 0:
                 // Home
                 // do nothing as we're already on the home screen.
                 break;
             case 1:
-                startActivity(new Intent(this, IncidentReportListActivity.class));
+                CarouselFragment fragment = new CarouselFragment();
+                bundle.putInt("id",1);
+                fragment.setArguments(bundle);
+                FragmentManager manager = getSupportFragmentManager();
+                manager.beginTransaction().replace(R.id.container,fragment).commit();
+
+                setTitle("Incident Report");
                 break;
             case 2:
-                startActivity(new Intent(this, MedicationErrorListActivity.class));
+                CarouselFragment fragment1 = new CarouselFragment();
+                bundle.putInt("id",0);
+                fragment1.setArguments(bundle);
+                FragmentManager manager1 = getSupportFragmentManager();
+                manager1.beginTransaction().replace(R.id.container,fragment1).commit();
+                setTitle("Incident Report");
                 break;
             case 3:
-                startActivity(new Intent(this, DrugReactionListActivity.class));
+                CarouselFragment fragment2 = new CarouselFragment();
+                bundle.putInt("id",2);
+                fragment2.setArguments(bundle);
+                FragmentManager manager2 = getSupportFragmentManager();
+                manager2.beginTransaction().replace(R.id.container,fragment2).commit();
+                setTitle("Incident Report");
                 break;
             case 4:
                 navigateToConfig();

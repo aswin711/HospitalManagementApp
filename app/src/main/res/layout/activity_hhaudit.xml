@@ -317,14 +317,14 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="15dp"
-            android:background="@drawable/button_background_states"
+            android:background="@color/colorPrimary"
             android:gravity="center"
             android:onClick="saveSession"
             android:padding="10dp"
             android:text="@string/audit_hh_start_session"
-            android:textColor="@color/text"
+            android:textColor="#fff"
             android:textSize="20sp"
-            android:textStyle="bold" />
+            />
 
     </LinearLayout>
 </ScrollView>

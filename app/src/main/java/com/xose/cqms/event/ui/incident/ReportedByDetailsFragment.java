@@ -176,7 +176,7 @@ public class ReportedByDetailsFragment extends Fragment {
                 if (ConnectionUtils.isInternetAvaialable(getContext())) {
                     ServiceUtils.initiateSync(getContext(), IncidentReportSyncContentProvider.AUTHORITY);
                 }
-                startActivity(new Intent(getActivity(), IncidentReportListActivity.class));
+                //startActivity(new Intent(getActivity(), IncidentReportListActivity.class));
                 getActivity().finish();
             } else {
                 Snackbar.make(getView().getRootView(), "Error while updating", Snackbar.LENGTH_LONG).show();

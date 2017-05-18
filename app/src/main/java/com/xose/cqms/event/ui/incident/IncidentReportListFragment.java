@@ -2,6 +2,7 @@ package com.xose.cqms.event.ui.incident;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -21,6 +22,7 @@ import com.xose.cqms.event.authenticator.LogoutService;
 import com.xose.cqms.event.core.modal.event.incident.IncidentReport;
 import com.xose.cqms.event.sqlite.DataAccessException;
 import com.xose.cqms.event.sqlite.DatabaseHelper;
+import com.xose.cqms.event.ui.base.FragmentListener;
 import com.xose.cqms.event.ui.base.ItemListFragment;
 import com.xose.cqms.event.ui.base.ThrowableLoader;
 import com.xose.cqms.event.util.PrefUtils;
@@ -47,10 +49,12 @@ public class IncidentReportListFragment extends ItemListFragment<IncidentReport>
     @Inject
     protected DatabaseHelper databaseHelper;
 
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         BootstrapApplication.component().inject(this);
+
     }
 
     @Override
@@ -63,7 +67,9 @@ public class IncidentReportListFragment extends ItemListFragment<IncidentReport>
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         setEmptyText(R.string.no_incidents);
-    }
+            }
+
+
 
     @Override
     protected void configureList(Activity activity, ListView listView) {

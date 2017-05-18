@@ -177,7 +177,7 @@ public class DrugReactionReportedByDetailsFragment extends Fragment {
                 if (ConnectionUtils.isInternetAvaialable(getContext())) {
                     ServiceUtils.initiateSync(getContext(), IncidentReportSyncContentProvider.AUTHORITY);
                 }
-                startActivity(new Intent(getActivity(), DrugReactionListActivity.class));
+                //startActivity(new Intent(getActivity(), DrugReactionListActivity.class));
                 getActivity().finish();
             } else {
                 Snackbar.make(getView().getRootView(), "Error while updating", Snackbar.LENGTH_LONG).show();

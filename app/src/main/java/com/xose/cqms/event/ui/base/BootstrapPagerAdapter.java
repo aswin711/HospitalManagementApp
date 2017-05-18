@@ -19,6 +19,7 @@ public class BootstrapPagerAdapter extends FragmentPagerAdapter {
 
     private final Resources resources;
 
+
     /**
      * Create pager adapter
      *

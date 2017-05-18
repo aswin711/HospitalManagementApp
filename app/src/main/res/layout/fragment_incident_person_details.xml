@@ -34,15 +34,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingBottom="2dp"
-                    android:paddingLeft="2dp"
-                    android:paddingRight="5dp"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:textColor="@color/table_text"
-                    android:text="@string/person_type"/>
 
                 <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
                     android:id="@+id/person_types"
@@ -147,13 +138,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="15dp"
-                android:background="@drawable/button_background_states"
+                android:background="@color/colorAccent"
                 android:gravity="center"
                 android:padding="10dp"
                 android:text="@string/incident_details_save"
                 android:textColor="@color/text"
                 android:textSize="20sp"
-                android:textStyle="bold" />
+                />
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

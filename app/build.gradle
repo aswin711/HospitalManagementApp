@@ -6,8 +6,8 @@ buildscript {
         mavenLocal()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:1.3.0'
-        classpath 'io.fabric.tools:gradle:1.19.2'
+        classpath 'com.android.tools.build:gradle:2.3.2'
+        classpath 'io.fabric.tools:gradle:1.21.6'
         classpath 'com.neenbedankt.gradle.plugins:android-apt:1.4'
     }
 }
@@ -47,12 +47,12 @@ def computeVersionName() {
 }
 
 //noinspection GroovyUnusedAssignment
-def gitSha = 'git rev-parse --short HEAD'.execute([], project.rootDir).text.trim()
+//def gitSha = 'git rev-parse --short HEAD'.execute([], project.rootDir).text.trim()
 
 
 android {
     compileSdkVersion 23
-    buildToolsVersion '22.0.1'
+    buildToolsVersion '25.0.2'
 
     defaultConfig {
         applicationId "com.xose.cqms.event"
@@ -80,7 +80,7 @@ android {
         // Exclude file to avoid
         // Error: Duplicate files during packaging of APK
         exclude 'META-INF/services/javax.annotation.processing.Processor'
-        exclude 'LICENSE.txt'
+       // exclude 'LICENSE.txt'
         exclude 'META-INF/LICENSE'
         exclude 'META-INF/NOTICE'
         exclude 'META-INF/NOTICE.txt'
