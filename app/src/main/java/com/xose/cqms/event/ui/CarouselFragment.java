@@ -24,8 +24,8 @@ import butterknife.ButterKnife;
  */
 public class CarouselFragment extends Fragment {
 
-    @Bind(R.id.tpi_header)
-    protected TitlePageIndicator indicator;
+    //@Bind(R.id.tpi_header)
+    //protected TitlePageIndicator indicator;
 
     @Bind(R.id.vp_pages)
     protected ViewPager pager;
@@ -48,7 +48,7 @@ public class CarouselFragment extends Fragment {
         Bundle bundle = this.getArguments();
 
         pager.setAdapter(new BootstrapPagerAdapter(getResources(), getChildFragmentManager()));
-        indicator.setViewPager(pager);
+        //indicator.setViewPager(pager);
         pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {

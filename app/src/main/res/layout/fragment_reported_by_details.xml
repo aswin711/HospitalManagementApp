@@ -26,7 +26,8 @@
                         android:id="@+id/event_reported_by_name"
                         android:completionThreshold="1"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="@dimen/edit_height"
+                        android:layout_marginTop="@dimen/edit_margin"
                         android:imeOptions="actionNext|flagNoExtractUi"
                         android:inputType="textPersonName"
                         android:hint="@string/event_reported_by_name"/>
@@ -40,7 +41,8 @@
                         android:id="@+id/event_reported_by_designation"
                         android:completionThreshold="1"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="@dimen/edit_height"
+                        android:layout_marginTop="@dimen/edit_margin"
                         android:imeOptions="actionNext|flagNoExtractUi"
                         android:inputType="textPersonName"
                         android:hint="@string/event_reported_by_designation"/>

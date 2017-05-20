@@ -36,7 +36,8 @@
                 <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
                     android:id="@+id/incident_units"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="@dimen/edit_height"
+                    android:layout_marginTop="@dimen/edit_margin"
                     android:hint="@string/event_unit" />
             </LinearLayout>
 
@@ -88,6 +89,7 @@
                     android:imeOptions="actionNext|flagNoExtractUi"
                     android:inputType="none"
                     android:layout_marginBottom="8dp"
+                    android:layout_marginTop="@dimen/edit_margin"
                     android:hint="@string/event_time"/>
                 <com.rey.material.widget.Button
                     android:id="@+id/event_time_btn"
@@ -95,7 +97,9 @@
                     android:layout_height="@dimen/bt_height"
                     android:layout_weight="0.25"
                     android:text="Change"
-                    android:background="@null"
+                    android:textColor="#fff"
+                    android:layout_marginTop="@dimen/edit_margin"
+                    android:background="@color/colorPrimary"
                     app:v_styleId="@array/button_raise"/>
             </LinearLayout>
 
@@ -106,6 +110,7 @@
                 android:paddingBottom="5dp"
                 android:paddingLeft="2dp"
                 android:paddingRight="5dp"
+                android:layout_marginTop="20dp"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:textColor="@color/table_text"
                 android:text="@string/incident_level"/>
@@ -114,6 +119,7 @@
                 android:id="@+id/incident_level_grp"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/edit_margin"
                 android:orientation="horizontal">
                 <RadioButton android:id="@+id/incident_level_near_miss"
                     android:layout_width="wrap_content"
@@ -129,6 +135,7 @@
             <com.wrapp.floatlabelededittext.FloatLabeledEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/edit_margin"
                 float:fletPadding="5dp">
                 <com.rengwuxian.materialedittext.MaterialEditText
                     android:id="@+id/event_description"
@@ -144,6 +151,7 @@
             <com.wrapp.floatlabelededittext.FloatLabeledEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/edit_margin"
                 float:fletPadding="5dp">
 
                 <com.rengwuxian.materialedittext.MaterialEditText

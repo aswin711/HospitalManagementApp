@@ -28,6 +28,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.squareup.otto.Subscribe;
@@ -49,11 +50,14 @@ import com.xose.cqms.event.ui.base.FragmentListener;
 import com.xose.cqms.event.ui.base.NavigationDrawerFragment;
 import com.xose.cqms.event.ui.drugreaction.DrugReactionActivity;
 import com.xose.cqms.event.ui.drugreaction.DrugReactionListActivity;
+import com.xose.cqms.event.ui.drugreaction.DrugReactionListFragment;
 import com.xose.cqms.event.ui.incident.IncidentDetailsFragment;
 import com.xose.cqms.event.ui.incident.IncidentReportActivity;
 import com.xose.cqms.event.ui.incident.IncidentReportListActivity;
+import com.xose.cqms.event.ui.incident.IncidentReportListFragment;
 import com.xose.cqms.event.ui.medicationerror.MedicationErrorActivity;
 import com.xose.cqms.event.ui.medicationerror.MedicationErrorListActivity;
+import com.xose.cqms.event.ui.medicationerror.MedicationErrorListFragment;
 import com.xose.cqms.event.util.PrefUtils;
 import com.xose.cqms.event.util.SafeAsyncTask;
 import com.xose.cqms.event.util.ServiceUtils;
@@ -178,6 +182,18 @@ public class MainActivity extends BootstrapActivity implements FragmentListener,
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.navigation_drawer);
         navigationView.setNavigationItemSelectedListener(this);
+        View header = navigationView.getHeaderView(0);
+        TextView user = (TextView) header.findViewById(R.id.navigation_drawer_list_header_user);
+        TextView hospital = (TextView) header.findViewById(R.id.navigation_drawer_list_header_hospital);
+
+        //Toast.makeText(this, , Toast.LENGTH_SHORT).show();
+
+        user.setText(PrefUtils.getFromPrefs(getApplicationContext(), PrefUtils.PREFS_USER_DISPLAY_NAME, "User"));
+        hospital.setText(PrefUtils.getFromPrefs(getApplicationContext(), PrefUtils.PREFS_HOSP_DISPLAY_NAME, "Hospital"));
+        /*((TextView) navigationView.findViewById(R.id.navigation_drawer_list_header_user)).setText();
+        ((TextView) navigationView.findViewById(R.id.navigation_drawer_list_header_hospital)).setText();*/
+
+
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
@@ -186,6 +202,7 @@ public class MainActivity extends BootstrapActivity implements FragmentListener,
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //Toast.makeText(MainActivity.this, "Clicked", Toast.LENGTH_SHORT).show();
                 switch (fragmentId){
                     case 1:
                         startActivity(new Intent(getApplicationContext(), IncidentReportActivity.class));
@@ -201,6 +218,9 @@ public class MainActivity extends BootstrapActivity implements FragmentListener,
             }
         });
 
+        onNavigationItemSelected(navigationView.getMenu().getItem(0));
+        navigationView.getMenu().getItem(0).setChecked(true);
+
         // GCM registration //
     }
 
@@ -208,36 +228,34 @@ public class MainActivity extends BootstrapActivity implements FragmentListener,
     @Override
     public boolean onNavigationItemSelected(MenuItem menuItem) {
         // Handle navigation view item clicks here.
-        Bundle bundle = new Bundle();
+        //Bundle bundle = new Bundle();
         int id = menuItem.getItemId();
 
-        if (id == R.id.nav_home){
-           //
-        } else if (id == R.id.nav_incident_report) {
-            CarouselFragment fragment = new CarouselFragment();
-            bundle.putInt("id",1);
-            fragment.setArguments(bundle);
+        if (id == R.id.nav_incident_report) {
+            IncidentReportListFragment fragment = new IncidentReportListFragment();
+            fragmentId = 1;
             FragmentManager manager = getSupportFragmentManager();
             manager.beginTransaction().replace(R.id.container,fragment).commit();
+            setTitle("Incident Report");
 
 
 
 
         } else if (id == R.id.nav_medication_error) {
-            CarouselFragment fragment1 = new CarouselFragment();
-            bundle.putInt("id",0);
-            fragment1.setArguments(bundle);
+            MedicationErrorListFragment fragment1 = new MedicationErrorListFragment();
+            fragmentId = 0;
             FragmentManager manager1 = getSupportFragmentManager();
             manager1.beginTransaction().replace(R.id.container,fragment1).commit();
+            setTitle("Medication Error");
 
 
 
         } else if (id == R.id.nav_adverse_drug_error) {
-            CarouselFragment fragment2 = new CarouselFragment();
-            bundle.putInt("id",2);
-            fragment2.setArguments(bundle);
+            DrugReactionListFragment fragment2 = new DrugReactionListFragment();
+            fragmentId = 2;
             FragmentManager manager2 = getSupportFragmentManager();
             manager2.beginTransaction().replace(R.id.container,fragment2).commit();
+            setTitle("Adverse Drug Reaction");
 
 
 

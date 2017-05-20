@@ -11,10 +11,12 @@
     >
 
     <!-- The main content view -->
-    <FrameLayout
-            android:id="@+id/container"
+    <android.support.design.widget.CoordinatorLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent" >
+
+        <include layout="@layout/content_main"
+            android:id="@+id/container"/>
 
 
         <android.support.design.widget.FloatingActionButton
@@ -26,9 +28,10 @@
             android:layout_margin="15dp"
             app:fabSize="normal"
             android:src="@drawable/ic_add_black_24dp"
+            app:backgroundTint="@color/colorPrimary"
 
            />
-    </FrameLayout>
+    </android.support.design.widget.CoordinatorLayout>
 
 
     <!-- android:layout_gravity="start" tells DrawerLayout to treat
@@ -52,7 +55,6 @@
         android:id="@+id/navigation_drawer"
         android:theme="@style/NavigationItemStyle"
         android:layout_gravity="start"
-        android:fitsSystemWindows="true"
         app:itemIconTint="#212121"
         app:itemTextColor="#212121"
         app:itemBackground="@drawable/activated_background"

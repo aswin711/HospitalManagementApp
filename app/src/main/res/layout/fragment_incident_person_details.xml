@@ -17,19 +17,22 @@
             android:paddingLeft="15dp"
             android:paddingRight="15dp"
             android:paddingTop="5dp">
+
             <com.wrapp.floatlabelededittext.FloatLabeledEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 float:fletPadding="2dp">
+
                 <com.rengwuxian.materialedittext.MaterialEditText
                     android:id="@+id/person_involved_name"
-                    android:completionThreshold="1"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="@dimen/edit_height"
+                    android:completionThreshold="1"
+                    android:hint="@string/person_involved_name"
                     android:imeOptions="actionNext|flagNoExtractUi"
-                    android:inputType="textPersonName"
-                    android:hint="@string/person_involved_name"/>
+                    android:inputType="textPersonName" />
             </com.wrapp.floatlabelededittext.FloatLabeledEditText>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -38,7 +41,8 @@
                 <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
                     android:id="@+id/person_types"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="@dimen/edit_height"
+                    android:layout_marginTop="@dimen/edit_margin"
                     android:hint="@string/person_type" />
             </LinearLayout>
             <com.wrapp.floatlabelededittext.FloatLabeledEditText
@@ -51,7 +55,8 @@
                     android:id="@+id/patient_number"
                     android:completionThreshold="1"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="@dimen/edit_height"
+                    android:layout_marginTop="@dimen/edit_margin"
                     android:imeOptions="actionNext|flagNoExtractUi"
                     android:inputType="textPersonName"
                     android:hint="@string/patient_number"/>
@@ -67,6 +72,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingBottom="5dp"
+                android:layout_marginTop="20dp"
                 android:paddingLeft="2dp"
                 android:paddingRight="5dp"
                 android:textAppearance="?android:attr/textAppearanceSmall"
@@ -77,28 +83,29 @@
                 android:id="@+id/gender_grp"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:layout_marginTop="@dimen/edit_margin"
+                android:orientation="vertical">
 
                 <RadioButton android:id="@+id/gender_male"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/gender_male"
-                    android:layout_marginLeft="35dp" />
+                    android:layout_marginLeft="20dp" />
                 <RadioButton android:id="@+id/gender_female"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/gender_female"
-                    android:layout_marginLeft="35dp" />
+                    android:layout_marginLeft="20dp" />
                 <RadioButton android:id="@+id/gender_indeterminate"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/gender_indeterminate"
-                    android:layout_marginLeft="35dp" />
+                    android:layout_marginLeft="20dp" />
                 <RadioButton android:id="@+id/gender_not_stated"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/gender_not_stated"
-                    android:layout_marginLeft="35dp" />
+                    android:layout_marginLeft="20dp" />
             </RadioGroup>
             </LinearLayout>
             <com.wrapp.floatlabelededittext.FloatLabeledEditText
@@ -111,7 +118,8 @@
                     android:id="@+id/staff_id_no"
                     android:completionThreshold="1"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="@dimen/edit_height"
+                    android:layout_marginTop="@dimen/edit_margin"
                     android:imeOptions="actionNext|flagNoExtractUi"
                     android:inputType="textPersonName"
                     android:hint="@string/staff_id_no"/>
@@ -126,7 +134,8 @@
                     android:id="@+id/staff_designation"
                     android:completionThreshold="1"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="@dimen/edit_height"
+                    android:layout_marginTop="@dimen/edit_margin"
                     android:imeOptions="actionNext|flagNoExtractUi"
                     android:inputType="textPersonName"
                     android:hint="@string/staff_designation"/>

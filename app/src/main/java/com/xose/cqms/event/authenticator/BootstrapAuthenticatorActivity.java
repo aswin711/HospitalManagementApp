@@ -9,6 +9,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.support.design.widget.TextInputLayout;
 import android.text.Editable;
 import android.text.Html;
 import android.text.TextUtils;
@@ -18,12 +19,14 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnKeyListener;
+import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
+import android.widget.Toast;
 
 import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
@@ -104,8 +107,14 @@ public class BootstrapAuthenticatorActivity extends ActionBarAccountAuthenticato
     @Inject
     Bus bus;
 
+    @Bind(id.layout_email)
+    protected TextInputLayout emailLayout;
+
+    @Bind(id.layout_password)
+    protected TextInputLayout passwordLayout;
+
     @Bind(id.et_email)
-    protected AutoCompleteTextView emailText;
+    protected EditText emailText;
     @Bind(id.et_password)
     protected EditText passwordText;
     @Bind(id.b_signin)
@@ -160,10 +169,10 @@ public class BootstrapAuthenticatorActivity extends ActionBarAccountAuthenticato
 
         ButterKnife.bind(this);
 
-        emailText.setAdapter(new ArrayAdapter<String>(this,
-                simple_dropdown_item_1line, userEmailAccounts()));
+        //emailText.setAdapter(new ArrayAdapter<String>(this,
+              //  simple_dropdown_item_1line, userEmailAccounts()));
 
-        passwordText.setOnKeyListener(new OnKeyListener() {
+       /* passwordText.setOnKeyListener(new OnKeyListener() {
 
             public boolean onKey(final View v, final int keyCode, final KeyEvent event) {
                 if (event != null && ACTION_DOWN == event.getAction()
@@ -173,9 +182,9 @@ public class BootstrapAuthenticatorActivity extends ActionBarAccountAuthenticato
                 }
                 return false;
             }
-        });
+        });*/
 
-        passwordText.setOnEditorActionListener(new OnEditorActionListener() {
+       /* passwordText.setOnEditorActionListener(new OnEditorActionListener() {
 
             public boolean onEditorAction(final TextView v, final int actionId,
                                           final KeyEvent event) {
@@ -185,10 +194,10 @@ public class BootstrapAuthenticatorActivity extends ActionBarAccountAuthenticato
                 }
                 return false;
             }
-        });
+        });*/
 
-        emailText.addTextChangedListener(watcher);
-        passwordText.addTextChangedListener(watcher);
+        emailText.addTextChangedListener(new MyTextWatcher(emailText));
+        passwordText.addTextChangedListener(new MyTextWatcher(passwordText));
 
         final TextView signUpText = (TextView) findViewById(id.tv_signup);
         signUpText.setMovementMethod(LinkMovementMethod.getInstance());
@@ -557,6 +566,76 @@ public class BootstrapAuthenticatorActivity extends ActionBarAccountAuthenticato
     @Subscribe
     public void onNetworkErrorEvent(NetworkErrorEvent networkErrorEvent) {
         Toaster.showLong(BootstrapAuthenticatorActivity.this, R.string.message_bad_connection);
+    }
+
+    private boolean validateEmail(String emailTextChanged) {
+        String email = emailTextChanged.trim();
+        if (email.isEmpty() || !isValidEmail(email)) {
+            emailLayout.setError(getString(R.string.err_msg_email));
+            requestFocus(emailText);
+            return false;
+        } else {
+            emailLayout.setError(null);
+        }
+
+        return true;
+    }
+
+    private boolean validatePassword(String passwordTextChanged) {
+
+        if (passwordTextChanged.trim().isEmpty()) {
+            passwordLayout.setError(getString(R.string.err_msg_password));
+            requestFocus(passwordText);
+            return false;
+        } else {
+            passwordLayout.setError(null);
+        }
+
+        return true;
+    }
+
+    private static boolean isValidEmail(String email) {
+        return !TextUtils.isEmpty(email) && android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
+    }
+
+    private void requestFocus(View view) {
+        if (view.requestFocus()) {
+            getWindow().setSoftInputMode((WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE));
+        }
+    }
+
+    private class MyTextWatcher implements TextWatcher {
+
+        private View view;
+
+        private MyTextWatcher(View view) {
+            this.view = view;
+        }
+
+        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+        }
+
+        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            if(emailLayout.getError() == null && passwordLayout.getError() == null){
+                signInButton.setEnabled(true);
+            }else{
+                signInButton.setEnabled(false);
+            }
+        }
+
+        public void afterTextChanged(Editable editable) {
+
+            switch (view.getId()) {
+
+                case id.et_email:
+                    validateEmail(editable.toString());
+                    break;
+                case id.et_password:
+                    validatePassword(editable.toString());
+                    break;
+            }
+        }
     }
 
 }

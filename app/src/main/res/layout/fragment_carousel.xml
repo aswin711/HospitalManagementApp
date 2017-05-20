@@ -7,11 +7,12 @@
 
               android:layout_height="match_parent">
 
-    <com.viewpagerindicator.TitlePageIndicator
+    <!--<com.viewpagerindicator.TitlePageIndicator
             android:id="@+id/tpi_header"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:textSize="16dp"
+            android:textSize="12dp"
+            android:textAllCaps="true"
             android:textColor="#fff"
             android:background="@color/colorPrimary"
             app:selectedColor="#fff"
@@ -19,7 +20,7 @@
             app:footerIndicatorHeight="1dp"
             app:footerColor="#fff"
             app:titlePadding="5dp"
-            />
+            />-->
 
     <android.support.v4.view.ViewPager
             android:id="@+id/vp_pages"

@@ -176,6 +176,8 @@ dependencies {
     compile 'com.squareup.okhttp3:logging-interceptor:3.3.1'
     compile 'com.squareup.okhttp3:okhttp:3.3.1'
 
+    compile 'com.facebook.stetho:stetho:1.5.0'
+
 
     //twiter bootstrap designs
     compile 'com.beardedhen:androidbootstrap:2.3.0'

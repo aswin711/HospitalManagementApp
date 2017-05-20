@@ -3,6 +3,7 @@ package com.xose.cqms.event;
 import android.app.Application;
 
 import com.beardedhen.androidbootstrap.TypefaceProvider;
+import com.facebook.stetho.Stetho;
 
 
 /**
@@ -25,6 +26,8 @@ public abstract class BootstrapApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+
+        Stetho.initializeWithDefaults(this);
 
         init();
 
