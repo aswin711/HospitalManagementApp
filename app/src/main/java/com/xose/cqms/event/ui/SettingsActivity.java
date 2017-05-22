@@ -240,6 +240,7 @@ public class SettingsActivity extends PreferenceActivity {
                 public boolean onPreferenceClick(Preference preference) {
                     Toaster.showLong(getActivity(), "clicked");
                     final Intent i = new Intent(getActivity(), ImportConfigActivity.class);
+                    i.putExtra("ManualImport","true");
                     startActivity(i);
                     return false;
                 }

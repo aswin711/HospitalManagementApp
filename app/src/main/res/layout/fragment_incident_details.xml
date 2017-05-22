@@ -99,6 +99,8 @@
                     android:text="Change"
                     android:textColor="#fff"
                     android:layout_marginTop="@dimen/edit_margin"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
                     android:background="@color/colorPrimary"
                     app:v_styleId="@array/button_raise"/>
             </LinearLayout>
@@ -124,10 +126,12 @@
                 <RadioButton android:id="@+id/incident_level_near_miss"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:buttonTint="@color/colorPrimary"
                     android:text="@string/incident_level_near_miss"/>
                 <RadioButton android:id="@+id/incident_level_harm"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:buttonTint="@color/colorPrimary"
                     android:text="@string/incident_level_harm"
                     android:layout_marginLeft="35dp" />
             </RadioGroup>
@@ -144,6 +148,8 @@
                     android:layout_height="wrap_content"
                     android:imeOptions="actionNext|flagNoExtractUi"
                     android:inputType="textMultiLine"
+                    float:met_maxCharacters="1024"
+                    android:maxLength="1024"
                     android:minLines="4"
                     android:hint="@string/incident_description"/>
             </com.wrapp.floatlabelededittext.FloatLabeledEditText>
@@ -161,6 +167,7 @@
                     android:layout_height="wrap_content"
                     android:imeOptions="actionNext|flagNoExtractUi"
                     android:inputType="textMultiLine"
+                    float:met_maxCharacters="1024"
                     android:maxLength="1024"
                     android:minLines="4"
                     android:hint="@string/event_corrective_action"/>

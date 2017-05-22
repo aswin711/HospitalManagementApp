@@ -89,21 +89,25 @@
                 <RadioButton android:id="@+id/gender_male"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:buttonTint="@color/colorPrimary"
                     android:text="@string/gender_male"
                     android:layout_marginLeft="20dp" />
                 <RadioButton android:id="@+id/gender_female"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:buttonTint="@color/colorPrimary"
                     android:text="@string/gender_female"
                     android:layout_marginLeft="20dp" />
                 <RadioButton android:id="@+id/gender_indeterminate"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:buttonTint="@color/colorPrimary"
                     android:text="@string/gender_indeterminate"
                     android:layout_marginLeft="20dp" />
                 <RadioButton android:id="@+id/gender_not_stated"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:buttonTint="@color/colorPrimary"
                     android:text="@string/gender_not_stated"
                     android:layout_marginLeft="20dp" />
             </RadioGroup>

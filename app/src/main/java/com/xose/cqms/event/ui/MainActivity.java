@@ -107,6 +107,10 @@ public class MainActivity extends BootstrapActivity implements FragmentListener,
     private boolean isReceiverRegistered;
     private int fragmentId;
 
+    private boolean userLoggedIn = false;
+
+    private View header;
+
 
 
 
@@ -120,7 +124,7 @@ public class MainActivity extends BootstrapActivity implements FragmentListener,
         public void onChange(boolean selfChange) {
             super.onChange(selfChange);
             Log.d("TAG", "Task content changed!");
-            initScreen();
+            ;
         }
 
     }
@@ -166,6 +170,7 @@ public class MainActivity extends BootstrapActivity implements FragmentListener,
         }
 
         floatingActionButton = (FloatingActionButton) findViewById(R.id.floatingActionButton);
+        userLoggedIn = false;
 
         getSupportActionBar().setElevation(0);
         // View injection with Butterknife
@@ -182,7 +187,7 @@ public class MainActivity extends BootstrapActivity implements FragmentListener,
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.navigation_drawer);
         navigationView.setNavigationItemSelectedListener(this);
-        View header = navigationView.getHeaderView(0);
+        header = navigationView.getHeaderView(0);
         TextView user = (TextView) header.findViewById(R.id.navigation_drawer_list_header_user);
         TextView hospital = (TextView) header.findViewById(R.id.navigation_drawer_list_header_hospital);
 
@@ -203,6 +208,10 @@ public class MainActivity extends BootstrapActivity implements FragmentListener,
             @Override
             public void onClick(View v) {
                 //Toast.makeText(MainActivity.this, "Clicked", Toast.LENGTH_SHORT).show();
+                if(userLoggedIn){
+                    Toast.makeText(MainActivity.this, "User logged", Toast.LENGTH_SHORT).show();
+                }
+
                 switch (fragmentId){
                     case 1:
                         startActivity(new Intent(getApplicationContext(), IncidentReportActivity.class));
@@ -224,6 +233,18 @@ public class MainActivity extends BootstrapActivity implements FragmentListener,
         // GCM registration //
     }
 
+    @Override
+    protected void onPostResume() {
+        super.onPostResume();
+        TextView user = (TextView) header.findViewById(R.id.navigation_drawer_list_header_user);
+        TextView hospital = (TextView) header.findViewById(R.id.navigation_drawer_list_header_hospital);
+
+        //Toast.makeText(this, , Toast.LENGTH_SHORT).show();
+
+        user.setText(PrefUtils.getFromPrefs(getApplicationContext(), PrefUtils.PREFS_USER_DISPLAY_NAME, "User"));
+        hospital.setText(PrefUtils.getFromPrefs(getApplicationContext(), PrefUtils.PREFS_HOSP_DISPLAY_NAME, "Hospital"));
+
+    }
 
     @Override
     public boolean onNavigationItemSelected(MenuItem menuItem) {
@@ -238,9 +259,6 @@ public class MainActivity extends BootstrapActivity implements FragmentListener,
             manager.beginTransaction().replace(R.id.container,fragment).commit();
             setTitle("Incident Report");
 
-
-
-
         } else if (id == R.id.nav_medication_error) {
             MedicationErrorListFragment fragment1 = new MedicationErrorListFragment();
             fragmentId = 0;
@@ -248,16 +266,12 @@ public class MainActivity extends BootstrapActivity implements FragmentListener,
             manager1.beginTransaction().replace(R.id.container,fragment1).commit();
             setTitle("Medication Error");
 
-
-
         } else if (id == R.id.nav_adverse_drug_error) {
             DrugReactionListFragment fragment2 = new DrugReactionListFragment();
             fragmentId = 2;
             FragmentManager manager2 = getSupportFragmentManager();
             manager2.beginTransaction().replace(R.id.container,fragment2).commit();
             setTitle("Adverse Drug Reaction");
-
-
 
         } else if (id == R.id.nav_sync_data) {
             initiateSync();
@@ -292,12 +306,8 @@ public class MainActivity extends BootstrapActivity implements FragmentListener,
     }
 
     private void initScreen() {
-        if (userHasAuthenticated) {
-            final FragmentManager fragmentManager = getSupportFragmentManager();
-            fragmentManager.beginTransaction()
-                    .replace(R.id.container, new CarouselFragment())
-                    .commit();
-        }
+        Log.d("UserState",PrefUtils.isUserLoggedIn()+"");
+
     }
 
     private void checkAuth() {
@@ -325,9 +335,13 @@ public class MainActivity extends BootstrapActivity implements FragmentListener,
                 super.onSuccess(hasAuthenticated);
                 Timber.e("onSuccess  Main");
                 userHasAuthenticated = true;
+                //importConfig();
                 registerPushyOnServer();
                 scheduleSync();
-                initScreen();
+                //initScreen();
+
+
+
                 /*
                 if(!isPushRecordServiceRunning()){
                     final Intent i = new Intent(MainActivity.this, PushRecordService.class);
@@ -537,6 +551,7 @@ public class MainActivity extends BootstrapActivity implements FragmentListener,
                     sharedPreferences.edit().putBoolean(QuickstartPreferences.SENT_TOKEN_TO_SERVER, true).apply();
                     PrefUtils.setTokenSentToServer(sent);
 
+
                 }
             } catch (Exception exc) {
                 // Return exc to onPostExecute
@@ -558,6 +573,39 @@ public class MainActivity extends BootstrapActivity implements FragmentListener,
 
             // Succeeded, do something to alert the user
         }
+    }
+
+    public void showImportStatus(String msg, String subMsg, final int status){
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+        int imageResource = android.R.drawable.ic_dialog_alert;
+        alertDialog.setTitle(msg);
+        alertDialog.setMessage(subMsg);
+        alertDialog.setIcon(imageResource);
+        alertDialog.setPositiveButton("OK",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+
+                    }
+                });
+
+        alertDialog.setCancelable(false).setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+
+
+            }
+        }).setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int id) {
+
+            }
+        });
+        alertDialog.setCancelable(true);
+        alertDialog.show();
+    }
+
+    public void importConfig(){
+        startActivity(new Intent(getApplicationContext(),ImportConfigActivity.class));
     }
 
 }

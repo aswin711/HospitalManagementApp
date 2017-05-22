@@ -79,9 +79,9 @@ public class MedicationErrorListFragment extends ItemListFragment<MedicationErro
         super.configureList(activity, listView);
         listView.setFastScrollEnabled(true);
         listView.setDividerHeight(0);
-        getListAdapter()
+        /*getListAdapter()
                 .addHeader(activity.getLayoutInflater()
-                        .inflate(R.layout.incident_list_item_labels, null));
+                        .inflate(R.layout.incident_list_item_labels, null));*/
         View loadMore = getFooterView();
         getListAdapter().addFooter(getFooterView());
         loadMore.setOnClickListener(new View.OnClickListener() {

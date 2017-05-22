@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
+import android.widget.Toast;
 
 import com.xose.cqms.event.BootstrapApplication;
 import com.xose.cqms.event.core.modal.User;
@@ -28,6 +29,8 @@ public class PrefUtils {
     public static final String PREFS_USER_ID = "__USER_ID__";
     public static final String PREFS_USER_DISPLAY_NAME = "__USER_FULLNAME__";
     public static final String PREFS_HOSP_DISPLAY_NAME = "__HOSP_FULLNAME__";
+
+    public static final String PREF_USER_LOGGED_IN = "_USER_LOGGED_IN";
 
 
     public static final String PREF_ACTIVE_USER = "pref_active_user";
@@ -198,5 +201,24 @@ public class PrefUtils {
         String version = prefs.getString(LATEST_VERSION_NUMBER, "");
         Timber.d("%s - App version latest: %s", TAG, version);
         return version;
+    }
+
+    public static void deleteFromPrefs(Context context){
+        SharedPreferences prefs = PreferenceManager
+                .getDefaultSharedPreferences(context);
+        final SharedPreferences.Editor editor = prefs.edit();
+        editor.clear();
+        editor.commit();
+    }
+
+    public static void setUserLoggedIn(Boolean state){
+        putParam(PREF_USER_LOGGED_IN,state);
+
+    }
+
+    public static boolean isUserLoggedIn(){
+        SharedPreferences preferences = getSettings();
+        boolean getUserLoggedIn = preferences.getBoolean(PREF_USER_LOGGED_IN,false);
+        return getUserLoggedIn;
     }
 }

@@ -2,13 +2,17 @@ package com.xose.cqms.event.ui;
 
 import android.accounts.OperationCanceledException;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.squareup.otto.Bus;
 import com.xose.cqms.event.BootstrapApplication;
@@ -55,11 +59,26 @@ public class ImportConfigActivity extends BootstrapFragmentActivity {
             showConnectionAlert();
         } else {
             //Fabric.with(this, new Crashlytics());
-            importConfig();
+            if(PrefUtils.isUserLoggedIn()){
+
+                importConfig();
+
+            }else {
+
+
+
+                    finish();
+
+
+            }
+
+
         }
 
 
     }
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -89,9 +108,11 @@ public class ImportConfigActivity extends BootstrapFragmentActivity {
 
     private void importConfig() {
 
+        //Toast.makeText(this, "Importing", Toast.LENGTH_SHORT).show();
         progress = new ProgressDialog(this);
         progress.setMessage("Importing Services");
         progress.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+        progress.setCancelable(false);
         progress.setIndeterminate(true);
         progress.setProgress(10);
         progress.show();
@@ -136,7 +157,8 @@ public class ImportConfigActivity extends BootstrapFragmentActivity {
                     // Since auth could not take place, lets finish this activity.
                     finish();
                 } else {
-                    Toaster.showLong(ImportConfigActivity.this, "Error : " + e.getMessage());
+                    //Toaster.showLong(ImportConfigActivity.this, "Error : " + e.getMessage());
+                    //Toast.makeText(context, "Error: "+e.getMessage(), Toast.LENGTH_SHORT).show();
                 }
                 progress.hide();
             }
@@ -147,21 +169,31 @@ public class ImportConfigActivity extends BootstrapFragmentActivity {
                 // userHasAuthenticated = true;
                 // SnackBar snackBar = SnackBar.make(getContext()).
                 //Toaster.showLong(ImportConfigActivity.this, messages.);
+                progress.hide();
                 if (null != successessages) {
                     for (String msg : successessages) {
                         TextView displayView = (TextView) getLayoutInflater().inflate(R.layout.template_textview, null);
-                        displayView.setText(msg);
-                        statusView.addView(displayView);
+                        /*displayView.setText(msg);
+                        statusView.addView(displayView);*/
+
+                        showImportStatus("Configuration Imported Succesfully","Continue to Home Page?",1);
+                        //showImportStatus("An Error Occured While Importing","Do you want to import config again?",2);
                     }
                 }
                 if (null != errorMessages) {
                     for (String msg : errorMessages) {
                         TextView displayView = (TextView) getLayoutInflater().inflate(R.layout.template_textview, null);
-                        displayView.setText(msg);
-                        statusView.addView(displayView);
+                        /*displayView.setText(msg);
+                        statusView.addView(displayView);*/
+                        showImportStatus("An Error Occured While Importing","Do you want to import config again?",2);
                     }
                 }
-                progress.hide();
+
+
+
+
+
+
             }
 
             protected void onProgressUpdate(Integer... progress) {
@@ -177,4 +209,54 @@ public class ImportConfigActivity extends BootstrapFragmentActivity {
         }
     }
 
+    public void showImportStatus(String msg, String subMsg, final int status){
+
+        switch (status){
+            case 1:
+                AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+                int imageResource = android.R.drawable.ic_dialog_alert;
+                alertDialog.setTitle(msg);
+                alertDialog.setMessage(subMsg);
+                alertDialog.setIcon(imageResource);
+
+
+                alertDialog.setCancelable(false).setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                            finish();
+
+
+                    }
+                });
+
+                alertDialog.show();
+                break;
+            case 2:
+                AlertDialog.Builder alertDialog1 = new AlertDialog.Builder(getActivity());
+                int imageResource1 = android.R.drawable.ic_dialog_alert;
+                alertDialog1.setTitle(msg);
+                alertDialog1.setMessage(subMsg);
+                alertDialog1.setIcon(imageResource1);
+
+                alertDialog1.setCancelable(false).setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        finish();
+                        startActivity(getIntent());
+                    }
+                }).setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        finish();
+                        moveTaskToBack(true);
+
+                    }
+                });
+                alertDialog1.show();
+                break;
+
+            default:
+
+
+        }
+
+    }
 }

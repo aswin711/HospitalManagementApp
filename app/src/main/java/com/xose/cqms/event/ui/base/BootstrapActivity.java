@@ -19,6 +19,7 @@ import com.xose.cqms.event.authenticator.LogoutService;
 import com.xose.cqms.event.core.BootstrapService;
 import com.xose.cqms.event.events.NetworkErrorEvent;
 import com.xose.cqms.event.ui.MainActivity;
+import com.xose.cqms.event.util.PrefUtils;
 import com.xose.cqms.event.util.SafeAsyncTask;
 import com.xose.cqms.event.util.Toaster;
 
@@ -146,7 +147,10 @@ public abstract class BootstrapActivity extends AppCompatActivity {
             public void run() {
                 // Calling a refresh will force the service to look for a logged in user
                 // and when it finds none the user will be requested to log in again.
-                checkAuth();
+                //checkAuth();
+                PrefUtils.deleteFromPrefs(getApplicationContext());
+                startActivity(new Intent(getApplicationContext(),MainActivity.class));
+                finish();
             }
         });
     }

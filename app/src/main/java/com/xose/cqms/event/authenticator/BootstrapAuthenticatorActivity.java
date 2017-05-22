@@ -47,6 +47,7 @@ import com.xose.cqms.event.sync.conf.ConfSyncContentProvider;
 import com.xose.cqms.event.sync.incident.IncidentReportSyncContentProvider;
 import com.xose.cqms.event.sync.medicationerror.MedicationErrorSyncContentProvider;
 import com.xose.cqms.event.ui.ImportConfigActivity;
+import com.xose.cqms.event.ui.MainActivity;
 import com.xose.cqms.event.ui.base.TextWatcherAdapter;
 import com.xose.cqms.event.util.PrefUtils;
 import com.xose.cqms.event.util.SafeAsyncTask;
@@ -366,6 +367,7 @@ public class BootstrapAuthenticatorActivity extends ActionBarAccountAuthenticato
         final Intent intent = new Intent();
         fetchProfile();
         intent.putExtra(KEY_BOOLEAN_RESULT, result);
+
         setAccountAuthenticatorResult(intent.getExtras());
         setResult(RESULT_OK, intent);
         finish();
@@ -395,6 +397,7 @@ public class BootstrapAuthenticatorActivity extends ActionBarAccountAuthenticato
         intent.putExtra(KEY_ACCOUNT_NAME, email);
         intent.putExtra(KEY_ACCOUNT_TYPE, Constants.Auth.BOOTSTRAP_ACCOUNT_TYPE);
 
+
         if (authTokenType != null
                 && authTokenType.equals(Constants.Auth.AUTHTOKEN_TYPE)) {
             intent.putExtra(KEY_AUTHTOKEN, authToken);
@@ -406,6 +409,7 @@ public class BootstrapAuthenticatorActivity extends ActionBarAccountAuthenticato
         }*/
         setAccountAuthenticatorResult(intent.getExtras());
         setResult(RESULT_OK, intent);
+        //startActivity(new Intent(getApplicationContext(),MainActivity.class));
         finish();
     }
 
@@ -483,6 +487,9 @@ public class BootstrapAuthenticatorActivity extends ActionBarAccountAuthenticato
                             PrefUtils.saveToPrefs(getApplicationContext(), PrefUtils.PREFS_USER_ID, user.getUserName());
                             PrefUtils.saveToPrefs(getApplicationContext(), PrefUtils.PREFS_USER_DISPLAY_NAME, user.getFullName());
                             PrefUtils.saveToPrefs(getApplicationContext(), PrefUtils.PREFS_HOSP_DISPLAY_NAME, user.getAssociatedHospitalName());
+                            PrefUtils.setUserLoggedIn(true);
+                            startActivity(new Intent(getApplicationContext(),ImportConfigActivity.class));
+                            finish();
                             return true;
                         }
                     }
@@ -617,7 +624,7 @@ public class BootstrapAuthenticatorActivity extends ActionBarAccountAuthenticato
         }
 
         public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-            if(emailLayout.getError() == null && passwordLayout.getError() == null){
+            if(emailLayout.getError() == null && validatePassword(passwordText.getText().toString())){
                 signInButton.setEnabled(true);
             }else{
                 signInButton.setEnabled(false);
