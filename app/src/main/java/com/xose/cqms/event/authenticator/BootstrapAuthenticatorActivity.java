@@ -478,6 +478,7 @@ public class BootstrapAuthenticatorActivity extends ActionBarAccountAuthenticato
                 // ApiResponse<User> userResponse = bootstrapService.getProfile();
                 if (null != userResponse) {
                     User user = userResponse.getRecord();
+                    Log.d("User",user.getFirstName()+" "+user.getLastName());
                     if (!TextUtils.isEmpty(userResponse.getError())) {
                         errorMessage = userResponse.getError();
                     } else {

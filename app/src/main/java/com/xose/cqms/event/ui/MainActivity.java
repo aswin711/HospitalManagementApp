@@ -11,8 +11,10 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.content.res.ColorStateList;
 import android.content.res.Configuration;
 import android.database.ContentObserver;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -28,6 +30,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -187,6 +190,15 @@ public class MainActivity extends BootstrapActivity implements FragmentListener,
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.navigation_drawer);
         navigationView.setNavigationItemSelectedListener(this);
+        //navigationView.setItemIconTintList(ColorStateList.valueOf(Color.BLACK));
+
+        if(isPreLollipop()){
+            View v = navigationView;
+            DrawerLayout.LayoutParams params = (DrawerLayout.LayoutParams) v.getLayoutParams();
+            params.setMargins(0,20-40,0,0);
+            v.setLayoutParams(params);
+        }
+
         header = navigationView.getHeaderView(0);
         TextView user = (TextView) header.findViewById(R.id.navigation_drawer_list_header_user);
         TextView hospital = (TextView) header.findViewById(R.id.navigation_drawer_list_header_hospital);
@@ -608,4 +620,9 @@ public class MainActivity extends BootstrapActivity implements FragmentListener,
         startActivity(new Intent(getApplicationContext(),ImportConfigActivity.class));
     }
 
-}
+    public boolean isPreLollipop(){
+        return android.os.Build.VERSION.SDK_INT <= android.os.Build.VERSION_CODES.LOLLIPOP;
+    }
+
+    }
+
