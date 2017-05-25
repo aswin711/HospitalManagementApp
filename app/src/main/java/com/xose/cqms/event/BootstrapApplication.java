@@ -59,6 +59,8 @@ public abstract class BootstrapApplication extends Application {
     public final static class DaggerComponentInitializer {
 
         public static BootstrapComponent init() {
+
+
             return DaggerBootstrapComponent.builder()
                     .androidModule(new AndroidModule())
                     .bootstrapModule(new BootstrapModule())

@@ -490,7 +490,7 @@ public class BootstrapAuthenticatorActivity extends ActionBarAccountAuthenticato
                             PrefUtils.saveToPrefs(getApplicationContext(), PrefUtils.PREFS_HOSP_DISPLAY_NAME, user.getAssociatedHospitalName());
                             PrefUtils.setUserLoggedIn(true);
                             startActivity(new Intent(getApplicationContext(),ImportConfigActivity.class));
-                            finish();
+                            //finish();
                             return true;
                         }
                     }
