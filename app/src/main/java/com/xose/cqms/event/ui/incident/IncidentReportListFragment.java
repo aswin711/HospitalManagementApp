@@ -91,6 +91,12 @@ public class IncidentReportListFragment extends ItemListFragment<IncidentReport>
     }
 
     @Override
+    public void onResume() {
+        super.forceRefresh();
+        super.onResume();
+    }
+
+    @Override
     protected LogoutService getLogoutService() {
         return logoutService;
     }

@@ -184,5 +184,6 @@
     <string name="title_activity_drug_reaction">Adverse Drug Reaction</string>
     <string name="no_drug_reactions">Adverse Drug reactions</string>
     <string name="error_loading_drug_reactions">Failed loading Adverse Drug Reactions</string>
+    <string name="added_incident">Incident added</string>
 
 </resources>

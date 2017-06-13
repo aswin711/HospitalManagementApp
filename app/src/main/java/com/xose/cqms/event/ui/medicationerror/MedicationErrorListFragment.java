@@ -25,6 +25,7 @@ import com.xose.cqms.event.sqlite.DatabaseHelper;
 import com.xose.cqms.event.ui.base.FragmentListener;
 import com.xose.cqms.event.ui.base.ItemListFragment;
 import com.xose.cqms.event.ui.base.ThrowableLoader;
+import com.xose.cqms.event.util.ListViewer;
 import com.xose.cqms.event.util.PrefUtils;
 import com.xose.cqms.event.util.SingleTypeAdapter;
 import com.xose.cqms.event.util.UIUtils;
@@ -94,6 +95,12 @@ public class MedicationErrorListFragment extends ItemListFragment<MedicationErro
     }
 
     @Override
+    public void onResume() {
+        super.forceRefresh();
+        super.onResume();
+    }
+
+    @Override
     protected LogoutService getLogoutService() {
         return logoutService;
     }
@@ -125,6 +132,7 @@ public class MedicationErrorListFragment extends ItemListFragment<MedicationErro
                     if (getActivity() != null) {
                         Long hospitalRef = PrefUtils.getLongFromPrefs(getActivity().getApplicationContext(), PrefUtils.PREFS_HOSP_ID, null);
                         Log.e(TAG, "onCreateLoader - " + currentPage);
+                        //Log.d("ItemsinAdapter", ListViewer.view(databaseHelper.getMedicationErrorForDisplayByHospital(hospitalRef, currentPage)));
                         return databaseHelper.getMedicationErrorForDisplayByHospital(hospitalRef, currentPage);
                     } else {
                         return Collections.emptyList();
@@ -142,6 +150,7 @@ public class MedicationErrorListFragment extends ItemListFragment<MedicationErro
     @Override
     protected SingleTypeAdapter<MedicationError> createAdapter(List<MedicationError> items) {
         Log.e(TAG, "createAdapter");
+
         MedicationErrorListAdapter adapter = new MedicationErrorListAdapter(getActivity().getLayoutInflater(), items);
         adapter.setCustomButtonListner(MedicationErrorListFragment.this);
         return adapter;
@@ -174,7 +183,7 @@ public class MedicationErrorListFragment extends ItemListFragment<MedicationErro
     }
 
     private boolean deleteSession(MedicationError incidentReport) {
-        databaseHelper.deleteIncidentReportById(incidentReport.getId());
+        databaseHelper.deleteMedicationErrorById(incidentReport.getId());
         return true;
     }
 

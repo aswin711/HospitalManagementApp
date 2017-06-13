@@ -352,8 +352,6 @@ public class MainActivity extends BootstrapActivity implements FragmentListener,
                 scheduleSync();
                 //initScreen();
 
-
-
                 /*
                 if(!isPushRecordServiceRunning()){
                     final Intent i = new Intent(MainActivity.this, PushRecordService.class);

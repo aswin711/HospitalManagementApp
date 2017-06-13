@@ -148,8 +148,8 @@
                     android:layout_height="wrap_content"
                     android:imeOptions="actionNext|flagNoExtractUi"
                     android:inputType="textMultiLine"
-                    float:met_maxCharacters="1024"
-                    android:maxLength="1024"
+                    float:met_maxCharacters="1000"
+                    android:maxLength="1000"
                     android:minLines="4"
                     android:hint="@string/incident_description"/>
             </com.wrapp.floatlabelededittext.FloatLabeledEditText>
@@ -167,8 +167,8 @@
                     android:layout_height="wrap_content"
                     android:imeOptions="actionNext|flagNoExtractUi"
                     android:inputType="textMultiLine"
-                    float:met_maxCharacters="1024"
-                    android:maxLength="1024"
+                    float:met_maxCharacters="1000"
+                    android:maxLength="1000"
                     android:minLines="4"
                     android:hint="@string/event_corrective_action"/>
             </com.wrapp.floatlabelededittext.FloatLabeledEditText>

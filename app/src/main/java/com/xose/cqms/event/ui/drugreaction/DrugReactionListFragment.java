@@ -94,6 +94,12 @@ public class DrugReactionListFragment extends ItemListFragment<AdverseDrugEvent>
     }
 
     @Override
+    public void onResume() {
+        super.forceRefresh();
+        super.onResume();
+    }
+
+    @Override
     protected LogoutService getLogoutService() {
         return logoutService;
     }

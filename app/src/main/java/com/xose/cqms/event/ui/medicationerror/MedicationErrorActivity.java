@@ -1,11 +1,16 @@
 package com.xose.cqms.event.ui.medicationerror;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.xose.cqms.event.BootstrapApplication;
 import com.xose.cqms.event.R;
@@ -13,6 +18,8 @@ import com.xose.cqms.event.core.Constants;
 import com.xose.cqms.event.core.modal.event.medicationerror.MedicationError;
 import com.xose.cqms.event.sqlite.DatabaseHelper;
 import com.xose.cqms.event.ui.base.BootstrapFragmentActivity;
+
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -28,11 +35,16 @@ public class MedicationErrorActivity extends BootstrapFragmentActivity {
     protected DatabaseHelper databaseHelper;
     private MedicationError report;
 
+    private Boolean doubleBackPressed = false;
+    private Boolean newEntry = false;
+    private FragmentBackPressed fragmentBackPressed;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         BootstrapApplication.component().inject(this);
         setContentView(R.layout.activity_incident_report);
+        fragmentBackPressed = (FragmentBackPressed) new MedicationErrorDetailsFragment();
         ButterKnife.bind(this);
         if (getIntent() != null && getIntent().getExtras() != null) {
             report = (MedicationError) getIntent().getExtras().getSerializable(INCIDENT_ITEM);
@@ -77,6 +89,36 @@ public class MedicationErrorActivity extends BootstrapFragmentActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void onBackPressed(){
+
+        if(!doubleBackPressed){
+            AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+            alertDialog.setTitle("Save to draft before exit?");
+            alertDialog.setMessage("Do you want to save the details as a draft");
+            alertDialog.setCancelable(true);
+            alertDialog.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    fragmentBackPressed.onPressed(true,getApplicationContext());
+                    doubleBackPressed = true;
+                    onBackPressed();
+
+                }
+            });
+            alertDialog.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+
+                }
+            });
+            alertDialog.show();
+        }else{
+            super.onBackPressed();
+        }
+    }
+
     protected Activity getActivity() {
         return MedicationErrorActivity.this;
     }
@@ -87,10 +129,16 @@ public class MedicationErrorActivity extends BootstrapFragmentActivity {
             Bundle bundle = new Bundle();
             bundle.putSerializable(Constants.Extra.INCIDENT_ITEM, report);
             detailsFragment.setArguments(bundle);
+        }else {
+            newEntry = true;
         }
         final FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction()
-                .replace(R.id.incident_report_form_container, detailsFragment)
+                .replace(R.id.incident_report_form_container, detailsFragment,"DetailsFragment")
                 .commit();
+    }
+
+    public interface FragmentBackPressed{
+        void onPressed(Boolean status,Context context);
     }
 }

@@ -1,20 +1,25 @@
 package com.xose.cqms.event.ui.medicationerror;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.RadioButton;
+import android.widget.Toast;
 
 import com.rengwuxian.materialedittext.MaterialEditText;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
@@ -28,6 +33,7 @@ import com.xose.cqms.event.core.modal.Unit;
 import com.xose.cqms.event.core.modal.event.medicationerror.MedicationError;
 import com.xose.cqms.event.sqlite.DatabaseHelper;
 import com.xose.cqms.event.util.CalenderUtils;
+import com.xose.cqms.event.util.ListViewer;
 import com.xose.cqms.event.util.PrefUtils;
 
 import java.util.ArrayList;
@@ -40,6 +46,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import timber.log.Timber;
 
+import static com.xose.cqms.event.R.id.event_corrective_action;
 import static com.xose.cqms.event.core.Constants.Extra.INCIDENT_ITEM;
 
 /**
@@ -51,10 +58,10 @@ import static com.xose.cqms.event.core.Constants.Extra.INCIDENT_ITEM;
  * create an instance of this fragment.
  */
 public class MedicationErrorDetailsFragment extends Fragment implements View.OnClickListener,
-        DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
+        DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener,MedicationErrorActivity.FragmentBackPressed {
 
 
-    protected View fragmentView;
+    protected static View fragmentView;
 
     @Bind(R.id.incident_details_save)
     protected Button saveDetailsBtn;
@@ -70,12 +77,12 @@ public class MedicationErrorDetailsFragment extends Fragment implements View.OnC
     protected RadioButton actualHarm;
     @Bind(R.id.event_description)
     protected MaterialEditText description;
-    @Bind(R.id.event_corrective_action)
+    @Bind(event_corrective_action)
     protected MaterialEditText correctiveAction;
 
     @Inject
     protected DatabaseHelper databaseHelper;
-    private MedicationError report;
+    private static MedicationError report;
 
     ArrayAdapter<Unit> unitAdapter;
 
@@ -104,6 +111,7 @@ public class MedicationErrorDetailsFragment extends Fragment implements View.OnC
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         fragmentView = inflater.inflate(R.layout.fragment_incident_details, container, false);
         ButterKnife.bind(this, fragmentView);
         Bundle bundle = this.getArguments();
@@ -127,6 +135,12 @@ public class MedicationErrorDetailsFragment extends Fragment implements View.OnC
         return fragmentView;
     }
 
+    public void saveTempEvent(Context context){
+
+    }
+
+
+
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
@@ -139,6 +153,18 @@ public class MedicationErrorDetailsFragment extends Fragment implements View.OnC
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    @Override
+    public void onPressed(Boolean status, Context context) {
+       Log.d("SavedItems",report.toString());
+
+        if(fragmentView != null){
+            saveTempDetails(context);
+
+        }else{
+            Log.d("Viewer","not accesible");
+        }
     }
 
     /**
@@ -318,9 +344,11 @@ public class MedicationErrorDetailsFragment extends Fragment implements View.OnC
         eventTime.setText(CalenderUtils.formatCalendarToString(report.getIncidentTime(), Constants.Common.DATE_TIME_DISPLAY_FORMAT));
     }
 
+
+
     public void saveEvent() {
         if (saveIncidentDetails()) {
-            Snackbar.make(getActivity().findViewById(R.id.footer_view), "Incident added", Snackbar.LENGTH_LONG).show();
+            Snackbar.make(getActivity().findViewById(R.id.footer_view), R.string.added_incident, Snackbar.LENGTH_LONG).show();
             nextScreen();
             //Intent intent = new Intent(getActivity(),
             //        CasesheetObservationActivity.class);
@@ -348,6 +376,39 @@ public class MedicationErrorDetailsFragment extends Fragment implements View.OnC
             }
         }
         return false;
+    }
+
+    public void saveTempDetails(Context context){
+        DatabaseHelper databaseHelper1 = new DatabaseHelper(context);
+        Long hospitalRef = PrefUtils.getLongFromPrefs(context, PrefUtils.PREFS_HOSP_ID, null);
+        report.setHospital(hospitalRef);
+        MaterialEditText description = (MaterialEditText) fragmentView.findViewById(R.id.event_description);
+        report.setDescription(description.getText().toString().trim());
+        MaterialEditText correctiveAction = (MaterialEditText) fragmentView.findViewById(R.id.event_corrective_action);
+        report.setCorrectiveActionTaken(correctiveAction.getText().toString().trim());
+        RadioButton actualMiss = (RadioButton) fragmentView.findViewById(R.id.incident_level_near_miss);
+        RadioButton harmMiss = (RadioButton) fragmentView.findViewById(R.id.incident_level_harm);
+
+        if(actualMiss.isChecked()){
+            report.setIncidentLevelCode(1);
+        }else if(harmMiss.isChecked()){
+            report.setIncidentLevelCode(2);
+        }else {
+            report.setIncidentLevelCode(0);
+        }
+        if (0 == report.getStatusCode()){
+
+                report.setCreatedOn(Calendar.getInstance());
+
+        }
+        report.setUpdated(Calendar.getInstance());
+        long id = databaseHelper1.insertOrUpdateMedicationError(report);
+        if (0 < id) {
+            Timber.e("saveIncidentDetails " + id);
+            report.setId(id);
+        }
+
+
     }
 
     private boolean validateIncidentDeatils() {

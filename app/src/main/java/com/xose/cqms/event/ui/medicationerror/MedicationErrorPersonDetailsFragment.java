@@ -92,6 +92,7 @@ public class MedicationErrorPersonDetailsFragment extends Fragment {
     private PersonInvolved personInvolved;
 
 
+
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
@@ -160,6 +161,8 @@ public class MedicationErrorPersonDetailsFragment extends Fragment {
         super.onDetach();
         mListener = null;
     }
+
+
 
     /**
      * This interface must be implemented by activities that contain this
@@ -370,10 +373,13 @@ public class MedicationErrorPersonDetailsFragment extends Fragment {
             Bundle bundle = new Bundle();
             bundle.putSerializable(Constants.Extra.INCIDENT_ITEM, report);
             errorReportedByDetailsFragment.setArguments(bundle);
+            Log.d("FirstStage:",report.toString());
         }
         final FragmentManager fragmentManager = getFragmentManager();
         fragmentManager.beginTransaction()
                 .replace(R.id.incident_report_form_container, errorReportedByDetailsFragment)
                 .commit();
     }
+
+
 }
