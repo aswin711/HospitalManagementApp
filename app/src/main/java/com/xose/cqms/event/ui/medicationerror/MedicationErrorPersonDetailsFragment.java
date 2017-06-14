@@ -1,5 +1,6 @@
 package com.xose.cqms.event.ui.medicationerror;
 
+import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
@@ -13,9 +14,11 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Toast;
 
 import com.rengwuxian.materialedittext.MaterialEditText;
 import com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner;
@@ -26,6 +29,7 @@ import com.xose.cqms.event.core.Constants;
 import com.xose.cqms.event.core.modal.event.PersonInvolved;
 import com.xose.cqms.event.core.modal.event.medicationerror.MedicationError;
 import com.xose.cqms.event.sqlite.DatabaseHelper;
+import com.xose.cqms.event.util.ListViewer;
 import com.xose.cqms.event.util.ViewUtils;
 
 import java.util.Calendar;
@@ -35,6 +39,7 @@ import javax.inject.Inject;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
+import static com.xose.cqms.event.core.Constants.Extra.HH_SESSION_ADD_OBSERVATION;
 import static com.xose.cqms.event.core.Constants.Extra.INCIDENT_ITEM;
 
 /**
@@ -45,9 +50,9 @@ import static com.xose.cqms.event.core.Constants.Extra.INCIDENT_ITEM;
  * Use the {@link MedicationErrorPersonDetailsFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class MedicationErrorPersonDetailsFragment extends Fragment {
+public class MedicationErrorPersonDetailsFragment extends Fragment implements MedicationErrorActivity.FragmentBackPressed {
 
-    protected View fragmentView;
+    protected static View fragmentView;
 
     @Bind(R.id.incident_person_save)
     protected Button saveDetailsBtn;
@@ -88,8 +93,8 @@ public class MedicationErrorPersonDetailsFragment extends Fragment {
 
     @Inject
     protected DatabaseHelper databaseHelper;
-    private MedicationError report;
-    private PersonInvolved personInvolved;
+    private static MedicationError report;
+    private static PersonInvolved personInvolved;
 
 
 
@@ -162,6 +167,12 @@ public class MedicationErrorPersonDetailsFragment extends Fragment {
         mListener = null;
     }
 
+    @Override
+    public void onPressed(Boolean status, Context context) {
+        //Toast.makeText(context, "PersonalDetails", Toast.LENGTH_SHORT).show();
+        SaveTempDetails(context);
+        //Log.d("personaldetails", personInvolved!=null?ListViewer.view(personInvolved):"Null value");
+    }
 
 
     /**
@@ -220,6 +231,7 @@ public class MedicationErrorPersonDetailsFragment extends Fragment {
             personTypeSpinner.setText(personTypeAdapter.getItem(selectedPersonType));
         }
         setPersonelInfoViewVisibility(selectedPersonType);
+
     }
 
     private void setPersonelInfoViewVisibility(Integer personelType) {
@@ -285,7 +297,9 @@ public class MedicationErrorPersonDetailsFragment extends Fragment {
             Snackbar.make(getActivity().findViewById(R.id.footer_view), "Person Involved details updated", Snackbar.LENGTH_LONG).show();
             nextScreen();
         } else {
-            Snackbar.make(getActivity().findViewById(R.id.footer_view), "Correct all validation errors", Snackbar.LENGTH_LONG).show();
+
+                Snackbar.make(getActivity().findViewById(R.id.footer_view), "Correct all validation errors", Snackbar.LENGTH_LONG).show();
+
         }
     }
 
@@ -303,6 +317,72 @@ public class MedicationErrorPersonDetailsFragment extends Fragment {
         return false;
     }
 
+    public void SaveTempDetails(Context context){
+        DatabaseHelper databaseHelper = new DatabaseHelper(context);
+
+        MaterialEditText personInvolvedName = (MaterialEditText) fragmentView.findViewById(R.id.person_involved_name);
+        MaterialEditText patientNumber = (MaterialEditText) fragmentView.findViewById(R.id.patient_number);
+        RadioButton radioMale = (RadioButton) fragmentView.findViewById(R.id.gender_male);
+        RadioButton radioFemale = (RadioButton) fragmentView.findViewById(R.id.gender_female);
+        RadioButton radioIndeterminate = (RadioButton) fragmentView.findViewById(R.id.gender_indeterminate);
+        RadioButton radioNotStated = (RadioButton) fragmentView.findViewById(R.id.gender_not_stated);
+        MaterialEditText staffIdNumber = (MaterialEditText) fragmentView.findViewById(R.id.staff_id_no);
+        MaterialEditText staffDesignation = (MaterialEditText) fragmentView.findViewById(R.id.staff_designation);
+        if (TextUtils.isEmpty(personInvolvedName.getText())) {
+
+        } else {
+            personInvolved.setName(personInvolvedName.getText().toString().trim());
+        }
+        if (null == personInvolved.getPersonnelTypeCode() || 0 >= personInvolved.getPersonnelTypeCode()) {
+        } else {
+            switch (personInvolved.getPersonnelTypeCode()) {
+                case 1:
+                    if (TextUtils.isEmpty(patientNumber.getText())) {
+
+                    } else {
+                        personInvolved.setHospitalNumber(patientNumber.getText().toString().trim());
+                    }
+                    if (radioMale.isChecked()) {
+                        personInvolved.setGenderCode(1);
+                    } else if (radioFemale.isChecked()) {
+                        personInvolved.setGenderCode(2);
+                    } else if (radioIndeterminate.isChecked()) {
+                        personInvolved.setGenderCode(3);
+                    } else if (radioNotStated.isChecked()) {
+                        personInvolved.setGenderCode(4);
+                    } else {
+                        radioMale.setError("Gender required");
+                        personInvolved.setGenderCode(0);
+                    }
+                    personInvolved.setStaffId(null);
+                    personInvolved.setDesignation(null);
+                    break;
+                case 2:
+                    if (TextUtils.isEmpty(staffIdNumber.getText())) {
+
+                    } else {
+                        personInvolved.setStaffId(staffIdNumber.getText().toString().trim());
+                    }
+                    if (TextUtils.isEmpty(staffDesignation.getText())) {
+                    } else {
+                        personInvolved.setDesignation(staffDesignation.getText().toString().trim());
+                    }
+                    personInvolved.setHospitalNumber(null);
+                    personInvolved.setGenderCode(null);
+                    break;
+                case 3:
+                    personInvolved.setHospitalNumber(null);
+                    personInvolved.setGenderCode(null);
+                    personInvolved.setStaffId(null);
+                    personInvolved.setDesignation(null);
+                    break;
+            }
+        }
+
+        report.setUpdated(Calendar.getInstance());
+        report.setPersonInvolved(personInvolved);
+        long id = databaseHelper.updateMedicationErrorPersonInvolved(report);
+    }
 
     private boolean validateDeatils() {
         boolean error = false;
@@ -377,7 +457,7 @@ public class MedicationErrorPersonDetailsFragment extends Fragment {
         }
         final FragmentManager fragmentManager = getFragmentManager();
         fragmentManager.beginTransaction()
-                .replace(R.id.incident_report_form_container, errorReportedByDetailsFragment)
+                .replace(R.id.incident_report_form_container, errorReportedByDetailsFragment,"ReportByFragment")
                 .commit();
     }
 

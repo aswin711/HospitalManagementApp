@@ -1,5 +1,7 @@
 package com.xose.cqms.event.util;
 
+import com.google.gson.Gson;
+
 import java.util.List;
 
 /**
@@ -14,5 +16,10 @@ public class ListViewer {
             listString += t.toString()+"\n";
         }
         return listString;
+    }
+
+    public static <T> String view(T t){
+        Gson gson = new Gson();
+        return gson.toJson(t);
     }
 }

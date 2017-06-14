@@ -32,6 +32,7 @@ import com.xose.cqms.event.ui.medicationerror.MedicationErrorDetailsFragment;
 import com.xose.cqms.event.ui.medicationerror.MedicationErrorListActivity;
 import com.xose.cqms.event.ui.medicationerror.MedicationErrorListFragment;
 import com.xose.cqms.event.ui.medicationerror.MedicationErrorPersonDetailsFragment;
+import com.xose.cqms.event.ui.medicationerror.MedicationErrorViewActivity;
 
 import javax.inject.Singleton;
 
@@ -97,6 +98,8 @@ public interface BootstrapComponent {
     void inject(ErrorReportedByDetailsFragment target);
 
     void inject(MedicationErrorSyncService target);
+
+    void inject(MedicationErrorViewActivity target);
 
     //Adrug reaction Error
     void inject(DrugReactionListActivity target);

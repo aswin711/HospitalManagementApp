@@ -1,5 +1,6 @@
 package com.xose.cqms.event.ui.medicationerror;
 
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -11,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.rengwuxian.materialedittext.MaterialEditText;
 import com.xose.cqms.event.BootstrapApplication;
@@ -31,6 +33,7 @@ import javax.inject.Inject;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
+import static com.xose.cqms.event.core.Constants.Extra.HH_SESSION_ADD_OBSERVATION;
 import static com.xose.cqms.event.core.Constants.Extra.INCIDENT_ITEM;
 
 /**
@@ -41,9 +44,9 @@ import static com.xose.cqms.event.core.Constants.Extra.INCIDENT_ITEM;
  * Use the {@link ErrorReportedByDetailsFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ErrorReportedByDetailsFragment extends Fragment {
+public class ErrorReportedByDetailsFragment extends Fragment implements MedicationErrorActivity.FragmentBackPressed {
 
-    protected View fragmentView;
+    protected static View fragmentView;
 
     @Bind(R.id.incident_reported_by_save)
     protected Button saveDetailsBtn;
@@ -57,9 +60,9 @@ public class ErrorReportedByDetailsFragment extends Fragment {
 
     @Inject
     protected DatabaseHelper databaseHelper;
-    private MedicationError report;
-    private ReportedBy reportedBy;
-    private PersonInvolved personInvolved;
+    private static MedicationError report;
+    private static ReportedBy reportedBy;
+    private static PersonInvolved personInvolved;
 
 
     /**
@@ -131,6 +134,12 @@ public class ErrorReportedByDetailsFragment extends Fragment {
         mListener = null;
     }
 
+    @Override
+    public void onPressed(Boolean status, Context context) {
+        //Toast.makeText(context, "ReportBy", Toast.LENGTH_SHORT).show();
+        saveTempDetails(context);
+    }
+
     /**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated
@@ -165,6 +174,8 @@ public class ErrorReportedByDetailsFragment extends Fragment {
             reportedBy.setReportedOn(Calendar.getInstance());
         }
 
+
+
     }
 
     public void saveEventPersonDetails() {
@@ -182,8 +193,31 @@ public class ErrorReportedByDetailsFragment extends Fragment {
                 Snackbar.make(getView().getRootView(), "Error while updating", Snackbar.LENGTH_LONG).show();
             }
         } else {
-            Snackbar.make(getActivity().findViewById(R.id.footer_view), "Correct all validation errors", Snackbar.LENGTH_LONG).show();
+
+                Snackbar.make(getActivity().findViewById(R.id.footer_view), "Correct all validation errors", Snackbar.LENGTH_LONG).show();
         }
+    }
+
+    public void saveTempDetails(Context context){
+
+        DatabaseHelper databaseHelper = new DatabaseHelper(context);
+        MaterialEditText reportedByName = (MaterialEditText) fragmentView.findViewById(R.id.event_reported_by_name);
+        MaterialEditText reportedByDesignation = (MaterialEditText) fragmentView.findViewById(R.id.event_reported_by_designation);
+        if (TextUtils.isEmpty(reportedByName.getText())) {
+
+        } else {
+            reportedBy.setLastName(reportedByName.getText().toString().trim());
+        }
+
+        if (TextUtils.isEmpty(reportedByDesignation.getText())) {
+
+        } else {
+            reportedBy.setDesignation(reportedByDesignation.getText().toString().trim());
+        }
+
+        report.setUpdated(Calendar.getInstance());
+        report.setReportedBy(reportedBy);
+        long id = databaseHelper.updateMedicationErrorReportedBy(report);
     }
 
     private boolean saveIncidentDetails() {

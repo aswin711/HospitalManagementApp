@@ -31,6 +31,7 @@ apply plugin: 'io.fabric'
 repositories {
     maven { url 'https://maven.fabric.io/public' }
 }
+
 def computeVersionCode() {
 
     if (System.env.BUILD_NUMBER) {              // Check if there is a system build number.
@@ -80,7 +81,7 @@ android {
         // Exclude file to avoid
         // Error: Duplicate files during packaging of APK
         exclude 'META-INF/services/javax.annotation.processing.Processor'
-       // exclude 'LICENSE.txt'
+        // exclude 'LICENSE.txt'
         exclude 'META-INF/LICENSE'
         exclude 'META-INF/NOTICE'
         exclude 'META-INF/NOTICE.txt'
@@ -126,45 +127,26 @@ dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
 
     // Android Support Libs
-    compile 'com.android.support:support-v4:23.3.0'
-    compile 'com.android.support:design:23.3.0'
-    compile 'com.android.support:appcompat-v7:23.3.0'
-    compile 'com.android.support:support-annotations:23.3.0'
-    compile 'com.android.support:cardview-v7:23.0.0'
-    compile 'com.android.support:recyclerview-v7:23.0.0'
 
     //Google play service for GCM
     // compile 'com.google.android.gms:play-services-gcm:9.0.0'
     //compile 'com.google.android.gms:play-services:9.0.0'
-
     //Parse
-   // compile 'com.parse.bolts:bolts-android:1.+'
+    // compile 'com.parse.bolts:bolts-android:1.+'
     //compile 'com.parse:parse-android:1.+'
 
     //http://stackoverflow.com/questions/26963219/how-to-create-a-floating-action-button-fab-in-android-using-appcompat-v21
 
-
-    compile 'com.google.code.gson:gson:2.3'
-
-
     // Dependency Injection
-    compile 'com.google.dagger:dagger:2.0'
 
     // View Injection
-    compile 'com.jakewharton:butterknife:7.0.1'
-    
-    // Logging
-    compile 'com.jakewharton.timber:timber:3.0.2'
 
-    compile 'com.actionbarsherlock:viewpagerindicator:2.4.1'
-    compile 'com.nineoldandroids:library:2.4.0'
-    
+    // Logging
+
     // Event Bus
-    compile 'com.squareup:otto:1.3.5'
-    
+
     // Image Loading
-    compile 'com.squareup.picasso:picasso:1.1.1'
-    
+
     // HTTP
     //compile 'com.squareup.retrofit:retrofit:1.5.1'
     compile('com.squareup.retrofit2:retrofit:2.1.0') {
@@ -172,41 +154,27 @@ dependencies {
         exclude module: 'okhttp'
     }
 
-    compile 'com.squareup.retrofit2:converter-gson:2.1.0'
-    compile 'com.squareup.okhttp3:logging-interceptor:3.3.1'
-    compile 'com.squareup.okhttp3:okhttp:3.3.1'
-
-    compile 'com.facebook.stetho:stetho:1.5.0'
-
-
     //twiter bootstrap designs
-    compile 'com.beardedhen:androidbootstrap:2.3.0'
 
     //https://github.com/rey5137/material
-    compile 'com.github.rey5137:material:1.2.4'
 
     //https://github.com/wrapp/floatlabelededittext
-    compile 'com.wrapp.floatlabelededittext:library:0.0.6'
 
     //https://github.com/rengwuxian/MaterialEditText
-    compile 'com.rengwuxian.materialedittext:library:2.1.4'
     //https://github.com/Lesilva/BetterSpinner
     //For normal look use (BetterSpinner):
-    compile ('com.weiwangcn.betterspinner:library:1.1.0') {
+    compile('com.weiwangcn.betterspinner:library:1.1.0') {
         exclude group: 'com.android.support', module: 'appcompat-v7'
     }
     //For material look use (Material BetterSpinner):
-    compile ('com.weiwangcn.betterspinner:library-material:1.1.0') {
+    compile('com.weiwangcn.betterspinner:library-material:1.1.0') {
         exclude group: 'com.android.support', module: 'appcompat-v7'
         exclude group: 'com.rengwuxian.materialedittext', module: 'library'
     }
 
     //https://github.com/siyamed/android-shape-imageview  --Not used so far
-    compile 'com.github.siyamed:android-shape-imageview:0.9.+@aar'
-
 
     //https://github.com/wdullaer/MaterialDateTimePicker
-    compile 'com.wdullaer:materialdatetimepicker:2.4.0'
 
     // Fabric/Crashlytics
     compile('com.crashlytics.sdk.android:crashlytics:2.5.5@aar') {
@@ -214,21 +182,15 @@ dependencies {
     }
 
     //Pushy
-    compile 'me.pushy:sdk:1.0.22'
-    // Pushy SDK Dependency - Jackson
-    compile (
+    //Pushy SDK Dependency-
+    compile(
             [group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: '2.2.3'],
             [group: 'com.fasterxml.jackson.core', name: 'jackson-annotations', version: '2.2.3'],
             [group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.2.3']
     )
 
-    androidTestCompile 'junit:junit:4.12'
-    androidTestCompile 'com.android.support.test:runner:0.4'
     // Set this dependency to use JUnit 4 rules
-    androidTestCompile 'com.android.support.test:rules:0.4'
     // Set this dependency to build and run Espresso tests
-    androidTestCompile 'com.android.support:support-annotations:23.3.0'
-    androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.1'
     // Contrib
     androidTestCompile('com.android.support.test.espresso:espresso-contrib:2.2.1') {
         // http://stackoverflow.com/a/30931887/5210
@@ -239,16 +201,46 @@ dependencies {
         exclude module: 'recyclerview-v7'
     }
     // Set this dependency to build and run UI Automator tests
+
+
+    compile 'com.android.support:support-v4:23.3.0'
+    compile 'com.android.support:design:23.3.0'
+    compile 'com.android.support:appcompat-v7:23.3.0'
+    compile 'com.android.support:support-annotations:23.3.0'
+    compile 'com.android.support:cardview-v7:23.0.0'
+    compile 'com.android.support:recyclerview-v7:23.0.0'
+    compile 'com.google.code.gson:gson:2.3'
+    compile 'com.google.dagger:dagger:2.0'
+    compile 'com.jakewharton:butterknife:7.0.1'
+    compile 'com.jakewharton.timber:timber:3.0.2'
+    compile 'com.actionbarsherlock:viewpagerindicator:2.4.1'
+    compile 'com.nineoldandroids:library:2.4.0'
+    compile 'com.squareup:otto:1.3.5'
+    compile 'com.squareup.picasso:picasso:1.1.1'
+    compile 'com.squareup.retrofit2:converter-gson:2.1.0'
+    compile 'com.squareup.okhttp3:logging-interceptor:3.3.1'
+    compile 'com.squareup.okhttp3:okhttp:3.3.1'
+    compile 'com.facebook.stetho:stetho:1.5.0'
+    compile 'com.beardedhen:androidbootstrap:2.3.0'
+    compile 'com.github.rey5137:material:1.2.4'
+    compile 'com.wrapp.floatlabelededittext:library:0.0.6'
+    compile 'com.rengwuxian.materialedittext:library:2.1.4'
+    compile 'com.github.siyamed:android-shape-imageview:0.9.+@aar'
+    compile 'com.wdullaer:materialdatetimepicker:2.4.0'
+    compile 'me.pushy:sdk:1.0.22'
+    compile 'com.android.support.constraint:constraint-layout:1.0.2'
+    androidTestCompile 'junit:junit:4.12'
+    androidTestCompile 'com.android.support.test:runner:0.4'
+    androidTestCompile 'com.android.support.test:rules:0.4'
+    androidTestCompile 'com.android.support:support-annotations:23.3.0'
+    androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.1'
     androidTestCompile 'com.android.support.test.uiautomator:uiautomator-v18:2.1.2'
-
     androidTestCompile 'org.mockito:mockito-core:1.9.5'
-
     apt 'com.google.dagger:dagger-compiler:2.0'
     provided 'javax.annotation:jsr250-api:1.0'
 
+
 }
-
-
 task wrapper(type: Wrapper) {
     gradleVersion = '2.0'
 }

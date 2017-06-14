@@ -2,6 +2,7 @@ package com.xose.cqms.event.ui.medicationerror;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
@@ -47,6 +48,8 @@ import butterknife.ButterKnife;
 import timber.log.Timber;
 
 import static com.xose.cqms.event.R.id.event_corrective_action;
+import static com.xose.cqms.event.core.Constants.Extra.HH_SESSION_ADD_OBSERVATION;
+import static com.xose.cqms.event.core.Constants.Extra.HH_SESSION_ITEM;
 import static com.xose.cqms.event.core.Constants.Extra.INCIDENT_ITEM;
 
 /**
@@ -83,6 +86,7 @@ public class MedicationErrorDetailsFragment extends Fragment implements View.OnC
     @Inject
     protected DatabaseHelper databaseHelper;
     private static MedicationError report;
+    private Boolean editable = false;
 
     ArrayAdapter<Unit> unitAdapter;
 
@@ -117,6 +121,11 @@ public class MedicationErrorDetailsFragment extends Fragment implements View.OnC
         Bundle bundle = this.getArguments();
         if (bundle != null) {
             report = (MedicationError) bundle.getSerializable(INCIDENT_ITEM);
+            editable = bundle.getBoolean(HH_SESSION_ADD_OBSERVATION);
+            if(!editable){
+                startActivity(new Intent(getActivity(),MedicationErrorViewActivity.class).putExtra(INCIDENT_ITEM,report));
+                getActivity().finish();
+            }
             if (null == report) {
                 Long reportRef = bundle.getLong(Constants.Extra.INCIDENT_REF, 0l);
                 Log.e("reportRef ", String.valueOf(reportRef));
@@ -158,6 +167,7 @@ public class MedicationErrorDetailsFragment extends Fragment implements View.OnC
     @Override
     public void onPressed(Boolean status, Context context) {
        Log.d("SavedItems",report.toString());
+        Toast.makeText(context, "First fragment", Toast.LENGTH_SHORT).show();
 
         if(fragmentView != null){
             saveTempDetails(context);
@@ -204,7 +214,9 @@ public class MedicationErrorDetailsFragment extends Fragment implements View.OnC
                     actualHarm.setChecked(Boolean.TRUE);
                 }
             }
-            saveDetailsBtn.setText("Update");
+
+                saveDetailsBtn.setText("Update");
+
         } else {
             report.setIncidentTime(null);
             report.setStatusCode(0);
@@ -356,8 +368,10 @@ public class MedicationErrorDetailsFragment extends Fragment implements View.OnC
             //startActivity(intent);
             //getActivity().finish();
         } else {
+
             Snackbar.make(getActivity().findViewById(R.id.footer_view), "Correct all validation errors", Snackbar.LENGTH_LONG).show();
-        }
+
+            }
     }
 
     private boolean saveIncidentDetails() {
@@ -414,36 +428,39 @@ public class MedicationErrorDetailsFragment extends Fragment implements View.OnC
     private boolean validateIncidentDeatils() {
         boolean error = false;
 
-        if (TextUtils.isEmpty(correctiveAction.getText())) {
-            correctiveAction.setError("Corrective action required");
-            correctiveAction.requestFocus();
-            error = true;
-        } else {
-            report.setCorrectiveActionTaken(correctiveAction.getText().toString().trim());
+            if (TextUtils.isEmpty(correctiveAction.getText())) {
+                correctiveAction.setError("Corrective action required");
+                correctiveAction.requestFocus();
+                error = true;
+            } else {
+                report.setCorrectiveActionTaken(correctiveAction.getText().toString().trim());
+            }
+
+            if (TextUtils.isEmpty(description.getText())) {
+                description.setError("Incident description required");
+                error = true;
+            } else {
+                report.setDescription(description.getText().toString().trim());
+            }
+
+            if (nearMiss.isChecked()) {
+                report.setIncidentLevelCode(1);
+            } else if (actualHarm.isChecked()) {
+                report.setIncidentLevelCode(2);
+            } else {
+                error = true;
+                report.setIncidentLevelCode(0);
+                nearMiss.setError("Incident level Required");
+            }
+            if (null == report.getUnitRef() || 0 >= report.getUnitRef()) {
+                unitsSpinner.setError("Unit required");
+                error = true;
+                report.setUnitRef(0l);
+                unitsSpinner.requestFocus();
+
         }
 
-        if (TextUtils.isEmpty(description.getText())) {
-            description.setError("Incident description required");
-            error = true;
-        } else {
-            report.setDescription(description.getText().toString().trim());
-        }
 
-        if (nearMiss.isChecked()) {
-            report.setIncidentLevelCode(1);
-        } else if (actualHarm.isChecked()) {
-            report.setIncidentLevelCode(2);
-        } else {
-            error = true;
-            report.setIncidentLevelCode(0);
-            nearMiss.setError("Incident level Required");
-        }
-        if (null == report.getUnitRef() || 0 >= report.getUnitRef()) {
-            unitsSpinner.setError("Unit required");
-            error = true;
-            report.setUnitRef(0l);
-            unitsSpinner.requestFocus();
-        }
 
         return error;
     }
@@ -457,7 +474,7 @@ public class MedicationErrorDetailsFragment extends Fragment implements View.OnC
         }
         final FragmentManager fragmentManager = getFragmentManager();
         fragmentManager.beginTransaction()
-                .replace(R.id.incident_report_form_container, personDetailsFragment)
+                .replace(R.id.incident_report_form_container, personDetailsFragment,"SecondFragment")
                 .commit();
     }
 }

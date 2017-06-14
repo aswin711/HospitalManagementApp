@@ -68,7 +68,7 @@
     <string name="title_activity_import_config">Import Configuration</string>
     <string name="action_settings">Settings</string>
 
-<!-- TODO: Remove or change this placeholder text -->
+    <!-- TODO: Remove or change this placeholder text -->
     <string name="title_activity_hhaudit">New Session</string>
     <string name="audit_observer">Observer</string>
     <string name="audit_hh_service">Service/Department</string>
@@ -118,7 +118,6 @@
     <string name="title_activity_hhoblist">HHOBListActivity</string>
 
 
-
     <!--Case sheet audit -->
     <string name="field_mandatory_error">This field is required</string>
     <string name="title_activity_casesheet_audit">Open Case sheet Audit</string>
@@ -130,9 +129,6 @@
     <string name="audit_cs_unit">Unit/Department</string>
     <string name="audit_cs_specialty">Clinical Specialty</string>
     <string name="audit_cs_number">Case sheet Number</string>
-
-
-
 
 
     <string name="title_activity_incident_report_list">Incident Reports</string>
@@ -169,7 +165,7 @@
     <string name="staff_id_no">Staff Id/Number</string>
     <string name="staff_designation">Staff desgination</string>
 
-<!-- TODO: Remove or change this placeholder text -->
+    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
 

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.xose.cqms.event" >
+    package="com.xose.cqms.event">
 
     <uses-sdk tools:overrideLibrary="android.support.test.uiautomator.v18" />
 
@@ -23,11 +23,11 @@
         android:name=".BootstrapApplicationImpl"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/Theme.Material.Dark" >
+        android:theme="@style/Theme.Material.Dark">
         <activity
             android:name=".ui.SpashscreenActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:theme="@style/FullscreenTheme" >
+            android:theme="@style/FullscreenTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -37,7 +37,7 @@
         <activity
             android:name=".ui.MainActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:label="@string/app_name" >
+            android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -47,7 +47,7 @@
 
         <service
             android:name=".authenticator.AccountAuthenticatorService"
-            android:process=":auth" >
+            android:process=":auth">
             <intent-filter>
                 <action android:name="android.accounts.AccountAuthenticator" />
             </intent-filter>
@@ -57,12 +57,11 @@
                 android:resource="@xml/authenticator" />
         </service>
 
-
         <!-- Hospital configuration sync -->
         <service
             android:name=".sync.conf.ConfSyncService"
             android:exported="false"
-            android:process=":sync" >
+            android:process=":sync">
             <intent-filter>
                 <action android:name="android.content.SyncAdapter" />
             </intent-filter>
@@ -82,7 +81,7 @@
         <service
             android:name=".sync.incident.IncidentReportSyncService"
             android:exported="false"
-            android:process=":sync" >
+            android:process=":sync">
             <intent-filter>
                 <action android:name="android.content.SyncAdapter" />
             </intent-filter>
@@ -102,7 +101,7 @@
         <service
             android:name=".sync.medicationerror.MedicationErrorSyncService"
             android:exported="false"
-            android:process=":sync" >
+            android:process=":sync">
             <intent-filter>
                 <action android:name="android.content.SyncAdapter" />
             </intent-filter>
@@ -118,12 +117,11 @@
             android:exported="false"
             android:syncable="true" />
 
-
         <!-- Adverse Drug reaction sync -->
         <service
             android:name=".sync.drugreaction.DrugReactionSyncService"
             android:exported="false"
-            android:process=":sync" >
+            android:process=":sync">
             <intent-filter>
                 <action android:name="android.content.SyncAdapter" />
             </intent-filter>
@@ -142,7 +140,7 @@
         <!-- Activities -->
         <activity
             android:name=".authenticator.BootstrapAuthenticatorActivity"
-            android:excludeFromRecents="true" >
+            android:excludeFromRecents="true">
 
             <!--
                 No intent-filter here! This activity is only ever launched by
@@ -162,18 +160,15 @@
 
         <activity
             android:name=".ui.SettingsActivity"
-            android:label="@string/title_activity_settings" >
-        </activity>
-
+            android:label="@string/title_activity_settings"></activity>
         <activity
             android:name=".ui.ImportConfigActivity"
             android:label="@string/title_activity_import_config"
-            android:parentActivityName=".ui.SettingsActivity" >
+            android:parentActivityName=".ui.SettingsActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.SettingsActivity" />
         </activity>
-
 
         <!-- Pushy Declarations -->
 
@@ -182,7 +177,7 @@
         <!-- Incoming push notifications will invoke the following BroadcastReceiver -->
         <receiver
             android:name=".core.pushy.PushReceiver"
-            android:exported="false" >
+            android:exported="false">
             <intent-filter>
 
                 <!-- Do not modify this -->
@@ -194,7 +189,7 @@
         <!-- Do not modify - internal BroadcastReceiver that restarts the listener service -->
         <receiver
             android:name="me.pushy.sdk.receivers.PushyUpdateReceiver"
-            android:exported="false" >
+            android:exported="false">
             <intent-filter>
                 <action android:name="android.intent.action.PACKAGE_REPLACED" />
 
@@ -206,7 +201,7 @@
         <!-- Do not modify - internal BroadcastReceiver that restarts the listener service -->
         <receiver
             android:name="me.pushy.sdk.receivers.PushyBootReceiver"
-            android:exported="false" >
+            android:exported="false">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
@@ -221,7 +216,7 @@
         <activity
             android:name=".ui.incident.IncidentReportListActivity"
             android:label="@string/title_activity_incident_report_list"
-            android:parentActivityName=".ui.MainActivity" >
+            android:parentActivityName=".ui.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.xose.cqms.event.ui.MainActivity" />
@@ -229,16 +224,15 @@
         <activity
             android:name=".ui.incident.IncidentReportActivity"
             android:label="@string/title_activity_incident_report"
-            android:parentActivityName=".ui.incident.IncidentReportListActivity" >
+            android:parentActivityName=".ui.incident.IncidentReportListActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.xose.cqms.event.ui.incident.IncidentReportListActivity" />
         </activity>
-
         <activity
             android:name=".ui.medicationerror.MedicationErrorListActivity"
             android:label="@string/title_activity_medication_error_list"
-            android:parentActivityName=".ui.MainActivity" >
+            android:parentActivityName=".ui.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.xose.cqms.event.ui.MainActivity" />
@@ -246,16 +240,15 @@
         <activity
             android:name=".ui.medicationerror.MedicationErrorActivity"
             android:label="@string/title_activity_medication_error"
-            android:parentActivityName=".ui.medicationerror.MedicationErrorListActivity" >
+            android:parentActivityName=".ui.medicationerror.MedicationErrorListActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.xose.cqms.event.ui.medicationerror.MedicationErrorListActivity" />
         </activity>
-
         <activity
             android:name=".ui.drugreaction.DrugReactionListActivity"
             android:label="@string/title_activity_drug_reaction_list"
-            android:parentActivityName=".ui.MainActivity" >
+            android:parentActivityName=".ui.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.xose.cqms.event.ui.MainActivity" />
@@ -263,12 +256,12 @@
         <activity
             android:name=".ui.drugreaction.DrugReactionActivity"
             android:label="@string/title_activity_drug_reaction"
-            android:parentActivityName=".ui.drugreaction.DrugReactionListActivity" >
+            android:parentActivityName=".ui.drugreaction.DrugReactionListActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.xose.cqms.event.ui.drugreaction.DrugReactionListActivity" />
         </activity>
-
+        <activity android:name=".ui.medicationerror.MedicationErrorViewActivity"></activity>
     </application>
 
 </manifest>

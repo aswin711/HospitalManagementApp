@@ -25,6 +25,7 @@ import javax.inject.Inject;
 
 import butterknife.ButterKnife;
 
+import static com.xose.cqms.event.core.Constants.Extra.HH_SESSION_ADD_OBSERVATION;
 import static com.xose.cqms.event.core.Constants.Extra.INCIDENT_ITEM;
 import static com.xose.cqms.event.core.Constants.Extra.INCIDENT_REF;
 
@@ -36,8 +37,10 @@ public class MedicationErrorActivity extends BootstrapFragmentActivity {
     private MedicationError report;
 
     private Boolean doubleBackPressed = false;
-    private Boolean newEntry = false;
+    private Boolean editable = true;
     private FragmentBackPressed fragmentBackPressed;
+    private FragmentBackPressed fragmentBackPressed2;
+    private FragmentBackPressed fragmentBackPressed3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,9 +48,12 @@ public class MedicationErrorActivity extends BootstrapFragmentActivity {
         BootstrapApplication.component().inject(this);
         setContentView(R.layout.activity_incident_report);
         fragmentBackPressed = (FragmentBackPressed) new MedicationErrorDetailsFragment();
+        fragmentBackPressed2 = (FragmentBackPressed) new MedicationErrorPersonDetailsFragment();
+        fragmentBackPressed3 = (FragmentBackPressed) new ErrorReportedByDetailsFragment();
         ButterKnife.bind(this);
         if (getIntent() != null && getIntent().getExtras() != null) {
             report = (MedicationError) getIntent().getExtras().getSerializable(INCIDENT_ITEM);
+            editable = getIntent().getExtras().getBoolean(HH_SESSION_ADD_OBSERVATION);
             if (null == report) {
                 Long reportRef = getIntent().getExtras().getLong(INCIDENT_REF);
                 Log.e("reportRef ", String.valueOf(reportRef));
@@ -92,7 +98,7 @@ public class MedicationErrorActivity extends BootstrapFragmentActivity {
     @Override
     public void onBackPressed(){
 
-        if(!doubleBackPressed){
+        if(!doubleBackPressed && editable){
             AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
             alertDialog.setTitle("Save to draft before exit?");
             alertDialog.setMessage("Do you want to save the details as a draft");
@@ -100,7 +106,14 @@ public class MedicationErrorActivity extends BootstrapFragmentActivity {
             alertDialog.setPositiveButton("YES", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    fragmentBackPressed.onPressed(true,getApplicationContext());
+                    if(getSupportFragmentManager().findFragmentByTag("DetailsFragment") != null){
+                        fragmentBackPressed.onPressed(true,getApplicationContext());
+                    }else if(getSupportFragmentManager().findFragmentByTag("SecondFragment") != null){
+                        fragmentBackPressed2.onPressed(true,getApplicationContext());
+                        //Toast.makeText(MedicationErrorActivity.this, "Toast from Activity", Toast.LENGTH_SHORT).show();
+                    }else if(getSupportFragmentManager().findFragmentByTag("ReportByFragment") != null){
+                        fragmentBackPressed3.onPressed(true,getApplicationContext());
+                    }
                     doubleBackPressed = true;
                     onBackPressed();
 
@@ -128,9 +141,8 @@ public class MedicationErrorActivity extends BootstrapFragmentActivity {
         if (null != report) {
             Bundle bundle = new Bundle();
             bundle.putSerializable(Constants.Extra.INCIDENT_ITEM, report);
+            bundle.putBoolean(HH_SESSION_ADD_OBSERVATION,editable);
             detailsFragment.setArguments(bundle);
-        }else {
-            newEntry = true;
         }
         final FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction()
