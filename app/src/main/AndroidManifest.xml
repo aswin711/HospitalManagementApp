@@ -160,7 +160,7 @@
 
         <activity
             android:name=".ui.SettingsActivity"
-            android:label="@string/title_activity_settings"></activity>
+            android:label="@string/title_activity_settings" />
         <activity
             android:name=".ui.ImportConfigActivity"
             android:label="@string/title_activity_import_config"
@@ -261,7 +261,8 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.xose.cqms.event.ui.drugreaction.DrugReactionListActivity" />
         </activity>
-        <activity android:name=".ui.medicationerror.MedicationErrorViewActivity"></activity>
+        <activity android:name=".ui.medicationerror.MedicationErrorViewActivity" />
+        <activity android:name=".ui.incident.IncidentReportViewActivity"></activity>
     </application>
 
 </manifest>

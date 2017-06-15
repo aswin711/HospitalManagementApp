@@ -1,5 +1,6 @@
 package com.xose.cqms.event.ui.incident;
 
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -11,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.rengwuxian.materialedittext.MaterialEditText;
 import com.xose.cqms.event.BootstrapApplication;
@@ -41,9 +43,9 @@ import static com.xose.cqms.event.core.Constants.Extra.INCIDENT_ITEM;
  * Use the {@link ReportedByDetailsFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ReportedByDetailsFragment extends Fragment {
+public class ReportedByDetailsFragment extends Fragment implements IncidentReportActivity.FragmentBackpressed {
 
-    protected View fragmentView;
+    protected static View fragmentView;
 
     @Bind(R.id.incident_reported_by_save)
     protected Button saveDetailsBtn;
@@ -57,9 +59,9 @@ public class ReportedByDetailsFragment extends Fragment {
 
     @Inject
     protected DatabaseHelper databaseHelper;
-    private IncidentReport report;
+    private static IncidentReport report;
     private ReportedBy reportedBy;
-    private PersonInvolved personInvolved;
+    private static PersonInvolved personInvolved;
 
 
     /**
@@ -129,6 +131,12 @@ public class ReportedByDetailsFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    @Override
+    public void OnBackPressedFragment(Context context) {
+        //Toast.makeText(context, "Third", Toast.LENGTH_SHORT).show();
+        SaveTempDetails(context);
     }
 
     /**
@@ -216,6 +224,21 @@ public class ReportedByDetailsFragment extends Fragment {
             reportedBy.setDesignation(reportedByDesignation.getText().toString().trim());
         }
         return error;
+    }
+
+    private void SaveTempDetails(Context context){
+        DatabaseHelper databaseHelper = new DatabaseHelper(context);
+        ReportedBy reportedBy1 = new ReportedBy();
+        MaterialEditText reportedByName = (MaterialEditText) fragmentView.findViewById(R.id.event_reported_by_name);
+        MaterialEditText reportedByDesignation = (MaterialEditText) fragmentView.findViewById(R.id.event_reported_by_designation);
+
+        reportedBy1.setLastName(reportedByName.getText().toString());
+        reportedBy1.setDesignation(reportedByDesignation.getText().toString());
+
+
+        report.setUpdated(Calendar.getInstance());
+        report.setReportedBy(reportedBy1);
+        long id = databaseHelper.updateIncidentReportedBy(report);
     }
 
 }

@@ -13,7 +13,7 @@ public class ListViewer {
     public static <T> String view(List<T> list){
         String listString = "";
         for (T t:list){
-            listString += t.toString()+"\n";
+            listString += view(t)+"\n";
         }
         return listString;
     }

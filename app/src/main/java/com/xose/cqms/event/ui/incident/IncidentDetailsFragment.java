@@ -1,5 +1,6 @@
 package com.xose.cqms.event.ui.incident;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.Bundle;
@@ -16,6 +17,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
+import android.widget.Toast;
 
 import com.rengwuxian.materialedittext.MaterialEditText;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
@@ -30,6 +32,7 @@ import com.xose.cqms.event.core.modal.Unit;
 import com.xose.cqms.event.core.modal.event.incident.IncidentReport;
 import com.xose.cqms.event.sqlite.DatabaseHelper;
 import com.xose.cqms.event.util.CalenderUtils;
+import com.xose.cqms.event.util.ListViewer;
 import com.xose.cqms.event.util.PrefUtils;
 import com.xose.cqms.event.util.ViewUtils;
 
@@ -54,10 +57,10 @@ import static com.xose.cqms.event.core.Constants.Extra.INCIDENT_ITEM;
  * create an instance of this fragment.
  */
 public class IncidentDetailsFragment extends Fragment implements View.OnClickListener,
-        DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
+        DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener,IncidentReportActivity.FragmentBackpressed {
 
 
-    protected View fragmentView;
+    protected static View fragmentView;
 
     @Bind(R.id.incident_details_save)
     protected Button saveDetailsBtn;
@@ -82,7 +85,7 @@ public class IncidentDetailsFragment extends Fragment implements View.OnClickLis
 
     @Inject
     protected DatabaseHelper databaseHelper;
-    private IncidentReport report;
+    private static IncidentReport report;
 
     ArrayAdapter<Unit> unitAdapter;
     ArrayAdapter<IncidentType> incidentTypeAdapter;
@@ -148,6 +151,13 @@ public class IncidentDetailsFragment extends Fragment implements View.OnClickLis
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    @Override
+    public void OnBackPressedFragment(Context context) {
+        //Toast.makeText(context, "First", Toast.LENGTH_SHORT).show();
+        SaveTempDetails(context);
+        Log.d("Temp", ListViewer.view(report));
     }
 
     /**
@@ -440,6 +450,53 @@ public class IncidentDetailsFragment extends Fragment implements View.OnClickLis
         return error;
     }
 
+    private void SaveTempDetails(Context context){
+        DatabaseHelper databaseHelper1 = new DatabaseHelper(context);
+        //IncidentReport report = new IncidentReport();
+        Long hospitalRef = PrefUtils.getLongFromPrefs(context, PrefUtils.PREFS_HOSP_ID, null);
+        report.setHospital(hospitalRef);
+        MaterialEditText description = (MaterialEditText) fragmentView.findViewById(R.id.event_description);
+        report.setDescription(description.getText().toString().trim());
+        MaterialEditText correctiveAction = (MaterialEditText) fragmentView.findViewById(R.id.event_corrective_action);
+        report.setCorrectiveActionTaken(correctiveAction.getText().toString().trim());
+        RadioButton actualMiss = (RadioButton) fragmentView.findViewById(R.id.incident_level_near_miss);
+        RadioButton harmMiss = (RadioButton) fragmentView.findViewById(R.id.incident_level_harm);
+        MaterialBetterSpinner typeSpinner = (MaterialBetterSpinner) fragmentView.findViewById(R.id.incident_types);
+        List<IncidentType> types =  databaseHelper1.getAllIncidentTypes(hospitalRef);
+        if(!typeSpinner.getText().toString().isEmpty()){
+            for (IncidentType type:types){
+                if(type.getIncidentType().equals(typeSpinner.getText())){
+                    report.setIncidentTypeRef(type.getServerId());
+                    report.setIncidentType(type.getServerId());
+                    report.setIncidentTypeName(type.getIncidentType());
+                }
+            }
+        }else{
+            report.setIncidentTypeRef(0l);
+            report.setIncidentTypeName(null);
+        }
+        if(actualMiss.isChecked()){
+            report.setIncidentLevelCode(1);
+        }else if(harmMiss.isChecked()){
+            report.setIncidentLevelCode(2);
+        }else {
+            report.setIncidentLevelCode(0);
+        }
+        if (0 == report.getStatusCode()){
+
+            report.setCreatedOn(Calendar.getInstance());
+
+        }
+        report.setUpdated(Calendar.getInstance());
+        long id = databaseHelper1.insertOrUpdateIncidentReport(report);
+        if (0 < id) {
+            Timber.e("saveIncidentDetails " + id);
+            report.setId(id);
+        }
+
+
+    }
+
     private void nextScreen() {
         IncidentPersonDetailsFragment personDetailsFragment = new IncidentPersonDetailsFragment();
         if (null != report) {
@@ -449,7 +506,7 @@ public class IncidentDetailsFragment extends Fragment implements View.OnClickLis
         }
         final FragmentManager fragmentManager = getFragmentManager();
         fragmentManager.beginTransaction()
-                .replace(R.id.incident_report_form_container, personDetailsFragment)
+                .replace(R.id.incident_report_form_container, personDetailsFragment,"SecondFragment")
                 .commit();
     }
 }

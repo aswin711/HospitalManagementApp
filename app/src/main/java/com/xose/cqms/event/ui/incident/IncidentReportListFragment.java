@@ -35,6 +35,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import static com.xose.cqms.event.core.Constants.Extra.HH_SESSION_ADD_OBSERVATION;
+import static com.xose.cqms.event.core.Constants.Extra.HH_SESSION_ITEM;
 import static com.xose.cqms.event.core.Constants.Extra.INCIDENT_ITEM;
 
 
@@ -174,7 +175,7 @@ public class IncidentReportListFragment extends ItemListFragment<IncidentReport>
     }
 
     private void editSession(IncidentReport incidentReport) {
-        startActivity(new Intent(getActivity(), IncidentReportActivity.class).putExtra(INCIDENT_ITEM, incidentReport));
+        startActivity(new Intent(getActivity(), IncidentReportActivity.class).putExtra(INCIDENT_ITEM, incidentReport).putExtra(HH_SESSION_ADD_OBSERVATION,true));
     }
 
     private boolean deleteSession(IncidentReport incidentReport) {
@@ -182,8 +183,8 @@ public class IncidentReportListFragment extends ItemListFragment<IncidentReport>
         return true;
     }
 
-    private void openSession(IncidentReport session, boolean editable) {
-        startActivity(new Intent(getActivity(), IncidentReportActivity.class).putExtra(INCIDENT_ITEM, session).putExtra(HH_SESSION_ADD_OBSERVATION, editable));
+    private void openSession(IncidentReport session) {
+        startActivity(new Intent(getActivity(), IncidentReportActivity.class).putExtra(INCIDENT_ITEM, session).putExtra(HH_SESSION_ADD_OBSERVATION, false));
     }
 
     private void showRecordActionPrompt(final IncidentReport report, final View view) {
@@ -195,7 +196,7 @@ public class IncidentReportListFragment extends ItemListFragment<IncidentReport>
         // alertDialog.setIcon(R.drawable.ic_action_discard_dark);
         // Setting Positive "Yes" Button
         if (null != report) {
-            if (report.canEdit()) {
+            if (!report.canEdit()) {
                 alertDialog.setPositiveButton("Edit",
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
@@ -206,7 +207,7 @@ public class IncidentReportListFragment extends ItemListFragment<IncidentReport>
                 alertDialog.setNeutralButton("View Details",
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
-                                openSession(report, false);
+                                openSession(report);
                             }
                         });
             }

@@ -58,6 +58,28 @@
                     android:background="@color/text_title"
                     android:layout_marginTop="10sp"/>
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Incident Type"
+                    android:textColor="@color/text_light"
+                    android:textSize="16sp"
+                    />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/medication_error_view_details_incident_type"
+                    android:text="Select Incident Type"
+                    android:textSize="18sp"
+                    android:textColor="@color/table_text"
+                    android:layout_marginTop="10sp"/>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.25sp"
+                    android:background="@color/text_title"
+                    android:layout_marginTop="10sp"/>
+
 
                 <TextView
                     android:layout_width="wrap_content"

@@ -61,8 +61,9 @@ public class ErrorReportedByDetailsFragment extends Fragment implements Medicati
     @Inject
     protected DatabaseHelper databaseHelper;
     private static MedicationError report;
-    private static ReportedBy reportedBy;
-    private static PersonInvolved personInvolved;
+    private  ReportedBy reportedBy;
+    //private static PersonInvolved personInvolved;
+    private Boolean editable = false;
 
 
     /**
@@ -102,6 +103,7 @@ public class ErrorReportedByDetailsFragment extends Fragment implements Medicati
         Bundle bundle = this.getArguments();
         if (bundle != null) {
             report = (MedicationError) bundle.getSerializable(INCIDENT_ITEM);
+            editable = bundle.getBoolean("editable");
             if (null == report) {
                 Long reportRef = bundle.getLong(Constants.Extra.INCIDENT_REF, 0l);
                 Log.e("reportRef ", String.valueOf(reportRef));
@@ -110,7 +112,9 @@ public class ErrorReportedByDetailsFragment extends Fragment implements Medicati
                 }
             }
         }
-        initScreen();
+
+            initScreen();
+
         saveDetailsBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -132,6 +136,7 @@ public class ErrorReportedByDetailsFragment extends Fragment implements Medicati
     public void onDetach() {
         super.onDetach();
         mListener = null;
+
     }
 
     @Override
@@ -201,22 +206,16 @@ public class ErrorReportedByDetailsFragment extends Fragment implements Medicati
     public void saveTempDetails(Context context){
 
         DatabaseHelper databaseHelper = new DatabaseHelper(context);
+        ReportedBy reportedBy1 = new ReportedBy();
         MaterialEditText reportedByName = (MaterialEditText) fragmentView.findViewById(R.id.event_reported_by_name);
         MaterialEditText reportedByDesignation = (MaterialEditText) fragmentView.findViewById(R.id.event_reported_by_designation);
-        if (TextUtils.isEmpty(reportedByName.getText())) {
 
-        } else {
-            reportedBy.setLastName(reportedByName.getText().toString().trim());
-        }
+        reportedBy1.setLastName(reportedByName.getText().toString());
+        reportedBy1.setDesignation(reportedByDesignation.getText().toString());
 
-        if (TextUtils.isEmpty(reportedByDesignation.getText())) {
-
-        } else {
-            reportedBy.setDesignation(reportedByDesignation.getText().toString().trim());
-        }
 
         report.setUpdated(Calendar.getInstance());
-        report.setReportedBy(reportedBy);
+        report.setReportedBy(reportedBy1);
         long id = databaseHelper.updateMedicationErrorReportedBy(report);
     }
 

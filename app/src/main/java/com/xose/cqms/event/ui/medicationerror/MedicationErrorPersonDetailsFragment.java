@@ -94,7 +94,7 @@ public class MedicationErrorPersonDetailsFragment extends Fragment implements Me
     @Inject
     protected DatabaseHelper databaseHelper;
     private static MedicationError report;
-    private static PersonInvolved personInvolved;
+    private PersonInvolved personInvolved;
 
 
 
@@ -133,6 +133,7 @@ public class MedicationErrorPersonDetailsFragment extends Fragment implements Me
         fragmentView = inflater.inflate(R.layout.fragment_incident_person_details, container, false);
         ButterKnife.bind(this, fragmentView);
         Bundle bundle = this.getArguments();
+        report = null;
         if (bundle != null) {
             report = (MedicationError) bundle.getSerializable(INCIDENT_ITEM);
             if (null == report) {
@@ -165,12 +166,14 @@ public class MedicationErrorPersonDetailsFragment extends Fragment implements Me
     public void onDetach() {
         super.onDetach();
         mListener = null;
+        report = null;
     }
 
     @Override
     public void onPressed(Boolean status, Context context) {
         //Toast.makeText(context, "PersonalDetails", Toast.LENGTH_SHORT).show();
         SaveTempDetails(context);
+        report = null;
         //Log.d("personaldetails", personInvolved!=null?ListViewer.view(personInvolved):"Null value");
     }
 
@@ -319,6 +322,7 @@ public class MedicationErrorPersonDetailsFragment extends Fragment implements Me
 
     public void SaveTempDetails(Context context){
         DatabaseHelper databaseHelper = new DatabaseHelper(context);
+        PersonInvolved personInvolved1 = new PersonInvolved();
 
         MaterialEditText personInvolvedName = (MaterialEditText) fragmentView.findViewById(R.id.person_involved_name);
         MaterialEditText patientNumber = (MaterialEditText) fragmentView.findViewById(R.id.patient_number);
@@ -328,59 +332,37 @@ public class MedicationErrorPersonDetailsFragment extends Fragment implements Me
         RadioButton radioNotStated = (RadioButton) fragmentView.findViewById(R.id.gender_not_stated);
         MaterialEditText staffIdNumber = (MaterialEditText) fragmentView.findViewById(R.id.staff_id_no);
         MaterialEditText staffDesignation = (MaterialEditText) fragmentView.findViewById(R.id.staff_designation);
-        if (TextUtils.isEmpty(personInvolvedName.getText())) {
+        MaterialBetterSpinner typeSpinner = (MaterialBetterSpinner) fragmentView.findViewById(R.id.person_types);
 
-        } else {
-            personInvolved.setName(personInvolvedName.getText().toString().trim());
-        }
-        if (null == personInvolved.getPersonnelTypeCode() || 0 >= personInvolved.getPersonnelTypeCode()) {
-        } else {
-            switch (personInvolved.getPersonnelTypeCode()) {
-                case 1:
-                    if (TextUtils.isEmpty(patientNumber.getText())) {
+        /*Toast.makeText(context, ""+personInvolvedName.getText().toString()+"\n"+
+                typeSpinner.get, Toast.LENGTH_SHORT).show();*/
 
-                    } else {
-                        personInvolved.setHospitalNumber(patientNumber.getText().toString().trim());
-                    }
-                    if (radioMale.isChecked()) {
-                        personInvolved.setGenderCode(1);
-                    } else if (radioFemale.isChecked()) {
-                        personInvolved.setGenderCode(2);
-                    } else if (radioIndeterminate.isChecked()) {
-                        personInvolved.setGenderCode(3);
-                    } else if (radioNotStated.isChecked()) {
-                        personInvolved.setGenderCode(4);
-                    } else {
-                        radioMale.setError("Gender required");
-                        personInvolved.setGenderCode(0);
-                    }
-                    personInvolved.setStaffId(null);
-                    personInvolved.setDesignation(null);
-                    break;
-                case 2:
-                    if (TextUtils.isEmpty(staffIdNumber.getText())) {
+        personInvolved1.setName(personInvolvedName.getText().toString());
 
-                    } else {
-                        personInvolved.setStaffId(staffIdNumber.getText().toString().trim());
-                    }
-                    if (TextUtils.isEmpty(staffDesignation.getText())) {
-                    } else {
-                        personInvolved.setDesignation(staffDesignation.getText().toString().trim());
-                    }
-                    personInvolved.setHospitalNumber(null);
-                    personInvolved.setGenderCode(null);
-                    break;
-                case 3:
-                    personInvolved.setHospitalNumber(null);
-                    personInvolved.setGenderCode(null);
-                    personInvolved.setStaffId(null);
-                    personInvolved.setDesignation(null);
-                    break;
-            }
+        switch (typeSpinner.getText().toString()){
+            case "Patient":
+                personInvolved1.setPersonnelTypeCode(1);
+                personInvolved1.setHospitalNumber(patientNumber.getText().toString());
+                personInvolved1.setGenderCode(radioMale.isChecked()?1:radioFemale.isChecked()?2:radioIndeterminate.isChecked()?3
+                :radioNotStated.isChecked()?4:0);
+                break;
+            case "Staff":
+                personInvolved1.setPersonnelTypeCode(2);
+                personInvolved1.setStaffId(staffIdNumber.getText().toString());
+                personInvolved1.setDesignation(staffDesignation.getText().toString());
+                break;
+            case "Visitor":
+                personInvolved1.setPersonnelTypeCode(3);
+                break;
+            default:
+                personInvolved1.setPersonnelTypeCode(0);
+
         }
 
         report.setUpdated(Calendar.getInstance());
-        report.setPersonInvolved(personInvolved);
+        report.setPersonInvolved(personInvolved1);
+        //Log.d("Temp",ListViewer.view(personInvolved1));
+        //Log.d("Temp",ListViewer.view(report));
         long id = databaseHelper.updateMedicationErrorPersonInvolved(report);
     }
 

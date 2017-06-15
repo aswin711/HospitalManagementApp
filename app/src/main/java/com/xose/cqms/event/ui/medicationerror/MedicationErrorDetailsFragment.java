@@ -162,6 +162,7 @@ public class MedicationErrorDetailsFragment extends Fragment implements View.OnC
     public void onDetach() {
         super.onDetach();
         mListener = null;
+        report = null;
     }
 
     @Override
@@ -470,6 +471,7 @@ public class MedicationErrorDetailsFragment extends Fragment implements View.OnC
         if (null != report) {
             Bundle bundle = new Bundle();
             bundle.putSerializable(Constants.Extra.INCIDENT_ITEM, report);
+            bundle.putBoolean("editable",editable);
             personDetailsFragment.setArguments(bundle);
         }
         final FragmentManager fragmentManager = getFragmentManager();

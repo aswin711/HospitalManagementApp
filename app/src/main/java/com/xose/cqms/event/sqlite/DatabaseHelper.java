@@ -587,9 +587,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 + EventReportKey.KEY_DESCRIPTION + ", " + EventReportKey.KEY_CORRECTIVE_ACTION + ", " + EventReportKey.KEY_INCIDENT_TIME + ", "
                 + IncidentReportKey.KEY_INCIDENT_LEVEL + ", " + IncidentReportKey.KEY_MEDICAL_REPORT + ", "
                 + " s.status_code as status_code, s.createdOn as createdOn, s.updatedOn as updatedOn, u.name as unitName, it.name as incidentTypeName FROM " +
-                EventReportKey.TABLE_INCIDENT_REPORT + " s JOIN " + TABLE_UNITS + " u ON s." + Columns.KEY_UNIT_REF + " = u." +
-                Columns.KEY_UNIT_REF + " JOIN " + TABLE_INCIDENT_TYPE + " it ON s." + Columns.KEY_INCIDENTTYPE_REF + " = it." +
-                Columns.KEY_INCIDENTTYPE_REF + " JOIN " + EventReportKey.TABLE_REPORTED_BY + " rep ON rep.id = " + EventReportKey.KEY_REPORTED_BY_REF + " WHERE s." + Columns.KEY_STATUS_CODE + " IN (?, ?, ?) AND s." +
+                EventReportKey.TABLE_INCIDENT_REPORT + " s LEFT JOIN " + TABLE_UNITS + " u ON s." + Columns.KEY_UNIT_REF + " = u." +
+                Columns.KEY_UNIT_REF + " LEFT JOIN " + TABLE_INCIDENT_TYPE + " it ON s." + Columns.KEY_INCIDENTTYPE_REF + " = it." +
+                Columns.KEY_INCIDENTTYPE_REF + " LEFT JOIN " + EventReportKey.TABLE_REPORTED_BY + " rep ON rep.id = " + EventReportKey.KEY_REPORTED_BY_REF + " WHERE s." + Columns.KEY_STATUS_CODE + " IN (?, ?, ?) AND s." +
                 Columns.KEY_HOSPITAL_ID + " = ? ORDER BY s." + EventReportKey.KEY_INCIDENT_TIME + " DESC LIMIT ?, 10";
         Log.e(LOG, selectQuery);
         Cursor c = null;

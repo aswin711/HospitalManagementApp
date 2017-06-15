@@ -1,8 +1,12 @@
 package com.xose.cqms.event.ui.incident;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -13,11 +17,13 @@ import com.xose.cqms.event.core.Constants;
 import com.xose.cqms.event.core.modal.event.incident.IncidentReport;
 import com.xose.cqms.event.sqlite.DatabaseHelper;
 import com.xose.cqms.event.ui.base.BootstrapFragmentActivity;
+import com.xose.cqms.event.ui.medicationerror.MedicationErrorActivity;
 
 import javax.inject.Inject;
 
 import butterknife.ButterKnife;
 
+import static com.xose.cqms.event.core.Constants.Extra.HH_SESSION_ADD_OBSERVATION;
 import static com.xose.cqms.event.core.Constants.Extra.INCIDENT_ITEM;
 import static com.xose.cqms.event.core.Constants.Extra.INCIDENT_REF;
 
@@ -27,6 +33,12 @@ public class IncidentReportActivity extends BootstrapFragmentActivity {
     @Inject
     protected DatabaseHelper databaseHelper;
     private IncidentReport report;
+    private Boolean enable;
+
+    private Boolean doubleBackPressed = false;
+    private FragmentBackpressed fragmentBackpressed1;
+    private FragmentBackpressed fragmentBackpressed2;
+    private FragmentBackpressed fragmentBackpressed3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,8 +46,19 @@ public class IncidentReportActivity extends BootstrapFragmentActivity {
         BootstrapApplication.component().inject(this);
         setContentView(R.layout.activity_incident_report);
         ButterKnife.bind(this);
+
+        fragmentBackpressed1 = (FragmentBackpressed) new IncidentDetailsFragment();
+        fragmentBackpressed2 = (FragmentBackpressed) new IncidentPersonDetailsFragment();
+        fragmentBackpressed3 = (FragmentBackpressed) new ReportedByDetailsFragment();
+
         if (getIntent() != null && getIntent().getExtras() != null) {
             report = (IncidentReport) getIntent().getExtras().getSerializable(INCIDENT_ITEM);
+            enable = getIntent().getBooleanExtra(HH_SESSION_ADD_OBSERVATION,false);
+
+            if(!enable){
+                startActivity(new Intent(this,IncidentReportViewActivity.class).putExtra(INCIDENT_ITEM,report));
+                getActivity().finish();
+            }
             if (null == report) {
                 Long reportRef = getIntent().getExtras().getLong(INCIDENT_REF);
                 Log.e("reportRef ", String.valueOf(reportRef));
@@ -53,6 +76,47 @@ public class IncidentReportActivity extends BootstrapFragmentActivity {
         getSupportActionBar().setHomeButtonEnabled(true);
 
         loadFragment();
+    }
+
+    @Override
+    public void onBackPressed() {
+
+        if(!doubleBackPressed){
+            doubleBackPressed = true;
+            AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+            alertDialog.setCancelable(true);
+            alertDialog.setTitle("Save to Drafts");
+            alertDialog.setMessage("Do you want to save it to drafts before exit?");
+            alertDialog.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+
+                    if (getSupportFragmentManager().findFragmentByTag("FirstFragment") != null){
+                        fragmentBackpressed1.OnBackPressedFragment(getApplicationContext());
+                    }else if(getSupportFragmentManager().findFragmentByTag("SecondFragment") != null){
+                        fragmentBackpressed2.OnBackPressedFragment(getApplicationContext());
+                    }else {
+                        fragmentBackpressed3.OnBackPressedFragment(getApplicationContext());
+                    }
+
+                    onBackPressed();
+                }
+            });
+            alertDialog.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    onBackPressed();
+                }
+            });
+
+            alertDialog.show();
+
+        }else {
+            super.onBackPressed();
+        }
+
+
+
     }
 
     @Override
@@ -90,7 +154,11 @@ public class IncidentReportActivity extends BootstrapFragmentActivity {
         }
         final FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction()
-                .replace(R.id.incident_report_form_container, detailsFragment)
+                .replace(R.id.incident_report_form_container, detailsFragment,"FirstFragment")
                 .commit();
+    }
+
+    public interface FragmentBackpressed{
+        void OnBackPressedFragment(Context context);
     }
 }

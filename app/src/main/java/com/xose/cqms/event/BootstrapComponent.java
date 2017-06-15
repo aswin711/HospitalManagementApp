@@ -20,6 +20,7 @@ import com.xose.cqms.event.ui.drugreaction.DrugReactionListActivity;
 import com.xose.cqms.event.ui.drugreaction.DrugReactionListFragment;
 import com.xose.cqms.event.ui.drugreaction.DrugReactionPersonDetailsFragment;
 import com.xose.cqms.event.ui.drugreaction.DrugReactionReportedByDetailsFragment;
+import com.xose.cqms.event.ui.incident.IncidentReportViewActivity;
 import com.xose.cqms.event.ui.incident.ReportedByDetailsFragment;
 import com.xose.cqms.event.ui.incident.IncidentDetailsFragment;
 import com.xose.cqms.event.ui.incident.IncidentPersonDetailsFragment;
@@ -83,6 +84,8 @@ public interface BootstrapComponent {
     void inject(ReportedByDetailsFragment target);
 
     void inject(IncidentReportSyncService target);
+
+    void inject(IncidentReportViewActivity target);
 
     //Medication Error
     void inject(MedicationErrorListActivity target);

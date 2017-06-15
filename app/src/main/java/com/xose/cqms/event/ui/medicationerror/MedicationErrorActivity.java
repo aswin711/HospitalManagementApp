@@ -123,6 +123,8 @@ public class MedicationErrorActivity extends BootstrapFragmentActivity {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     dialog.dismiss();
+                    doubleBackPressed = true;
+                    onBackPressed();
 
                 }
             });
