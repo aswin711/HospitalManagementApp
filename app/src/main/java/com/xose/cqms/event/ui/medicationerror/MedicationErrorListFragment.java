@@ -30,6 +30,9 @@ import com.xose.cqms.event.util.PrefUtils;
 import com.xose.cqms.event.util.SingleTypeAdapter;
 import com.xose.cqms.event.util.UIUtils;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+
 import java.util.Collections;
 import java.util.List;
 
@@ -49,6 +52,8 @@ public class MedicationErrorListFragment extends ItemListFragment<MedicationErro
 
     @Inject
     protected DatabaseHelper databaseHelper;
+    @Inject
+    EventBus eventBus;
 
 
 
@@ -63,6 +68,7 @@ public class MedicationErrorListFragment extends ItemListFragment<MedicationErro
     @Override
     public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
                              final Bundle savedInstanceState) {
+        eventBus.register(this);
         return inflater.inflate(R.layout.record_list, null);
     }
 
@@ -114,10 +120,18 @@ public class MedicationErrorListFragment extends ItemListFragment<MedicationErro
         Log.e(TAG, "getFooterView");
         return this.footerView;
     }
+    @Subscribe
+    public void onEventListened(String data){
+        if(data.equals(getString(R.string.fab_clicked))){
+            startActivity(new Intent(getActivity(),MedicationErrorActivity.class).putExtra(HH_SESSION_ADD_OBSERVATION,true));
+        }
+
+    }
 
     @Override
     public void onDestroyView() {
         setListAdapter(null);
+        eventBus.unregister(this);
         super.onDestroyView();
     }
 
@@ -187,8 +201,8 @@ public class MedicationErrorListFragment extends ItemListFragment<MedicationErro
         return true;
     }
 
-    private void openSession(MedicationError session, boolean editable) {
-        startActivity(new Intent(getActivity(), MedicationErrorActivity.class).putExtra(INCIDENT_ITEM, session).putExtra(HH_SESSION_ADD_OBSERVATION, editable));
+    private void openSession(MedicationError session) {
+        startActivity(new Intent(getActivity(), MedicationErrorActivity.class).putExtra(INCIDENT_ITEM, session).putExtra(getString(R.string.view_details),true));
     }
 
     private void showRecordActionPrompt(final MedicationError report, final View view) {
@@ -211,7 +225,7 @@ public class MedicationErrorListFragment extends ItemListFragment<MedicationErro
                 alertDialog.setNeutralButton("View Details",
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
-                                openSession(report, false);
+                                openSession(report);
                             }
                         });
             }

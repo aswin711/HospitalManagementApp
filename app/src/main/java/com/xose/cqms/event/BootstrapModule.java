@@ -37,6 +37,11 @@ import com.xose.cqms.event.sync.incident.IncidentReportSyncRemoteDatastore;
 import com.xose.cqms.event.sync.medicationerror.MedicationErrorSyncAdapter;
 import com.xose.cqms.event.sync.medicationerror.MedicationErrorSyncLocalDatastore;
 import com.xose.cqms.event.sync.medicationerror.MedicationErrorSyncRemoteDatastore;
+import com.xose.cqms.event.ui.drugreaction.DrugReactionListFragment;
+import com.xose.cqms.event.ui.incident.IncidentReportListFragment;
+import com.xose.cqms.event.ui.medicationerror.MedicationErrorListFragment;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.lang.reflect.Type;
 import java.util.Calendar;
@@ -60,6 +65,12 @@ public class BootstrapModule {
     @Provides
     Bus provideOttoBus() {
         return new PostFromAnyThreadBus();
+    }
+
+    @Singleton
+    @Provides
+    EventBus provideEventBus(){
+        return EventBus.getDefault();
     }
 
     @Provides
@@ -267,6 +278,21 @@ public class BootstrapModule {
     @Provides
     DrugReactionSyncAdapter provideDrugReactionSyncAdapter(Context context, NotificationManager notificationManager, DrugReactionSyncLocalDatastore localDatastore, DrugReactionSyncRemoteDatastore remoteDatastore) {
         return new DrugReactionSyncAdapter(context, notificationManager, localDatastore, remoteDatastore);
+    }
+
+    @Provides
+    IncidentReportListFragment provideIncidentReportListFragment(){
+        return new IncidentReportListFragment();
+    }
+
+    @Provides
+    MedicationErrorListFragment provideMedicationErrorListFragment(){
+        return new MedicationErrorListFragment();
+    }
+
+    @Provides
+    DrugReactionListFragment provideDrugReactionListFragment(){
+        return new DrugReactionListFragment();
     }
 
 }

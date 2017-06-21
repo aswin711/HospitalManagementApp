@@ -26,6 +26,9 @@ import com.xose.cqms.event.sync.incident.IncidentReportSyncContentProvider;
 import com.xose.cqms.event.util.ConnectionUtils;
 import com.xose.cqms.event.util.ServiceUtils;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+
 import java.util.Calendar;
 
 import javax.inject.Inject;
@@ -43,7 +46,7 @@ import static com.xose.cqms.event.core.Constants.Extra.INCIDENT_ITEM;
  * Use the {@link ReportedByDetailsFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ReportedByDetailsFragment extends Fragment implements IncidentReportActivity.FragmentBackpressed {
+public class ReportedByDetailsFragment extends Fragment{
 
     protected static View fragmentView;
 
@@ -59,6 +62,8 @@ public class ReportedByDetailsFragment extends Fragment implements IncidentRepor
 
     @Inject
     protected DatabaseHelper databaseHelper;
+    @Inject
+    EventBus eventBus;
     private static IncidentReport report;
     private ReportedBy reportedBy;
     private static PersonInvolved personInvolved;
@@ -98,6 +103,7 @@ public class ReportedByDetailsFragment extends Fragment implements IncidentRepor
                              Bundle savedInstanceState) {
         fragmentView = inflater.inflate(R.layout.fragment_reported_by_details, container, false);
         ButterKnife.bind(this, fragmentView);
+        eventBus.register(this);
         Bundle bundle = this.getArguments();
         if (bundle != null) {
             report = (IncidentReport) bundle.getSerializable(INCIDENT_ITEM);
@@ -126,6 +132,11 @@ public class ReportedByDetailsFragment extends Fragment implements IncidentRepor
         }
     }
 
+    @Override
+    public void onDestroyView() {
+        eventBus.unregister(this);
+        super.onDestroyView();
+    }
 
     @Override
     public void onDetach() {
@@ -133,11 +144,6 @@ public class ReportedByDetailsFragment extends Fragment implements IncidentRepor
         mListener = null;
     }
 
-    @Override
-    public void OnBackPressedFragment(Context context) {
-        //Toast.makeText(context, "Third", Toast.LENGTH_SHORT).show();
-        SaveTempDetails(context);
-    }
 
     /**
      * This interface must be implemented by activities that contain this
@@ -239,6 +245,28 @@ public class ReportedByDetailsFragment extends Fragment implements IncidentRepor
         report.setUpdated(Calendar.getInstance());
         report.setReportedBy(reportedBy1);
         long id = databaseHelper.updateIncidentReportedBy(report);
+    }
+    @Subscribe
+    public void onEventListened(String data){
+        if(data.equals(getString(R.string.save_draft))){
+            if(saveDraft() != null){
+                databaseHelper.updateIncidentReportedBy(saveDraft());
+            }
+        }
+    }
+
+    private IncidentReport saveDraft(){
+        ReportedBy reportedBy1 = new ReportedBy();
+        MaterialEditText reportedByName = (MaterialEditText) fragmentView.findViewById(R.id.event_reported_by_name);
+        MaterialEditText reportedByDesignation = (MaterialEditText) fragmentView.findViewById(R.id.event_reported_by_designation);
+
+        reportedBy1.setLastName(reportedByName.getText().toString());
+        reportedBy1.setDesignation(reportedByDesignation.getText().toString());
+
+
+        report.setUpdated(Calendar.getInstance());
+        report.setReportedBy(reportedBy1);
+        return report;
     }
 
 }

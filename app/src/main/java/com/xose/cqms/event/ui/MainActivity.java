@@ -41,6 +41,7 @@ import com.xose.cqms.event.R;
 import com.xose.cqms.event.core.BootstrapService;
 import com.xose.cqms.event.core.Constants;
 import com.xose.cqms.event.core.modal.event.incident.IncidentReport;
+import com.xose.cqms.event.core.modal.event.medicationerror.MedicationError;
 import com.xose.cqms.event.events.NavItemSelectedEvent;
 import com.xose.cqms.event.events.NetworkErrorEvent;
 import com.xose.cqms.event.services.gcm.QuickstartPreferences;
@@ -67,11 +68,14 @@ import com.xose.cqms.event.util.ServiceUtils;
 import com.xose.cqms.event.util.Toaster;
 import com.xose.cqms.event.util.UIUtils;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.List;
 
 import javax.inject.Inject;
 
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import me.pushy.sdk.Pushy;
 import timber.log.Timber;
 
@@ -82,13 +86,22 @@ import timber.log.Timber;
  * If you need to remove the authentication from the application please see
  * {@link com.xose.cqms.event.authenticator.ApiKeyProvider#getAuthKey(android.app.Activity)}
  */
-public class MainActivity extends BootstrapActivity implements FragmentListener,NavigationView.OnNavigationItemSelectedListener{
+public class MainActivity extends BootstrapActivity implements NavigationView.OnNavigationItemSelectedListener{
 
     @Inject
     BootstrapServiceProvider serviceProvider;
 
     @Inject
     DatabaseHelper databaseHelper;
+
+    @Inject
+    EventBus eventBus;
+    @Inject
+    IncidentReportListFragment incidentReportListFragment;
+    @Inject
+    MedicationErrorListFragment medicationErrorListFragment;
+    @Inject
+    DrugReactionListFragment drugReactionListFragment;
 
     private boolean userHasAuthenticated = false;
 
@@ -117,7 +130,7 @@ public class MainActivity extends BootstrapActivity implements FragmentListener,
 
 
 
-    class IncidentReportContentObserver extends ContentObserver {
+        class IncidentReportContentObserver extends ContentObserver {
 
         public IncidentReportContentObserver(Handler handler) {
             super(handler);
@@ -172,7 +185,6 @@ public class MainActivity extends BootstrapActivity implements FragmentListener,
 
         }
 
-        floatingActionButton = (FloatingActionButton) findViewById(R.id.floatingActionButton);
         userLoggedIn = false;
 
         getSupportActionBar().setElevation(0);
@@ -190,8 +202,8 @@ public class MainActivity extends BootstrapActivity implements FragmentListener,
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.navigation_drawer);
         navigationView.setNavigationItemSelectedListener(this);
-        //navigationView.setItemIconTintList(ColorStateList.valueOf(Color.BLACK));
 
+        //setting margin for pre-lollipop devices
         if(isPreLollipop()){
             View v = navigationView;
             DrawerLayout.LayoutParams params = (DrawerLayout.LayoutParams) v.getLayoutParams();
@@ -216,33 +228,14 @@ public class MainActivity extends BootstrapActivity implements FragmentListener,
         getSupportActionBar().setHomeButtonEnabled(true);
         checkAuth();
 
-        floatingActionButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //Toast.makeText(MainActivity.this, "Clicked", Toast.LENGTH_SHORT).show();
-                if(userLoggedIn){
-                    Toast.makeText(MainActivity.this, "User logged", Toast.LENGTH_SHORT).show();
-                }
-
-                switch (fragmentId){
-                    case 1:
-                        startActivity(new Intent(getApplicationContext(), IncidentReportActivity.class));
-                        break;
-                    case 0:
-                        startActivity(new Intent(getApplicationContext(), MedicationErrorActivity.class));
-                        break;
-                    case 2:
-                        startActivity(new Intent(getApplicationContext(), DrugReactionActivity.class));
-                        break;
-
-                }
-            }
-        });
-
         onNavigationItemSelected(navigationView.getMenu().getItem(0));
         navigationView.getMenu().getItem(0).setChecked(true);
 
         // GCM registration //
+    }
+
+    @OnClick(R.id.floatingActionButton) void SelectEvent(){
+        eventBus.post(getString(R.string.fab_clicked));
     }
 
     @Override
@@ -263,26 +256,18 @@ public class MainActivity extends BootstrapActivity implements FragmentListener,
         // Handle navigation view item clicks here.
         //Bundle bundle = new Bundle();
         int id = menuItem.getItemId();
+        FragmentManager manager = getSupportFragmentManager();
 
         if (id == R.id.nav_incident_report) {
-            IncidentReportListFragment fragment = new IncidentReportListFragment();
-            fragmentId = 1;
-            FragmentManager manager = getSupportFragmentManager();
-            manager.beginTransaction().replace(R.id.container,fragment).commit();
+            manager.beginTransaction().replace(R.id.container,incidentReportListFragment).commit();
             setTitle("Incident Report");
 
         } else if (id == R.id.nav_medication_error) {
-            MedicationErrorListFragment fragment1 = new MedicationErrorListFragment();
-            fragmentId = 0;
-            FragmentManager manager1 = getSupportFragmentManager();
-            manager1.beginTransaction().replace(R.id.container,fragment1).commit();
+            manager.beginTransaction().replace(R.id.container,medicationErrorListFragment).commit();
             setTitle("Medication Error");
 
         } else if (id == R.id.nav_adverse_drug_error) {
-            DrugReactionListFragment fragment2 = new DrugReactionListFragment();
-            fragmentId = 2;
-            FragmentManager manager2 = getSupportFragmentManager();
-            manager2.beginTransaction().replace(R.id.container,fragment2).commit();
+            manager.beginTransaction().replace(R.id.container,drugReactionListFragment).commit();
             setTitle("Adverse Drug Reaction");
 
         } else if (id == R.id.nav_sync_data) {
@@ -300,10 +285,6 @@ public class MainActivity extends BootstrapActivity implements FragmentListener,
         return UIUtils.isTablet(this);
     }
 
-    @Override
-    public void viewFragment(int id) {
-        fragmentId = id;
-    }
 
     @Override
     public void onConfigurationChanged(final Configuration newConfig) {
@@ -317,10 +298,6 @@ public class MainActivity extends BootstrapActivity implements FragmentListener,
         return MainActivity.this;
     }
 
-    private void initScreen() {
-        Log.d("UserState",PrefUtils.isUserLoggedIn()+"");
-
-    }
 
     private void checkAuth() {
         new SafeAsyncTask<Boolean>() {
@@ -436,48 +413,6 @@ public class MainActivity extends BootstrapActivity implements FragmentListener,
         startActivityForResult(i, 1);
     }
 
-    @Subscribe
-    public void onNavigationItemSelected(NavItemSelectedEvent event) {
-        Bundle bundle = new Bundle();
-        switch (event.getItemPosition()) {
-            case 0:
-                // Home
-                // do nothing as we're already on the home screen.
-                break;
-            case 1:
-                CarouselFragment fragment = new CarouselFragment();
-                bundle.putInt("id",1);
-                fragment.setArguments(bundle);
-                FragmentManager manager = getSupportFragmentManager();
-                manager.beginTransaction().replace(R.id.container,fragment).commit();
-
-                setTitle("Incident Report");
-                break;
-            case 2:
-                CarouselFragment fragment1 = new CarouselFragment();
-                bundle.putInt("id",0);
-                fragment1.setArguments(bundle);
-                FragmentManager manager1 = getSupportFragmentManager();
-                manager1.beginTransaction().replace(R.id.container,fragment1).commit();
-                setTitle("Incident Report");
-                break;
-            case 3:
-                CarouselFragment fragment2 = new CarouselFragment();
-                bundle.putInt("id",2);
-                fragment2.setArguments(bundle);
-                FragmentManager manager2 = getSupportFragmentManager();
-                manager2.beginTransaction().replace(R.id.container,fragment2).commit();
-                setTitle("Incident Report");
-                break;
-            case 4:
-                navigateToConfig();
-                break;
-            case 5:
-                initiateSync();
-                break;
-        }
-    }
-
     //Schedules for every 15 minutes
     private void scheduleSync() {
         ServiceUtils.scheduleSync(this, IncidentReportSyncContentProvider.AUTHORITY, 600l);
@@ -510,9 +445,12 @@ public class MainActivity extends BootstrapActivity implements FragmentListener,
         }
     }
 
-
     @Override
     public void onBackPressed() {
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        }
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
         int imageResource = android.R.drawable.ic_dialog_alert;
         alertDialog.setTitle("Exit");

@@ -181,5 +181,8 @@
     <string name="no_drug_reactions">Adverse Drug reactions</string>
     <string name="error_loading_drug_reactions">Failed loading Adverse Drug Reactions</string>
     <string name="added_incident">Incident added</string>
+    <string name="fab_clicked">FabClicked</string>
+    <string name="save_draft">SaveDraft</string>
+    <string name="view_details">ViewDetails</string>
 
 </resources>

@@ -30,6 +30,9 @@ import com.xose.cqms.event.core.modal.event.incident.IncidentReport;
 import com.xose.cqms.event.sqlite.DatabaseHelper;
 import com.xose.cqms.event.util.ViewUtils;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+
 import java.util.Calendar;
 
 import javax.inject.Inject;
@@ -47,7 +50,7 @@ import static com.xose.cqms.event.core.Constants.Extra.INCIDENT_ITEM;
  * Use the {@link IncidentPersonDetailsFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class IncidentPersonDetailsFragment extends Fragment implements IncidentReportActivity.FragmentBackpressed {
+public class IncidentPersonDetailsFragment extends Fragment{
 
     protected static View fragmentView;
 
@@ -90,6 +93,8 @@ public class IncidentPersonDetailsFragment extends Fragment implements IncidentR
 
     @Inject
     protected DatabaseHelper databaseHelper;
+    @Inject
+    EventBus eventBus;
     private static IncidentReport report;
     private  PersonInvolved personInvolved;
     private Boolean editable = false;
@@ -129,6 +134,7 @@ public class IncidentPersonDetailsFragment extends Fragment implements IncidentR
                              Bundle savedInstanceState) {
         fragmentView = inflater.inflate(R.layout.fragment_incident_person_details, container, false);
         ButterKnife.bind(this, fragmentView);
+        eventBus.register(this);
         Bundle bundle = this.getArguments();
         report = null;
         if (bundle != null) {
@@ -164,16 +170,17 @@ public class IncidentPersonDetailsFragment extends Fragment implements IncidentR
 
 
     @Override
+    public void onDestroyView() {
+        eventBus.unregister(this);
+        super.onDestroyView();
+    }
+
+    @Override
     public void onDetach() {
         super.onDetach();
         mListener = null;
     }
 
-    @Override
-    public void OnBackPressedFragment(Context context) {
-        //Toast.makeText(context, "Second", Toast.LENGTH_SHORT).show();
-        SaveTempDetails(context);
-    }
 
     /**
      * This interface must be implemented by activities that contain this
@@ -422,6 +429,58 @@ public class IncidentPersonDetailsFragment extends Fragment implements IncidentR
         //Log.d("Temp",ListViewer.view(personInvolved1));
         //Log.d("Temp",ListViewer.view(report));
         long id = databaseHelper.updateIncidentPersonInvolved(report);
+    }
+
+    @Subscribe
+    public void onEventListened(String data){
+        if(data.equals(getString(R.string.save_draft))){
+            if (saveDraft() != null){
+                databaseHelper.updateIncidentPersonInvolved(saveDraft());
+            }
+        }
+    }
+
+    public IncidentReport saveDraft(){
+        PersonInvolved personInvolved1 = new PersonInvolved();
+
+        MaterialEditText personInvolvedName = (MaterialEditText) fragmentView.findViewById(R.id.person_involved_name);
+        MaterialEditText patientNumber = (MaterialEditText) fragmentView.findViewById(R.id.patient_number);
+        RadioButton radioMale = (RadioButton) fragmentView.findViewById(R.id.gender_male);
+        RadioButton radioFemale = (RadioButton) fragmentView.findViewById(R.id.gender_female);
+        RadioButton radioIndeterminate = (RadioButton) fragmentView.findViewById(R.id.gender_indeterminate);
+        RadioButton radioNotStated = (RadioButton) fragmentView.findViewById(R.id.gender_not_stated);
+        MaterialEditText staffIdNumber = (MaterialEditText) fragmentView.findViewById(R.id.staff_id_no);
+        MaterialEditText staffDesignation = (MaterialEditText) fragmentView.findViewById(R.id.staff_designation);
+        MaterialBetterSpinner typeSpinner = (MaterialBetterSpinner) fragmentView.findViewById(R.id.person_types);
+
+        /*Toast.makeText(context, ""+personInvolvedName.getText().toString()+"\n"+
+                typeSpinner.get, Toast.LENGTH_SHORT).show();*/
+
+        personInvolved1.setName(personInvolvedName.getText().toString());
+
+        switch (typeSpinner.getText().toString()){
+            case "Patient":
+                personInvolved1.setPersonnelTypeCode(1);
+                personInvolved1.setHospitalNumber(patientNumber.getText().toString());
+                personInvolved1.setGenderCode(radioMale.isChecked()?1:(radioFemale.isChecked()?2:(radioIndeterminate.isChecked()?3
+                        :(radioNotStated.isChecked()?4:0))));
+                break;
+            case "Staff":
+                personInvolved1.setPersonnelTypeCode(2);
+                personInvolved1.setStaffId(staffIdNumber.getText().toString());
+                personInvolved1.setDesignation(staffDesignation.getText().toString());
+                break;
+            case "Visitor":
+                personInvolved1.setPersonnelTypeCode(3);
+                break;
+            default:
+                personInvolved1.setPersonnelTypeCode(0);
+
+        }
+
+        report.setUpdated(Calendar.getInstance());
+        report.setPersonInvolved(personInvolved1);
+       return report;
     }
 
     private void nextScreen() {

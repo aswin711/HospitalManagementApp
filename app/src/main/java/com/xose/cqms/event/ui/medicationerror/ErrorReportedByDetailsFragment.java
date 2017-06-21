@@ -26,6 +26,9 @@ import com.xose.cqms.event.sync.medicationerror.MedicationErrorSyncContentProvid
 import com.xose.cqms.event.util.ConnectionUtils;
 import com.xose.cqms.event.util.ServiceUtils;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+
 import java.util.Calendar;
 
 import javax.inject.Inject;
@@ -44,7 +47,7 @@ import static com.xose.cqms.event.core.Constants.Extra.INCIDENT_ITEM;
  * Use the {@link ErrorReportedByDetailsFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ErrorReportedByDetailsFragment extends Fragment implements MedicationErrorActivity.FragmentBackPressed {
+public class ErrorReportedByDetailsFragment extends Fragment {
 
     protected static View fragmentView;
 
@@ -60,6 +63,8 @@ public class ErrorReportedByDetailsFragment extends Fragment implements Medicati
 
     @Inject
     protected DatabaseHelper databaseHelper;
+    @Inject
+    EventBus eventBus;
     private static MedicationError report;
     private  ReportedBy reportedBy;
     //private static PersonInvolved personInvolved;
@@ -100,6 +105,7 @@ public class ErrorReportedByDetailsFragment extends Fragment implements Medicati
                              Bundle savedInstanceState) {
         fragmentView = inflater.inflate(R.layout.fragment_reported_by_details, container, false);
         ButterKnife.bind(this, fragmentView);
+        eventBus.register(this);
         Bundle bundle = this.getArguments();
         if (bundle != null) {
             report = (MedicationError) bundle.getSerializable(INCIDENT_ITEM);
@@ -131,6 +137,20 @@ public class ErrorReportedByDetailsFragment extends Fragment implements Medicati
         }
     }
 
+    @Subscribe
+    public void onEventListened(String data){
+        if(data.equals(getString(R.string.save_draft))){
+            if(saveDraft() != null){
+                databaseHelper.updateMedicationErrorReportedBy(saveDraft());
+            }
+        }
+    }
+
+    @Override
+    public void onDestroyView() {
+        eventBus.unregister(this);
+        super.onDestroyView();
+    }
 
     @Override
     public void onDetach() {
@@ -139,11 +159,11 @@ public class ErrorReportedByDetailsFragment extends Fragment implements Medicati
 
     }
 
-    @Override
+   /* @Override
     public void onPressed(Boolean status, Context context) {
         //Toast.makeText(context, "ReportBy", Toast.LENGTH_SHORT).show();
         saveTempDetails(context);
-    }
+    }*/
 
     /**
      * This interface must be implemented by activities that contain this
@@ -217,6 +237,21 @@ public class ErrorReportedByDetailsFragment extends Fragment implements Medicati
         report.setUpdated(Calendar.getInstance());
         report.setReportedBy(reportedBy1);
         long id = databaseHelper.updateMedicationErrorReportedBy(report);
+    }
+
+    public MedicationError saveDraft(){
+
+        ReportedBy reportedBy1 = new ReportedBy();
+        MaterialEditText reportedByName = (MaterialEditText) fragmentView.findViewById(R.id.event_reported_by_name);
+        MaterialEditText reportedByDesignation = (MaterialEditText) fragmentView.findViewById(R.id.event_reported_by_designation);
+
+        reportedBy1.setLastName(reportedByName.getText().toString());
+        reportedBy1.setDesignation(reportedByDesignation.getText().toString());
+
+
+        report.setUpdated(Calendar.getInstance());
+        report.setReportedBy(reportedBy1);
+        return report;
     }
 
     private boolean saveIncidentDetails() {

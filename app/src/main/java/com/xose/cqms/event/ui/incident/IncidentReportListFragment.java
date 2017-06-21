@@ -29,6 +29,9 @@ import com.xose.cqms.event.util.PrefUtils;
 import com.xose.cqms.event.util.SingleTypeAdapter;
 import com.xose.cqms.event.util.UIUtils;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+
 import java.util.Collections;
 import java.util.List;
 
@@ -49,6 +52,8 @@ public class IncidentReportListFragment extends ItemListFragment<IncidentReport>
 
     @Inject
     protected DatabaseHelper databaseHelper;
+    @Inject
+    EventBus eventBus;
 
 
     @Override
@@ -61,6 +66,7 @@ public class IncidentReportListFragment extends ItemListFragment<IncidentReport>
     @Override
     public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
                              final Bundle savedInstanceState) {
+        eventBus.register(this);
         return inflater.inflate(R.layout.record_list, null);
     }
 
@@ -112,9 +118,17 @@ public class IncidentReportListFragment extends ItemListFragment<IncidentReport>
         return this.footerView;
     }
 
+    @Subscribe
+    public void onEventListened(String data){
+        if (data.equals(getString(R.string.fab_clicked))){
+            startActivity(new Intent(getActivity(),IncidentReportActivity.class));
+        }
+
+    }
     @Override
     public void onDestroyView() {
         setListAdapter(null);
+        eventBus.unregister(this);
         super.onDestroyView();
     }
 

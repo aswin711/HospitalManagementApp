@@ -19,6 +19,8 @@ import com.xose.cqms.event.sqlite.DatabaseHelper;
 import com.xose.cqms.event.ui.base.BootstrapFragmentActivity;
 import com.xose.cqms.event.ui.medicationerror.MedicationErrorActivity;
 
+import org.greenrobot.eventbus.EventBus;
+
 import javax.inject.Inject;
 
 import butterknife.ButterKnife;
@@ -32,13 +34,13 @@ public class IncidentReportActivity extends BootstrapFragmentActivity {
 
     @Inject
     protected DatabaseHelper databaseHelper;
+    @Inject
+    EventBus eventBus;
     private IncidentReport report;
     private Boolean enable;
 
     private Boolean doubleBackPressed = false;
-    private FragmentBackpressed fragmentBackpressed1;
-    private FragmentBackpressed fragmentBackpressed2;
-    private FragmentBackpressed fragmentBackpressed3;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,9 +49,7 @@ public class IncidentReportActivity extends BootstrapFragmentActivity {
         setContentView(R.layout.activity_incident_report);
         ButterKnife.bind(this);
 
-        fragmentBackpressed1 = (FragmentBackpressed) new IncidentDetailsFragment();
-        fragmentBackpressed2 = (FragmentBackpressed) new IncidentPersonDetailsFragment();
-        fragmentBackpressed3 = (FragmentBackpressed) new ReportedByDetailsFragment();
+
 
         if (getIntent() != null && getIntent().getExtras() != null) {
             report = (IncidentReport) getIntent().getExtras().getSerializable(INCIDENT_ITEM);
@@ -91,13 +91,7 @@ public class IncidentReportActivity extends BootstrapFragmentActivity {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
 
-                    if (getSupportFragmentManager().findFragmentByTag("FirstFragment") != null){
-                        fragmentBackpressed1.OnBackPressedFragment(getApplicationContext());
-                    }else if(getSupportFragmentManager().findFragmentByTag("SecondFragment") != null){
-                        fragmentBackpressed2.OnBackPressedFragment(getApplicationContext());
-                    }else {
-                        fragmentBackpressed3.OnBackPressedFragment(getApplicationContext());
-                    }
+                    eventBus.post(getString(R.string.save_draft));
 
                     onBackPressed();
                 }
@@ -158,7 +152,5 @@ public class IncidentReportActivity extends BootstrapFragmentActivity {
                 .commit();
     }
 
-    public interface FragmentBackpressed{
-        void OnBackPressedFragment(Context context);
-    }
+
 }

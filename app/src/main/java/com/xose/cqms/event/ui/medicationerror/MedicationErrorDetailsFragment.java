@@ -37,6 +37,9 @@ import com.xose.cqms.event.util.CalenderUtils;
 import com.xose.cqms.event.util.ListViewer;
 import com.xose.cqms.event.util.PrefUtils;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -55,13 +58,13 @@ import static com.xose.cqms.event.core.Constants.Extra.INCIDENT_ITEM;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link MedicationErrorDetailsFragment.OnFragmentInteractionListener} interface
+ * {@link MedicationErrorDetailsFragment} interface
  * to handle interaction events.
  * Use the {@link MedicationErrorDetailsFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class MedicationErrorDetailsFragment extends Fragment implements View.OnClickListener,
-        DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener,MedicationErrorActivity.FragmentBackPressed {
+public class MedicationErrorDetailsFragment extends Fragment implements
+        DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener{
 
 
     protected static View fragmentView;
@@ -85,12 +88,13 @@ public class MedicationErrorDetailsFragment extends Fragment implements View.OnC
 
     @Inject
     protected DatabaseHelper databaseHelper;
+    @Inject
+    EventBus eventBus;
     private static MedicationError report;
-    private Boolean editable = false;
+    private Boolean editable = true;
 
     ArrayAdapter<Unit> unitAdapter;
 
-    private OnFragmentInteractionListener mListener;
 
 
     public static MedicationErrorDetailsFragment newInstance(String param1, String param2) {
@@ -118,14 +122,11 @@ public class MedicationErrorDetailsFragment extends Fragment implements View.OnC
 
         fragmentView = inflater.inflate(R.layout.fragment_incident_details, container, false);
         ButterKnife.bind(this, fragmentView);
+        eventBus.register(this);
         Bundle bundle = this.getArguments();
         if (bundle != null) {
             report = (MedicationError) bundle.getSerializable(INCIDENT_ITEM);
             editable = bundle.getBoolean(HH_SESSION_ADD_OBSERVATION);
-            if(!editable){
-                startActivity(new Intent(getActivity(),MedicationErrorViewActivity.class).putExtra(INCIDENT_ITEM,report));
-                getActivity().finish();
-            }
             if (null == report) {
                 Long reportRef = bundle.getLong(Constants.Extra.INCIDENT_REF, 0l);
                 Log.e("reportRef ", String.valueOf(reportRef));
@@ -144,28 +145,19 @@ public class MedicationErrorDetailsFragment extends Fragment implements View.OnC
         return fragmentView;
     }
 
-    public void saveTempEvent(Context context){
-
-    }
-
 
 
     // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
+
 
 
     @Override
     public void onDetach() {
         super.onDetach();
-        mListener = null;
         report = null;
     }
 
-    @Override
+   /* @Override
     public void onPressed(Boolean status, Context context) {
        Log.d("SavedItems",report.toString());
         Toast.makeText(context, "First fragment", Toast.LENGTH_SHORT).show();
@@ -176,7 +168,7 @@ public class MedicationErrorDetailsFragment extends Fragment implements View.OnC
         }else{
             Log.d("Viewer","not accesible");
         }
-    }
+    }*/
 
     /**
      * This interface must be implemented by activities that contain this
@@ -188,10 +180,7 @@ public class MedicationErrorDetailsFragment extends Fragment implements View.OnC
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
      */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        public void onFragmentInteraction(Uri uri);
-    }
+
 
 
     private void initScreen() {
@@ -293,12 +282,25 @@ public class MedicationErrorDetailsFragment extends Fragment implements View.OnC
 
     }
 
+    @Subscribe
+    public void onEventListened(String data){
+        if(data.equals(getString(R.string.save_draft))){
+            if(saveDraft() != null){
+                databaseHelper.insertOrUpdateMedicationError(saveDraft());
+            }
+
+
+
+        }
+
+    }
 
     @Override
-    public void onClick(View view) {
-        //if (enableSeconds.isChecked() && view.getId() == R.id.enable_seconds) enableMinutes.setChecked(true);
-        //if (!enableMinutes.isChecked() && view.getId() == R.id.enable_minutes) enableSeconds.setChecked(false);
+    public void onDestroyView() {
+        eventBus.unregister(this);
+        super.onDestroyView();
     }
+
 
     @Override
     public void onResume() {
@@ -426,6 +428,32 @@ public class MedicationErrorDetailsFragment extends Fragment implements View.OnC
 
     }
 
+    public MedicationError saveDraft(){
+        Long hospitalRef = PrefUtils.getLongFromPrefs(getContext(), PrefUtils.PREFS_HOSP_ID, null);
+        report.setHospital(hospitalRef);
+        MaterialEditText description = (MaterialEditText) fragmentView.findViewById(R.id.event_description);
+        report.setDescription(description.getText().toString().trim());
+        MaterialEditText correctiveAction = (MaterialEditText) fragmentView.findViewById(R.id.event_corrective_action);
+        report.setCorrectiveActionTaken(correctiveAction.getText().toString().trim());
+        RadioButton actualMiss = (RadioButton) fragmentView.findViewById(R.id.incident_level_near_miss);
+        RadioButton harmMiss = (RadioButton) fragmentView.findViewById(R.id.incident_level_harm);
+
+        if(actualMiss.isChecked()){
+            report.setIncidentLevelCode(1);
+        }else if(harmMiss.isChecked()){
+            report.setIncidentLevelCode(2);
+        }else {
+            report.setIncidentLevelCode(0);
+        }
+        if (0 == report.getStatusCode()){
+
+            report.setCreatedOn(Calendar.getInstance());
+
+        }
+        report.setUpdated(Calendar.getInstance());
+       return report;
+    }
+
     private boolean validateIncidentDeatils() {
         boolean error = false;
 
@@ -468,6 +496,7 @@ public class MedicationErrorDetailsFragment extends Fragment implements View.OnC
 
     private void nextScreen() {
         MedicationErrorPersonDetailsFragment personDetailsFragment = new MedicationErrorPersonDetailsFragment();
+
         if (null != report) {
             Bundle bundle = new Bundle();
             bundle.putSerializable(Constants.Extra.INCIDENT_ITEM, report);

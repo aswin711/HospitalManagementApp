@@ -36,6 +36,9 @@ import com.xose.cqms.event.util.ListViewer;
 import com.xose.cqms.event.util.PrefUtils;
 import com.xose.cqms.event.util.ViewUtils;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -57,7 +60,7 @@ import static com.xose.cqms.event.core.Constants.Extra.INCIDENT_ITEM;
  * create an instance of this fragment.
  */
 public class IncidentDetailsFragment extends Fragment implements View.OnClickListener,
-        DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener,IncidentReportActivity.FragmentBackpressed {
+        DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
 
 
     protected static View fragmentView;
@@ -85,6 +88,8 @@ public class IncidentDetailsFragment extends Fragment implements View.OnClickLis
 
     @Inject
     protected DatabaseHelper databaseHelper;
+    @Inject
+    EventBus eventBus;
     private static IncidentReport report;
 
     ArrayAdapter<Unit> unitAdapter;
@@ -117,7 +122,7 @@ public class IncidentDetailsFragment extends Fragment implements View.OnClickLis
                              Bundle savedInstanceState) {
         fragmentView = inflater.inflate(R.layout.fragment_incident_details, container, false);
         ButterKnife.bind(this, fragmentView);
-
+        eventBus.register(this);
         Bundle bundle = this.getArguments();
         if (bundle != null) {
             report = (IncidentReport) bundle.getSerializable(INCIDENT_ITEM);
@@ -146,6 +151,11 @@ public class IncidentDetailsFragment extends Fragment implements View.OnClickLis
         }
     }
 
+    @Override
+    public void onDestroyView() {
+        eventBus.unregister(this);
+        super.onDestroyView();
+    }
 
     @Override
     public void onDetach() {
@@ -153,12 +163,7 @@ public class IncidentDetailsFragment extends Fragment implements View.OnClickLis
         mListener = null;
     }
 
-    @Override
-    public void OnBackPressedFragment(Context context) {
-        //Toast.makeText(context, "First", Toast.LENGTH_SHORT).show();
-        SaveTempDetails(context);
-        Log.d("Temp", ListViewer.view(report));
-    }
+
 
     /**
      * This interface must be implemented by activities that contain this
@@ -495,6 +500,55 @@ public class IncidentDetailsFragment extends Fragment implements View.OnClickLis
         }
 
 
+    }
+
+    @Subscribe
+    public void onEventListened(String data){
+        if (data.equals(getString(R.string.save_draft))){
+            if(saveDraft() != null){
+                databaseHelper.insertOrUpdateIncidentReport(saveDraft());
+            }
+        }
+    }
+
+    public IncidentReport saveDraft(){
+        //IncidentReport report = new IncidentReport();
+        Long hospitalRef = PrefUtils.getLongFromPrefs(getContext(), PrefUtils.PREFS_HOSP_ID, null);
+        report.setHospital(hospitalRef);
+        MaterialEditText description = (MaterialEditText) fragmentView.findViewById(R.id.event_description);
+        report.setDescription(description.getText().toString().trim());
+        MaterialEditText correctiveAction = (MaterialEditText) fragmentView.findViewById(R.id.event_corrective_action);
+        report.setCorrectiveActionTaken(correctiveAction.getText().toString().trim());
+        RadioButton actualMiss = (RadioButton) fragmentView.findViewById(R.id.incident_level_near_miss);
+        RadioButton harmMiss = (RadioButton) fragmentView.findViewById(R.id.incident_level_harm);
+        MaterialBetterSpinner typeSpinner = (MaterialBetterSpinner) fragmentView.findViewById(R.id.incident_types);
+        List<IncidentType> types =  databaseHelper.getAllIncidentTypes(hospitalRef);
+        if(!typeSpinner.getText().toString().isEmpty()){
+            for (IncidentType type:types){
+                if(type.getIncidentType().equals(typeSpinner.getText())){
+                    report.setIncidentTypeRef(type.getServerId());
+                    report.setIncidentType(type.getServerId());
+                    report.setIncidentTypeName(type.getIncidentType());
+                }
+            }
+        }else{
+            report.setIncidentTypeRef(0l);
+            report.setIncidentTypeName(null);
+        }
+        if(actualMiss.isChecked()){
+            report.setIncidentLevelCode(1);
+        }else if(harmMiss.isChecked()){
+            report.setIncidentLevelCode(2);
+        }else {
+            report.setIncidentLevelCode(0);
+        }
+        if (0 == report.getStatusCode()){
+
+            report.setCreatedOn(Calendar.getInstance());
+
+        }
+        report.setUpdated(Calendar.getInstance());
+        return report;
     }
 
     private void nextScreen() {

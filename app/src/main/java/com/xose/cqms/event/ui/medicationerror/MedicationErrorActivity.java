@@ -3,6 +3,7 @@ package com.xose.cqms.event.ui.medicationerror;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -19,6 +20,8 @@ import com.xose.cqms.event.core.modal.event.medicationerror.MedicationError;
 import com.xose.cqms.event.sqlite.DatabaseHelper;
 import com.xose.cqms.event.ui.base.BootstrapFragmentActivity;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.List;
 
 import javax.inject.Inject;
@@ -26,6 +29,7 @@ import javax.inject.Inject;
 import butterknife.ButterKnife;
 
 import static com.xose.cqms.event.core.Constants.Extra.HH_SESSION_ADD_OBSERVATION;
+import static com.xose.cqms.event.core.Constants.Extra.HH_SESSION_ITEM;
 import static com.xose.cqms.event.core.Constants.Extra.INCIDENT_ITEM;
 import static com.xose.cqms.event.core.Constants.Extra.INCIDENT_REF;
 
@@ -34,26 +38,28 @@ public class MedicationErrorActivity extends BootstrapFragmentActivity {
 
     @Inject
     protected DatabaseHelper databaseHelper;
+    @Inject
+    EventBus eventBus;
     private MedicationError report;
 
     private Boolean doubleBackPressed = false;
     private Boolean editable = true;
-    private FragmentBackPressed fragmentBackPressed;
-    private FragmentBackPressed fragmentBackPressed2;
-    private FragmentBackPressed fragmentBackPressed3;
+    private Boolean viewable = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         BootstrapApplication.component().inject(this);
         setContentView(R.layout.activity_incident_report);
-        fragmentBackPressed = (FragmentBackPressed) new MedicationErrorDetailsFragment();
-        fragmentBackPressed2 = (FragmentBackPressed) new MedicationErrorPersonDetailsFragment();
-        fragmentBackPressed3 = (FragmentBackPressed) new ErrorReportedByDetailsFragment();
         ButterKnife.bind(this);
         if (getIntent() != null && getIntent().getExtras() != null) {
             report = (MedicationError) getIntent().getExtras().getSerializable(INCIDENT_ITEM);
             editable = getIntent().getExtras().getBoolean(HH_SESSION_ADD_OBSERVATION);
+            viewable = getIntent().getBooleanExtra(getString(R.string.view_details),false);
+            if(viewable){
+                startActivity(new Intent(this,MedicationErrorViewActivity.class).putExtra(INCIDENT_ITEM,report));
+                finish();
+            }
             if (null == report) {
                 Long reportRef = getIntent().getExtras().getLong(INCIDENT_REF);
                 Log.e("reportRef ", String.valueOf(reportRef));
@@ -106,14 +112,7 @@ public class MedicationErrorActivity extends BootstrapFragmentActivity {
             alertDialog.setPositiveButton("YES", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    if(getSupportFragmentManager().findFragmentByTag("DetailsFragment") != null){
-                        fragmentBackPressed.onPressed(true,getApplicationContext());
-                    }else if(getSupportFragmentManager().findFragmentByTag("SecondFragment") != null){
-                        fragmentBackPressed2.onPressed(true,getApplicationContext());
-                        //Toast.makeText(MedicationErrorActivity.this, "Toast from Activity", Toast.LENGTH_SHORT).show();
-                    }else if(getSupportFragmentManager().findFragmentByTag("ReportByFragment") != null){
-                        fragmentBackPressed3.onPressed(true,getApplicationContext());
-                    }
+                    eventBus.post(getString(R.string.save_draft));
                     doubleBackPressed = true;
                     onBackPressed();
 
@@ -152,7 +151,4 @@ public class MedicationErrorActivity extends BootstrapFragmentActivity {
                 .commit();
     }
 
-    public interface FragmentBackPressed{
-        void onPressed(Boolean status,Context context);
-    }
 }

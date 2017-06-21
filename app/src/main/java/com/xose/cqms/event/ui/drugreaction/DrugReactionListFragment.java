@@ -30,6 +30,9 @@ import com.xose.cqms.event.util.PrefUtils;
 import com.xose.cqms.event.util.SingleTypeAdapter;
 import com.xose.cqms.event.util.UIUtils;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+
 import java.util.Collections;
 import java.util.List;
 
@@ -50,6 +53,8 @@ public class DrugReactionListFragment extends ItemListFragment<AdverseDrugEvent>
     @Inject
     protected DatabaseHelper databaseHelper;
 
+    @Inject
+    EventBus eventBus;
 
 
     @Override
@@ -62,6 +67,7 @@ public class DrugReactionListFragment extends ItemListFragment<AdverseDrugEvent>
     public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
                              final Bundle savedInstanceState) {
         //fragmentListener.viewFragment(2);
+        eventBus.register(this);
         return inflater.inflate(R.layout.record_list, null);
     }
 
@@ -114,9 +120,15 @@ public class DrugReactionListFragment extends ItemListFragment<AdverseDrugEvent>
         return this.footerView;
     }
 
+    @Subscribe
+    public void onEventListened(String data){
+        startActivity(new Intent(getActivity(),DrugReactionActivity.class));
+    }
+
     @Override
     public void onDestroyView() {
         setListAdapter(null);
+        eventBus.unregister(this);
         super.onDestroyView();
     }
 
