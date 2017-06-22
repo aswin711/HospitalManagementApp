@@ -68,9 +68,10 @@
 
 
     <!-- Material  https://github.com/rey5137/material -->
-    <color name="colorPrimary">#FF03A9F4</color>
-    <color name="colorPrimaryDark">#ff0171c9</color>
-    <color name="colorAccent">#FF00E5FF</color>
+    <color name="colorPrimary">#3c8dbc</color>
+    <color name="colorPrimaryLight">#283c8dbc</color>
+    <color name="colorPrimaryDark">#31749b</color>
+    <color name="colorAccent">#3c8dbc</color>
     <color name="colorControlNormal">#FF78909C</color>
     <color name="colorControlActivated">#FF03A9F4</color>
     <color name="colorSwitchThumbNormal">#FF78909C</color>
@@ -119,4 +120,8 @@
     <!-- Observation Card view -->
     <color name="viewBg">#f1f5f8</color>
     <color name="album_title">#4c4c4c</color>
+
+    <!--Navigation Drawer -->
+    <color name="navMenu">#212121</color>
+    <color name="navigation_seleceted">#fdf6e6</color>
 </resources>

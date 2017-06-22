@@ -4,20 +4,10 @@
     xmlns:float="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#e8eaf6"
+    android:background="#fff"
     android:orientation="vertical" >
 
-    <TextView
-        android:id="@+id/tv_signup"
-        style="@style/ShadowText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:padding="5dp"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:textColor="@color/table_text"
-        android:textColorLink="@color/text_link"
-        android:layout_marginTop="15dp" />
+
 
     <ScrollView
         android:layout_width="match_parent"
@@ -31,32 +21,34 @@
             android:paddingBottom="10dp"
             android:paddingLeft="15dp"
             android:paddingRight="15dp"
-            android:paddingTop="5dp" >
+            android:paddingTop="5dp"
+            android:layout_marginTop="100dp">
 
 
             <!-- add some padding -->
-            <com.wrapp.floatlabelededittext.FloatLabeledEditText
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/layout_email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                float:fletPaddingTop="10dp"
-                float:fletPaddingBottom="10dp">
+               >
 
-                <AutoCompleteTextView
+                <EditText
                     android:id="@+id/et_email"
-                    android:completionThreshold="1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:maxLength="1024"
                     android:imeOptions="actionNext"
                     android:inputType="textEmailAddress"
                     android:nextFocusDown="@+id/et_password"
                     android:hint="Username"/>
-            </com.wrapp.floatlabelededittext.FloatLabeledEditText>
+            </android.support.design.widget.TextInputLayout>
 
             <!-- password input -->
-            <com.wrapp.floatlabelededittext.FloatLabeledEditText
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/layout_password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                float:fletPaddingBottom="10dp">
+                >
 
                 <EditText
                     android:id="@+id/et_password"
@@ -65,7 +57,8 @@
                     android:hint="Password"
                     android:inputType="textPassword" />
 
-            </com.wrapp.floatlabelededittext.FloatLabeledEditText>
+            </android.support.design.widget.TextInputLayout>
+
 
             <!--
             <TextView
@@ -111,14 +104,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="15dp"
-                android:background="@drawable/button_background_states"
+                android:background="@color/colorPrimary"
                 android:gravity="center"
                 android:onClick="handleLogin"
                 android:padding="10dp"
                 android:text="@string/label_sign_in"
-                android:textColor="@color/text"
-                android:textSize="20sp"
-                android:textStyle="bold" />
+                android:textColor="#fff"
+                android:textSize="18dp"
+                 />
             <TextView
                 android:id="@+id/recover_account"
                 android:layout_width="match_parent"
@@ -126,10 +119,26 @@
                 android:gravity="center"
                 android:padding="5dp"
                 android:text="@string/recover_link"
-                android:textColor="@color/text_link"
+                android:textColor="@color/colorPrimary"
                 android:textColorLink="@color/text_link"
+                android:textAlignment="gravity"
+                android:layout_marginTop="15dp" />
+
+
+            <TextView
+                android:id="@+id/tv_signup"
+                style="@style/ShadowText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:padding="5dp"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textColor="@color/table_text"
+                android:textColorLink="@color/colorPrimary"
                 android:layout_marginTop="15dp" />
         </LinearLayout>
+
     </ScrollView>
+
 
 </LinearLayout>

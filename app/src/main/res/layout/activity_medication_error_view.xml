@@ -1,0 +1,405 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#FFFFFF"
+    tools:context="com.synnefx.cqms.event.ui.medicationerror.MedicationErrorViewActivity">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_marginLeft="15sp"
+            android:layout_marginRight="15sp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/medication_error_view_details_title"
+                android:text="Details"
+                android:textColor="@color/colorAccent"
+                android:textSize="14sp"
+                android:layout_marginTop="10sp"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="15sp"
+                >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Unit/Department"
+                    android:textColor="@color/text_light"
+                    android:textSize="16sp"
+                    />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/medication_error_view_details_unit"
+                    android:text="Unit for Lab-1"
+                    android:textSize="18sp"
+                    android:textColor="@color/table_text"
+                    android:layout_marginTop="10sp"/>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.25sp"
+                    android:background="@color/text_title"
+                    android:layout_marginTop="10sp"/>
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Update Time"
+                    android:textColor="@color/text_light"
+                    android:textSize="16sp"
+                    android:layout_marginTop="10sp"
+                    />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/medication_error_view_details_time"
+                    android:text="Wed,14 Jun 2017 10:30 AM"
+                    android:textSize="18sp"
+                    android:textColor="@color/table_text"
+                    android:layout_marginTop="10sp"/>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.25sp"
+                    android:background="@color/text_title"
+                    android:layout_marginTop="10sp"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Incident Level"
+                    android:textColor="@color/text_light"
+                    android:textSize="16sp"
+                    android:layout_marginTop="10sp"
+                    />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/medication_error_view_details_incident_level"
+                    android:text="Near miss"
+                    android:textSize="18sp"
+                    android:textColor="@color/table_text"
+                    android:layout_marginTop="10sp"/>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.25sp"
+                    android:background="@color/text_title"
+                    android:layout_marginTop="10sp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Incident Description"
+                    android:textColor="@color/text_light"
+                    android:textSize="16sp"
+                    android:layout_marginTop="10sp"
+                    />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/medication_error_view_details_incident_description"
+                    android:text="Rise in Temperature"
+                    android:textSize="18sp"
+                    android:textColor="@color/table_text"
+                    android:layout_marginTop="10sp"/>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.25sp"
+                    android:background="@color/text_title"
+                    android:layout_marginTop="10sp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Immediate Corrective Action Taken"
+                    android:textColor="@color/text_light"
+                    android:textSize="16sp"
+                    android:layout_marginTop="10sp"
+                    />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/medication_error_view_details_corrective_action"
+                    android:text="First Aid"
+                    android:textSize="18sp"
+                    android:textColor="@color/table_text"
+                    android:layout_marginTop="10sp"/>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.25sp"
+                    android:background="@color/text_title"
+                    android:layout_marginTop="10sp"/>
+
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/medication_error_view_person_involved"
+                android:text="Person Involved"
+                android:textSize="14sp"
+                android:textColor="@color/colorAccent"
+                android:layout_marginTop="15sp"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10sp"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/medication_error_view_person_involved_name"
+                    android:text="Samar"
+                    android:textSize="18sp"
+                    android:textColor="@color/table_text"
+                    android:layout_marginTop="10sp"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:id="@+id/medication_error_view_person_involved_type_patient"
+
+                    android:layout_marginBottom="10sp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Type: Patient"
+                        android:textSize="18sp"
+                        android:textColor="@color/table_text"/>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Patient Number:"
+                            android:textColor="@color/table_text"
+                            android:textSize="18sp"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5sp"
+                            android:id="@+id/medication_error_view_person_involved_type_patient_number"
+                            android:text="#125463"
+                            android:textColor="@color/table_text"
+                            android:textSize="18sp"/>
+
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Gender:"
+                            android:textColor="@color/table_text"
+                            android:textSize="18sp"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5sp"
+                            android:id="@+id/medication_error_view_person_involved_type_patient_gender"
+                            android:text="Male"
+                            android:textColor="@color/table_text"
+                            android:textSize="18sp"/>
+
+                    </LinearLayout>
+
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:id="@+id/medication_error_view_person_involved_type_staff"
+
+                    android:layout_marginBottom="10sp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Type: Staff"
+                        android:textSize="18sp"
+                        android:textColor="@color/table_text"/>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Staff Id/Number:"
+                            android:textColor="@color/table_text"
+                            android:textSize="18sp"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5sp"
+                            android:id="@+id/medication_error_view_person_involved_type_staff_number"
+                            android:text="#125463"
+                            android:textColor="@color/table_text"
+                            android:textSize="18sp"/>
+
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Staff Designation:"
+                            android:textColor="@color/table_text"
+                            android:textSize="18sp"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5sp"
+                            android:id="@+id/medication_error_view_person_involved_type_staff_designation"
+                            android:text="Nurse"
+                            android:textColor="@color/table_text"
+                            android:textSize="18sp"/>
+
+                    </LinearLayout>
+
+
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:id="@+id/medication_error_view_person_involved_type_visitor"
+
+                    android:layout_marginBottom="10sp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Type: Visitor"
+                        android:textSize="18sp"
+                        android:textColor="@color/table_text"/>
+
+
+
+                </LinearLayout>
+
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.25sp"
+                    android:background="@color/text_title"
+                    android:layout_marginTop="10sp"/>
+
+
+
+            </LinearLayout>
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Reported By"
+                android:textColor="@color/colorAccent"
+                android:textSize="14sp"
+                android:layout_marginTop="10sp"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10sp"
+                android:layout_marginBottom="10sp"
+                android:orientation="vertical"
+                >
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/medication_error_view_reported_by_name"
+                    android:text="Vineeth"
+                    android:textSize="18sp"
+                    android:textColor="@color/table_text"
+                    android:layout_marginTop="10sp"/>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Designation:"
+                        android:textSize="18sp"
+                        android:textColor="@color/table_text"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/medication_error_view_reported_by_designation"
+                        android:text="Doctor"
+                        android:textSize="18sp"
+                        android:textColor="@color/table_text"
+                        android:layout_marginLeft="5sp"
+                        />
+
+
+                </LinearLayout>
+
+
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.25sp"
+                    android:background="@color/text_title"
+                    android:layout_marginTop="10sp"/>
+
+
+
+
+            </LinearLayout>
+
+
+
+
+        </LinearLayout>
+
+
+
+    </ScrollView>
+
+
+</LinearLayout>

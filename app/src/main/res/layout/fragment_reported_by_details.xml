@@ -3,9 +3,9 @@
         xmlns:float="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#e8eaf6"
+        android:background="#fff"
         android:orientation="vertical"
-        tools:context="com.xose.cqms.event.ui.incident.ReportedByDetailsFragment">
+        tools:context="com.synnefx.cqms.event.ui.incident.ReportedByDetailsFragment">
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -13,6 +13,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
+                android:background="#fff"
                 android:paddingBottom="10dp"
                 android:paddingLeft="15dp"
                 android:paddingRight="15dp"
@@ -25,7 +26,8 @@
                         android:id="@+id/event_reported_by_name"
                         android:completionThreshold="1"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="@dimen/edit_height"
+                        android:layout_marginTop="@dimen/edit_margin"
                         android:imeOptions="actionNext|flagNoExtractUi"
                         android:inputType="textPersonName"
                         android:hint="@string/event_reported_by_name"/>
@@ -39,7 +41,8 @@
                         android:id="@+id/event_reported_by_designation"
                         android:completionThreshold="1"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="@dimen/edit_height"
+                        android:layout_marginTop="@dimen/edit_margin"
                         android:imeOptions="actionNext|flagNoExtractUi"
                         android:inputType="textPersonName"
                         android:hint="@string/event_reported_by_designation"/>
@@ -50,13 +53,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginTop="15dp"
-                    android:background="@drawable/button_background_states"
+                    android:background="@color/colorPrimary"
                     android:gravity="center"
                     android:padding="10dp"
                     android:text="@string/incident_details_save"
                     android:textColor="@color/text"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
+                    android:textSize="18dp"
+                     />
             </LinearLayout>
         </ScrollView>
     </LinearLayout>

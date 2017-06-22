@@ -4,9 +4,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#e8eaf6"
+    android:background="#fff"
     android:orientation="vertical"
-    tools:context="com.xose.cqms.event.ui.incident.IncidentDetailsFragment">
+    tools:context="com.synnefx.cqms.event.ui.incident.IncidentDetailsFragment">
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -23,7 +23,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
-                <TextView
+                <!--<TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingBottom="2dp"
@@ -31,12 +31,13 @@
                     android:paddingRight="5dp"
                     android:textAppearance="?android:attr/textAppearanceSmall"
                     android:textColor="@color/table_text"
-                    android:text="@string/event_unit"/>
+                    android:text="@string/event_unit"/>-->
 
                 <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
                     android:id="@+id/incident_units"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="@dimen/edit_height"
+                    android:layout_marginTop="@dimen/edit_margin"
                     android:hint="@string/event_unit" />
             </LinearLayout>
 
@@ -46,7 +47,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:visibility="gone">
-                <TextView
+                <!--<TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingBottom="2dp"
@@ -54,7 +55,7 @@
                     android:paddingRight="5dp"
                     android:textAppearance="?android:attr/textAppearanceSmall"
                     android:textColor="@color/table_text"
-                    android:text="@string/incident_type"/>
+                    android:text="@string/incident_type"/>-->
 
                 <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
                     android:id="@+id/incident_types"
@@ -64,7 +65,7 @@
             </LinearLayout>
 
 
-            <TextView
+            <!--<TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingBottom="5dp"
@@ -72,7 +73,7 @@
                 android:paddingRight="5dp"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:textColor="@color/table_text"
-                android:text="@string/event_time"/>
+                android:text="@string/event_time"/>-->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -88,6 +89,7 @@
                     android:imeOptions="actionNext|flagNoExtractUi"
                     android:inputType="none"
                     android:layout_marginBottom="8dp"
+                    android:layout_marginTop="@dimen/edit_margin"
                     android:hint="@string/event_time"/>
                 <com.rey.material.widget.Button
                     android:id="@+id/event_time_btn"
@@ -95,7 +97,11 @@
                     android:layout_height="@dimen/bt_height"
                     android:layout_weight="0.25"
                     android:text="Change"
-                    android:background="@null"
+                    android:textColor="#fff"
+                    android:layout_marginTop="@dimen/edit_margin"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:background="@color/colorPrimary"
                     app:v_styleId="@array/button_raise"/>
             </LinearLayout>
 
@@ -106,6 +112,7 @@
                 android:paddingBottom="5dp"
                 android:paddingLeft="2dp"
                 android:paddingRight="5dp"
+                android:layout_marginTop="20dp"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:textColor="@color/table_text"
                 android:text="@string/incident_level"/>
@@ -114,14 +121,17 @@
                 android:id="@+id/incident_level_grp"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/edit_margin"
                 android:orientation="horizontal">
                 <RadioButton android:id="@+id/incident_level_near_miss"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:buttonTint="@color/colorPrimary"
                     android:text="@string/incident_level_near_miss"/>
                 <RadioButton android:id="@+id/incident_level_harm"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:buttonTint="@color/colorPrimary"
                     android:text="@string/incident_level_harm"
                     android:layout_marginLeft="35dp" />
             </RadioGroup>
@@ -129,7 +139,8 @@
             <com.wrapp.floatlabelededittext.FloatLabeledEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                float:fletPadding="2dp">
+                android:layout_marginTop="@dimen/edit_margin"
+                float:fletPadding="5dp">
                 <com.rengwuxian.materialedittext.MaterialEditText
                     android:id="@+id/event_description"
                     android:completionThreshold="1"
@@ -137,6 +148,8 @@
                     android:layout_height="wrap_content"
                     android:imeOptions="actionNext|flagNoExtractUi"
                     android:inputType="textMultiLine"
+                    float:met_maxCharacters="1000"
+                    android:maxLength="1000"
                     android:minLines="4"
                     android:hint="@string/incident_description"/>
             </com.wrapp.floatlabelededittext.FloatLabeledEditText>
@@ -144,7 +157,9 @@
             <com.wrapp.floatlabelededittext.FloatLabeledEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                float:fletPadding="2dp">
+                android:layout_marginTop="@dimen/edit_margin"
+                float:fletPadding="5dp">
+
                 <com.rengwuxian.materialedittext.MaterialEditText
                     android:id="@+id/event_corrective_action"
                     android:completionThreshold="1"
@@ -152,7 +167,8 @@
                     android:layout_height="wrap_content"
                     android:imeOptions="actionNext|flagNoExtractUi"
                     android:inputType="textMultiLine"
-                    android:maxLength="1024"
+                    float:met_maxCharacters="1000"
+                    android:maxLength="1000"
                     android:minLines="4"
                     android:hint="@string/event_corrective_action"/>
             </com.wrapp.floatlabelededittext.FloatLabeledEditText>
@@ -162,13 +178,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="15dp"
-                android:background="@drawable/button_background_states"
+                android:background="@color/colorPrimary"
                 android:gravity="center"
                 android:padding="10dp"
                 android:text="@string/incident_details_save"
-                android:textColor="@color/text"
-                android:textSize="20sp"
-                android:textStyle="bold" />
+                android:textColor="#fff"
+                android:textSize="18dp"
+                 />
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

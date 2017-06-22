@@ -15,7 +15,7 @@
         android:layout_height="match_parent"
         android:background="@android:color/background_light"
         android:fitsSystemWindows="true"
-        tools:context="com.xose.cqms.event.ui.casesheet.CasesheetObservationActivity">
+        tools:context="com.synnefx.cqms.event.ui.casesheet.CasesheetObservationActivity">
         <ScrollView
             xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"

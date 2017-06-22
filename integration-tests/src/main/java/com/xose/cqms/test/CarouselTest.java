@@ -1,10 +1,10 @@
 
 
-package com.xose.cqms.test;
+package com.synnefx.cqms.test;
 
 import android.test.ActivityInstrumentationTestCase2;
 
-import com.xose.cqms.event.ui.CarouselActivity;
+import com.synnefx.cqms.event.ui.CarouselActivity;
 
 
 /**

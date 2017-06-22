@@ -11,9 +11,9 @@
     <string name="page_users">Users</string>
     <string name="page_hh_sessions">Hand Hygiene</string>
     <string name="page_case_sheets">Case Sheet</string>
-    <string name="page_incident_reports">Incident Report</string>
-    <string name="page_medication_error">Medication Error</string>
-    <string name="page_adverse_drug_reaction">Drug Reaction</string>
+    <string name="page_incident_reports">INCIDENT REPORT</string>
+    <string name="page_medication_error">MEDICATION ERROR</string>
+    <string name="page_adverse_drug_reaction">DRUG REACTION</string>
     <string name="hh_session_list_title_unit">Unit</string>
     <string name="hh_session_list_title_status">Status</string>
     <string name="hh_session_list_title_observer">Added By</string>
@@ -48,6 +48,8 @@
     <string name="message_auth_failed">Please enter a valid password</string>
     <string name="message_auth_failed_new_account">Please enter a valid email address &amp; password</string>
     <string name="message_bad_connection">Could not connect to server</string>
+    <string name="err_msg_email">Enter valid email address</string>
+    <string name="err_msg_password">Enter the password</string>
 
     <string name="home">Home</string>
     <string name="navigation_drawer_open">Drawer Open</string>
@@ -66,7 +68,7 @@
     <string name="title_activity_import_config">Import Configuration</string>
     <string name="action_settings">Settings</string>
 
-<!-- TODO: Remove or change this placeholder text -->
+    <!-- TODO: Remove or change this placeholder text -->
     <string name="title_activity_hhaudit">New Session</string>
     <string name="audit_observer">Observer</string>
     <string name="audit_hh_service">Service/Department</string>
@@ -116,7 +118,6 @@
     <string name="title_activity_hhoblist">HHOBListActivity</string>
 
 
-
     <!--Case sheet audit -->
     <string name="field_mandatory_error">This field is required</string>
     <string name="title_activity_casesheet_audit">Open Case sheet Audit</string>
@@ -128,9 +129,6 @@
     <string name="audit_cs_unit">Unit/Department</string>
     <string name="audit_cs_specialty">Clinical Specialty</string>
     <string name="audit_cs_number">Case sheet Number</string>
-
-
-
 
 
     <string name="title_activity_incident_report_list">Incident Reports</string>
@@ -167,7 +165,7 @@
     <string name="staff_id_no">Staff Id/Number</string>
     <string name="staff_designation">Staff desgination</string>
 
-<!-- TODO: Remove or change this placeholder text -->
+    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
 
@@ -182,5 +180,9 @@
     <string name="title_activity_drug_reaction">Adverse Drug Reaction</string>
     <string name="no_drug_reactions">Adverse Drug reactions</string>
     <string name="error_loading_drug_reactions">Failed loading Adverse Drug Reactions</string>
+    <string name="added_incident">Incident added</string>
+    <string name="fab_clicked">FabClicked</string>
+    <string name="save_draft">SaveDraft</string>
+    <string name="view_details">ViewDetails</string>
 
 </resources>
