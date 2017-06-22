@@ -1,16 +1,16 @@
 
 
-package com.xose.cqms.test;
+package com.synnefx.cqms.test;
 
 import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.app.Instrumentation;
 import android.content.Context;
 import android.util.Log;
-import static com.xose.cqms.event.core.Constants.Auth.*;
+import static com.synnefx.cqms.event.core.Constants.Auth.*;
 
-import com.xose.cqms.tests.R;
-import com.xose.cqms.event.util.Ln;
+import com.synnefx.cqms.tests.R;
+import com.synnefx.cqms.event.util.Ln;
 
 
 /**

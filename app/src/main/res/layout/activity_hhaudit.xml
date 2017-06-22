@@ -6,7 +6,7 @@
         android:layout_height="match_parent"
         android:background="#e8eaf6"
         android:orientation="vertical"
-        tools:context="com.xose.cqms.event.ui.hh.HHAuditActivity">
+        tools:context="com.synnefx.cqms.event.ui.hh.HHAuditActivity">
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">

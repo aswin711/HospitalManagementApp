@@ -7,7 +7,7 @@
         android:layout_height="match_parent"
         android:background="@android:color/background_light"
         android:fitsSystemWindows="true"
-        tools:context="com.xose.cqms.event.ui.incident.IncidentReportListActivity">
+        tools:context="com.synnefx.cqms.event.ui.incident.IncidentReportListActivity">
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"

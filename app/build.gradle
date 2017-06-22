@@ -56,7 +56,7 @@ android {
     buildToolsVersion '25.0.2'
 
     defaultConfig {
-        applicationId "com.xose.cqms.event"
+        applicationId "com.synnefx.cqms.event"
         minSdkVersion 18
         targetSdkVersion 23
 

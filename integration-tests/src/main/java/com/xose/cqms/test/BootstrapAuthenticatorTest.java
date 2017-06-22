@@ -1,13 +1,13 @@
 
 
-package com.xose.cqms.test;
+package com.synnefx.cqms.test;
 
 import android.test.ActivityInstrumentationTestCase2;
 import android.view.View;
 import android.widget.Button;
 
-import com.xose.cqms.event.authenticator.BootstrapAuthenticatorActivity;
-import com.xose.cqms.R;
+import com.synnefx.cqms.event.authenticator.BootstrapAuthenticatorActivity;
+import com.synnefx.cqms.R;
 
 
 /**
@@ -16,7 +16,7 @@ import com.xose.cqms.R;
 public class BootstrapAuthenticatorTest extends ActivityInstrumentationTestCase2<BootstrapAuthenticatorActivity> {
 
     /**
-     * Create test for {@link com.xose.cqms.event.authenticator.BootstrapAuthenticatorActivity}
+     * Create test for {@link com.synnefx.cqms.event.authenticator.BootstrapAuthenticatorActivity}
      */
     public BootstrapAuthenticatorTest() {
         super(BootstrapAuthenticatorActivity.class);

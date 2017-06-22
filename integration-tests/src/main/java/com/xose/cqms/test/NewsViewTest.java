@@ -1,13 +1,13 @@
 
 
-package com.xose.cqms.test;
+package com.synnefx.cqms.test;
 
-import static com.xose.cqms.event.core.Constants.Extra.NEWS_ITEM;
+import static com.synnefx.cqms.event.core.Constants.Extra.NEWS_ITEM;
 import android.content.Intent;
 import android.test.ActivityInstrumentationTestCase2;
 
-import com.xose.cqms.event.core.News;
-import com.xose.cqms.event.ui.CarouselActivity;
+import com.synnefx.cqms.event.core.News;
+import com.synnefx.cqms.event.ui.CarouselActivity;
 
 
 /**
@@ -16,7 +16,7 @@ import com.xose.cqms.event.ui.CarouselActivity;
 public class NewsViewTest extends ActivityInstrumentationTestCase2<CarouselActivity> {
 
     /**
-     * Create test for {@link com.xose.cqms.event.ui.CarouselActivity}
+     * Create test for {@link com.synnefx.cqms.event.ui.CarouselActivity}
      */
     public NewsViewTest() {
         super(CarouselActivity.class);

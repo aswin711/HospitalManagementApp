@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.xose.cqms.event">
+    package="com.synnefx.cqms.event">
 
     <uses-sdk tools:overrideLibrary="android.support.test.uiautomator.v18" />
 
@@ -20,12 +20,12 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
-        android:name=".BootstrapApplicationImpl"
+        android:name="com.synnefx.cqms.event.BootstrapApplicationImpl"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/Theme.Material.Dark">
         <activity
-            android:name=".ui.SpashscreenActivity"
+            android:name="com.synnefx.cqms.event.ui.SpashscreenActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:theme="@style/FullscreenTheme">
             <intent-filter>
@@ -35,7 +35,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.MainActivity"
+            android:name="com.synnefx.cqms.event.ui.MainActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/app_name">
             <intent-filter>
@@ -46,7 +46,7 @@
         </activity>
 
         <service
-            android:name=".authenticator.AccountAuthenticatorService"
+            android:name="com.synnefx.cqms.event.authenticator.AccountAuthenticatorService"
             android:process=":auth">
             <intent-filter>
                 <action android:name="android.accounts.AccountAuthenticator" />
@@ -59,7 +59,7 @@
 
         <!-- Hospital configuration sync -->
         <service
-            android:name=".sync.conf.ConfSyncService"
+            android:name="com.synnefx.cqms.event.sync.conf.ConfSyncService"
             android:exported="false"
             android:process=":sync">
             <intent-filter>
@@ -72,14 +72,14 @@
         </service>
 
         <provider
-            android:name=".sync.conf.ConfSyncContentProvider"
-            android:authorities="com.xose.cqms.event.sync.hh.confsyncsontentprovider"
+            android:name="com.synnefx.cqms.event.sync.conf.ConfSyncContentProvider"
+            android:authorities="com.synnefx.cqms.event.sync.hh.confsyncsontentprovider"
             android:exported="false"
             android:syncable="true" />
 
         <!-- Incident report sync -->
         <service
-            android:name=".sync.incident.IncidentReportSyncService"
+            android:name="com.synnefx.cqms.event.sync.incident.IncidentReportSyncService"
             android:exported="false"
             android:process=":sync">
             <intent-filter>
@@ -92,14 +92,14 @@
         </service>
 
         <provider
-            android:name=".sync.incident.IncidentReportSyncContentProvider"
-            android:authorities="com.xose.cqms.event.sync.incident.incidentreportsynccontentprovider"
+            android:name="com.synnefx.cqms.event.sync.incident.IncidentReportSyncContentProvider"
+            android:authorities="com.synnefx.cqms.event.sync.incident.incidentreportsynccontentprovider"
             android:exported="false"
             android:syncable="true" />
 
         <!-- Medication Error Report  sync -->
         <service
-            android:name=".sync.medicationerror.MedicationErrorSyncService"
+            android:name="com.synnefx.cqms.event.sync.medicationerror.MedicationErrorSyncService"
             android:exported="false"
             android:process=":sync">
             <intent-filter>
@@ -112,14 +112,14 @@
         </service>
 
         <provider
-            android:name=".sync.medicationerror.MedicationErrorSyncContentProvider"
-            android:authorities="com.xose.cqms.event.sync.incident.medicationerrorsynccontentprovider"
+            android:name="com.synnefx.cqms.event.sync.medicationerror.MedicationErrorSyncContentProvider"
+            android:authorities="com.synnefx.cqms.event.sync.incident.medicationerrorsynccontentprovider"
             android:exported="false"
             android:syncable="true" />
 
         <!-- Adverse Drug reaction sync -->
         <service
-            android:name=".sync.drugreaction.DrugReactionSyncService"
+            android:name="com.synnefx.cqms.event.sync.drugreaction.DrugReactionSyncService"
             android:exported="false"
             android:process=":sync">
             <intent-filter>
@@ -132,14 +132,14 @@
         </service>
 
         <provider
-            android:name=".sync.drugreaction.DrugReactionSyncContentProvider"
-            android:authorities="com.xose.cqms.event.sync.drugreaction.drugreactionsynccontentprovider"
+            android:name="com.synnefx.cqms.event.sync.drugreaction.DrugReactionSyncContentProvider"
+            android:authorities="com.synnefx.cqms.event.sync.drugreaction.drugreactionsynccontentprovider"
             android:exported="false"
             android:syncable="true" />
 
         <!-- Activities -->
         <activity
-            android:name=".authenticator.BootstrapAuthenticatorActivity"
+            android:name="com.synnefx.cqms.event.authenticator.BootstrapAuthenticatorActivity"
             android:excludeFromRecents="true">
 
             <!--
@@ -159,15 +159,15 @@
             android:value="0ae78a60f2f64558bdcb3503f5043fc350934006" />
 
         <activity
-            android:name=".ui.SettingsActivity"
+            android:name="com.synnefx.cqms.event.ui.SettingsActivity"
             android:label="@string/title_activity_settings" />
         <activity
-            android:name=".ui.ImportConfigActivity"
+            android:name="com.synnefx.cqms.event.ui.ImportConfigActivity"
             android:label="@string/title_activity_import_config"
-            android:parentActivityName=".ui.SettingsActivity">
+            android:parentActivityName="com.synnefx.cqms.event.ui.SettingsActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.SettingsActivity" />
+                android:value="com.synnefx.cqms.event.ui.SettingsActivity" />
         </activity>
 
         <!-- Pushy Declarations -->
@@ -176,7 +176,7 @@
         <!-- Pushy Notification Receiver -->
         <!-- Incoming push notifications will invoke the following BroadcastReceiver -->
         <receiver
-            android:name=".core.pushy.PushReceiver"
+            android:name="com.synnefx.cqms.event.core.pushy.PushReceiver"
             android:exported="false">
             <intent-filter>
 
@@ -214,55 +214,55 @@
         <!-- End Pushy Declarations -->
 
         <activity
-            android:name=".ui.incident.IncidentReportListActivity"
+            android:name="com.synnefx.cqms.event.ui.incident.IncidentReportListActivity"
             android:label="@string/title_activity_incident_report_list"
-            android:parentActivityName=".ui.MainActivity">
+            android:parentActivityName="com.synnefx.cqms.event.ui.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.xose.cqms.event.ui.MainActivity" />
+                android:value="com.synnefx.cqms.event.ui.MainActivity" />
         </activity>
         <activity
-            android:name=".ui.incident.IncidentReportActivity"
+            android:name="com.synnefx.cqms.event.ui.incident.IncidentReportActivity"
             android:label="@string/title_activity_incident_report"
-            android:parentActivityName=".ui.incident.IncidentReportListActivity">
+            android:parentActivityName="com.synnefx.cqms.event.ui.incident.IncidentReportListActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.xose.cqms.event.ui.incident.IncidentReportListActivity" />
+                android:value="com.synnefx.cqms.event.ui.incident.IncidentReportListActivity" />
         </activity>
         <activity
-            android:name=".ui.medicationerror.MedicationErrorListActivity"
+            android:name="com.synnefx.cqms.event.ui.medicationerror.MedicationErrorListActivity"
             android:label="@string/title_activity_medication_error_list"
-            android:parentActivityName=".ui.MainActivity">
+            android:parentActivityName="com.synnefx.cqms.event.ui.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.xose.cqms.event.ui.MainActivity" />
+                android:value="com.synnefx.cqms.event.ui.MainActivity" />
         </activity>
         <activity
-            android:name=".ui.medicationerror.MedicationErrorActivity"
+            android:name="com.synnefx.cqms.event.ui.medicationerror.MedicationErrorActivity"
             android:label="@string/title_activity_medication_error"
-            android:parentActivityName=".ui.medicationerror.MedicationErrorListActivity">
+            android:parentActivityName="com.synnefx.cqms.event.ui.medicationerror.MedicationErrorListActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.xose.cqms.event.ui.medicationerror.MedicationErrorListActivity" />
+                android:value="com.synnefx.cqms.event.ui.medicationerror.MedicationErrorListActivity" />
         </activity>
         <activity
-            android:name=".ui.drugreaction.DrugReactionListActivity"
+            android:name="com.synnefx.cqms.event.ui.drugreaction.DrugReactionListActivity"
             android:label="@string/title_activity_drug_reaction_list"
-            android:parentActivityName=".ui.MainActivity">
+            android:parentActivityName="com.synnefx.cqms.event.ui.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.xose.cqms.event.ui.MainActivity" />
+                android:value="com.synnefx.cqms.event.ui.MainActivity" />
         </activity>
         <activity
-            android:name=".ui.drugreaction.DrugReactionActivity"
+            android:name="com.synnefx.cqms.event.ui.drugreaction.DrugReactionActivity"
             android:label="@string/title_activity_drug_reaction"
-            android:parentActivityName=".ui.drugreaction.DrugReactionListActivity">
+            android:parentActivityName="com.synnefx.cqms.event.ui.drugreaction.DrugReactionListActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.xose.cqms.event.ui.drugreaction.DrugReactionListActivity" />
+                android:value="com.synnefx.cqms.event.ui.drugreaction.DrugReactionListActivity" />
         </activity>
-        <activity android:name=".ui.medicationerror.MedicationErrorViewActivity" />
-        <activity android:name=".ui.incident.IncidentReportViewActivity"></activity>
+        <activity android:name="com.synnefx.cqms.event.ui.medicationerror.MedicationErrorViewActivity" />
+        <activity android:name="com.synnefx.cqms.event.ui.incident.IncidentReportViewActivity"></activity>
     </application>
 
 </manifest>
