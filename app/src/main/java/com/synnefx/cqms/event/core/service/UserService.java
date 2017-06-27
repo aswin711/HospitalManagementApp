@@ -10,7 +10,7 @@ import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 
-//import com.xose.cqms.casesheet.core.UsersWrapper;
+//import com.synnefx.cqms.casesheet.core.UsersWrapper;
 
 /**
  * Created by Josekutty on 7/11/2016.

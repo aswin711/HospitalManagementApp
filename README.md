@@ -17,21 +17,21 @@ There will be *no upgrade path* as CQMS is mean to act as a starting point for A
 
 # CQMS App
 
-[![Build Status](https://travis-ci.org/AndroidBootstrap/com-xose-cqms.svg?branch=master)](https://travis-ci.org/AndroidBootstrap/com-xose-cqms)
+[![Build Status](https://travis-ci.org/AndroidBootstrap/com-synnefx-cqms.svg?branch=master)](https://travis-ci.org/AndroidBootstrap/com-synnefx-cqms)
 
 This repository contains the source code for the [CQMS](http://www.androidbootstrap.com/)
-Android app available from [Google Play](https://play.google.com/store/apps/details?id=com.xose.cqms).
+Android app available from [Google Play](https://play.google.com/store/apps/details?id=com.synnefx.cqms).
 
-Please see the [issues](https://github.com.xose.cqms/com-xose-cqms/issues) section
+Please see the [issues](https://github.com.synnefx.cqms/com-synnefx-cqms/issues) section
 to report any bugs or feature requests and to see the list of known issues.
 
-Have a questions about CQMS? Ask away on the [com-xose-cqms discussion forum](https://groups.google.com/forum/#!forum/com-xose-cqms).
+Have a questions about CQMS? Ask away on the [com-synnefx-cqms discussion forum](https://groups.google.com/forum/#!forum/com-synnefx-cqms).
 
-<a href="https://play.google.com/store/apps/details?id=com.xose.cqms" alt="Download from Google Play">
+<a href="https://play.google.com/store/apps/details?id=com.synnefx.cqms" alt="Download from Google Play">
   <img src="http://f.cl.ly/items/3V0K1s1i402W0c193v2w/Image%202013.07.08%201%3A45%3A25%20PM.png">
 </a>
 
-<a href="https://play.google.com/store/apps/details?id=com.xose.cqms" alt="Download from Google Play">
+<a href="https://play.google.com/store/apps/details?id=com.synnefx.cqms" alt="Download from Google Play">
   <img src="http://f.cl.ly/items/0e3T2F2x3M0K2l1X0A0u/Image%202013.07.08%201%3A46%3A09%20PM.png">
 </a>
 
@@ -60,13 +60,13 @@ As an example, you know that you want your app name and package to the following
 After generating the app on [AndroidBootstrap.com](http://www.androidbootstrap.com) the folder structure of the source
 code for the app will change:
 
-  - From: __com.xose.cqms__
+  - From: __com.synnefx.cqms__
   - To: __com/notify/app/mobile__
 
-At that point all the source files that were located in ____com.xose.cqms__ will be moved to the
+At that point all the source files that were located in ____com.synnefx.cqms__ will be moved to the
 new folder __com/notify/app/mobile__.
 
-All import statments that reference the old resources (__R.com.xose.cqms.R__) will now be renamed
+All import statments that reference the old resources (__R.com.synnefx.cqms.R__) will now be renamed
 to the correct package. The artifact id's in the *pom.xml* (and various other places) will be replaced. The App Name
 will be replaced in the strings/etc.
 
@@ -157,14 +157,14 @@ and uses many great open-source libraries from the Android dev community:
 
 
 ## Contributors
-Thank you to all the [contributors](http://www.github.com.xose.cqms/com-xose-cqms/contributors) on
+Thank you to all the [contributors](http://www.github.com.synnefx.cqms/com-synnefx-cqms/contributors) on
 this project. Your help is much appreciated.
 
 
 ## Contributing
 
 Please fork this repository and contribute back using
-[pull requests](https://github.com.xose.cqms/com-xose-cqms/pulls).
+[pull requests](https://github.com.synnefx.cqms/com-synnefx-cqms/pulls).
 
 Any contributions, large or small, major features, bug fixes, additional
 language translations, unit/integration tests are welcomed and appreciated

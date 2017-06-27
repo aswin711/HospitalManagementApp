@@ -7,9 +7,9 @@
     {
       "client_info": {
         "mobilesdk_app_id": "1:139949962110:android:d2a2e15a7088ce3c",
-		"client_id": "android:com.xose.cqms",
+		"client_id": "android:com.synnefx.cqms",
         "android_client_info": {
-          "package_name": "com.xose.cqms"
+          "package_name": "com.synnefx.cqms"
         }
       },
       "oauth_client": [],

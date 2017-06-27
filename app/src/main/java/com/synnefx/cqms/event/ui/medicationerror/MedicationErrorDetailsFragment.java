@@ -458,11 +458,15 @@ public class MedicationErrorDetailsFragment extends Fragment implements
             }
 
             if (TextUtils.isEmpty(description.getText())) {
-                description.setError("Incident description required");
+                description.setError("MedicationError description required");
                 error = true;
-            } else {
+            } else if(description.getText().length()<10){
+                description.setError("MedicationError description length must be of minimum 10 characters.");
+                error = true;
+        }else{
                 report.setDescription(description.getText().toString().trim());
             }
+
 
             if (nearMiss.isChecked()) {
                 report.setIncidentLevelCode(1);

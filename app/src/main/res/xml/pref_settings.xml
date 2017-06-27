@@ -73,7 +73,7 @@
                  android:title="Import Configuration"
                  android:summary="Import configurations from server" >
                 <!-- To make this worj the activity must be of type PreferenceActivity
-                <intent android:action="com.xose.cqms.casesheet.ui.ImportConfigActivity">
+                <intent android:action="com.synnefx.cqms.casesheet.ui.ImportConfigActivity">
                     <extra android:name="extra_name" android:value="my_value" />
                     <extra android:name="extra_2_name" android:value="my_value_2"/>
                 </intent>
