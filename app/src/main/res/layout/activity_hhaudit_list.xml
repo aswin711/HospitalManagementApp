@@ -2,7 +2,7 @@
 <!--
 <fragment xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:id="@+id/hh_session_fragment"
-    android:name="com.xose.cqms.casesheet.ui.HHAuditSessionListFragmentment tools:layout="@layout/fragment_hhaudit_list" android:layout_width="match_parent"
+    android:name="com.synnefx.cqms.casesheet.ui.HHAuditSessionListFragmentment tools:layout="@layout/fragment_hhaudit_list" android:layout_width="match_parent"
     android:layout_height="match_parent" />
 -->
 

@@ -4,6 +4,6 @@
 <resources>
 
     <string name="hello">Hello World!</string>
-    <string name="app_name">com.xose.cqms.testsTest</string>
+    <string name="app_name">com.synnefx.cqms.testsTest</string>
 
 </resources>

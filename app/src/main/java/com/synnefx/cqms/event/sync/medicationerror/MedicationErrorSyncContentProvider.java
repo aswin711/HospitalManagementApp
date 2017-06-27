@@ -6,7 +6,7 @@ import android.database.Cursor;
 import android.net.Uri;
 
 public class MedicationErrorSyncContentProvider extends ContentProvider {
-    public static String AUTHORITY = "com.xose.cqms.event.sync.incident.medicationerrorsynccontentprovider";
+    public static String AUTHORITY = "com.synnefx.cqms.event.sync.incident.medicationerrorsynccontentprovider";
     public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/medicationerror");
 
     @Override

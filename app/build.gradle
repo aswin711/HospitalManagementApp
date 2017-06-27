@@ -115,7 +115,7 @@ android {
             // proguardFile '..\proguard.cfg'
             // signingConfig signingConfigs.release
             //zipAlign true // this is default for release
-            // testPackageName 'com.xose.cqms.tests'
+            // testPackageName 'com.synnefx.cqms.tests'
             // testInstrumentationRunner 'android.test.InstrumentationTestRunner' // this is the default
         }
     }

@@ -6,13 +6,13 @@ device = MonkeyRunner.waitForConnection()
 
 # Installs the Android package. Notice that this method returns a boolean, so you can test
 # to see if the installation worked.
-device.installPackage('../app/target/com-xose-cqms-1.0.apk')
+device.installPackage('../app/target/com-synnefx-cqms-1.0.apk')
 
 # sets a variable with the package's internal name
-package = 'com.xose.cqms'
+package = 'com.synnefx.cqms'
 
 # sets a variable with the name of an Activity in the package
-activity = 'com.xose.cqms.event.ui.CarouselActivity'
+activity = 'com.synnefx.cqms.event.ui.CarouselActivity'
 
 # sets the name of the component to start
 runComponent = package + '/' + activity

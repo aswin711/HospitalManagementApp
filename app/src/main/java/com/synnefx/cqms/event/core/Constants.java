@@ -16,7 +16,7 @@ public final class Constants {
         /**
          * Account type id
          */
-        public static final String BOOTSTRAP_ACCOUNT_TYPE = "com.xose.cqms.event";
+        public static final String BOOTSTRAP_ACCOUNT_TYPE = "com.synnefx.cqms.event";
 
         /**
          * Account name
@@ -26,7 +26,7 @@ public final class Constants {
         /**
          * Provider id
          */
-        public static final String BOOTSTRAP_PROVIDER_AUTHORITY = "com.xose.cqms.event.sync";
+        public static final String BOOTSTRAP_PROVIDER_AUTHORITY = "com.synnefx.cqms.event.sync";
 
         /**
          * Auth token type
@@ -46,7 +46,7 @@ public final class Constants {
         /**
          * Base URL for all requests
          */
-        public static final String URL_BASE = "https://app.cqms.xose.co.in/api/";
+        public static final String URL_BASE = "https://app.cqms.synnefx.co.in/api/";
         // public static final String URL_BASE =  "http://192.168.0.100:8085/api/";
 
         /**
@@ -171,7 +171,7 @@ public final class Constants {
         /**
          * Action prefix for all intents created
          */
-        public static final String INTENT_PREFIX = "com.xose.cqms.";
+        public static final String INTENT_PREFIX = "com.synnefx.cqms.";
 
     }
 
