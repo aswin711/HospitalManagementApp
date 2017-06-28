@@ -35,6 +35,7 @@ import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -59,7 +60,7 @@ public class MedicationErrorDetailsFragment extends Fragment implements
         DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener{
 
 
-    protected static View fragmentView;
+    protected View fragmentView;
 
     @Bind(R.id.incident_details_save)
     protected Button saveDetailsBtn;
@@ -82,7 +83,7 @@ public class MedicationErrorDetailsFragment extends Fragment implements
     protected DatabaseHelper databaseHelper;
     @Inject
     EventBus eventBus;
-    private static MedicationError report;
+    private MedicationError report;
     private Boolean editable = true;
 
     ArrayAdapter<Unit> unitAdapter;
@@ -317,7 +318,7 @@ public class MedicationErrorDetailsFragment extends Fragment implements
                     false
             );
 
-            if (now.getTime().after(selectedDate.getTime())) {
+            if (now.getTime().after(selectedDate.getTime()) && dayOfMonth == now.get(Calendar.DAY_OF_MONTH)) {
                 tpd.setMaxTime(now.get(Calendar.HOUR_OF_DAY), now.get(Calendar.MINUTE), now.get(Calendar.SECOND));
             }
             tpd.setThemeDark(true);
@@ -386,53 +387,17 @@ public class MedicationErrorDetailsFragment extends Fragment implements
         }
         return false;
     }
-
-    public void saveTempDetails(Context context){
-        DatabaseHelper databaseHelper1 = new DatabaseHelper(context);
-        Long hospitalRef = PrefUtils.getLongFromPrefs(context, PrefUtils.PREFS_HOSP_ID, null);
-        report.setHospital(hospitalRef);
-        MaterialEditText description = (MaterialEditText) fragmentView.findViewById(R.id.event_description);
-        report.setDescription(description.getText().toString().trim());
-        MaterialEditText correctiveAction = (MaterialEditText) fragmentView.findViewById(R.id.event_corrective_action);
-        report.setCorrectiveActionTaken(correctiveAction.getText().toString().trim());
-        RadioButton actualMiss = (RadioButton) fragmentView.findViewById(R.id.incident_level_near_miss);
-        RadioButton harmMiss = (RadioButton) fragmentView.findViewById(R.id.incident_level_harm);
-
-        if(actualMiss.isChecked()){
-            report.setIncidentLevelCode(1);
-        }else if(harmMiss.isChecked()){
-            report.setIncidentLevelCode(2);
-        }else {
-            report.setIncidentLevelCode(0);
-        }
-        if (0 == report.getStatusCode()){
-
-                report.setCreatedOn(Calendar.getInstance());
-
-        }
-        report.setUpdated(Calendar.getInstance());
-        long id = databaseHelper1.insertOrUpdateMedicationError(report);
-        if (0 < id) {
-            Timber.e("saveIncidentDetails " + id);
-            report.setId(id);
-        }
-
-
-    }
-
+    // saving contents as draft on back pressed
     public MedicationError saveDraft(){
         Long hospitalRef = PrefUtils.getLongFromPrefs(getContext(), PrefUtils.PREFS_HOSP_ID, null);
         report.setHospital(hospitalRef);
-        MaterialEditText description = (MaterialEditText) fragmentView.findViewById(R.id.event_description);
         report.setDescription(description.getText().toString().trim());
-        MaterialEditText correctiveAction = (MaterialEditText) fragmentView.findViewById(R.id.event_corrective_action);
         report.setCorrectiveActionTaken(correctiveAction.getText().toString().trim());
-        RadioButton actualMiss = (RadioButton) fragmentView.findViewById(R.id.incident_level_near_miss);
-        RadioButton harmMiss = (RadioButton) fragmentView.findViewById(R.id.incident_level_harm);
 
-        if(actualMiss.isChecked()){
+
+        if(nearMiss.isChecked()){
             report.setIncidentLevelCode(1);
-        }else if(harmMiss.isChecked()){
+        }else if(actualHarm.isChecked()){
             report.setIncidentLevelCode(2);
         }else {
             report.setIncidentLevelCode(0);

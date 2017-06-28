@@ -46,7 +46,7 @@ import static com.synnefx.cqms.event.core.Constants.Extra.INCIDENT_ITEM;
  */
 public class ReportedByDetailsFragment extends Fragment{
 
-    protected static View fragmentView;
+    protected View fragmentView;
 
     @Bind(R.id.incident_reported_by_save)
     protected Button saveDetailsBtn;
@@ -62,9 +62,9 @@ public class ReportedByDetailsFragment extends Fragment{
     protected DatabaseHelper databaseHelper;
     @Inject
     EventBus eventBus;
-    private static IncidentReport report;
+    private IncidentReport report;
     private ReportedBy reportedBy;
-    private static PersonInvolved personInvolved;
+
 
 
     /**
@@ -205,6 +205,7 @@ public class ReportedByDetailsFragment extends Fragment{
             long id = databaseHelper.updateIncidentReportedBy(report);
             if (id > 0) {
                 return true;
+
             }
         }
         return false;
@@ -230,20 +231,6 @@ public class ReportedByDetailsFragment extends Fragment{
         return error;
     }
 
-    private void SaveTempDetails(Context context){
-        DatabaseHelper databaseHelper = new DatabaseHelper(context);
-        ReportedBy reportedBy1 = new ReportedBy();
-        MaterialEditText reportedByName = (MaterialEditText) fragmentView.findViewById(R.id.event_reported_by_name);
-        MaterialEditText reportedByDesignation = (MaterialEditText) fragmentView.findViewById(R.id.event_reported_by_designation);
-
-        reportedBy1.setLastName(reportedByName.getText().toString());
-        reportedBy1.setDesignation(reportedByDesignation.getText().toString());
-
-
-        report.setUpdated(Calendar.getInstance());
-        report.setReportedBy(reportedBy1);
-        long id = databaseHelper.updateIncidentReportedBy(report);
-    }
     @Subscribe
     public void onEventListened(String data){
         if(data.equals(getString(R.string.save_draft))){
@@ -254,16 +241,11 @@ public class ReportedByDetailsFragment extends Fragment{
     }
 
     private IncidentReport saveDraft(){
-        ReportedBy reportedBy1 = new ReportedBy();
-        MaterialEditText reportedByName = (MaterialEditText) fragmentView.findViewById(R.id.event_reported_by_name);
-        MaterialEditText reportedByDesignation = (MaterialEditText) fragmentView.findViewById(R.id.event_reported_by_designation);
 
-        reportedBy1.setLastName(reportedByName.getText().toString());
-        reportedBy1.setDesignation(reportedByDesignation.getText().toString());
-
-
+        reportedBy.setLastName(reportedByName.getText().toString());
+        reportedBy.setDesignation(reportedByDesignation.getText().toString());
         report.setUpdated(Calendar.getInstance());
-        report.setReportedBy(reportedBy1);
+        report.setReportedBy(reportedBy);
         return report;
     }
 

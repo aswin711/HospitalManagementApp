@@ -10,10 +10,13 @@ import android.content.SyncResult;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.synnefx.cqms.event.R;
 import com.synnefx.cqms.event.core.modal.event.medicationerror.MedicationError;
 import com.synnefx.cqms.event.sync.SyncManager;
 import com.synnefx.cqms.event.util.ConnectionUtils;
 import com.synnefx.cqms.event.util.NotificationUtils;
+
+import org.greenrobot.eventbus.EventBus;
 
 import javax.inject.Inject;
 
@@ -53,6 +56,7 @@ public class MedicationErrorSyncAdapter extends AbstractThreadedSyncAdapter {
     //  @Inject
     // protected Bus eventBus;
 
+
     @Inject
     protected Context mContext;
 
@@ -69,7 +73,7 @@ public class MedicationErrorSyncAdapter extends AbstractThreadedSyncAdapter {
         Log.d(TAG, "DrugReactionSyncAdapter constructor... " + autoInitialize);
         mContentResolver = context.getContentResolver();
         // Register the bus so we can send notifications.
-        //eventBus.register(this);
+
 
     }
 
@@ -79,7 +83,6 @@ public class MedicationErrorSyncAdapter extends AbstractThreadedSyncAdapter {
         mContext = context;
         mContentResolver = context.getContentResolver();
         // Register the bus so we can send notifications.
-        //eventBus.register(this);
     }
 
     public MedicationErrorSyncAdapter(Context context, NotificationManager notificationManager, MedicationErrorSyncLocalDatastore localDatastore, MedicationErrorSyncRemoteDatastore remoteDatastore) {
@@ -92,6 +95,7 @@ public class MedicationErrorSyncAdapter extends AbstractThreadedSyncAdapter {
         this.itemSyncRemoteDatastore = remoteDatastore;
         // Register the bus so we can send notifications.
         // eventBus.register(this);
+
     }
 
     @Override
@@ -110,8 +114,12 @@ public class MedicationErrorSyncAdapter extends AbstractThreadedSyncAdapter {
                     SyncManager<MedicationError, MedicationError> syncManager = new SyncManager<MedicationError, MedicationError>(itemSyncLocalDatastore, itemSyncRemoteDatastore);
                     syncManager.sync();
                     updateNotification("Data sync completed");
+
                 } finally {
                     //db.close();
+                   // eventBus.postSticky(getContext().getString(R.string.force_refresh));
+                   // Log.e("eventbus","Entered");
+                    //eventBus.unregister(this);
                 }
             }
             //TODO What does the below code actually do???
@@ -120,6 +128,7 @@ public class MedicationErrorSyncAdapter extends AbstractThreadedSyncAdapter {
             Log.e(TAG, "syncFailed:", e);
             updateNotification("Data sync failed!");
         }
+
     }
 
     @Override
@@ -135,6 +144,8 @@ public class MedicationErrorSyncAdapter extends AbstractThreadedSyncAdapter {
         notificationManager.cancel(UPLOAD_NOTIFICATION_ID);
         super.onSyncCanceled(thread);
     }
+
+
 
     private void updateNotification(String message) {
         if (null != notificationManager) {

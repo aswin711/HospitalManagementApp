@@ -61,7 +61,7 @@ public class IncidentDetailsFragment extends Fragment implements View.OnClickLis
         DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
 
 
-    protected static View fragmentView;
+    protected  View fragmentView;
 
     @Bind(R.id.incident_details_save)
     protected Button saveDetailsBtn;
@@ -88,7 +88,7 @@ public class IncidentDetailsFragment extends Fragment implements View.OnClickLis
     protected DatabaseHelper databaseHelper;
     @Inject
     EventBus eventBus;
-    private static IncidentReport report;
+    private IncidentReport report;
 
     ArrayAdapter<Unit> unitAdapter;
     ArrayAdapter<IncidentType> incidentTypeAdapter;
@@ -343,7 +343,7 @@ public class IncidentDetailsFragment extends Fragment implements View.OnClickLis
                     false
             );
 
-            if (now.getTime().after(selectedDate.getTime())) {
+            if (now.getTime().after(selectedDate.getTime()) && dayOfMonth == now.get(Calendar.DAY_OF_MONTH)) {
                 tpd.setMaxTime(now.get(Calendar.HOUR_OF_DAY), now.get(Calendar.MINUTE), now.get(Calendar.SECOND));
             }
             tpd.setThemeDark(true);
@@ -381,11 +381,7 @@ public class IncidentDetailsFragment extends Fragment implements View.OnClickLis
         if (saveIncidentDetails()) {
             Snackbar.make(getActivity().findViewById(R.id.footer_view), "Incident added", Snackbar.LENGTH_LONG).show();
             nextScreen();
-            //Intent intent = new Intent(getActivity(),
-            //        CasesheetObservationActivity.class);
-            //intent.putExtra(INCIDENT_ITEM, report);
-            //startActivity(intent);
-            //getActivity().finish();
+
         } else {
             Snackbar.make(getActivity().findViewById(R.id.footer_view), "Correct all validation errors", Snackbar.LENGTH_LONG).show();
         }
@@ -458,53 +454,6 @@ public class IncidentDetailsFragment extends Fragment implements View.OnClickLis
         return error;
     }
 
-    private void SaveTempDetails(Context context){
-        DatabaseHelper databaseHelper1 = new DatabaseHelper(context);
-        //IncidentReport report = new IncidentReport();
-        Long hospitalRef = PrefUtils.getLongFromPrefs(context, PrefUtils.PREFS_HOSP_ID, null);
-        report.setHospital(hospitalRef);
-        MaterialEditText description = (MaterialEditText) fragmentView.findViewById(R.id.event_description);
-        report.setDescription(description.getText().toString().trim());
-        MaterialEditText correctiveAction = (MaterialEditText) fragmentView.findViewById(R.id.event_corrective_action);
-        report.setCorrectiveActionTaken(correctiveAction.getText().toString().trim());
-        RadioButton actualMiss = (RadioButton) fragmentView.findViewById(R.id.incident_level_near_miss);
-        RadioButton harmMiss = (RadioButton) fragmentView.findViewById(R.id.incident_level_harm);
-        MaterialBetterSpinner typeSpinner = (MaterialBetterSpinner) fragmentView.findViewById(R.id.incident_types);
-        List<IncidentType> types =  databaseHelper1.getAllIncidentTypes(hospitalRef);
-        if(!typeSpinner.getText().toString().isEmpty()){
-            for (IncidentType type:types){
-                if(type.getIncidentType().equals(typeSpinner.getText())){
-                    report.setIncidentTypeRef(type.getServerId());
-                    report.setIncidentType(type.getServerId());
-                    report.setIncidentTypeName(type.getIncidentType());
-                }
-            }
-        }else{
-            report.setIncidentTypeRef(0l);
-            report.setIncidentTypeName(null);
-        }
-        if(actualMiss.isChecked()){
-            report.setIncidentLevelCode(1);
-        }else if(harmMiss.isChecked()){
-            report.setIncidentLevelCode(2);
-        }else {
-            report.setIncidentLevelCode(0);
-        }
-        if (0 == report.getStatusCode()){
-
-            report.setCreatedOn(Calendar.getInstance());
-
-        }
-        report.setUpdated(Calendar.getInstance());
-        long id = databaseHelper1.insertOrUpdateIncidentReport(report);
-        if (0 < id) {
-            Timber.e("saveIncidentDetails " + id);
-            report.setId(id);
-        }
-
-
-    }
-
     @Subscribe
     public void onEventListened(String data){
         if (data.equals(getString(R.string.save_draft))){
@@ -514,21 +463,16 @@ public class IncidentDetailsFragment extends Fragment implements View.OnClickLis
         }
     }
 
+    //saving contents as draft
     public IncidentReport saveDraft(){
-        //IncidentReport report = new IncidentReport();
         Long hospitalRef = PrefUtils.getLongFromPrefs(getContext(), PrefUtils.PREFS_HOSP_ID, null);
         report.setHospital(hospitalRef);
-        MaterialEditText description = (MaterialEditText) fragmentView.findViewById(R.id.event_description);
         report.setDescription(description.getText().toString().trim());
-        MaterialEditText correctiveAction = (MaterialEditText) fragmentView.findViewById(R.id.event_corrective_action);
         report.setCorrectiveActionTaken(correctiveAction.getText().toString().trim());
-        RadioButton actualMiss = (RadioButton) fragmentView.findViewById(R.id.incident_level_near_miss);
-        RadioButton harmMiss = (RadioButton) fragmentView.findViewById(R.id.incident_level_harm);
-        MaterialBetterSpinner typeSpinner = (MaterialBetterSpinner) fragmentView.findViewById(R.id.incident_types);
         List<IncidentType> types =  databaseHelper.getAllIncidentTypes(hospitalRef);
-        if(!typeSpinner.getText().toString().isEmpty()){
+        if(!incidentTypeSpinner.getText().toString().isEmpty()){
             for (IncidentType type:types){
-                if(type.getIncidentType().equals(typeSpinner.getText())){
+                if(type.getIncidentType().equals(incidentTypeSpinner.getText())){
                     report.setIncidentTypeRef(type.getServerId());
                     report.setIncidentType(type.getServerId());
                     report.setIncidentTypeName(type.getIncidentType());
@@ -538,9 +482,9 @@ public class IncidentDetailsFragment extends Fragment implements View.OnClickLis
             report.setIncidentTypeRef(0l);
             report.setIncidentTypeName(null);
         }
-        if(actualMiss.isChecked()){
+        if(nearMiss.isChecked()){
             report.setIncidentLevelCode(1);
-        }else if(harmMiss.isChecked()){
+        }else if(actualHarm.isChecked()){
             report.setIncidentLevelCode(2);
         }else {
             report.setIncidentLevelCode(0);

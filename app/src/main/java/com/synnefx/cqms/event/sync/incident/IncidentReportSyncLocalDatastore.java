@@ -41,6 +41,9 @@ public class IncidentReportSyncLocalDatastore implements Datastore<IncidentRepor
 
     @Override
     public IncidentReport update(IncidentReport localDataInstance) {
+        if(localDataInstance.getServerId() > 0){
+            localDataInstance.setStatusCode(2);
+        }
         dao.updateIncidentReport(localDataInstance);
         IncidentReport result = dao.getIncidentReportById(localDataInstance.getId());
         return result;
