@@ -141,7 +141,7 @@ public class MedicationErrorListFragment extends ItemListFragment<MedicationErro
             public List<MedicationError> loadData() throws Exception {
                 try {
                     if (getActivity() != null) {
-                        Long hospitalRef = PrefUtils.getLongFromPrefs(getActivity().getApplicationContext(), PrefUtils.PREFS_HOSP_ID, null);
+                        String hospitalRef = PrefUtils.getFromPrefs(getActivity().getApplicationContext(), PrefUtils.PREFS_HOSP_ID, null);
                         Log.e(TAG, "onCreateLoader - " + currentPage);
                         //Log.d("ItemsinAdapter", ListViewer.view(databaseHelper.getMedicationErrorForDisplayByHospital(hospitalRef, currentPage)));
                         return databaseHelper.getMedicationErrorForDisplayByHospital(hospitalRef, currentPage);

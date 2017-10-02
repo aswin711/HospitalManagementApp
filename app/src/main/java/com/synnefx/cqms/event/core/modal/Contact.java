@@ -8,9 +8,9 @@ import java.io.Serializable;
 
 public class Contact implements Serializable {
 
-    @SerializedName("tenantID")
+    @SerializedName("tenantUUID")
     @Expose
-    private Long tenantID;
+    private String tenantUUID;
     @SerializedName("addressLine1")
     @Expose
     private Object addressLine1;
@@ -61,17 +61,17 @@ public class Contact implements Serializable {
     private Long id;
 
     /**
-     * @return The tenantID
+     * @return The tenantUUID
      */
-    public Long getTenantID() {
-        return tenantID;
+    public String getTenantUUID() {
+        return tenantUUID;
     }
 
     /**
-     * @param tenantID The tenantID
+     * @param tenantUUID The tenantID
      */
-    public void setTenantID(Long tenantID) {
-        this.tenantID = tenantID;
+    public void setTenantUUID(String tenantUUID) {
+        this.tenantUUID = tenantUUID;
     }
 
     /**

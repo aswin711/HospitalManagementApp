@@ -134,7 +134,7 @@ public class MainActivity extends BootstrapActivity implements NavigationView.On
 
     private void loadModel() {
         try {
-            Long hospitalRef = PrefUtils.getLongFromPrefs(getActivity().getApplicationContext(), PrefUtils.PREFS_HOSP_ID, null);
+            String hospitalRef = PrefUtils.getFromPrefs(getActivity().getApplicationContext(), PrefUtils.PREFS_HOSP_ID, null);
             incidentReports = databaseHelper.getIncidentReportForDisplayByHospital(hospitalRef, 0);
         } catch (Exception e) {
 

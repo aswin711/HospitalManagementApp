@@ -212,7 +212,7 @@ public class IncidentDetailsFragment extends Fragment implements View.OnClickLis
     }
 
     private void setUnitSpinner() {
-        Long hospitalRef = PrefUtils.getLongFromPrefs(getActivity().getApplicationContext(), PrefUtils.PREFS_HOSP_ID, null);
+        String hospitalRef = PrefUtils.getFromPrefs(getActivity().getApplicationContext(), PrefUtils.PREFS_HOSP_ID, null);
         List<Unit> units = new ArrayList<>();
         Unit unit = new Unit();
         unit.setId(0l);
@@ -239,7 +239,7 @@ public class IncidentDetailsFragment extends Fragment implements View.OnClickLis
         });
 
         Unit selectedUnit = new Unit();
-        selectedUnit.setHospitalID(hospitalRef);
+        selectedUnit.setHospitalUUID(hospitalRef);
         selectedUnit.setServerId(report.getUnitRef());
         int pos = unitAdapter.getPosition(selectedUnit);
         if (pos >= 0) {
@@ -249,7 +249,7 @@ public class IncidentDetailsFragment extends Fragment implements View.OnClickLis
     }
 
     private void setIncidentTypeSpinner() {
-        Long hospitalRef = PrefUtils.getLongFromPrefs(getActivity().getApplicationContext(), PrefUtils.PREFS_HOSP_ID, null);
+        String hospitalRef = PrefUtils.getFromPrefs(getActivity().getApplicationContext(), PrefUtils.PREFS_HOSP_ID, null);
         List<IncidentType> incidentTypes = new ArrayList<>();
         IncidentType incidentType = new IncidentType();
         incidentType.setId(0l);
@@ -276,7 +276,7 @@ public class IncidentDetailsFragment extends Fragment implements View.OnClickLis
         });
 
         IncidentType selectedType = new IncidentType();
-        selectedType.setHospitalID(hospitalRef);
+        selectedType.setHospitalUUID(hospitalRef);
         selectedType.setServerId(report.getIncidentTypeRef());
         int pos = incidentTypeAdapter.getPosition(selectedType);
         if (pos >= 0) {
@@ -393,7 +393,7 @@ public class IncidentDetailsFragment extends Fragment implements View.OnClickLis
 
     private boolean saveIncidentDetails() {
         if (!validateIncidentDeatils()) {
-            Long hospitalRef = PrefUtils.getLongFromPrefs(getActivity().getApplicationContext(), PrefUtils.PREFS_HOSP_ID, null);
+            String hospitalRef = PrefUtils.getFromPrefs(getActivity().getApplicationContext(), PrefUtils.PREFS_HOSP_ID, null);
             report.setHospital(hospitalRef);
             if (0 == report.getStatusCode()) {
                 report.setCreatedOn(Calendar.getInstance());
@@ -461,7 +461,7 @@ public class IncidentDetailsFragment extends Fragment implements View.OnClickLis
     private void SaveTempDetails(Context context){
         DatabaseHelper databaseHelper1 = new DatabaseHelper(context);
         //IncidentReport report = new IncidentReport();
-        Long hospitalRef = PrefUtils.getLongFromPrefs(context, PrefUtils.PREFS_HOSP_ID, null);
+        String hospitalRef = PrefUtils.getFromPrefs(context, PrefUtils.PREFS_HOSP_ID, null);
         report.setHospital(hospitalRef);
         MaterialEditText description = (MaterialEditText) fragmentView.findViewById(R.id.event_description);
         report.setDescription(description.getText().toString().trim());
@@ -516,7 +516,7 @@ public class IncidentDetailsFragment extends Fragment implements View.OnClickLis
 
     public IncidentReport saveDraft(){
         //IncidentReport report = new IncidentReport();
-        Long hospitalRef = PrefUtils.getLongFromPrefs(getContext(), PrefUtils.PREFS_HOSP_ID, null);
+        String hospitalRef = PrefUtils.getFromPrefs(getContext(), PrefUtils.PREFS_HOSP_ID, null);
         report.setHospital(hospitalRef);
         MaterialEditText description = (MaterialEditText) fragmentView.findViewById(R.id.event_description);
         report.setDescription(description.getText().toString().trim());

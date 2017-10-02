@@ -25,7 +25,7 @@ public class EventReport implements Serializable, Syncable {
     @Expose
     private Long serverId;
 
-    private Long hospital;
+    private String hospital;
 
     @SerializedName("statusCode")
     @Expose
@@ -87,11 +87,11 @@ public class EventReport implements Serializable, Syncable {
         this.serverId = serverId;
     }
 
-    public Long getHospital() {
+    public String getHospital() {
         return hospital;
     }
 
-    public void setHospital(Long hospital) {
+    public void setHospital(String hospital) {
         this.hospital = hospital;
     }
 
@@ -257,7 +257,7 @@ public class EventReport implements Serializable, Syncable {
 
     }
 
-    public EventReport(Long id, Long serverId, Long hospital, int statusCode, Long unitRef, String incidentNumber, String incidentLocation, Calendar updated, Calendar incidentTime, String description, String correctiveActionTaken, PersonInvolved personInvolved, ReportedBy reportedBy) {
+    public EventReport(Long id, Long serverId, String hospital, int statusCode, Long unitRef, String incidentNumber, String incidentLocation, Calendar updated, Calendar incidentTime, String description, String correctiveActionTaken, PersonInvolved personInvolved, ReportedBy reportedBy) {
         this.id = id;
         this.serverId = serverId;
         this.hospital = hospital;

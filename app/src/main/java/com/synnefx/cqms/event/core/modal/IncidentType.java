@@ -22,9 +22,9 @@ public class IncidentType implements Serializable {
     @Expose
     private String incidentType;
 
-    @SerializedName("hospitalID")
+    @SerializedName("hospitalUUID")
     @Expose
-    private Long hospitalID;
+    private String hospitalUUID;
 
     @Expose
     private Integer statusCode;
@@ -56,12 +56,12 @@ public class IncidentType implements Serializable {
         this.serverId = serverId;
     }
 
-    public Long getHospitalID() {
-        return hospitalID;
+    public String getHospitalUUID() {
+        return hospitalUUID;
     }
 
-    public void setHospitalID(Long hospitalID) {
-        this.hospitalID = hospitalID;
+    public void setHospitalUUID(String hospitalUUID) {
+        this.hospitalUUID = hospitalUUID;
     }
 
     public String getIncidentType() {
@@ -89,14 +89,14 @@ public class IncidentType implements Serializable {
 
         if (getServerId() != null ? !getServerId().equals(that.getServerId()) : that.getServerId() != null)
             return false;
-        return !(getHospitalID() != null ? !getHospitalID().equals(that.getHospitalID()) : that.getHospitalID() != null);
+        return !(getHospitalUUID() != null ? !getHospitalUUID().equals(that.getHospitalUUID()) : that.getHospitalUUID() != null);
 
     }
 
     @Override
     public int hashCode() {
         int result = getServerId() != null ? getServerId().hashCode() : 0;
-        result = 31 * result + (getHospitalID() != null ? getHospitalID().hashCode() : 0);
+        result = 31 * result + (getHospitalUUID() != null ? getHospitalUUID().hashCode() : 0);
         return result;
     }
 

@@ -208,7 +208,7 @@ public class MedicationErrorDetailsFragment extends Fragment implements
     }
 
     private void setUnitSpinner() {
-        Long hospitalRef = PrefUtils.getLongFromPrefs(getActivity().getApplicationContext(), PrefUtils.PREFS_HOSP_ID, null);
+        String hospitalRef = PrefUtils.getFromPrefs(getActivity().getApplicationContext(), PrefUtils.PREFS_HOSP_ID, null);
         List<Unit> units = new ArrayList<>();
         Unit unit = new Unit();
         unit.setId(0l);
@@ -235,7 +235,7 @@ public class MedicationErrorDetailsFragment extends Fragment implements
         });
 
         Unit selectedUnit = new Unit();
-        selectedUnit.setHospitalID(hospitalRef);
+        selectedUnit.setHospitalUUID(hospitalRef);
         selectedUnit.setServerId(report.getUnitRef());
         int pos = unitAdapter.getPosition(selectedUnit);
         if (pos >= 0) {
@@ -371,7 +371,7 @@ public class MedicationErrorDetailsFragment extends Fragment implements
 
     private boolean saveIncidentDetails() {
         if (!validateIncidentDeatils()) {
-            Long hospitalRef = PrefUtils.getLongFromPrefs(getActivity().getApplicationContext(), PrefUtils.PREFS_HOSP_ID, null);
+            String hospitalRef = PrefUtils.getFromPrefs(getActivity().getApplicationContext(), PrefUtils.PREFS_HOSP_ID, null);
             report.setHospital(hospitalRef);
             if (0 == report.getStatusCode()) {
                 report.setCreatedOn(Calendar.getInstance());
@@ -389,7 +389,7 @@ public class MedicationErrorDetailsFragment extends Fragment implements
 
     public void saveTempDetails(Context context){
         DatabaseHelper databaseHelper1 = new DatabaseHelper(context);
-        Long hospitalRef = PrefUtils.getLongFromPrefs(context, PrefUtils.PREFS_HOSP_ID, null);
+        String hospitalRef = PrefUtils.getFromPrefs(context, PrefUtils.PREFS_HOSP_ID, null);
         report.setHospital(hospitalRef);
         MaterialEditText description = (MaterialEditText) fragmentView.findViewById(R.id.event_description);
         report.setDescription(description.getText().toString().trim());
@@ -421,7 +421,7 @@ public class MedicationErrorDetailsFragment extends Fragment implements
     }
 
     public MedicationError saveDraft(){
-        Long hospitalRef = PrefUtils.getLongFromPrefs(getContext(), PrefUtils.PREFS_HOSP_ID, null);
+        String hospitalRef = PrefUtils.getFromPrefs(getContext(), PrefUtils.PREFS_HOSP_ID, null);
         report.setHospital(hospitalRef);
         MaterialEditText description = (MaterialEditText) fragmentView.findViewById(R.id.event_description);
         report.setDescription(description.getText().toString().trim());

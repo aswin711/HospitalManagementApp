@@ -65,7 +65,7 @@ public class SqliteDataMapper {
         ContentValues values = new ContentValues();
         values.put(KEY_NAME, unit.getName());
         values.put(KEY_UNIT_REF, unit.getId());
-        values.put(KEY_HOSPITAL_ID, unit.getHospitalID());
+        values.put(KEY_HOSPITAL_ID, unit.getHospitalUUID());
         values.put(KEY_CREATED_ON, Calendar.getInstance(TimeZone.getTimeZone("IST")).getTimeInMillis());
         values.put(KEY_STATUS_CODE, unit.getStatusCode());
         return values;
@@ -75,7 +75,7 @@ public class SqliteDataMapper {
     public static Unit setUnit(Cursor c) {
         Unit unit = new Unit();
         unit.setId(c.getLong((c.getColumnIndex(KEY_ID))));
-        unit.setHospitalID(c.getLong((c.getColumnIndex(KEY_HOSPITAL_ID))));
+        unit.setHospitalUUID(c.getString((c.getColumnIndex(KEY_HOSPITAL_ID))));
         unit.setServerId(c.getLong((c.getColumnIndex(KEY_UNIT_REF))));
         unit.setName(c.getString(c.getColumnIndex(KEY_NAME)));
         unit.setStatusCode(c.getInt(c.getColumnIndex(KEY_STATUS_CODE)));
@@ -87,7 +87,7 @@ public class SqliteDataMapper {
         ContentValues values = new ContentValues();
         values.put(KEY_NAME, specialty.getSpecialityName());
         values.put(KEY_SPECIALTY_REF, specialty.getId());
-        values.put(KEY_HOSPITAL_ID, specialty.getHospitalID());
+        values.put(KEY_HOSPITAL_ID, specialty.getHospitalUUID());
         values.put(KEY_CREATED_ON, Calendar.getInstance().getTimeInMillis());
         values.put(KEY_STATUS_CODE, specialty.getStatusCode());
         return values;
@@ -96,7 +96,7 @@ public class SqliteDataMapper {
     public static Specialty setSpeciality(Cursor c) {
         Specialty specialty = new Specialty();
         specialty.setId(c.getLong((c.getColumnIndex(KEY_ID))));
-        specialty.setHospitalID(c.getLong((c.getColumnIndex(KEY_HOSPITAL_ID))));
+        specialty.setHospitalUUID(c.getString((c.getColumnIndex(KEY_HOSPITAL_ID))));
         specialty.setServerId(c.getLong((c.getColumnIndex(KEY_SPECIALTY_REF))));
         specialty.setSpecialityName(c.getString(c.getColumnIndex(KEY_NAME)));
         specialty.setStatusCode(c.getInt(c.getColumnIndex(KEY_STATUS_CODE)));
@@ -108,7 +108,7 @@ public class SqliteDataMapper {
         ContentValues values = new ContentValues();
         values.put(KEY_NAME, incidentType.getIncidentType());
         values.put(KEY_INCIDENTTYPE_REF, incidentType.getServerId());
-        values.put(KEY_HOSPITAL_ID, incidentType.getHospitalID());
+        values.put(KEY_HOSPITAL_ID, incidentType.getHospitalUUID());
         values.put(KEY_CREATED_ON, Calendar.getInstance(TimeZone.getTimeZone("IST")).getTimeInMillis());
         values.put(KEY_STATUS_CODE, incidentType.getStatusCode());
         return values;
@@ -118,7 +118,7 @@ public class SqliteDataMapper {
     public static IncidentType setIncidentType(Cursor c) {
         IncidentType incidentType = new IncidentType();
         incidentType.setId(c.getLong((c.getColumnIndex(KEY_ID))));
-        incidentType.setHospitalID(c.getLong((c.getColumnIndex(KEY_HOSPITAL_ID))));
+        incidentType.setHospitalUUID(c.getString((c.getColumnIndex(KEY_HOSPITAL_ID))));
         incidentType.setServerId(c.getLong((c.getColumnIndex(KEY_INCIDENTTYPE_REF))));
         incidentType.setIncidentType(c.getString(c.getColumnIndex(KEY_NAME)));
         incidentType.setStatusCode(c.getInt(c.getColumnIndex(KEY_STATUS_CODE)));
@@ -155,7 +155,7 @@ public class SqliteDataMapper {
     public static IncidentReport setIncidentReport(Cursor c) {
         IncidentReport report = new IncidentReport();
         report.setId(c.getLong((c.getColumnIndex(KEY_ID))));
-        report.setHospital(c.getLong((c.getColumnIndex(KEY_HOSPITAL_ID))));
+        report.setHospital(c.getString((c.getColumnIndex(KEY_HOSPITAL_ID))));
         report.setServerId(c.getLong(c.getColumnIndex(KEY_SERVER_ID)));
         report.setStatusCode(c.getInt(c.getColumnIndex(KEY_STATUS_CODE)));
 
@@ -320,7 +320,7 @@ public class SqliteDataMapper {
     public static MedicationError setMedicationError(Cursor c) {
         MedicationError report = new MedicationError();
         report.setId(c.getLong((c.getColumnIndex(KEY_ID))));
-        report.setHospital(c.getLong((c.getColumnIndex(KEY_HOSPITAL_ID))));
+        report.setHospital(c.getString((c.getColumnIndex(KEY_HOSPITAL_ID))));
         report.setServerId(c.getLong(c.getColumnIndex(KEY_SERVER_ID)));
         report.setStatusCode(c.getInt(c.getColumnIndex(KEY_STATUS_CODE)));
 
@@ -456,7 +456,7 @@ public class SqliteDataMapper {
     public static AdverseDrugEvent setAdverseDrugEvent(Cursor c) {
         AdverseDrugEvent report = new AdverseDrugEvent();
         report.setId(c.getLong((c.getColumnIndex(KEY_ID))));
-        report.setHospital(c.getLong((c.getColumnIndex(KEY_HOSPITAL_ID))));
+        report.setHospital(c.getString((c.getColumnIndex(KEY_HOSPITAL_ID))));
         report.setServerId(c.getLong(c.getColumnIndex(KEY_SERVER_ID)));
         report.setStatusCode(c.getInt(c.getColumnIndex(KEY_STATUS_CODE)));
 

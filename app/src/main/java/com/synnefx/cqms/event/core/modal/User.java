@@ -13,9 +13,10 @@ public class User implements Serializable {
     @SerializedName("associatedHospitalName")
     @Expose
     private String associatedHospitalName;
-    @SerializedName("tenantId")
+    @SerializedName("tenantUUID")
     @Expose
-    private Long tenantId;
+    private String tenantUUID;
+
     @SerializedName("updatedBy")
     @Expose
     private String updatedBy;
@@ -88,17 +89,17 @@ public class User implements Serializable {
     }
 
     /**
-     * @return The tenantId
+     * @return The tenantUUID
      */
-    public Long getTenantId() {
-        return tenantId;
+    public String getTenantUUID() {
+        return tenantUUID;
     }
 
     /**
-     * @param tenantId The tenantId
+     * @param tenantUUID The tenantId
      */
-    public void setTenantId(Long tenantId) {
-        this.tenantId = tenantId;
+    public void setTenantUUID(String tenantUUID) {
+        this.tenantUUID = tenantUUID;
     }
 
     /**

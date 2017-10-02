@@ -17,9 +17,9 @@ public class Unit implements Serializable {
     @Expose
     private String name;
 
-    @SerializedName("hospitalID")
+    @SerializedName("hospitalUUID")
     @Expose
-    private Long hospitalID;
+    private String hospitalUUID;
 
     @SerializedName("serverId")
     @Expose
@@ -44,12 +44,12 @@ public class Unit implements Serializable {
         this.name = name;
     }
 
-    public Long getHospitalID() {
-        return hospitalID;
+    public String getHospitalUUID() {
+        return hospitalUUID;
     }
 
-    public void setHospitalID(Long hospitalID) {
-        this.hospitalID = hospitalID;
+    public void setHospitalUUID(String hospitalUUID) {
+        this.hospitalUUID = hospitalUUID;
     }
 
     public Long getServerId() {
@@ -65,14 +65,14 @@ public class Unit implements Serializable {
         if (this == o) return true;
         if (!(o instanceof Unit)) return false;
         Unit unit = (Unit) o;
-        if (getHospitalID() != null ? !getHospitalID().equals(unit.getHospitalID()) : unit.getHospitalID() != null)
+        if (getHospitalUUID() != null ? !getHospitalUUID().equals(unit.getHospitalUUID()) : unit.getHospitalUUID() != null)
             return false;
         return !(getServerId() != null ? !getServerId().equals(unit.getServerId()) : unit.getServerId() != null);
     }
 
     @Override
     public int hashCode() {
-        int result = getHospitalID() != null ? getHospitalID().hashCode() : 0;
+        int result = getHospitalUUID() != null ? getHospitalUUID().hashCode() : 0;
         result = 31 * result + (getServerId() != null ? getServerId().hashCode() : 0);
         return result;
     }

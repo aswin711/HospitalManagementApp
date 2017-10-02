@@ -120,11 +120,11 @@ public class ImportConfigActivity extends BootstrapFragmentActivity {
             @Override
             public Boolean call() throws Exception {
                 try {
-                    Long hospitalRef = PrefUtils.getLongFromPrefs(getApplicationContext(), PrefUtils.PREFS_HOSP_ID, null);
-                    if (null == hospitalRef || 0 >= hospitalRef) {
+                    String hospitalRef = PrefUtils.getFromPrefs(getApplicationContext(), PrefUtils.PREFS_HOSP_ID, null);
+                    if (null == hospitalRef || "".equals(hospitalRef.trim()) ) {
                         //Fetch Profile
                     }
-                    if (null != hospitalRef && 0 < hospitalRef) {
+                    if (null != hospitalRef && !"".equals(hospitalRef.trim())) {
                         setProgressPercent(30);
                         List<Unit> units = serviceProvider.getAuthenticatedService(ImportConfigActivity.this).getUnits();
                         setProgressPercent(60);

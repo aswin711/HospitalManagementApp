@@ -16,7 +16,7 @@ public class GCMRequest implements Serializable {
     @Expose
     private String key;
     @Expose
-    private Long hospitalID;
+    private String hospitalID;
 
     public GCMRequest(String platform, String key) {
         this.platform = platform;
@@ -31,7 +31,7 @@ public class GCMRequest implements Serializable {
         this.key = key;
     }
 
-    public void setHospitalID(Long hospitalID) {
+    public void setHospitalID(String hospitalID) {
         this.hospitalID = hospitalID;
     }
 
@@ -51,7 +51,7 @@ public class GCMRequest implements Serializable {
         return key;
     }
 
-    public Long getHospitalID() {
+    public String getHospitalID() {
         return hospitalID;
     }
 }

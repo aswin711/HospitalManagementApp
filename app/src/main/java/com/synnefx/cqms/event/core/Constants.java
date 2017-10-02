@@ -46,7 +46,7 @@ public final class Constants {
         /**
          * Base URL for all requests
          */
-        public static final String URL_BASE = "https://app.cqms.synnefx.co.in/api/";
+        public static final String URL_BASE = "https://dev.cqms.synnefx.com/api/";
         // public static final String URL_BASE =  "http://192.168.0.100:8085/api/";
 
         /**
@@ -64,7 +64,7 @@ public final class Constants {
         /**
          * List Users URL
          */
-        public static final String URL_USER_PROFILE = "user/getUser";
+        public static final String URL_USER_PROFILE = "user";
         public static final String URL_USERS_FRAG = "1/users";
         public static final String URL_USERS = URL_BASE + URL_USERS_FRAG;
 
@@ -85,28 +85,28 @@ public final class Constants {
 
         public static final String URL_IMPORT_CASESHETT_QUESTIONS = "import/casesheetform";
 
-        public static final String URL_PUSH_CASESHEET_AUDIT = "casesheet/pushOpenCaseSheet";
+        public static final String URL_PUSH_CASESHEET_AUDIT = "casesheet/openCaseSheet";
 
-        public static final String URL_PULL_CASESHEET_AUDIT = "casesheet/pullOpenCaseSheet";
+        public static final String URL_PULL_CASESHEET_AUDIT = "casesheet/openCaseSheet";
 
-        public static final String URL_PUSH_HH_AUDIT = "hhaudit/pushHHAuditSession";
+        public static final String URL_PUSH_HH_AUDIT = "hhaudit/hhAuditSession";
 
-        public static final String URL_PULL_HH_AUDIT = "hhaudit/pullHHAuditSession";
+        public static final String URL_PULL_HH_AUDIT = "hhaudit/hhAuditSession";
 
         //Incident report
-        public static final String URL_PUSH_INCIDENT = "eventreport/pushIncident";
+        public static final String URL_PUSH_INCIDENT = "eventreport/incident";
 
-        public static final String URL_PULL_INCIDENT = "eventreport/pushIncident";
-
-
-        public static final String URL_PUSH_MEDICATION_ERROR = "eventreport/pushMedicationError";
-
-        public static final String URL_PULL_MEDICATION_ERROR = "eventreport/pushMedicationError";
+        public static final String URL_PULL_INCIDENT = "eventreport/incident";
 
 
-        public static final String URL_PUSH_DRUGREACTION_ERROR = "eventreport/pushAdverseDrugReactionr";
+        public static final String URL_PUSH_MEDICATION_ERROR = "eventreport/medicationError";
 
-        public static final String URL_PULL_DRUGREACTION_ERROR = "eventreport/pushAdverseDrugReaction";
+        public static final String URL_PULL_MEDICATION_ERROR = "eventreport/medicationError";
+
+
+        public static final String URL_PUSH_DRUGREACTION_ERROR = "eventreport/adverseDrugReactionr";
+
+        public static final String URL_PULL_DRUGREACTION_ERROR = "eventreport/adverseDrugReactionr";
 
 
         /**

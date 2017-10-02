@@ -107,8 +107,8 @@ public class ConfSyncAdapter extends AbstractThreadedSyncAdapter {
                 try {
                     updateNotification("Configuration import in progress");
                     //DatabaseHelper db = new DatabaseHelper(mContext);
-                    Long hospitalRef = PrefUtils.getLongFromPrefs(getContext(), PrefUtils.PREFS_HOSP_ID, null);
-                    if (null != hospitalRef && 0 < hospitalRef) {
+                    String hospitalRef = PrefUtils.getFromPrefs(getContext(), PrefUtils.PREFS_HOSP_ID, null);
+                    if (null != hospitalRef && !"".equals(hospitalRef.trim())) {
                         //List<ServiceType> serviceTypes = serviceProvider.getAuthenticatedService().getServiceTypes();
                         List<Unit> units = serviceProvider.getAuthenticatedService().getUnits();
                         //List<Specialty> specialties = serviceProvider.getAuthenticatedService().getSpecialities();

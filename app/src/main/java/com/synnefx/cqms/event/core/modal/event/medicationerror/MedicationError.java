@@ -43,7 +43,7 @@ public class MedicationError extends EventReport {
 
     }
 
-    public MedicationError(Long id, Long serverId, Long hospital, int statusCode, Long unitRef, String incidentNumber, String incidentLocation, Calendar updated, Calendar incidentTime, String description, String correctiveActionTaken, PersonInvolved personInvolved, ReportedBy reportedBy, Integer incidentLevelCode, String medicalReport) {
+    public MedicationError(Long id, Long serverId, String hospital, int statusCode, Long unitRef, String incidentNumber, String incidentLocation, Calendar updated, Calendar incidentTime, String description, String correctiveActionTaken, PersonInvolved personInvolved, ReportedBy reportedBy, Integer incidentLevelCode, String medicalReport) {
         super(id, serverId, hospital, statusCode, unitRef, incidentNumber, incidentLocation, updated, incidentTime, description, correctiveActionTaken, personInvolved, reportedBy);
         this.incidentLevelCode = incidentLevelCode;
         this.medicalReport = medicalReport;

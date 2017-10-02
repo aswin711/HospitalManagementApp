@@ -187,7 +187,7 @@ public class DrugReactionDetailsFragment extends Fragment implements View.OnClic
     }
 
     private void setUnitSpinner() {
-        Long hospitalRef = PrefUtils.getLongFromPrefs(getActivity().getApplicationContext(), PrefUtils.PREFS_HOSP_ID, null);
+        String hospitalRef = PrefUtils.getFromPrefs(getActivity().getApplicationContext(), PrefUtils.PREFS_HOSP_ID, null);
         List<Unit> units = new ArrayList<>();
         Unit unit = new Unit();
         unit.setId(0l);
@@ -214,7 +214,7 @@ public class DrugReactionDetailsFragment extends Fragment implements View.OnClic
         });
 
         Unit selectedUnit = new Unit();
-        selectedUnit.setHospitalID(hospitalRef);
+        selectedUnit.setHospitalUUID(hospitalRef);
         selectedUnit.setServerId(report.getUnitRef());
         int pos = unitAdapter.getPosition(selectedUnit);
         if (pos >= 0) {
@@ -332,7 +332,7 @@ public class DrugReactionDetailsFragment extends Fragment implements View.OnClic
 
     private boolean saveIncidentDetails() {
         if (!validateIncidentDeatils()) {
-            Long hospitalRef = PrefUtils.getLongFromPrefs(getActivity().getApplicationContext(), PrefUtils.PREFS_HOSP_ID, null);
+            String hospitalRef = PrefUtils.getFromPrefs(getActivity().getApplicationContext(), PrefUtils.PREFS_HOSP_ID, null);
             report.setHospital(hospitalRef);
             if (0 == report.getStatusCode()) {
                 report.setCreatedOn(Calendar.getInstance());

@@ -18,9 +18,9 @@ public class ServiceType implements Serializable {
     @Expose
     private String name;
 
-    @SerializedName("hospitalID")
+    @SerializedName("hospitalUUID")
     @Expose
-    private Long hospitalID;
+    private String hospitalUUID;
 
     @SerializedName("serviceRef")
     @Expose
@@ -45,12 +45,12 @@ public class ServiceType implements Serializable {
         this.name = name;
     }
 
-    public Long getHospitalID() {
-        return hospitalID;
+    public String getHospitalUUID() {
+        return hospitalUUID;
     }
 
-    public void setHospitalID(Long hospitalID) {
-        this.hospitalID = hospitalID;
+    public void setHospitalUUID(String hospitalUUID) {
+        this.hospitalUUID = hospitalUUID;
     }
 
     public Long getServiceRef() {
@@ -68,14 +68,14 @@ public class ServiceType implements Serializable {
 
         ServiceType that = (ServiceType) o;
 
-        if (!getHospitalID().equals(that.getHospitalID())) return false;
+        if (!getHospitalUUID().equals(that.getHospitalUUID())) return false;
         return getServiceRef().equals(that.getServiceRef());
 
     }
 
     @Override
     public int hashCode() {
-        int result = getHospitalID().hashCode();
+        int result = getHospitalUUID().hashCode();
         result = 31 * result + getServiceRef().hashCode();
         return result;
     }

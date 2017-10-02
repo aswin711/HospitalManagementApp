@@ -80,20 +80,20 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String CREATE_TABLE_USERS = "CREATE TABLE IF NOT EXISTS "
             + TABLE_USERS + " ( " + Columns.KEY_ID + " INTEGER PRIMARY KEY, " + Columns.KEY_USERNAME
             + " TEXT, " + Columns.KEY_NAME + " TEXT, " + Columns.KEY_EMAIL
-            + " TEXT, " + Columns.KEY_CREATED_ON + " DATETIME, " + Columns.KEY_HOSPITAL_ID + " INTEGER NOT NULL )";
+            + " TEXT, " + Columns.KEY_CREATED_ON + " DATETIME, " + Columns.KEY_HOSPITAL_ID + " TEXT NOT NULL )";
 
     private static final String CREATE_TABLE_UNITS = "CREATE TABLE IF NOT EXISTS "
             + TABLE_UNITS + " (" + Columns.KEY_ID + " INTEGER PRIMARY KEY, " + Columns.KEY_NAME + " TEXT NOT NULL, " + Columns.KEY_UNIT_REF
-            + " INTEGER NOT NULL, " + Columns.KEY_HOSPITAL_ID + " INTEGER NOT NULL, " + Columns.KEY_STATUS_CODE + " INTEGER NOT NULL, " + Columns.KEY_CREATED_ON + " DATETIME )";
+            + " INTEGER NOT NULL, " + Columns.KEY_HOSPITAL_ID + " TEXT NOT NULL, " + Columns.KEY_STATUS_CODE + " INTEGER NOT NULL, " + Columns.KEY_CREATED_ON + " DATETIME )";
 
 
     private static final String CREATE_TABLE_SPECIALTY = "CREATE TABLE IF NOT EXISTS "
             + TABLE_SPECIALTY + " (" + Columns.KEY_ID + " INTEGER PRIMARY KEY, " + Columns.KEY_NAME + " TEXT NOT NULL, " + Columns.KEY_SPECIALTY_REF
-            + " INTEGER NOT NULL, " + Columns.KEY_HOSPITAL_ID + " INTEGER NOT NULL, " + Columns.KEY_STATUS_CODE + " INTEGER NOT NULL, " + Columns.KEY_CREATED_ON + " DATETIME )";
+            + " INTEGER NOT NULL, " + Columns.KEY_HOSPITAL_ID + " TEXT NOT NULL, " + Columns.KEY_STATUS_CODE + " INTEGER NOT NULL, " + Columns.KEY_CREATED_ON + " DATETIME )";
 
     private static final String CREATE_TABLE_INCIDENT_TYPE = "CREATE TABLE IF NOT EXISTS "
             + TABLE_INCIDENT_TYPE + " (" + Columns.KEY_ID + " INTEGER PRIMARY KEY, " + Columns.KEY_NAME + " TEXT NOT NULL, " + Columns.KEY_INCIDENTTYPE_REF
-            + " INTEGER NOT NULL, " + Columns.KEY_HOSPITAL_ID + " INTEGER NOT NULL, " + Columns.KEY_STATUS_CODE + " INTEGER NOT NULL, " + Columns.KEY_CREATED_ON + " DATETIME )";
+            + " INTEGER NOT NULL, " + Columns.KEY_HOSPITAL_ID + " TEXT NOT NULL, " + Columns.KEY_STATUS_CODE + " INTEGER NOT NULL, " + Columns.KEY_CREATED_ON + " DATETIME )";
 
 
     private static final String CREATE_TABLE_VERSION_HISTORY = "CREATE TABLE IF NOT EXISTS "
@@ -190,7 +190,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     //Configure Units
 
-    public void insertOrUpdateUnits(List<Unit> units, Long hospitalRef) {
+    public void insertOrUpdateUnits(List<Unit> units, String hospitalRef) {
         SQLiteDatabase db = this.getWritableDatabase();
         if (null != units && units.size() > 0) {
             List<Unit> existingRecords = this.getAllUnitsTypes(hospitalRef);
@@ -216,7 +216,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
 
-    public void syncUnits(List<Unit> units, Long hospitalRef) {
+    public void syncUnits(List<Unit> units, String hospitalRef) {
         SQLiteDatabase db = this.getWritableDatabase();
         if (null != units && units.size() > 0) {
             List<Unit> existingRecords = this.getAllUnitsTypes(hospitalRef);
@@ -269,20 +269,20 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return units;
     }
 
-    public List<Unit> getAllUnitsTypesByStatus(Long hospitalID, int statusCode) {
+    public List<Unit> getAllUnitsTypesByStatus(String hospitalID, int statusCode) {
         String selectQuery = "SELECT  * FROM " + TABLE_UNITS + " WHERE " + Columns.KEY_HOSPITAL_ID + " = ? AND " +
                 Columns.KEY_STATUS_CODE + " = ? ORDER BY " + Columns.KEY_NAME;
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor c = db.rawQuery(selectQuery, new String[]{String.valueOf(hospitalID), String.valueOf(statusCode)});
+        Cursor c = db.rawQuery(selectQuery, new String[]{hospitalID, String.valueOf(statusCode)});
         return setUnits(c);
     }
 
-    public List<Unit> getAllUnitsTypes(Long hospitalID) {
+    public List<Unit> getAllUnitsTypes(String hospitalID) {
         List<Unit> units = new ArrayList<Unit>();
         String selectQuery = "SELECT  * FROM " + TABLE_UNITS + " WHERE " + Columns.KEY_HOSPITAL_ID + " = ? ORDER BY " +
                 Columns.KEY_NAME;
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor c = db.rawQuery(selectQuery, new String[]{String.valueOf(hospitalID)});
+        Cursor c = db.rawQuery(selectQuery, new String[]{hospitalID});
         return setUnits(c);
     }
 
@@ -291,7 +291,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
      * Specialty
      ***/
 
-    public void insertOrUpdateSpecialty(List<Specialty> specialties, Long hospitalRef) {
+    public void insertOrUpdateSpecialty(List<Specialty> specialties, String hospitalRef) {
         SQLiteDatabase db = this.getWritableDatabase();
         if (null != specialties && specialties.size() > 0) {
             List<Specialty> existingRecords = this.getAllSpecialties(hospitalRef);
@@ -299,10 +299,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             try {
                 for (Specialty specialty : specialties) {
                     ContentValues values = SqliteDataMapper.setSpecialtyContent(specialty);
-                    Specialty exisitingRecord = getValue(existingRecords, specialty);
+                    Specialty existingRecord = getValue(existingRecords, specialty);
                     existingRecords.remove(specialty);
-                    if (null != exisitingRecord) {
-                        db.update(TABLE_SPECIALTY, values, Columns.KEY_ID + "=" + exisitingRecord.getId(), null);
+                    if (null != existingRecord) {
+                        db.update(TABLE_SPECIALTY, values, Columns.KEY_ID + "=" + existingRecord.getId(), null);
                     } else {
                         db.insert(TABLE_SPECIALTY, null, values);
                     }
@@ -316,7 +316,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
-    public void syncSpecialities(List<Specialty> specialties, Long hospitalRef) {
+    public void syncSpecialities(List<Specialty> specialties, String hospitalRef) {
         SQLiteDatabase db = this.getWritableDatabase();
         if (null != specialties && specialties.size() > 0) {
             List<Specialty> existingRecords = this.getAllSpecialties(hospitalRef);
@@ -368,30 +368,30 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return specialties;
     }
 
-    public List<Specialty> getAllSpecialtiesByStatus(Long hospitalID, int statusCode) {
+    public List<Specialty> getAllSpecialtiesByStatus(String hospitalID, int statusCode) {
         String selectQuery = "SELECT  * FROM " + TABLE_SPECIALTY + " WHERE " + Columns.KEY_HOSPITAL_ID + " = ? AND " +
                 Columns.KEY_STATUS_CODE + " = ? ORDER BY " + Columns.KEY_NAME;
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor c = db.rawQuery(selectQuery, new String[]{String.valueOf(hospitalID), String.valueOf(statusCode)});
+        Cursor c = db.rawQuery(selectQuery, new String[]{hospitalID, String.valueOf(statusCode)});
         return setSpecialities(c);
     }
 
-    public List<Specialty> getAllSpecialties(Long hospitalID) {
+    public List<Specialty> getAllSpecialties(String hospitalID) {
         String selectQuery = "SELECT  * FROM " + TABLE_SPECIALTY + " WHERE " + Columns.KEY_HOSPITAL_ID + " = ? ORDER BY " + Columns.KEY_NAME;
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor c = db.rawQuery(selectQuery, new String[]{String.valueOf(hospitalID)});
+        Cursor c = db.rawQuery(selectQuery, new String[]{hospitalID});
         return setSpecialities(c);
     }
 
 
-    public void syncIncidentTypes(List<IncidentType> incidentTypes, Long hospitalRef) {
+    public void syncIncidentTypes(List<IncidentType> incidentTypes, String hospitalRef) {
         SQLiteDatabase db = this.getWritableDatabase();
         if (null != incidentTypes && incidentTypes.size() > 0) {
             List<IncidentType> existingRecords = this.getAllIncidentTypes(hospitalRef);
             db.beginTransaction();
             try {
                 for (IncidentType incidentType : incidentTypes) {
-                    incidentType.setHospitalID(hospitalRef);
+                    incidentType.setHospitalUUID(hospitalRef);
                     ContentValues values = SqliteDataMapper.setIncidentTypeContent(incidentType);
                     IncidentType foundIcidentType = getValue(existingRecords, incidentType);
                     if (null != foundIcidentType) {
@@ -437,18 +437,18 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return incidentTypes;
     }
 
-    public List<IncidentType> getAllIncidentTypesByStatus(Long hospitalID, int statusCode) {
+    public List<IncidentType> getAllIncidentTypesByStatus(String hospitalID, int statusCode) {
         String selectQuery = "SELECT  * FROM " + TABLE_INCIDENT_TYPE + " WHERE " + Columns.KEY_HOSPITAL_ID + " = ? AND " +
                 Columns.KEY_STATUS_CODE + " = ? ORDER BY " + Columns.KEY_NAME;
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor c = db.rawQuery(selectQuery, new String[]{String.valueOf(hospitalID), String.valueOf(statusCode)});
+        Cursor c = db.rawQuery(selectQuery, new String[]{hospitalID, String.valueOf(statusCode)});
         return setIncidentTypes(c);
     }
 
-    public List<IncidentType> getAllIncidentTypes(Long hospitalID) {
+    public List<IncidentType> getAllIncidentTypes(String hospitalID) {
         String selectQuery = "SELECT  * FROM " + TABLE_INCIDENT_TYPE + " WHERE " + Columns.KEY_HOSPITAL_ID + " = ? ORDER BY " + Columns.KEY_NAME;
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor c = db.rawQuery(selectQuery, new String[]{String.valueOf(hospitalID)});
+        Cursor c = db.rawQuery(selectQuery, new String[]{hospitalID});
         return setIncidentTypes(c);
     }
 
@@ -565,7 +565,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public static final String CREATE_TABLE_INCIDENT_REPORT = "CREATE TABLE IF NOT EXISTS " + EventReportKey.TABLE_INCIDENT_REPORT
             + " (" + Columns.KEY_ID + " INTEGER PRIMARY KEY, " + Columns.KEY_SERVER_ID + " INTEGER, "
-            + Columns.KEY_HOSPITAL_ID + " INTEGER NOT NULL, " + EventReportKey.KEY_INCIDENT_NUMBER + "  TEXT, "
+            + Columns.KEY_HOSPITAL_ID + " TEXT NOT NULL, " + EventReportKey.KEY_INCIDENT_NUMBER + "  TEXT, "
             + Columns.KEY_STATUS_CODE + " INTEGER, " + EventReportKey.KEY_INCIDENT_LOCATION + " TEXT, "
             + IncidentReportKey.KEY_INCIDENT_TYPE_REF + " INTEGER NOT NULL , " + Columns.KEY_UNIT_REF + " INTEGER NOT NULL , "
             + EventReportKey.KEY_REPORTED_BY_REF + " INTEGER REFERENCES " + EventReportKey.TABLE_REPORTED_BY + "(" + Columns.KEY_ID + "), "
@@ -574,7 +574,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             + IncidentReportKey.KEY_INCIDENT_LEVEL + " INTEGER, " + IncidentReportKey.KEY_MEDICAL_REPORT + " TEXT, "
             + Columns.KEY_CREATED_ON + " DATETIME, " + Columns.KEY_UPDATED_ON + " DATETIME )";
 
-    public List<IncidentReport> getIncidentReportForDisplayByHospital(Long hospitalID, int pageNumber) throws DataAccessException {
+    public List<IncidentReport> getIncidentReportForDisplayByHospital(String hospitalID, int pageNumber) throws DataAccessException {
         List<IncidentReport> reports = new ArrayList<>();
         int start = 0;
         if (pageNumber > 0) {
@@ -595,7 +595,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         Cursor c = null;
         try {
             SQLiteDatabase db = this.getReadableDatabase();
-            c = db.rawQuery(selectQuery, new String[]{"0", "1", "2", String.valueOf(hospitalID), String.valueOf(start)});
+            c = db.rawQuery(selectQuery, new String[]{"0", "1", "2", hospitalID, String.valueOf(start)});
             if (c.moveToFirst()) {
                 do {
                     reports.add(SqliteDataMapper.setIncidentReport(c));
@@ -965,7 +965,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
      **/
     public static final String CREATE_TABLE_MEDICATION_ERR_REPORT = "CREATE TABLE IF NOT EXISTS " + EventReportKey.TABLE_MEDICATION_ERR_REPORT
             + " (" + Columns.KEY_ID + " INTEGER PRIMARY KEY, " + Columns.KEY_SERVER_ID + " INTEGER, "
-            + Columns.KEY_HOSPITAL_ID + " INTEGER NOT NULL, " + EventReportKey.KEY_INCIDENT_NUMBER + "  TEXT, "
+            + Columns.KEY_HOSPITAL_ID + " TEXT NOT NULL, " + EventReportKey.KEY_INCIDENT_NUMBER + "  TEXT, "
             + Columns.KEY_STATUS_CODE + " INTEGER, " + EventReportKey.KEY_INCIDENT_LOCATION + " TEXT, "
             + Columns.KEY_UNIT_REF + " INTEGER NOT NULL , "
             + EventReportKey.KEY_REPORTED_BY_REF + " INTEGER REFERENCES " + EventReportKey.TABLE_REPORTED_BY + "(" + Columns.KEY_ID + "), "
@@ -975,7 +975,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             + Columns.KEY_CREATED_ON + " DATETIME, " + Columns.KEY_UPDATED_ON + " DATETIME )";
 
 
-    public List<MedicationError> getMedicationErrorForDisplayByHospital(Long hospitalID, int pageNumber) throws DataAccessException {
+    public List<MedicationError> getMedicationErrorForDisplayByHospital(String hospitalID, int pageNumber) throws DataAccessException {
         List<MedicationError> reports = new ArrayList<>();
         int start = 0;
         if (pageNumber > 0) {
@@ -996,7 +996,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         Cursor c = null;
         try {
             SQLiteDatabase db = this.getReadableDatabase();
-            c = db.rawQuery(selectQuery, new String[]{"0", "1", "2", String.valueOf(hospitalID), String.valueOf(start)});
+            c = db.rawQuery(selectQuery, new String[]{"0", "1", "2", hospitalID, String.valueOf(start)});
             if (c.moveToFirst()) {
                 do {
                     reports.add(SqliteDataMapper.setMedicationError(c));
@@ -1310,7 +1310,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String CREATE_TABLE_ADVERSE_DRUGG_REACTION_REPORT = "CREATE TABLE IF NOT EXISTS "
             + EventReportKey.TABLE_ADVERSE_DRUGG_REACTION_REPORT
             + " (" + Columns.KEY_ID + " INTEGER PRIMARY KEY, " + Columns.KEY_SERVER_ID + " INTEGER, "
-            + Columns.KEY_HOSPITAL_ID + " INTEGER NOT NULL, " + EventReportKey.KEY_INCIDENT_NUMBER + "  TEXT, "
+            + Columns.KEY_HOSPITAL_ID + " TEXT NOT NULL, " + EventReportKey.KEY_INCIDENT_NUMBER + "  TEXT, "
             + Columns.KEY_STATUS_CODE + " INTEGER, " + EventReportKey.KEY_INCIDENT_LOCATION + " TEXT, "
             + Columns.KEY_UNIT_REF + " INTEGER NOT NULL , "
             + EventReportKey.KEY_REPORTED_BY_REF + " INTEGER REFERENCES " + EventReportKey.TABLE_REPORTED_BY + "(" + Columns.KEY_ID + "), "
@@ -1391,7 +1391,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return drugInfos;
     }
 
-    public List<AdverseDrugEvent> getAdverseDrugEventForDisplayByHospital(Long hospitalID, int pageNumber) throws DataAccessException {
+    public List<AdverseDrugEvent> getAdverseDrugEventForDisplayByHospital(String hospitalID, int pageNumber) throws DataAccessException {
         List<AdverseDrugEvent> reports = new ArrayList<>();
         int start = 0;
         if (pageNumber > 0) {
@@ -1413,7 +1413,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         Cursor c = null;
         try {
             SQLiteDatabase db = this.getReadableDatabase();
-            c = db.rawQuery(selectQuery, new String[]{"0", "1", "2", String.valueOf(hospitalID), String.valueOf(start)});
+            c = db.rawQuery(selectQuery, new String[]{"0", "1", "2", hospitalID, String.valueOf(start)});
             if (c.moveToFirst()) {
                 do {
                     reports.add(SqliteDataMapper.setAdverseDrugEvent(c));

@@ -18,9 +18,9 @@ public class Specialty implements Serializable {
     @Expose
     private String specialityName;
 
-    @SerializedName("hospitalID")
+    @SerializedName("hospitalUUID")
     @Expose
-    private Long hospitalID;
+    private String hospitalUUID;
 
     @SerializedName("serverId")
     @Expose
@@ -45,12 +45,12 @@ public class Specialty implements Serializable {
         this.specialityName = specialityName;
     }
 
-    public Long getHospitalID() {
-        return hospitalID;
+    public String getHospitalUUID() {
+        return hospitalUUID;
     }
 
-    public void setHospitalID(Long hospitalID) {
-        this.hospitalID = hospitalID;
+    public void setHospitalUUID(String hospitalUUID) {
+        this.hospitalUUID = hospitalUUID;
     }
 
     public String getSpecialityName() {
@@ -77,14 +77,14 @@ public class Specialty implements Serializable {
 
         Specialty that = (Specialty) o;
 
-        if (!getHospitalID().equals(that.getHospitalID())) return false;
+        if (!getHospitalUUID().equals(that.getHospitalUUID())) return false;
         return getServerId().equals(that.getServerId());
 
     }
 
     @Override
     public int hashCode() {
-        int result = getHospitalID().hashCode();
+        int result = getHospitalUUID().hashCode();
         result = 31 * result + getServerId().hashCode();
         return result;
     }

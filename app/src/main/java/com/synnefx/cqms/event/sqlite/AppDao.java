@@ -21,23 +21,23 @@ public class AppDao {
     }
 
 
-    public void addUnits(List<Unit> units, Long hospitalRef) {
+    public void addUnits(List<Unit> units, String hospitalRef) {
         databaseHelper.insertOrUpdateUnits(units, hospitalRef);
     }
 
-    public void updateUnits(List<Unit> units, Long hospitalRef) {
+    public void updateUnits(List<Unit> units, String hospitalRef) {
         databaseHelper.insertOrUpdateUnits(units, hospitalRef);
     }
 
-    public void syncUnits(List<Unit> units, Long hospitalRef) {
+    public void syncUnits(List<Unit> units, String hospitalRef) {
         databaseHelper.syncUnits(units, hospitalRef);
     }
 
-    public List<Unit> getAllUnitsTypesByStatus(Long hospitalID, int statusCode) {
+    public List<Unit> getAllUnitsTypesByStatus(String hospitalID, int statusCode) {
         return databaseHelper.getAllUnitsTypesByStatus(hospitalID, statusCode);
     }
 
-    public List<Unit> getAllUnitsTypes(Long hospitalID) {
+    public List<Unit> getAllUnitsTypes(String hospitalID) {
         return databaseHelper.getAllUnitsTypes(hospitalID);
     }
 

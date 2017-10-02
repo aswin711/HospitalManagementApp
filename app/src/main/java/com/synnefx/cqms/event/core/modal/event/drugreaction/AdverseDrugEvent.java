@@ -57,7 +57,7 @@ public class AdverseDrugEvent extends EventReport {
 
     }
 
-    public AdverseDrugEvent(Long id, Long serverId, Long hospital, int statusCode, Long unitRef, String incidentNumber, String incidentLocation, Calendar updated, Calendar incidentTime, String description, String correctiveActionTaken, PersonInvolved personInvolved, ReportedBy reportedBy, Integer actionOutcomeCode, DrugInfo suspectedDrug, List<DrugInfo> otherDrugsTaken, Calendar dateOfRecovery, Calendar dateOfDeath, boolean admittedPostReaction, boolean reactionAddedToCasesheet, String comments) {
+    public AdverseDrugEvent(Long id, Long serverId, String hospital, int statusCode, Long unitRef, String incidentNumber, String incidentLocation, Calendar updated, Calendar incidentTime, String description, String correctiveActionTaken, PersonInvolved personInvolved, ReportedBy reportedBy, Integer actionOutcomeCode, DrugInfo suspectedDrug, List<DrugInfo> otherDrugsTaken, Calendar dateOfRecovery, Calendar dateOfDeath, boolean admittedPostReaction, boolean reactionAddedToCasesheet, String comments) {
         super(id, serverId, hospital, statusCode, unitRef, incidentNumber, incidentLocation, updated, incidentTime, description, correctiveActionTaken, personInvolved, reportedBy);
         this.reactionDate = incidentTime;
         this.actionOutcomeCode = actionOutcomeCode;
