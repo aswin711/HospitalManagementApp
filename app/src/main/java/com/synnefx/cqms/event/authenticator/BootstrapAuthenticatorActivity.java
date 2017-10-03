@@ -483,7 +483,7 @@ public class BootstrapAuthenticatorActivity extends ActionBarAccountAuthenticato
                             PrefUtils.saveToPrefs(getApplicationContext(), PrefUtils.PREFS_USER_ID, user.getUserName());
                             PrefUtils.saveToPrefs(getApplicationContext(), PrefUtils.PREFS_USER_DISPLAY_NAME, user.getFullName());
                             PrefUtils.saveToPrefs(getApplicationContext(), PrefUtils.PREFS_HOSP_DISPLAY_NAME, user.getAssociatedHospitalName());
-                            PrefUtils.setUserLoggedIn(true);
+                            PrefUtils.saveToPrefs(getApplicationContext(),PrefUtils.PREF_USER_LOGGED_IN,true);
                             startActivity(new Intent(getApplicationContext(),ImportConfigActivity.class));
                             //finish();
                             return true;
@@ -575,7 +575,6 @@ public class BootstrapAuthenticatorActivity extends ActionBarAccountAuthenticato
         String email = emailTextChanged.trim();
         if (email.isEmpty() || !isValidEmail(email)) {
             emailLayout.setError(getString(R.string.err_msg_email));
-            requestFocus(emailText);
             return false;
         } else {
             emailLayout.setError(null);
@@ -588,7 +587,6 @@ public class BootstrapAuthenticatorActivity extends ActionBarAccountAuthenticato
 
         if (passwordTextChanged.trim().isEmpty()) {
             passwordLayout.setError(getString(R.string.err_msg_password));
-            requestFocus(passwordText);
             return false;
         } else {
             passwordLayout.setError(null);

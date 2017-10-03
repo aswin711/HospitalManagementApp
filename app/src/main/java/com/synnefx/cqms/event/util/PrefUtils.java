@@ -55,15 +55,15 @@ public class PrefUtils {
                 .getDefaultSharedPreferences(context);
         final SharedPreferences.Editor editor = prefs.edit();
         editor.putString(key, value);
-        editor.commit();
+        editor.apply();
     }
 
-    public static void saveToPrefs(Context context, String key, Long value) {
+    public static void saveToPrefs(Context context, String key, Boolean value) {
         SharedPreferences prefs = PreferenceManager
                 .getDefaultSharedPreferences(context);
         final SharedPreferences.Editor editor = prefs.edit();
-        editor.putLong(key, value);
-        editor.commit();
+        editor.putBoolean(key, value);
+        editor.apply();
     }
 
 
@@ -207,7 +207,7 @@ public class PrefUtils {
                 .getDefaultSharedPreferences(context);
         final SharedPreferences.Editor editor = prefs.edit();
         editor.clear();
-        editor.commit();
+        editor.apply();
     }
 
     public static void setUserLoggedIn(Boolean state){

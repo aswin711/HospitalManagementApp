@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -211,7 +212,12 @@ public class ImportConfigActivity extends BootstrapFragmentActivity {
 
                 alertDialog.setCancelable(false).setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                            finish();
+                        dialog.dismiss();
+                        Intent intent = new Intent(getActivity(), MainActivity.class);
+                        //intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(intent);
+                        //finish();
+                            //finish();
                     }
                 });
 
