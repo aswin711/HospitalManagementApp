@@ -16,6 +16,7 @@ import com.squareup.otto.Bus;
 import com.synnefx.cqms.event.BootstrapApplication;
 import com.synnefx.cqms.event.BootstrapServiceProvider;
 import com.synnefx.cqms.event.R;
+import com.synnefx.cqms.event.core.modal.IncidentType;
 import com.synnefx.cqms.event.core.modal.Unit;
 import com.synnefx.cqms.event.sqlite.DatabaseHelper;
 import com.synnefx.cqms.event.ui.base.BootstrapFragmentActivity;
@@ -28,6 +29,8 @@ import java.util.List;
 import javax.inject.Inject;
 
 import butterknife.Bind;
+
+import static com.synnefx.cqms.event.core.Constants.Notification.IMPORT_INCIDENTTYPE_NOTIFICATION_ID;
 
 public class ImportConfigActivity extends BootstrapFragmentActivity {
 
@@ -123,6 +126,13 @@ public class ImportConfigActivity extends BootstrapFragmentActivity {
                         } else {
                             errorMessages.add("Units not configured");
                         }
+                        List<IncidentType> incidentTypes = serviceProvider.getAuthenticatedService().getIncidentTypes();
+                        if (null != incidentTypes && incidentTypes.size() > 0) {
+                            databaseHelper.syncIncidentTypes(incidentTypes, hospitalRef);
+                            successessages.add("Incident Types added");
+                        } else {
+                           errorMessages.add("Incident Types  not configured");
+                        }
                     } else {
                         //Show warning
                     }
@@ -174,7 +184,6 @@ public class ImportConfigActivity extends BootstrapFragmentActivity {
                         showImportStatus("An Error Occured While Importing","Do you want to import config again?",2);
                     }
                 }
-
             }
 
             protected void onProgressUpdate(Integer... progress) {
