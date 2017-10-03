@@ -217,7 +217,6 @@ public class PrefUtils {
 
     public static boolean isUserLoggedIn(){
         SharedPreferences preferences = getSettings();
-        boolean getUserLoggedIn = preferences.getBoolean(PREF_USER_LOGGED_IN,false);
-        return getUserLoggedIn;
+        return preferences.getBoolean(PREF_USER_LOGGED_IN,false);
     }
 }

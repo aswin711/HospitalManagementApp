@@ -57,22 +57,11 @@ public class ImportConfigActivity extends BootstrapFragmentActivity {
         } else {
             //Fabric.with(this, new Crashlytics());
             if(PrefUtils.isUserLoggedIn()){
-
                 importConfig();
-
             }else {
-
-
-
-                    finish();
-
-
+                   finish();
             }
-
-
         }
-
-
     }
 
 
@@ -186,11 +175,6 @@ public class ImportConfigActivity extends BootstrapFragmentActivity {
                     }
                 }
 
-
-
-
-
-
             }
 
             protected void onProgressUpdate(Integer... progress) {
@@ -216,12 +200,9 @@ public class ImportConfigActivity extends BootstrapFragmentActivity {
                 alertDialog.setMessage(subMsg);
                 alertDialog.setIcon(imageResource);
 
-
                 alertDialog.setCancelable(false).setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                             finish();
-
-
                     }
                 });
 
@@ -251,7 +232,7 @@ public class ImportConfigActivity extends BootstrapFragmentActivity {
                 break;
 
             default:
-
+                break;
 
         }
 

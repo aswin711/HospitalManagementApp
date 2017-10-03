@@ -7,9 +7,9 @@ import java.io.Serializable;
 
 public class User implements Serializable {
 
-    @SerializedName("associatedHospital")
+    @SerializedName("hospitalUUID")
     @Expose
-    private Long associatedHospital;
+    private String associatedHospital;
     @SerializedName("associatedHospitalName")
     @Expose
     private String associatedHospitalName;
@@ -63,14 +63,14 @@ public class User implements Serializable {
     /**
      * @return The associatedHospital
      */
-    public Long getAssociatedHospital() {
+    public String getAssociatedHospital() {
         return associatedHospital;
     }
 
     /**
      * @param associatedHospital The associatedHospital
      */
-    public void setAssociatedHospital(Long associatedHospital) {
+    public void setAssociatedHospital(String associatedHospital) {
         this.associatedHospital = associatedHospital;
     }
 

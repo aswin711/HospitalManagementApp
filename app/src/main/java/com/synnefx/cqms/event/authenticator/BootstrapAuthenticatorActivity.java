@@ -38,6 +38,7 @@ import com.synnefx.cqms.event.core.modal.User;
 import com.synnefx.cqms.event.events.NetworkErrorEvent;
 import com.synnefx.cqms.event.events.UnAuthorizedErrorEvent;
 import com.synnefx.cqms.event.sync.conf.ConfSyncContentProvider;
+import com.synnefx.cqms.event.sync.drugreaction.DrugReactionSyncContentProvider;
 import com.synnefx.cqms.event.sync.incident.IncidentReportSyncContentProvider;
 import com.synnefx.cqms.event.sync.medicationerror.MedicationErrorSyncContentProvider;
 import com.synnefx.cqms.event.ui.ImportConfigActivity;
@@ -453,6 +454,11 @@ public class BootstrapAuthenticatorActivity extends ActionBarAccountAuthenticato
                     MedicationErrorSyncContentProvider.AUTHORITY,
                     Bundle.EMPTY,
                     20l);
+            ContentResolver.addPeriodicSync(
+                    accounts[0],
+                    DrugReactionSyncContentProvider.AUTHORITY,
+                    Bundle.EMPTY,
+                    25l);
         }
     }
 
@@ -473,7 +479,7 @@ public class BootstrapAuthenticatorActivity extends ActionBarAccountAuthenticato
                     } else {
                         if (null != user) {
 
-                            PrefUtils.saveToPrefs(getApplicationContext(), PrefUtils.PREFS_HOSP_ID, String.valueOf(user.getAssociatedHospital()));
+                            PrefUtils.saveToPrefs(getApplicationContext(), PrefUtils.PREFS_HOSP_ID, user.getAssociatedHospital());
                             PrefUtils.saveToPrefs(getApplicationContext(), PrefUtils.PREFS_USER_ID, user.getUserName());
                             PrefUtils.saveToPrefs(getApplicationContext(), PrefUtils.PREFS_USER_DISPLAY_NAME, user.getFullName());
                             PrefUtils.saveToPrefs(getApplicationContext(), PrefUtils.PREFS_HOSP_DISPLAY_NAME, user.getAssociatedHospitalName());

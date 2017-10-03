@@ -84,16 +84,19 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String CREATE_TABLE_UNITS = "CREATE TABLE IF NOT EXISTS "
             + TABLE_UNITS + " (" + Columns.KEY_ID + " INTEGER PRIMARY KEY, " + Columns.KEY_NAME + " TEXT NOT NULL, " + Columns.KEY_UNIT_REF
-            + " INTEGER NOT NULL, " + Columns.KEY_HOSPITAL_ID + " TEXT NOT NULL, " + Columns.KEY_STATUS_CODE + " INTEGER NOT NULL, " + Columns.KEY_CREATED_ON + " DATETIME )";
+            + " INTEGER NOT NULL, " + Columns.KEY_HOSPITAL_ID + " TEXT NOT NULL, " + Columns.KEY_STATUS_CODE + " INTEGER NOT NULL, " + Columns.KEY_CREATED_ON
+            + " DATETIME, UNIQUE("+Columns.KEY_UNIT_REF+", "+Columns.KEY_HOSPITAL_ID +") ON CONFLICT REPLACE )";
 
 
     private static final String CREATE_TABLE_SPECIALTY = "CREATE TABLE IF NOT EXISTS "
             + TABLE_SPECIALTY + " (" + Columns.KEY_ID + " INTEGER PRIMARY KEY, " + Columns.KEY_NAME + " TEXT NOT NULL, " + Columns.KEY_SPECIALTY_REF
-            + " INTEGER NOT NULL, " + Columns.KEY_HOSPITAL_ID + " TEXT NOT NULL, " + Columns.KEY_STATUS_CODE + " INTEGER NOT NULL, " + Columns.KEY_CREATED_ON + " DATETIME )";
+            + " INTEGER NOT NULL, " + Columns.KEY_HOSPITAL_ID + " TEXT NOT NULL, " + Columns.KEY_STATUS_CODE + " INTEGER NOT NULL, " + Columns.KEY_CREATED_ON
+            + " DATETIME, UNIQUE ("+Columns.KEY_SPECIALTY_REF+", "+Columns.KEY_HOSPITAL_ID +") ON CONFLICT REPLACE ) ";
 
     private static final String CREATE_TABLE_INCIDENT_TYPE = "CREATE TABLE IF NOT EXISTS "
             + TABLE_INCIDENT_TYPE + " (" + Columns.KEY_ID + " INTEGER PRIMARY KEY, " + Columns.KEY_NAME + " TEXT NOT NULL, " + Columns.KEY_INCIDENTTYPE_REF
-            + " INTEGER NOT NULL, " + Columns.KEY_HOSPITAL_ID + " TEXT NOT NULL, " + Columns.KEY_STATUS_CODE + " INTEGER NOT NULL, " + Columns.KEY_CREATED_ON + " DATETIME )";
+            + " INTEGER NOT NULL, " + Columns.KEY_HOSPITAL_ID + " TEXT NOT NULL, " + Columns.KEY_STATUS_CODE + " INTEGER NOT NULL, " + Columns.KEY_CREATED_ON
+            + " DATETIME, UNIQUE("+Columns.KEY_INCIDENTTYPE_REF+", "+Columns.KEY_HOSPITAL_ID +") ON CONFLICT REPLACE ) ";
 
 
     private static final String CREATE_TABLE_VERSION_HISTORY = "CREATE TABLE IF NOT EXISTS "

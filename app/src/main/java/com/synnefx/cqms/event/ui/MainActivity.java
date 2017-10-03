@@ -485,8 +485,6 @@ public class MainActivity extends BootstrapActivity implements NavigationView.On
                     boolean sent = serviceProvider.getAuthenticatedService().doDeviceRegistration("android", deviceToken);
                     sharedPreferences.edit().putBoolean(QuickstartPreferences.SENT_TOKEN_TO_SERVER, true).apply();
                     PrefUtils.setTokenSentToServer(sent);
-
-
                 }
             } catch (Exception exc) {
                 // Return exc to onPostExecute
@@ -547,5 +545,5 @@ public class MainActivity extends BootstrapActivity implements NavigationView.On
         return android.os.Build.VERSION.SDK_INT <= android.os.Build.VERSION_CODES.LOLLIPOP;
     }
 
-    }
+}
 
