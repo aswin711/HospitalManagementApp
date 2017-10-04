@@ -149,8 +149,7 @@ public abstract class BootstrapActivity extends AppCompatActivity {
                 // and when it finds none the user will be requested to log in again.
                 //checkAuth();
                 PrefUtils.deleteFromPrefs(getApplicationContext());
-                startActivity(new Intent(getApplicationContext(),MainActivity.class));
-                finish();
+                checkAuth();
             }
         });
     }

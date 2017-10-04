@@ -29,6 +29,7 @@ import com.synnefx.cqms.event.util.UIUtils;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.Collections;
 import java.util.List;
@@ -65,7 +66,6 @@ public class MedicationErrorListFragment extends ItemListFragment<MedicationErro
     @Override
     public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
                              final Bundle savedInstanceState) {
-        eventBus.register(this);
         return inflater.inflate(R.layout.record_list, null);
     }
 
@@ -99,8 +99,15 @@ public class MedicationErrorListFragment extends ItemListFragment<MedicationErro
 
     @Override
     public void onResume() {
+        eventBus.register(this);
         super.forceRefresh();
         super.onResume();
+    }
+
+    @Override
+    public void onPause() {
+        eventBus.unregister(this);
+        super.onPause();
     }
 
     @Override
@@ -121,14 +128,26 @@ public class MedicationErrorListFragment extends ItemListFragment<MedicationErro
     public void onEventListened(String data){
         if(data.equals(getString(R.string.fab_clicked))){
             startActivity(new Intent(getActivity(),MedicationErrorActivity.class).putExtra(HH_SESSION_ADD_OBSERVATION,true));
+        }else if (data.equals(getString(R.string.force_refresh))){
+            Toast.makeText(getContext(), "Entered!!", Toast.LENGTH_SHORT).show();
         }
 
+
     }
+
+    @Subscribe(sticky = true,threadMode = ThreadMode.MAIN)
+    public void onEvent(String data) {
+        if (data.equals(getString(R.string.force_refresh))){
+            Log.e("eventbus","Received");
+            Toast.makeText(getContext(), "Entered!!", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+
 
     @Override
     public void onDestroyView() {
         setListAdapter(null);
-        eventBus.unregister(this);
         super.onDestroyView();
     }
 
@@ -211,7 +230,7 @@ public class MedicationErrorListFragment extends ItemListFragment<MedicationErro
         // alertDialog.setIcon(R.drawable.ic_action_discard_dark);
         // Setting Positive "Yes" Button
         if (null != report) {
-            if (!report.canEdit()) {
+            if (report.canEdit()) {
                 alertDialog.setPositiveButton("Edit",
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
