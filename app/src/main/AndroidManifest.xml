@@ -140,7 +140,8 @@
         <!-- Activities -->
         <activity
             android:name="com.synnefx.cqms.event.authenticator.BootstrapAuthenticatorActivity"
-            android:excludeFromRecents="true">
+            android:excludeFromRecents="true"
+            android:windowSoftInputMode="stateHidden">
 
             <!--
                 No intent-filter here! This activity is only ever launched by
@@ -164,6 +165,7 @@
         <activity
             android:name="com.synnefx.cqms.event.ui.ImportConfigActivity"
             android:label="@string/title_activity_import_config"
+            android:windowSoftInputMode="stateHidden"
             android:parentActivityName="com.synnefx.cqms.event.ui.SettingsActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -224,7 +226,8 @@
         <activity
             android:name="com.synnefx.cqms.event.ui.incident.IncidentReportActivity"
             android:label="@string/title_activity_incident_report"
-            android:parentActivityName="com.synnefx.cqms.event.ui.incident.IncidentReportListActivity">
+            android:parentActivityName="com.synnefx.cqms.event.ui.incident.IncidentReportListActivity"
+            android:windowSoftInputMode="stateHidden">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.synnefx.cqms.event.ui.incident.IncidentReportListActivity" />
@@ -232,7 +235,8 @@
         <activity
             android:name="com.synnefx.cqms.event.ui.medicationerror.MedicationErrorListActivity"
             android:label="@string/title_activity_medication_error_list"
-            android:parentActivityName="com.synnefx.cqms.event.ui.MainActivity">
+            android:parentActivityName="com.synnefx.cqms.event.ui.MainActivity"
+            android:windowSoftInputMode="stateHidden">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.synnefx.cqms.event.ui.MainActivity" />
@@ -240,7 +244,8 @@
         <activity
             android:name="com.synnefx.cqms.event.ui.medicationerror.MedicationErrorActivity"
             android:label="@string/title_activity_medication_error"
-            android:parentActivityName="com.synnefx.cqms.event.ui.medicationerror.MedicationErrorListActivity">
+            android:parentActivityName="com.synnefx.cqms.event.ui.medicationerror.MedicationErrorListActivity"
+            android:windowSoftInputMode="stateHidden">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.synnefx.cqms.event.ui.medicationerror.MedicationErrorListActivity" />
@@ -248,7 +253,8 @@
         <activity
             android:name="com.synnefx.cqms.event.ui.drugreaction.DrugReactionListActivity"
             android:label="@string/title_activity_drug_reaction_list"
-            android:parentActivityName="com.synnefx.cqms.event.ui.MainActivity">
+            android:parentActivityName="com.synnefx.cqms.event.ui.MainActivity"
+            android:windowSoftInputMode="stateHidden">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.synnefx.cqms.event.ui.MainActivity" />
@@ -256,7 +262,8 @@
         <activity
             android:name="com.synnefx.cqms.event.ui.drugreaction.DrugReactionActivity"
             android:label="@string/title_activity_drug_reaction"
-            android:parentActivityName="com.synnefx.cqms.event.ui.drugreaction.DrugReactionListActivity">
+            android:parentActivityName="com.synnefx.cqms.event.ui.drugreaction.DrugReactionListActivity"
+            android:windowSoftInputMode="stateHidden">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.synnefx.cqms.event.ui.drugreaction.DrugReactionListActivity" />

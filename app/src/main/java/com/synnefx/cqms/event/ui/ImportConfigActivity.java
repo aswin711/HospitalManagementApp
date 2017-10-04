@@ -63,7 +63,7 @@ public class ImportConfigActivity extends BootstrapFragmentActivity {
             if(PrefUtils.isUserLoggedIn()){
                 importConfig();
             }else {
-                   finish();
+                finish();
             }
         }
     }
