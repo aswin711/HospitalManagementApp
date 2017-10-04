@@ -211,7 +211,7 @@ public class ImportConfigActivity extends BootstrapFragmentActivity {
                     public void onClick(DialogInterface dialog, int id) {
                         dialog.dismiss();
                         Intent intent = new Intent(getActivity(), MainActivity.class);
-                        //intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(intent);
                         //finish();
                             //finish();
