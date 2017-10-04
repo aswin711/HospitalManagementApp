@@ -60,11 +60,8 @@ public class ImportConfigActivity extends BootstrapFragmentActivity {
             showConnectionAlert();
         } else {
             //Fabric.with(this, new Crashlytics());
-            if(PrefUtils.isUserLoggedIn()){
                 importConfig();
-            }else {
-                finish();
-            }
+
         }
     }
 

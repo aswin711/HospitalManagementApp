@@ -207,7 +207,7 @@ public class IncidentReportListFragment extends ItemListFragment<IncidentReport>
         // alertDialog.setIcon(R.drawable.ic_action_discard_dark);
         // Setting Positive "Yes" Button
         if (null != report) {
-            if (!report.canEdit()) {
+            if (report.canEdit()) {
                 alertDialog.setPositiveButton("Edit",
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {

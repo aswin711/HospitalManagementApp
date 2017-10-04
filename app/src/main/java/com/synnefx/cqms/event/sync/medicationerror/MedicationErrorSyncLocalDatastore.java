@@ -1,11 +1,15 @@
 package com.synnefx.cqms.event.sync.medicationerror;
 
+import android.content.Context;
 import android.util.Log;
 
+import com.synnefx.cqms.event.R;
 import com.synnefx.cqms.event.core.modal.event.medicationerror.MedicationError;
 import com.synnefx.cqms.event.sqlite.AppDao;
 import com.synnefx.cqms.event.sqlite.DataAccessException;
 import com.synnefx.cqms.event.sync.Datastore;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
 
@@ -15,6 +19,9 @@ public class MedicationErrorSyncLocalDatastore implements Datastore<MedicationEr
 
     @Inject
     protected AppDao dao;
+    @Inject
+    protected Context context;
+
 
     @Override
     public List<MedicationError> get() {
@@ -41,6 +48,9 @@ public class MedicationErrorSyncLocalDatastore implements Datastore<MedicationEr
 
     @Override
     public MedicationError update(MedicationError localDataInstance) {
+        if(localDataInstance.getServerId()>0){
+            localDataInstance.setStatusCode(2);
+        }
         dao.updateMedicationError(localDataInstance);
         MedicationError result = dao.getMedicationErrorById(localDataInstance.getId());
         return result;
