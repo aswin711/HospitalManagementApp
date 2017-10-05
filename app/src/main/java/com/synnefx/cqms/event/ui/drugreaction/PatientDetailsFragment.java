@@ -126,17 +126,18 @@ public class PatientDetailsFragment extends Fragment implements View.OnClickList
                 Long personInvolvedRef = report.getPersonInvolvedRef();
                 if(null != personInvolvedRef && 0 < personInvolvedRef){
                     patient = databaseHelper.getPersonInvolvedById(personInvolvedRef);
-                    report.setPersonInvolved(patient);
                 }
             }
-            if (null == patient) {
+            if (null == patient && null != report.getId() && 0 < report.getId()) {
                 Long patientRef = bundle.getLong(Constants.Extra.PATIENT_REF, 0l);
                 Log.e("patientRef ", String.valueOf(patientRef));
                 if (0 < patientRef) {
                     patient = databaseHelper.getPersonInvolvedById(patientRef);
                 }
-                report.setPersonInvolved(patient);
+            }else{
+                patient = new PersonInvolved();
             }
+            report.setPersonInvolved(patient);
         }
         initScreen();
         saveDetailsBtn.setOnClickListener(new View.OnClickListener() {
@@ -234,9 +235,11 @@ public class PatientDetailsFragment extends Fragment implements View.OnClickList
                 }
             }
         });
-        Integer selectedGender = patient.getGenderCode();
-        if (null != selectedGender && 0 < selectedGender) {
-            personGender.setText(gendorAdapter.getItem(selectedGender));
+        if(null != patient){
+            Integer selectedGender = patient.getGenderCode();
+            if (null != selectedGender && 0 < selectedGender) {
+                personGender.setText(gendorAdapter.getItem(selectedGender));
+            }
         }
     }
 

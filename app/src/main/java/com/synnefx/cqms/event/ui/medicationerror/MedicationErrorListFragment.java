@@ -2,6 +2,7 @@ package com.synnefx.cqms.event.ui.medicationerror;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -36,7 +38,8 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import static com.synnefx.cqms.event.core.Constants.Extra.HH_SESSION_ADD_OBSERVATION;
+
+import static com.synnefx.cqms.event.core.Constants.Extra.EDIT_REPORT_COMMAND;
 import static com.synnefx.cqms.event.core.Constants.Extra.INCIDENT_ITEM;
 
 

@@ -17,8 +17,6 @@ import retrofit2.http.POST;
  */
 public interface UserService {
 
-    @GET(Constants.Http.URL_USERS_FRAG)
-    Call<ApiResponse<User>> getUsers();
 
     /**
      * The {@link retrofit2.http.Query} values will be transform into query string paramters
