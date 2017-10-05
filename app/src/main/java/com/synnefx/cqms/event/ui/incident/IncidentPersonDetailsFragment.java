@@ -41,14 +41,7 @@ import butterknife.ButterKnife;
 
 import static com.synnefx.cqms.event.core.Constants.Extra.INCIDENT_ITEM;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link IncidentPersonDetailsFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link IncidentPersonDetailsFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+
 public class IncidentPersonDetailsFragment extends Fragment{
 
     protected View fragmentView;
@@ -86,7 +79,7 @@ public class IncidentPersonDetailsFragment extends Fragment{
     @Bind(R.id.gender_holder)
     protected LinearLayout genderHolder;
 
-    private OnFragmentInteractionListener mListener;
+
 
     ArrayAdapter<CharSequence> personTypeAdapter;
 
@@ -99,21 +92,7 @@ public class IncidentPersonDetailsFragment extends Fragment{
     private Boolean editable = false;
 
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment MedicationErrorPersonDetailsFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static IncidentPersonDetailsFragment newInstance(String param1, String param2) {
-        IncidentPersonDetailsFragment fragment = new IncidentPersonDetailsFragment();
-        Bundle args = new Bundle();
-        fragment.setArguments(args);
-        return fragment;
-    }
+
 
     public IncidentPersonDetailsFragment() {
         // Required empty public constructor
@@ -160,12 +139,6 @@ public class IncidentPersonDetailsFragment extends Fragment{
         return fragmentView;
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
 
 
     @Override
@@ -177,24 +150,8 @@ public class IncidentPersonDetailsFragment extends Fragment{
     @Override
     public void onDetach() {
         super.onDetach();
-        mListener = null;
     }
 
-
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p/>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        public void onFragmentInteraction(Uri uri);
-    }
 
     private void initScreen() {
         if (null != report && null != report.getId() && 0 < report.getId()) {
@@ -308,8 +265,6 @@ public class IncidentPersonDetailsFragment extends Fragment{
 
     private boolean saveIncidentDetails() {
         if (!validateDeatils()) {
-            // Long hospitalRef = PrefUtils.getLongFromPrefs(getActivity().getApplicationContext(), PrefUtils.PREFS_HOSP_ID, null);
-            //report.setHospital(hospitalRef);
             report.setUpdated(Calendar.getInstance());
             report.setPersonInvolved(personInvolved);
             long id = databaseHelper.updateIncidentPersonInvolved(report);
@@ -394,21 +349,6 @@ public class IncidentPersonDetailsFragment extends Fragment{
     }
 
     public IncidentReport saveDraft(){
-        /*PersonInvolved personInvolved = new PersonInvolved();
-
-        MaterialEditText personInvolvedName = (MaterialEditText) fragmentView.findViewById(R.id.person_involved_name);
-        MaterialEditText patientNumber = (MaterialEditText) fragmentView.findViewById(R.id.patient_number);
-        RadioButton radioMale = (RadioButton) fragmentView.findViewById(R.id.gender_male);
-        RadioButton radioFemale = (RadioButton) fragmentView.findViewById(R.id.gender_female);
-        RadioButton radioIndeterminate = (RadioButton) fragmentView.findViewById(R.id.gender_indeterminate);
-        RadioButton radioNotStated = (RadioButton) fragmentView.findViewById(R.id.gender_not_stated);
-        MaterialEditText staffIdNumber = (MaterialEditText) fragmentView.findViewById(R.id.staff_id_no);
-        MaterialEditText staffDesignation = (MaterialEditText) fragmentView.findViewById(R.id.staff_designation);
-        MaterialBetterSpinner typeSpinner = (MaterialBetterSpinner) fragmentView.findViewById(R.id.person_types);*/
-
-        /*Toast.makeText(context, ""+personInvolvedName.getText().toString()+"\n"+
-                typeSpinner.get, Toast.LENGTH_SHORT).show();*/
-
         personInvolved.setName(personInvolvedName.getText().toString());
 
         switch (personTypeSpinner.getText().toString()){

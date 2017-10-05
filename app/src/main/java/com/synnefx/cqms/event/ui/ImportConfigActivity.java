@@ -51,6 +51,8 @@ public class ImportConfigActivity extends BootstrapFragmentActivity {
 
     private ProgressDialog progress;
 
+    private AlertDialog mAlert;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,6 +66,9 @@ public class ImportConfigActivity extends BootstrapFragmentActivity {
 
         }
     }
+
+
+
 
 
 
@@ -95,7 +100,6 @@ public class ImportConfigActivity extends BootstrapFragmentActivity {
 
     private void importConfig() {
 
-        //Toast.makeText(this, "Importing", Toast.LENGTH_SHORT).show();
         progress = new ProgressDialog(this);
         progress.setMessage("Importing Services");
         progress.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
@@ -160,9 +164,6 @@ public class ImportConfigActivity extends BootstrapFragmentActivity {
             @Override
             protected void onSuccess(final Boolean isUpdated) throws Exception {
                 super.onSuccess(isUpdated);
-                // userHasAuthenticated = true;
-                // SnackBar snackBar = SnackBar.make(getContext()).
-                //Toaster.showLong(ImportConfigActivity.this, messages.);
                 progress.hide();
                 if (null != successessages) {
                     for (String msg : successessages) {
@@ -213,12 +214,12 @@ public class ImportConfigActivity extends BootstrapFragmentActivity {
                         Intent intent = new Intent(getActivity(), MainActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(intent);
-                        //finish();
-                            //finish();
+                        finish();
                     }
                 });
 
-                alertDialog.show();
+                mAlert = alertDialog.create();
+                mAlert.show();
                 break;
             case 2:
                 AlertDialog.Builder alertDialog1 = new AlertDialog.Builder(getActivity());
@@ -240,7 +241,8 @@ public class ImportConfigActivity extends BootstrapFragmentActivity {
 
                     }
                 });
-                alertDialog1.show();
+                mAlert = alertDialog1.create();
+                mAlert.show();
                 break;
 
             default:
@@ -249,4 +251,5 @@ public class ImportConfigActivity extends BootstrapFragmentActivity {
         }
 
     }
+
 }

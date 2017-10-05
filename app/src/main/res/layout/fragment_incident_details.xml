@@ -45,6 +45,7 @@
                 android:id="@+id/incident_types_holder"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/edit_margin"
                 android:orientation="vertical"
                 android:visibility="gone">
                 <!--<TextView
@@ -77,32 +78,41 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
-                <com.rengwuxian.materialedittext.MaterialEditText
-                    android:id="@+id/event_time"
-                    android:completionThreshold="1"
+                android:orientation="horizontal"
+                android:layout_marginTop="15dp">
+                <com.wrapp.floatlabelededittext.FloatLabeledEditText
                     android:layout_width="0dp"
                     android:layout_weight="0.75"
-                    android:editable="false"
-                    android:focusable="false"
-                    android:layout_height="wrap_content"
-                    android:imeOptions="actionNext|flagNoExtractUi"
-                    android:inputType="none"
-                    android:layout_marginBottom="8dp"
-                    android:layout_marginTop="@dimen/edit_margin"
-                    android:hint="@string/event_time"/>
+                    float:fletPadding="5dp"
+                    android:layout_height="75dp">
+                    <com.rengwuxian.materialedittext.MaterialEditText
+                        android:id="@+id/event_time"
+                        android:completionThreshold="1"
+                        android:layout_width="match_parent"
+                        android:editable="false"
+                        android:focusable="false"
+                        android:layout_height="55dp"
+                        android:imeOptions="actionNext|flagNoExtractUi"
+                        android:inputType="none"
+                        android:layout_marginBottom="8dp"
+                        android:minLines="1"
+                        android:layout_marginTop="@dimen/edit_margin"
+                        android:hint="@string/event_time"/>
+
+                </com.wrapp.floatlabelededittext.FloatLabeledEditText>
+
                 <com.rey.material.widget.Button
                     android:id="@+id/event_time_btn"
                     android:layout_width="0dp"
-                    android:layout_height="@dimen/bt_height"
+                    android:layout_height="40dp"
                     android:layout_weight="0.25"
                     android:text="Change"
-                    android:textColor="#fff"
-                    android:layout_marginTop="@dimen/edit_margin"
+                    android:layout_marginTop="30dp"
                     android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:background="@color/colorPrimary"
-                    app:v_styleId="@array/button_raise"/>
+                    android:layout_marginRight="5dp"
+                    android:background="@drawable/date_btn_bg"
+                    android:textColor="@color/white"
+                    />
             </LinearLayout>
 
 

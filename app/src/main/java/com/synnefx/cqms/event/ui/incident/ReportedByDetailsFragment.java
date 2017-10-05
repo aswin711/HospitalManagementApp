@@ -36,14 +36,7 @@ import butterknife.ButterKnife;
 
 import static com.synnefx.cqms.event.core.Constants.Extra.INCIDENT_ITEM;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link ReportedByDetailsFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link ReportedByDetailsFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+
 public class ReportedByDetailsFragment extends Fragment{
 
     protected View fragmentView;
@@ -55,7 +48,6 @@ public class ReportedByDetailsFragment extends Fragment{
     @Bind(R.id.event_reported_by_designation)
     protected MaterialEditText reportedByDesignation;
 
-    private OnFragmentInteractionListener mListener;
 
 
     @Inject
@@ -64,24 +56,6 @@ public class ReportedByDetailsFragment extends Fragment{
     EventBus eventBus;
     private IncidentReport report;
     private ReportedBy reportedBy;
-
-
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment MedicationErrorPersonDetailsFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static IncidentPersonDetailsFragment newInstance(String param1, String param2) {
-        IncidentPersonDetailsFragment fragment = new IncidentPersonDetailsFragment();
-        Bundle args = new Bundle();
-        fragment.setArguments(args);
-        return fragment;
-    }
 
     public ReportedByDetailsFragment() {
         // Required empty public constructor
@@ -123,12 +97,6 @@ public class ReportedByDetailsFragment extends Fragment{
         return fragmentView;
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
 
     @Override
     public void onDestroyView() {
@@ -139,24 +107,9 @@ public class ReportedByDetailsFragment extends Fragment{
     @Override
     public void onDetach() {
         super.onDetach();
-        mListener = null;
     }
 
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p/>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        public void onFragmentInteraction(Uri uri);
-    }
 
     private void initScreen() {
         if (null != report && null != report.getId() && 0 < report.getId()) {
@@ -240,6 +193,7 @@ public class ReportedByDetailsFragment extends Fragment{
         }
     }
 
+    //saving draft
     private IncidentReport saveDraft(){
 
         reportedBy.setLastName(reportedByName.getText().toString());

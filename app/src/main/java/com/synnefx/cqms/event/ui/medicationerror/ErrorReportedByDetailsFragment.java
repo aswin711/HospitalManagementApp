@@ -35,17 +35,9 @@ import butterknife.ButterKnife;
 
 import static com.synnefx.cqms.event.core.Constants.Extra.INCIDENT_ITEM;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link ErrorReportedByDetailsFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link ErrorReportedByDetailsFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class ErrorReportedByDetailsFragment extends Fragment {
 
-    protected static View fragmentView;
+    protected View fragmentView;
 
     @Bind(R.id.incident_reported_by_save)
     protected Button saveDetailsBtn;
@@ -54,34 +46,18 @@ public class ErrorReportedByDetailsFragment extends Fragment {
     @Bind(R.id.event_reported_by_designation)
     protected MaterialEditText reportedByDesignation;
 
-    private OnFragmentInteractionListener mListener;
 
 
     @Inject
     protected DatabaseHelper databaseHelper;
     @Inject
     EventBus eventBus;
-    private static MedicationError report;
-    private  ReportedBy reportedBy;
+    private MedicationError report;
+    private ReportedBy reportedBy;
     //private static PersonInvolved personInvolved;
     private Boolean editable = false;
 
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment MedicationErrorPersonDetailsFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static MedicationErrorPersonDetailsFragment newInstance(String param1, String param2) {
-        MedicationErrorPersonDetailsFragment fragment = new MedicationErrorPersonDetailsFragment();
-        Bundle args = new Bundle();
-        fragment.setArguments(args);
-        return fragment;
-    }
 
     public ErrorReportedByDetailsFragment() {
         // Required empty public constructor
@@ -126,12 +102,6 @@ public class ErrorReportedByDetailsFragment extends Fragment {
         return fragmentView;
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
 
     @Subscribe
     public void onEventListened(String data){
@@ -151,30 +121,9 @@ public class ErrorReportedByDetailsFragment extends Fragment {
     @Override
     public void onDetach() {
         super.onDetach();
-        mListener = null;
 
     }
 
-   /* @Override
-    public void onPressed(Boolean status, Context context) {
-        //Toast.makeText(context, "ReportBy", Toast.LENGTH_SHORT).show();
-        saveTempDetails(context);
-    }*/
-
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p/>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        public void onFragmentInteraction(Uri uri);
-    }
 
     private void initScreen() {
         if (null != report && null != report.getId() && 0 < report.getId()) {
@@ -208,7 +157,6 @@ public class ErrorReportedByDetailsFragment extends Fragment {
                 if (ConnectionUtils.isInternetAvaialable(getContext())) {
                     ServiceUtils.initiateSync(getContext(), MedicationErrorSyncContentProvider.AUTHORITY);
                 }
-                //startActivity(new Intent(getActivity(), MedicationErrorListActivity.class));
                 getActivity().finish();
             } else {
                 Snackbar.make(getView().getRootView(), "Error while updating", Snackbar.LENGTH_LONG).show();
@@ -219,34 +167,12 @@ public class ErrorReportedByDetailsFragment extends Fragment {
         }
     }
 
-    public void saveTempDetails(Context context){
-
-        DatabaseHelper databaseHelper = new DatabaseHelper(context);
-        ReportedBy reportedBy1 = new ReportedBy();
-        MaterialEditText reportedByName = (MaterialEditText) fragmentView.findViewById(R.id.event_reported_by_name);
-        MaterialEditText reportedByDesignation = (MaterialEditText) fragmentView.findViewById(R.id.event_reported_by_designation);
-
-        reportedBy1.setLastName(reportedByName.getText().toString());
-        reportedBy1.setDesignation(reportedByDesignation.getText().toString());
-
-
-        report.setUpdated(Calendar.getInstance());
-        report.setReportedBy(reportedBy1);
-        long id = databaseHelper.updateMedicationErrorReportedBy(report);
-    }
 
     public MedicationError saveDraft(){
-
-        ReportedBy reportedBy1 = new ReportedBy();
-        MaterialEditText reportedByName = (MaterialEditText) fragmentView.findViewById(R.id.event_reported_by_name);
-        MaterialEditText reportedByDesignation = (MaterialEditText) fragmentView.findViewById(R.id.event_reported_by_designation);
-
-        reportedBy1.setLastName(reportedByName.getText().toString());
-        reportedBy1.setDesignation(reportedByDesignation.getText().toString());
-
-
+        reportedBy.setLastName(reportedByName.getText().toString());
+        reportedBy.setDesignation(reportedByDesignation.getText().toString());
         report.setUpdated(Calendar.getInstance());
-        report.setReportedBy(reportedBy1);
+        report.setReportedBy(reportedBy);
         return report;
     }
 

@@ -41,14 +41,7 @@ import butterknife.ButterKnife;
 
 import static com.synnefx.cqms.event.core.Constants.Extra.INCIDENT_ITEM;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link MedicationErrorPersonDetailsFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link MedicationErrorPersonDetailsFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+
 public class MedicationErrorPersonDetailsFragment extends Fragment {
 
     protected View fragmentView;
@@ -86,8 +79,6 @@ public class MedicationErrorPersonDetailsFragment extends Fragment {
     @Bind(R.id.gender_holder)
     protected LinearLayout genderHolder;
 
-    private OnFragmentInteractionListener mListener;
-
     ArrayAdapter<CharSequence> personTypeAdapter;
 
     @Inject
@@ -98,22 +89,6 @@ public class MedicationErrorPersonDetailsFragment extends Fragment {
     private PersonInvolved personInvolved;
 
 
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment MedicationErrorPersonDetailsFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static MedicationErrorPersonDetailsFragment newInstance(String param1, String param2) {
-        MedicationErrorPersonDetailsFragment fragment = new MedicationErrorPersonDetailsFragment();
-        Bundle args = new Bundle();
-        fragment.setArguments(args);
-        return fragment;
-    }
 
     public MedicationErrorPersonDetailsFragment() {
         // Required empty public constructor
@@ -156,12 +131,6 @@ public class MedicationErrorPersonDetailsFragment extends Fragment {
         return fragmentView;
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
 
     @Subscribe
     public void onEventListened(String data){
@@ -184,33 +153,9 @@ public class MedicationErrorPersonDetailsFragment extends Fragment {
     @Override
     public void onDetach() {
         super.onDetach();
-        mListener = null;
         report = null;
     }
 
-   /* @Override
-    public void onPressed(Boolean status, Context context) {
-        //Toast.makeText(context, "PersonalDetails", Toast.LENGTH_SHORT).show();
-        SaveTempDetails(context);
-        report = null;
-        //Log.d("personaldetails", personInvolved!=null?ListViewer.view(personInvolved):"Null value");
-    }*/
-
-
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p/>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        public void onFragmentInteraction(Uri uri);
-    }
 
     private void initScreen() {
         if (null != report && null != report.getId() && 0 < report.getId()) {
@@ -327,8 +272,6 @@ public class MedicationErrorPersonDetailsFragment extends Fragment {
 
     private boolean saveIncidentDetails() {
         if (!validateDeatils()) {
-            // Long hospitalRef = PrefUtils.getLongFromPrefs(getActivity().getApplicationContext(), PrefUtils.PREFS_HOSP_ID, null);
-            //report.setHospital(hospitalRef);
             report.setUpdated(Calendar.getInstance());
             report.setPersonInvolved(personInvolved);
             long id = databaseHelper.updateMedicationErrorPersonInvolved(report);
@@ -341,11 +284,6 @@ public class MedicationErrorPersonDetailsFragment extends Fragment {
 
 
     public MedicationError saveDraft(){
-        
-
-        /*Toast.makeText(context, ""+personInvolvedName.getText().toString()+"\n"+
-                typeSpinner.get, Toast.LENGTH_SHORT).show();*/
-
         personInvolved.setName(personInvolvedName.getText().toString());
 
         switch (personTypeSpinner.getText().toString()){
@@ -370,8 +308,6 @@ public class MedicationErrorPersonDetailsFragment extends Fragment {
 
         report.setUpdated(Calendar.getInstance());
         report.setPersonInvolved(personInvolved);
-        //Log.d("Temp",ListViewer.view(personInvolved));
-        //Log.d("Temp",ListViewer.view(report));
         return report;
     }
 

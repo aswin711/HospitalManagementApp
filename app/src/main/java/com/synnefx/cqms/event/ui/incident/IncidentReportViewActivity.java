@@ -84,13 +84,8 @@ public class IncidentReportViewActivity extends AppCompatActivity {
 
         IncidentReport errorReport = databaseHelper.getIncidentReportById(report.getId());
 
-
-        //Unit unit1 = errorReport.getUnit();
-
-        //List<Unit> units = databaseHelper.getAllUnitsTypes(unit1.getHospitalID());
         unit.setText(errorReport.getDepartment());
         incidentType.setText(errorReport.getIncidentTypeName());
-        //Toast.makeText(this, ""+unit1.get, Toast.LENGTH_SHORT).show();
 
         time.setText(CalenderUtils.formatCalendarToString(report.getIncidentTime(), Constants.Common.DATE_TIME_DISPLAY_FORMAT));
         level.setText(report.getIncidentLevelCode()==1?"Near Miss":(report.getIncidentLevelCode()==2?"Actual Harm":""));

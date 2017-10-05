@@ -48,14 +48,7 @@ import static com.synnefx.cqms.event.R.id.event_corrective_action;
 import static com.synnefx.cqms.event.core.Constants.Extra.HH_SESSION_ADD_OBSERVATION;
 import static com.synnefx.cqms.event.core.Constants.Extra.INCIDENT_ITEM;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link MedicationErrorDetailsFragment} interface
- * to handle interaction events.
- * Use the {@link MedicationErrorDetailsFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+
 public class MedicationErrorDetailsFragment extends Fragment implements
         DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener{
 
@@ -88,16 +81,6 @@ public class MedicationErrorDetailsFragment extends Fragment implements
 
     ArrayAdapter<Unit> unitAdapter;
 
-
-
-    public static MedicationErrorDetailsFragment newInstance(String param1, String param2) {
-        MedicationErrorDetailsFragment fragment = new MedicationErrorDetailsFragment();
-        Bundle args = new Bundle();
-        //args.putString(ARG_PARAM1, param1);
-        //args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
 
     public MedicationErrorDetailsFragment() {
         // Required empty public constructor
@@ -150,29 +133,7 @@ public class MedicationErrorDetailsFragment extends Fragment implements
         report = null;
     }
 
-   /* @Override
-    public void onPressed(Boolean status, Context context) {
-       Log.d("SavedItems",report.toString());
-        Toast.makeText(context, "First fragment", Toast.LENGTH_SHORT).show();
 
-        if(fragmentView != null){
-            saveTempDetails(context);
-
-        }else{
-            Log.d("Viewer","not accesible");
-        }
-    }*/
-
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p/>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
 
 
 
@@ -358,11 +319,7 @@ public class MedicationErrorDetailsFragment extends Fragment implements
         if (saveIncidentDetails()) {
             Snackbar.make(getActivity().findViewById(R.id.footer_view), R.string.added_incident, Snackbar.LENGTH_LONG).show();
             nextScreen();
-            //Intent intent = new Intent(getActivity(),
-            //        CasesheetObservationActivity.class);
-            //intent.putExtra(INCIDENT_ITEM, report);
-            //startActivity(intent);
-            //getActivity().finish();
+
         } else {
 
             Snackbar.make(getActivity().findViewById(R.id.footer_view), "Correct all validation errors", Snackbar.LENGTH_LONG).show();
@@ -388,38 +345,6 @@ public class MedicationErrorDetailsFragment extends Fragment implements
         return false;
     }
 
-    public void saveTempDetails(Context context){
-        DatabaseHelper databaseHelper1 = new DatabaseHelper(context);
-        String hospitalRef = PrefUtils.getFromPrefs(context, PrefUtils.PREFS_HOSP_ID, null);
-        report.setHospital(hospitalRef);
-        MaterialEditText description = (MaterialEditText) fragmentView.findViewById(R.id.event_description);
-        report.setDescription(description.getText().toString().trim());
-        MaterialEditText correctiveAction = (MaterialEditText) fragmentView.findViewById(R.id.event_corrective_action);
-        report.setCorrectiveActionTaken(correctiveAction.getText().toString().trim());
-        RadioButton actualMiss = (RadioButton) fragmentView.findViewById(R.id.incident_level_near_miss);
-        RadioButton harmMiss = (RadioButton) fragmentView.findViewById(R.id.incident_level_harm);
-
-        if(actualMiss.isChecked()){
-            report.setIncidentLevelCode(1);
-        }else if(harmMiss.isChecked()){
-            report.setIncidentLevelCode(2);
-        }else {
-            report.setIncidentLevelCode(0);
-        }
-        if (0 == report.getStatusCode()){
-
-                report.setCreatedOn(Calendar.getInstance());
-
-        }
-        report.setUpdated(Calendar.getInstance());
-        long id = databaseHelper1.insertOrUpdateMedicationError(report);
-        if (0 < id) {
-            Timber.e("saveIncidentDetails " + id);
-            report.setId(id);
-        }
-
-
-    }
 
 
     public MedicationError saveDraft(){

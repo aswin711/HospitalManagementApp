@@ -185,5 +185,6 @@
     <string name="save_draft">SaveDraft</string>
     <string name="view_details">ViewDetails</string>
     <string name="force_refresh">force_refresh</string>
+    <string name="not_avail">N/A</string>
 
 </resources>
