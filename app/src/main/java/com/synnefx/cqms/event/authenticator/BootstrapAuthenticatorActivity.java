@@ -5,6 +5,7 @@ import android.accounts.AccountManager;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.ContentResolver;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -18,6 +19,7 @@ import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -280,6 +282,7 @@ public class BootstrapAuthenticatorActivity extends ActionBarAccountAuthenticato
      * @param view
      */
     public void handleLogin(final View view) {
+        hideSoftKeyBoard();
         if (authenticationTask != null) {
             return;
         }
@@ -360,7 +363,7 @@ public class BootstrapAuthenticatorActivity extends ActionBarAccountAuthenticato
 
         setAccountAuthenticatorResult(intent.getExtras());
         setResult(RESULT_OK, intent);
-        finish();
+        //finish();
     }
 
     /**
@@ -400,7 +403,7 @@ public class BootstrapAuthenticatorActivity extends ActionBarAccountAuthenticato
         setAccountAuthenticatorResult(intent.getExtras());
         setResult(RESULT_OK, intent);
         //startActivity(new Intent(getApplicationContext(),MainActivity.class));
-        finish();
+        //finish();
     }
 
     private void syncConfig() {
@@ -484,8 +487,6 @@ public class BootstrapAuthenticatorActivity extends ActionBarAccountAuthenticato
                             PrefUtils.saveToPrefs(getApplicationContext(), PrefUtils.PREFS_USER_DISPLAY_NAME, user.getFullName());
                             PrefUtils.saveToPrefs(getApplicationContext(), PrefUtils.PREFS_HOSP_DISPLAY_NAME, user.getAssociatedHospitalName());
                             PrefUtils.saveToPrefs(getApplicationContext(),PrefUtils.PREF_USER_LOGGED_IN,true);
-                            startActivity(new Intent(getApplicationContext(),ImportConfigActivity.class));
-                            //finish();
                             return true;
                         }
                     }
@@ -513,6 +514,11 @@ public class BootstrapAuthenticatorActivity extends ActionBarAccountAuthenticato
             public void onSuccess(final Boolean authSuccess) {
                 syncConfig();
                 scheduleSync();
+                //importing begins here......
+                Intent intent = new Intent(getApplicationContext(),ImportConfigActivity.class);
+                startActivity(intent);
+                finish();
+                // importing stops......
             }
 
             @Override
@@ -636,6 +642,14 @@ public class BootstrapAuthenticatorActivity extends ActionBarAccountAuthenticato
                     validatePassword(editable.toString());
                     break;
             }
+        }
+    }
+
+    public void hideSoftKeyBoard(){
+        View view = this.getCurrentFocus();
+        if (view != null) {
+            InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
     }
 

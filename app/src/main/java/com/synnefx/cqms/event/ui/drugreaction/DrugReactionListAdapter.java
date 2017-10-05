@@ -78,10 +78,10 @@ public class DrugReactionListAdapter extends AlternatingColorListAdapter<Adverse
             imageView(4).setBackground(ContextCompat.getDrawable(imageView(4).getContext(), R.drawable.primary_status_icon_background));
             imageView(4).setImageResource(R.drawable.ic_edit_white_24dp);
         } else if (1 == item.getStatusCode()) {
-            imageView(4).setBackground(ContextCompat.getDrawable(imageView(4).getContext(), R.drawable.success_status_icon_background));
+            imageView(4).setBackground(ContextCompat.getDrawable(imageView(4).getContext(), R.drawable.reviewed_status_icon_background));
             imageView(4).setImageResource(R.drawable.ic_done_white_24dp);
         } else if (2 == item.getStatusCode()) {
-            imageView(4).setBackground(ContextCompat.getDrawable(imageView(4).getContext(), R.drawable.reviewed_status_icon_background));
+            imageView(4).setBackground(ContextCompat.getDrawable(imageView(4).getContext(), R.drawable.success_status_icon_background));
             imageView(4).setImageResource(R.drawable.ic_done_white_24dp);
         }
     }

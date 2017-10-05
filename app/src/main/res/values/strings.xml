@@ -184,6 +184,8 @@
     <string name="fab_clicked">FabClicked</string>
     <string name="save_draft">SaveDraft</string>
     <string name="view_details">ViewDetails</string>
+    <string name="force_refresh">force_refresh</string>
+    <string name="not_avail">N/A</string>
 
     <string name="patient_involved_name">Patient Name</string>
     <string name="patient_type">Patient Type</string>

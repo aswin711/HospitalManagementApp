@@ -51,6 +51,7 @@ public abstract class BootstrapFragmentActivity extends AppCompatActivity {
         ButterKnife.bind(this);
     }
 
+
     @Override
     protected void onResume() {
         super.onResume();

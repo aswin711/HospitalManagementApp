@@ -129,6 +129,12 @@ public class MedicationErrorActivity extends BootstrapFragmentActivity {
         }
     }
 
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
+    }
+
     protected Activity getActivity() {
         return MedicationErrorActivity.this;
     }

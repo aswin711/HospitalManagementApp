@@ -42,17 +42,10 @@ import butterknife.ButterKnife;
 
 import static com.synnefx.cqms.event.core.Constants.Extra.INCIDENT_ITEM;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link IncidentPersonDetailsFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link IncidentPersonDetailsFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+
 public class IncidentPersonDetailsFragment extends Fragment{
 
-    protected static View fragmentView;
+    protected View fragmentView;
 
     @Bind(R.id.incident_person_save)
     protected Button saveDetailsBtn;
@@ -87,7 +80,7 @@ public class IncidentPersonDetailsFragment extends Fragment{
     @Bind(R.id.gender_holder)
     protected LinearLayout genderHolder;
 
-    private OnFragmentInteractionListener mListener;
+
 
     ArrayAdapter<CharSequence> personTypeAdapter;
 
@@ -95,26 +88,12 @@ public class IncidentPersonDetailsFragment extends Fragment{
     protected DatabaseHelper databaseHelper;
     @Inject
     EventBus eventBus;
-    private static IncidentReport report;
+    private IncidentReport report;
     private  PersonInvolved personInvolved;
     private Boolean editable = false;
 
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment MedicationErrorPersonDetailsFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static IncidentPersonDetailsFragment newInstance(String param1, String param2) {
-        IncidentPersonDetailsFragment fragment = new IncidentPersonDetailsFragment();
-        Bundle args = new Bundle();
-        fragment.setArguments(args);
-        return fragment;
-    }
+
 
     public IncidentPersonDetailsFragment() {
         // Required empty public constructor
@@ -161,12 +140,6 @@ public class IncidentPersonDetailsFragment extends Fragment{
         return fragmentView;
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
 
 
     @Override
@@ -178,24 +151,8 @@ public class IncidentPersonDetailsFragment extends Fragment{
     @Override
     public void onDetach() {
         super.onDetach();
-        mListener = null;
     }
 
-
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p/>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        public void onFragmentInteraction(Uri uri);
-    }
 
     private void initScreen() {
         if (null != report && null != report.getId() && 0 < report.getId()) {
@@ -312,8 +269,6 @@ public class IncidentPersonDetailsFragment extends Fragment{
 
     private boolean saveIncidentDetails() {
         if (!validateDeatils()) {
-            // Long hospitalRef = PrefUtils.getLongFromPrefs(getActivity().getApplicationContext(), PrefUtils.PREFS_HOSP_ID, null);
-            //report.setHospital(hospitalRef);
             report.setUpdated(Calendar.getInstance());
             report.setPersonInvolved(personInvolved);
             long id = databaseHelper.updateIncidentPersonInvolved(report);
@@ -389,52 +344,6 @@ public class IncidentPersonDetailsFragment extends Fragment{
         return error;
     }
 
-    private void SaveTempDetails(Context context){
-        DatabaseHelper databaseHelper = new DatabaseHelper(context);
-        PersonInvolved personInvolved1 = new PersonInvolved();
-
-        MaterialEditText personInvolvedName = (MaterialEditText) fragmentView.findViewById(R.id.person_involved_name);
-        MaterialEditText patientNumber = (MaterialEditText) fragmentView.findViewById(R.id.patient_number);
-        RadioButton radioMale = (RadioButton) fragmentView.findViewById(R.id.gender_male);
-        RadioButton radioFemale = (RadioButton) fragmentView.findViewById(R.id.gender_female);
-        RadioButton radioIndeterminate = (RadioButton) fragmentView.findViewById(R.id.gender_indeterminate);
-        RadioButton radioNotStated = (RadioButton) fragmentView.findViewById(R.id.gender_not_stated);
-        MaterialEditText staffIdNumber = (MaterialEditText) fragmentView.findViewById(R.id.staff_id_no);
-        MaterialEditText staffDesignation = (MaterialEditText) fragmentView.findViewById(R.id.staff_designation);
-        MaterialBetterSpinner typeSpinner = (MaterialBetterSpinner) fragmentView.findViewById(R.id.person_types);
-
-        /*Toast.makeText(context, ""+personInvolvedName.getText().toString()+"\n"+
-                typeSpinner.get, Toast.LENGTH_SHORT).show();*/
-
-        personInvolved1.setName(personInvolvedName.getText().toString());
-
-        switch (typeSpinner.getText().toString()){
-            case "Patient":
-                personInvolved1.setPersonnelTypeCode(1);
-                personInvolved1.setHospitalNumber(patientNumber.getText().toString());
-                personInvolved1.setGenderCode(radioMale.isChecked()?1:(radioFemale.isChecked()?2:(radioIndeterminate.isChecked()?3
-                        :(radioNotStated.isChecked()?4:0))));
-                break;
-            case "Staff":
-                personInvolved1.setPersonnelTypeCode(2);
-                personInvolved1.setStaffId(staffIdNumber.getText().toString());
-                personInvolved1.setDesignation(staffDesignation.getText().toString());
-                break;
-            case "Visitor":
-                personInvolved1.setPersonnelTypeCode(3);
-                break;
-            default:
-                personInvolved1.setPersonnelTypeCode(0);
-
-        }
-
-        report.setUpdated(Calendar.getInstance());
-        report.setPersonInvolved(personInvolved1);
-        //Log.d("Temp",ListViewer.view(personInvolved1));
-        //Log.d("Temp",ListViewer.view(report));
-        long id = databaseHelper.updateIncidentPersonInvolved(report);
-    }
-
     @Subscribe
     public void onEventListened(String data){
         if(data.equals(getString(R.string.save_draft))){
@@ -445,45 +354,30 @@ public class IncidentPersonDetailsFragment extends Fragment{
     }
 
     public IncidentReport saveDraft(){
-        PersonInvolved personInvolved1 = new PersonInvolved();
+        personInvolved.setName(personInvolvedName.getText().toString());
 
-        MaterialEditText personInvolvedName = (MaterialEditText) fragmentView.findViewById(R.id.person_involved_name);
-        MaterialEditText patientNumber = (MaterialEditText) fragmentView.findViewById(R.id.patient_number);
-        RadioButton radioMale = (RadioButton) fragmentView.findViewById(R.id.gender_male);
-        RadioButton radioFemale = (RadioButton) fragmentView.findViewById(R.id.gender_female);
-        RadioButton radioIndeterminate = (RadioButton) fragmentView.findViewById(R.id.gender_indeterminate);
-        RadioButton radioNotStated = (RadioButton) fragmentView.findViewById(R.id.gender_not_stated);
-        MaterialEditText staffIdNumber = (MaterialEditText) fragmentView.findViewById(R.id.staff_id_no);
-        MaterialEditText staffDesignation = (MaterialEditText) fragmentView.findViewById(R.id.staff_designation);
-        MaterialBetterSpinner typeSpinner = (MaterialBetterSpinner) fragmentView.findViewById(R.id.person_types);
-
-        /*Toast.makeText(context, ""+personInvolvedName.getText().toString()+"\n"+
-                typeSpinner.get, Toast.LENGTH_SHORT).show();*/
-
-        personInvolved1.setName(personInvolvedName.getText().toString());
-
-        switch (typeSpinner.getText().toString()){
+        switch (personTypeSpinner.getText().toString()){
             case "Patient":
-                personInvolved1.setPersonnelTypeCode(1);
-                personInvolved1.setHospitalNumber(patientNumber.getText().toString());
-                personInvolved1.setGenderCode(radioMale.isChecked()?1:(radioFemale.isChecked()?2:(radioIndeterminate.isChecked()?3
+                personInvolved.setPersonnelTypeCode(1);
+                personInvolved.setHospitalNumber(patientNumber.getText().toString());
+                personInvolved.setGenderCode(radioMale.isChecked()?1:(radioFemale.isChecked()?2:(radioIndeterminate.isChecked()?3
                         :(radioNotStated.isChecked()?4:0))));
                 break;
             case "Staff":
-                personInvolved1.setPersonnelTypeCode(2);
-                personInvolved1.setStaffId(staffIdNumber.getText().toString());
-                personInvolved1.setDesignation(staffDesignation.getText().toString());
+                personInvolved.setPersonnelTypeCode(2);
+                personInvolved.setStaffId(staffIdNumber.getText().toString());
+                personInvolved.setDesignation(staffDesignation.getText().toString());
                 break;
             case "Visitor":
-                personInvolved1.setPersonnelTypeCode(3);
+                personInvolved.setPersonnelTypeCode(3);
                 break;
             default:
-                personInvolved1.setPersonnelTypeCode(0);
+                personInvolved.setPersonnelTypeCode(0);
 
         }
 
         report.setUpdated(Calendar.getInstance());
-        report.setPersonInvolved(personInvolved1);
+        report.setPersonInvolved(personInvolved);
        return report;
     }
 
