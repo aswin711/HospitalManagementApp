@@ -23,7 +23,7 @@ import javax.inject.Inject;
 
 import butterknife.ButterKnife;
 
-import static com.synnefx.cqms.event.core.Constants.Extra.HH_SESSION_ADD_OBSERVATION;
+import static com.synnefx.cqms.event.core.Constants.Extra.EDIT_REPORT_COMMAND;
 import static com.synnefx.cqms.event.core.Constants.Extra.INCIDENT_ITEM;
 import static com.synnefx.cqms.event.core.Constants.Extra.INCIDENT_REF;
 
@@ -35,7 +35,7 @@ public class IncidentReportActivity extends BootstrapFragmentActivity {
     @Inject
     EventBus eventBus;
     private IncidentReport report;
-    private Boolean enable;
+    private Boolean editable;
 
     private Boolean doubleBackPressed = false;
 
@@ -51,9 +51,9 @@ public class IncidentReportActivity extends BootstrapFragmentActivity {
 
         if (getIntent() != null && getIntent().getExtras() != null) {
             report = (IncidentReport) getIntent().getExtras().getSerializable(INCIDENT_ITEM);
-            enable = getIntent().getBooleanExtra(HH_SESSION_ADD_OBSERVATION,false);
+            editable = getIntent().getBooleanExtra(EDIT_REPORT_COMMAND,false);
 
-            if(!enable){
+            if(!editable){
                 startActivity(new Intent(this,IncidentReportViewActivity.class).putExtra(INCIDENT_ITEM,report));
                 getActivity().finish();
             }
@@ -61,7 +61,9 @@ public class IncidentReportActivity extends BootstrapFragmentActivity {
                 Long reportRef = getIntent().getExtras().getLong(INCIDENT_REF);
                 Log.e("reportRef ", String.valueOf(reportRef));
                 if (null != reportRef && 0 < reportRef) {
-                    report = databaseHelper.getIncidentReportById(reportRef);
+                    report = new IncidentReport();
+                    report.setId(reportRef);
+                    //report = databaseHelper.getIncidentReportById(reportRef);
                 }
             }
         }

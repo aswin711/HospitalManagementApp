@@ -163,4 +163,12 @@ public class PersonInvolved implements Serializable {
     public void setEventRef(Long eventRef) {
         this.eventRef = eventRef;
     }
+
+
+    public String getPatientTypeString(){
+        if(null != this.patientTypeCode && 0 != this.patientTypeCode){
+            return 1== this.patientTypeCode?"IP":"OP";
+        }
+        return "NA";
+    }
 }

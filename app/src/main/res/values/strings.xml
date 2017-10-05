@@ -185,4 +185,44 @@
     <string name="save_draft">SaveDraft</string>
     <string name="view_details">ViewDetails</string>
 
+    <string name="patient_involved_name">Patient Name</string>
+    <string name="patient_type">Patient Type</string>
+    <string name="patient_type_ip">IP</string>
+    <string name="patient_type_op">OP</string>
+    <string-array name="genders">
+        <item>Select Gender</item>
+        <item>Male</item>
+        <item>Female</item>
+        <item>Indeterminate</item>
+        <item>Not stated/inadequately described</item>
+    </string-array>
+    <string name="patient_height">Patient Height</string>
+    <string name="patient_weight">Patient Weight</string>
+    <string name="patient_dob">Date of Birth</string>
+
+    <string name="consulant_name">Consultant</string>
+    <string name="patient_diagnosis">Patient Diagnosis</string>
+    <string name="action_outcome">Action Outcome</string>
+    <string-array name="action_outcomes">
+        <item>Select Action Outcome</item>
+        <item>Recovered</item>
+        <item>Not yet Recovered</item>
+        <item>Unkown</item>
+        <item>Fatal</item>
+    </string-array>
+    <string name="recovered_on">Recovered on</string>
+    <string name="death_date">Death Date</string>
+    <string name="reaction_in_casesheet">Reaction is added in patient case sheet?</string>
+    <string name="reaction_in_casesheet_yes">Yes</string>
+    <string name="reaction_in_casesheet_no">No</string>
+
+    <string name="other_comments">Additional notes or comments </string>
+
+    <string name="suspected_drug">Suspected Drug</string>
+    <string name="drug_dose">Dose</string>
+    <string name="drug_frequency">Frequency</string>
+    <string name="drug_route">Drug Route</string>
+    <string name="drug_dt_started">Drug Started on</string>
+    <string name="drug_dt_ceased">Drug ceased on</string>
+
 </resources>

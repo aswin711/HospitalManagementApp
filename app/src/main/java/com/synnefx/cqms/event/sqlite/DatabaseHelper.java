@@ -796,9 +796,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 + EventReportKey.KEY_DESCRIPTION + ", " + EventReportKey.KEY_CORRECTIVE_ACTION + ", " + EventReportKey.KEY_INCIDENT_TIME + ", "
                 + IncidentReportKey.KEY_INCIDENT_LEVEL + ", " + IncidentReportKey.KEY_MEDICAL_REPORT + ", "
                 + " s.status_code as status_code, s.createdOn as createdOn, s.updatedOn as updatedOn, u.name as unitName, it.name as incidentTypeName FROM " +
-                EventReportKey.TABLE_INCIDENT_REPORT + " s JOIN " + TABLE_UNITS + " u ON s." + Columns.KEY_UNIT_REF + " = u." +
-                Columns.KEY_UNIT_REF + " JOIN " + TABLE_INCIDENT_TYPE + " it ON s." + Columns.KEY_INCIDENTTYPE_REF + " = it." +
-                Columns.KEY_INCIDENTTYPE_REF + " JOIN " + EventReportKey.TABLE_REPORTED_BY + " rep ON rep.id = "
+                EventReportKey.TABLE_INCIDENT_REPORT + " s LEFT JOIN " + TABLE_UNITS + " u ON s." + Columns.KEY_UNIT_REF + " = u." +
+                Columns.KEY_UNIT_REF + " LEFT JOIN " + TABLE_INCIDENT_TYPE + " it ON s." + Columns.KEY_INCIDENTTYPE_REF + " = it." +
+                Columns.KEY_INCIDENTTYPE_REF + " LEFT JOIN " + EventReportKey.TABLE_REPORTED_BY + " rep ON rep.id = "
                 + EventReportKey.KEY_REPORTED_BY_REF + " WHERE s." + Columns.KEY_ID + " = ?";
 
 
@@ -1315,7 +1315,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             + " (" + Columns.KEY_ID + " INTEGER PRIMARY KEY, " + Columns.KEY_SERVER_ID + " INTEGER, "
             + Columns.KEY_HOSPITAL_ID + " TEXT NOT NULL, " + EventReportKey.KEY_INCIDENT_NUMBER + "  TEXT, "
             + Columns.KEY_STATUS_CODE + " INTEGER, " + EventReportKey.KEY_INCIDENT_LOCATION + " TEXT, "
-            + Columns.KEY_UNIT_REF + " INTEGER NOT NULL , "
+            + Columns.KEY_UNIT_REF + " INTEGER, "
             + EventReportKey.KEY_REPORTED_BY_REF + " INTEGER REFERENCES " + EventReportKey.TABLE_REPORTED_BY + "(" + Columns.KEY_ID + "), "
             + EventReportKey.KEY_PERSON_INVOLVED_REF + " INTEGER REFERENCES " + EventReportKey.TABLE_PERSON_INVOLVED + "(" + Columns.KEY_ID + "), "
             + EventReportKey.KEY_DESCRIPTION + " TEXT, " + EventReportKey.KEY_CORRECTIVE_ACTION + " TEXT, "
@@ -1341,6 +1341,21 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             } else {
                 return db.insert(DrugReactionKey.TABLE_DRUG_INFO, null, values);
             }
+        }
+        return -1;
+    }
+
+    public long saveDrugInfo(DrugInfo drugInfo) {
+        Log.e(LOG, "updateDrugInfo - " + drugInfo.toString());
+        SQLiteDatabase db = this.getWritableDatabase();
+        try {
+            db.beginTransaction();
+            return this.insertOrUpdateDrugInfo(drugInfo, db);
+        }catch (Exception e) {
+            Log.e(LOG, "saveDrugInfo - ", e);
+            Timber.e(this.getClass() + " saveDrugInfo -", e);
+        } finally {
+            db.endTransaction();
         }
         return -1;
     }
@@ -1403,14 +1418,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         String selectQuery = "SELECT DISTINCT s.id as id, s.serverId as serverId, s.hospitalID as hospitalID, " + EventReportKey.KEY_INCIDENT_NUMBER
                 + ", s.unitRef, s." + EventReportKey.KEY_INCIDENT_LOCATION + ", "
                 + EventReportKey.KEY_INCIDENT_LOCATION + ", " + EventReportKey.KEY_REPORTED_BY_REF + ", " + EventReportKey.KEY_LNAME + ", "
-                + EventReportKey.KEY_FNAME + ", " + EventReportKey.KEY_PERSON_INVOLVED_REF + ", "
+                + EventReportKey.KEY_FNAME + ", " + EventReportKey.KEY_PERSON_INVOLVED_REF + ", "+EventReportKey.KEY_PERSON_NAME+", "
+                + EventReportKey.KEY_PATIENT_TYPE+", "+EventReportKey.KEY_HOSPITAL_NUMBER+", "
                 + EventReportKey.KEY_DESCRIPTION + ", " + EventReportKey.KEY_CORRECTIVE_ACTION + ", " + EventReportKey.KEY_INCIDENT_TIME + ", "
                 + DrugReactionKey.KEY_REACTION_DATE+", " +DrugReactionKey.KEY_REACTION_OUTCOME_CODE+", "
                 + DrugReactionKey.KEY_DATE_RECOVERY+", "+DrugReactionKey.KEY_DATE_DEATH+", " +DrugReactionKey.KEY_COMMENTS+","
                 + DrugReactionKey.KEY_ADMITTED_POST_REACTION +", "+DrugReactionKey.KEY_REACTION_ADDED_CASESHEET+", "
                 + " s.status_code as status_code, s.createdOn as createdOn, s.updatedOn as updatedOn, u.name as unitName FROM " +
-                EventReportKey.TABLE_ADVERSE_DRUGG_REACTION_REPORT + " s JOIN " + TABLE_UNITS + " u ON s." + Columns.KEY_UNIT_REF + " = u." +
-                Columns.KEY_UNIT_REF + " JOIN " + EventReportKey.TABLE_REPORTED_BY + " rep ON rep.id = " + EventReportKey.KEY_REPORTED_BY_REF + " WHERE s." + Columns.KEY_STATUS_CODE + " IN (?, ?, ?) AND s." +
+                EventReportKey.TABLE_ADVERSE_DRUGG_REACTION_REPORT + " s JOIN "+EventReportKey.TABLE_PERSON_INVOLVED +" p on p.id = s."+EventReportKey.KEY_PERSON_INVOLVED_REF
+                +" LEFT JOIN " + TABLE_UNITS + " u ON s." + Columns.KEY_UNIT_REF + " = u." +
+                Columns.KEY_UNIT_REF + " LEFT JOIN " + EventReportKey.TABLE_REPORTED_BY + " rep ON rep.id = " + EventReportKey.KEY_REPORTED_BY_REF + " WHERE s." + Columns.KEY_STATUS_CODE + " IN (?, ?, ?) AND s." +
                 Columns.KEY_HOSPITAL_ID + " = ? ORDER BY s." + EventReportKey.KEY_INCIDENT_TIME + " DESC LIMIT ?, 10";
         Log.e(LOG, selectQuery);
         Cursor c = null;
@@ -1522,6 +1539,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
+
     public AdverseDrugEvent getAdverseDrugEventById(Long reportRef) {
         String selectQuery = "SELECT DISTINCT s.id as id, s.serverId as serverId, s.hospitalID as hospitalID, " + EventReportKey.KEY_INCIDENT_NUMBER
                 + ", s.unitRef, " + EventReportKey.KEY_INCIDENT_LOCATION + ", " + EventReportKey.KEY_INCIDENT_LOCATION
@@ -1532,8 +1550,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 + DrugReactionKey.KEY_DATE_RECOVERY+", "+DrugReactionKey.KEY_DATE_DEATH+", " +DrugReactionKey.KEY_COMMENTS+","
                 + DrugReactionKey.KEY_ADMITTED_POST_REACTION +", "+DrugReactionKey.KEY_REACTION_ADDED_CASESHEET+", "
                 + " s.status_code as status_code, s.createdOn as createdOn, s.updatedOn as updatedOn, u.name as unitName FROM " +
-                EventReportKey.TABLE_ADVERSE_DRUGG_REACTION_REPORT + " s JOIN " + TABLE_UNITS + " u ON s." + Columns.KEY_UNIT_REF + " = u." +
-                Columns.KEY_UNIT_REF + " JOIN " + EventReportKey.TABLE_REPORTED_BY + " rep ON rep.id = "
+                EventReportKey.TABLE_ADVERSE_DRUGG_REACTION_REPORT + " s LEFT JOIN " + TABLE_UNITS + " u ON s." + Columns.KEY_UNIT_REF + " = u." +
+                Columns.KEY_UNIT_REF + " LEFT JOIN " + EventReportKey.TABLE_REPORTED_BY + " rep ON rep.id = "
                 + EventReportKey.KEY_REPORTED_BY_REF + " WHERE s." + Columns.KEY_ID + " = ?";
 
         SQLiteDatabase db = this.getReadableDatabase();
@@ -1542,7 +1560,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         try {
             if (c.moveToFirst()) {
                 do {
-                    return SqliteDataMapper.setAdverseDrugEvent(c);
+                    AdverseDrugEvent report = SqliteDataMapper.setAdverseDrugEvent(c);
+                    report.setUnit(report.getUnitRef());
+                    report.setPersonInvolved(getPersonInvolvedById(report.getPersonInvolvedRef()));
+                    report.setReportedBy(getReproteeByID(report.getReportedByRef()));
+                    report.setOtherDrugsTaken(getDrugInfoByEventID(report.getId()));
                 } while (c.moveToNext());
             }
         } catch (Exception e) {

@@ -45,13 +45,24 @@ public class DrugReactionListAdapter extends AlternatingColorListAdapter<Adverse
     @Override
     protected void update(final int position, final AdverseDrugEvent item) {
         //super.update(position, item);
-       // setText(0, item.getIncidentTypeName());
+        String name = "Details not Provided";
+        if(null != item.getPersonInvolved()){
+            name = item.getPersonInvolved().getPatientTypeString()+"- "+ item.getPersonInvolved().getName();
+        }
+        setText(0, name);
         String description = item.getDescription();
         if (!TextUtils.isEmpty(description) && description.length() > 250) {
             description = String.format("%s..", description.substring(0, 249));
+        }else{
+            description = "Details not captured";
         }
         setText(1, description);
-        setText(2, item.getDepartment());
+        if(null != item.getDepartment()){
+            setText(2, item.getDepartment());
+        }else{
+            setText(2, "NA");
+        }
+
         if (null != item.getReportedBy()) {
             setText(3, item.getReportedBy().getLastName());
         } else {
@@ -59,6 +70,8 @@ public class DrugReactionListAdapter extends AlternatingColorListAdapter<Adverse
         }
         if (null != item.getIncidentTime()) {
             setText(5, "On : " + CalenderUtils.formatCalendarToString(item.getIncidentTime(), Constants.Common.DATE_DISPLAY_FORMAT));
+        }else{
+            setText(2, "NA");
         }
 
         if (0 == item.getStatusCode()) {

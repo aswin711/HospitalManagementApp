@@ -1,6 +1,6 @@
 package com.synnefx.cqms.event.ui.drugreaction;
 
-import android.content.DialogInterface;
+import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -18,23 +19,18 @@ import android.widget.LinearLayout;
 import android.widget.RadioButton;
 
 import com.rengwuxian.materialedittext.MaterialEditText;
-import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
-import com.wdullaer.materialdatetimepicker.time.RadialPickerLayout;
-import com.wdullaer.materialdatetimepicker.time.TimePickerDialog;
-import com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner;
 import com.synnefx.cqms.event.BootstrapApplication;
 import com.synnefx.cqms.event.R;
 import com.synnefx.cqms.event.core.Constants;
-import com.synnefx.cqms.event.core.modal.Unit;
 import com.synnefx.cqms.event.core.modal.event.drugreaction.AdverseDrugEvent;
 import com.synnefx.cqms.event.sqlite.DatabaseHelper;
 import com.synnefx.cqms.event.util.CalenderUtils;
 import com.synnefx.cqms.event.util.PrefUtils;
 import com.synnefx.cqms.event.util.ViewUtils;
+import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
+import com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner;
 
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
 
 import javax.inject.Inject;
 
@@ -53,36 +49,46 @@ import static com.synnefx.cqms.event.core.Constants.Extra.INCIDENT_ITEM;
  * create an instance of this fragment.
  */
 public class DrugReactionDetailsFragment extends Fragment implements View.OnClickListener,
-        DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
-
+        DatePickerDialog.OnDateSetListener {
 
     protected View fragmentView;
 
     @Bind(R.id.incident_details_save)
     protected Button saveDetailsBtn;
-    @Bind(R.id.incident_units)
-    protected MaterialBetterSpinner unitsSpinner;
 
-    @Bind(R.id.incident_types_holder)
-    protected LinearLayout incidentTypeHolder;
-    @Bind(R.id.event_time_btn)
-    protected Button eventTimeBtn;
-    @Bind(R.id.event_time)
-    protected MaterialEditText eventTime;
-    @Bind(R.id.incident_level_near_miss)
-    protected RadioButton nearMiss;
-    @Bind(R.id.incident_level_harm)
-    protected RadioButton actualHarm;
-    @Bind(R.id.event_description)
-    protected MaterialEditText description;
     @Bind(R.id.event_corrective_action)
     protected MaterialEditText correctiveAction;
+
+    @Bind(R.id.action_outcome)
+    protected MaterialBetterSpinner actionOutcomeSpinner;
+
+    @Bind(R.id.recovered_dt_holder)
+    protected LinearLayout recoveredDateHolder;
+    @Bind(R.id.recovery_date)
+    protected MaterialEditText recoveredDate;
+    @Bind(R.id.recovered_on_btn)
+    protected com.rey.material.widget.Button recoveryDtBtn;
+
+    @Bind(R.id.death_dt_holder)
+    protected LinearLayout deathDateHolder;
+    @Bind(R.id.death_date)
+    protected MaterialEditText deathDate;
+    @Bind(R.id.death_date_btn)
+    protected com.rey.material.widget.Button deathDtBtn;
+
+    @Bind(R.id.reaction_in_casesheet_yes)
+    protected RadioButton casesheetAddedYes;
+    @Bind(R.id.reaction_in_casesheet_no)
+    protected RadioButton casesheetAddedNo;
+
+    @Bind(R.id.other_comments)
+    protected MaterialEditText comments;
 
     @Inject
     protected DatabaseHelper databaseHelper;
     private AdverseDrugEvent report;
 
-    ArrayAdapter<Unit> unitAdapter;
+    ArrayAdapter<CharSequence> actionOutcomeAdapter;
 
     private OnFragmentInteractionListener mListener;
 
@@ -109,7 +115,7 @@ public class DrugReactionDetailsFragment extends Fragment implements View.OnClic
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        fragmentView = inflater.inflate(R.layout.fragment_incident_details, container, false);
+        fragmentView = inflater.inflate(R.layout.fragment_reaction_details, container, false);
         ButterKnife.bind(this, fragmentView);
 
         Bundle bundle = this.getArguments();
@@ -164,67 +170,101 @@ public class DrugReactionDetailsFragment extends Fragment implements View.OnClic
 
 
     private void initScreen() {
-        ViewUtils.setGone(incidentTypeHolder, false);
-        setUnitSpinner();
-        nearMiss.setChecked(Boolean.FALSE);
-        actualHarm.setChecked(Boolean.FALSE);
-        if (null != report && null != report.getId() && 0 < report.getId()) {
-            description.setText(report.getDescription());
+        ViewUtils.setGone(recoveredDateHolder, true);
+        ViewUtils.setGone(deathDateHolder, true);
+
+        casesheetAddedNo.setChecked(Boolean.FALSE);
+        casesheetAddedYes.setChecked(Boolean.FALSE);
+
+        if (null != report) {
             correctiveAction.setText(report.getCorrectiveActionTaken());
-            if (null != report.getIncidentTime()) {
-                eventTimeBtn.setText("Change");
-                eventTime.setText(CalenderUtils.formatCalendarToString(report.getIncidentTime(), Constants.Common.DATE_TIME_DISPLAY_FORMAT));
-            } else {
-                eventTimeBtn.setText("Set");
+            if(report.isReactionAddedToCasesheet()){
+                report.setReactionAddedToCasesheet(true);
+                casesheetAddedYes.setChecked(true);
+                casesheetAddedNo.setChecked(false);
+            }else {
+                casesheetAddedYes.setChecked(false);
+                casesheetAddedNo.setChecked(true);
             }
             saveDetailsBtn.setText("Update");
         } else {
             report.setIncidentTime(null);
             report.setStatusCode(0);
-            eventTimeBtn.setText("Set");
         }
-        initDatepicker();
-    }
-
-    private void setUnitSpinner() {
-        String hospitalRef = PrefUtils.getFromPrefs(getActivity().getApplicationContext(), PrefUtils.PREFS_HOSP_ID, null);
-        List<Unit> units = new ArrayList<>();
-        Unit unit = new Unit();
-        unit.setId(0l);
-        unit.setServerId(0l);
-        unit.setName("Select Unit/Department");
-        units.add(unit);
-        units.addAll(databaseHelper.getAllUnitsTypesByStatus(hospitalRef, 1));
-        unitAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_dropdown_item_1line, units);
-        unitsSpinner.setAdapter(unitAdapter);
-
-        unitsSpinner.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        actionOutcomeAdapter = ArrayAdapter.createFromResource(getActivity(),
+                R.array.action_outcomes, android.R.layout.simple_dropdown_item_1line);
+        // Specify the layout to use when the list of choices appears
+        //personTypeAdapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
+        // Apply the adapter to the spinner
+        actionOutcomeSpinner.setAdapter(actionOutcomeAdapter);
+        actionOutcomeSpinner.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
                 // String mSelectedText = adapterView.getItemAtPosition(position).toString();
-                Unit selectedUnit = unitAdapter.getItem(position);
-                if (null != selectedUnit && null != selectedUnit.getServerId() && 0 < selectedUnit.getServerId()) {
-                    report.setUnitRef(selectedUnit.getServerId());
-                    report.setDepartment(selectedUnit.getName());
-                } else {
-                    report.setUnitRef(0l);
-                    report.setDepartment(null);
+                if (position > 0) {
+                    CharSequence selectedItem = actionOutcomeAdapter.getItem(position);
+                    if (null != selectedItem) {
+                        report.setActionOutcomeCode(position);
+                    }
                 }
+                setActionOutcomeViewVisibility(position);
             }
         });
+        Integer actionOutcome = report.getActionOutcomeCode();
+        if (null != actionOutcome && 0 < actionOutcome) {
+            actionOutcomeSpinner.setText(actionOutcomeAdapter.getItem(actionOutcome));
+        }
+        setActionOutcomeViewVisibility(actionOutcome);
+    }
 
-        Unit selectedUnit = new Unit();
-        selectedUnit.setHospitalUUID(hospitalRef);
-        selectedUnit.setServerId(report.getUnitRef());
-        int pos = unitAdapter.getPosition(selectedUnit);
-        if (pos >= 0) {
-            //serviceSpinner.setSelection(pos);
-            unitsSpinner.setText(report.getDepartment());
+    private void setActionOutcomeViewVisibility(Integer actionOutcome) {
+        if (null == actionOutcome) {
+            actionOutcome = 0;
+        }
+        switch (actionOutcome) {
+            case 0:
+                report.setActionOutcomeCode(0);
+                hideAllActionOutcomeContainer();
+                break;
+            case 1:
+                hideAllActionOutcomeContainer();
+                ViewUtils.setGone(recoveredDateHolder, false);
+                if(null != report.getDateOfRecovery()){
+                    recoveredDate.setText(CalenderUtils.formatCalendarToString(report.getDateOfRecovery(),Constants.Common.DATE_DISPLAY_FORMAT));
+                }else{
+                    recoveredDate.setText("");
+                }
+                initDatepicker(recoveryDtBtn,"Set Date of Recovery", "Recovery");
+                report.setDateOfDeath(null);
+                break;
+            case 4:
+                hideAllActionOutcomeContainer();
+                ViewUtils.setGone(deathDateHolder, false);
+                if(null != report.getDateOfDeath()){
+                    deathDate.setText(CalenderUtils.formatCalendarToString(report.getDateOfDeath(),Constants.Common.DATE_DISPLAY_FORMAT));
+                }else{
+                    deathDate.setText("");
+                }
+                initDatepicker(recoveryDtBtn,"Set Death date", "Death");
+                report.setDateOfRecovery(null);
+                break;
+            default:
+                hideAllActionOutcomeContainer();
+                report.setDateOfDeath(null);
+                report.setDateOfRecovery(null);
+                break;
         }
     }
 
-    private void initDatepicker() {
-        eventTimeBtn.setOnClickListener(new View.OnClickListener() {
+    private void hideAllActionOutcomeContainer() {
+        ViewUtils.setInvisible(recoveredDateHolder, true);
+        ViewUtils.setInvisible(deathDateHolder, true);
+        recoveredDate.setText("");
+        deathDate.setText("");
+    }
+
+    private void initDatepicker(com.rey.material.widget.Button dateSetter, final String title, final String key) {
+        dateSetter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Calendar date = Calendar.getInstance();
@@ -242,11 +282,11 @@ public class DrugReactionDetailsFragment extends Fragment implements View.OnClic
                 dpd.dismissOnPause(true);
                 dpd.showYearPickerFirst(true);
                 // dpd.setAccentColor(Color.parseColor("#9C27B0"));
-                dpd.setTitle("Select Incident time");
+                dpd.setTitle(title);
                 //Setting max date
                 dpd.setMaxDate(Calendar.getInstance());
 
-                dpd.show(getActivity().getFragmentManager(), "EventDatepickerdialog");
+                dpd.show(getActivity().getFragmentManager(), key+"Datepickerdialog");
             }
         });
 
@@ -271,60 +311,19 @@ public class DrugReactionDetailsFragment extends Fragment implements View.OnClic
     public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
         Calendar selectedDate = Calendar.getInstance();
         selectedDate.set(year, monthOfYear, dayOfMonth);
-        if ("EventDatepickerdialog".equals(view.getTag())) {
-            report.setIncidentTime(selectedDate);
-            eventTime.setText(CalenderUtils.formatCalendarToString(report.getIncidentTime(), Constants.Common.DATE_DISPLAY_FORMAT));
-            Calendar now = Calendar.getInstance();
-            TimePickerDialog tpd = TimePickerDialog.newInstance(
-                    DrugReactionDetailsFragment.this,
-                    now.get(Calendar.HOUR_OF_DAY),
-                    now.get(Calendar.MINUTE),
-                    false
-            );
-
-            if (now.getTime().after(selectedDate.getTime())) {
-                tpd.setMaxTime(now.get(Calendar.HOUR_OF_DAY), now.get(Calendar.MINUTE), now.get(Calendar.SECOND));
-            }
-            tpd.setThemeDark(true);
-            tpd.vibrate(true);
-            tpd.dismissOnPause(true);
-            tpd.enableSeconds(false);
-            tpd.enableMinutes(true);
-            // tpd.setAccentColor(Color.parseColor("#9C27B0"));
-            tpd.setTitle("Select Time");
-            tpd.setTimeInterval(1, 5);
-            tpd.setOnCancelListener(new DialogInterface.OnCancelListener() {
-                @Override
-                public void onCancel(DialogInterface dialogInterface) {
-                    Timber.d("TimePicker", "Dialog was cancelled");
-                }
-            });
-            tpd.show(getActivity().getFragmentManager(), "EventTimepickerdialog");
+        if ("RecoveryDatepickerdialog".equals(view.getTag())) {
+            report.setDateOfRecovery(selectedDate);
+            recoveredDate.setText(CalenderUtils.formatCalendarToString(report.getDateOfRecovery(), Constants.Common.DATE_DISPLAY_FORMAT));
+        } else if ("DeathDatepickerdialog".equals(view.getTag())) {
+            report.setDateOfDeath(selectedDate);
+            deathDate.setText(CalenderUtils.formatCalendarToString(report.getDateOfDeath(), Constants.Common.DATE_DISPLAY_FORMAT));
         }
-    }
-
-    @Override
-    public void onTimeSet(RadialPickerLayout view, int hourOfDay, int minute, int second) {
-        String hourString = hourOfDay < 10 ? "0" + hourOfDay : "" + hourOfDay;
-        String minuteString = minute < 10 ? "0" + minute : "" + minute;
-        String secondString = second < 10 ? "0" + second : "" + second;
-        String time = hourString + "h" + minuteString + "m" + secondString + "s";
-        String dateTime = eventTime.getText().toString();
-        report.getIncidentTime().set(Calendar.MINUTE, minute);
-        report.getIncidentTime().set(Calendar.HOUR_OF_DAY, hourOfDay);
-        report.getIncidentTime().set(Calendar.SECOND, second);
-        eventTime.setText(CalenderUtils.formatCalendarToString(report.getIncidentTime(), Constants.Common.DATE_TIME_DISPLAY_FORMAT));
     }
 
     public void saveEvent() {
         if (saveIncidentDetails()) {
-            Snackbar.make(getActivity().findViewById(R.id.footer_view), "Incident added", Snackbar.LENGTH_LONG).show();
+            Snackbar.make(getActivity().findViewById(R.id.footer_view), "Reaction details dded/updated added", Snackbar.LENGTH_LONG).show();
             nextScreen();
-            //Intent intent = new Intent(getActivity(),
-            //        CasesheetObservationActivity.class);
-            //intent.putExtra(INCIDENT_ITEM, report);
-            //startActivity(intent);
-            //getActivity().finish();
         } else {
             Snackbar.make(getActivity().findViewById(R.id.footer_view), "Correct all validation errors", Snackbar.LENGTH_LONG).show();
         }
@@ -359,34 +358,56 @@ public class DrugReactionDetailsFragment extends Fragment implements View.OnClic
             report.setCorrectiveActionTaken(correctiveAction.getText().toString().trim());
         }
 
-        if (TextUtils.isEmpty(description.getText())) {
-            description.setError("Incident description required");
+        if (null == report.getActionOutcomeCode() || 0 >= report.getActionOutcomeCode()) {
+            actionOutcomeSpinner.setError("Action outcome required");
             error = true;
-        } else {
-            report.setDescription(description.getText().toString().trim());
+            report.setActionOutcomeCode(0);
+            actionOutcomeSpinner.requestFocus();
+        }else if (1== report.getActionOutcomeCode()){
+            //Recovery date is mandatory
+            if(null == report.getDateOfRecovery()){
+                error = true;
+                recoveredDate.setError("Date recovered required");
+            }
+        }else if (4== report.getActionOutcomeCode()){
+            //death date is mandatory
+            if(null == report.getDateOfDeath()){
+                error = true;
+                deathDate.setError("Death date required");
+            }
         }
-
-
-        if (null == report.getUnitRef() || 0 >= report.getUnitRef()) {
-            unitsSpinner.setError("Unit required");
+        if(casesheetAddedYes.isChecked()){
+            report.setReactionAddedToCasesheet(true);
+        }else if(casesheetAddedNo.isChecked()){
+            report.setReactionAddedToCasesheet(false);
+        }else{
             error = true;
-            report.setUnitRef(0l);
-            unitsSpinner.requestFocus();
+            casesheetAddedYes.setError("This field is required");
         }
-
         return error;
     }
 
     private void nextScreen() {
-        DrugReactionPersonDetailsFragment personDetailsFragment = new DrugReactionPersonDetailsFragment();
+        DrugInfoFragment drugInfoFragment = new DrugInfoFragment();
         if (null != report) {
             Bundle bundle = new Bundle();
             bundle.putSerializable(Constants.Extra.INCIDENT_ITEM, report);
-            personDetailsFragment.setArguments(bundle);
+            drugInfoFragment.setArguments(bundle);
         }
         final FragmentManager fragmentManager = getFragmentManager();
         fragmentManager.beginTransaction()
-                .replace(R.id.incident_report_form_container, personDetailsFragment)
+                .replace(R.id.incident_report_form_container, drugInfoFragment)
                 .commit();
+    }
+
+    /**
+     * Used to hide the soft input n fragment start
+     * @param savedInstanceState
+     */
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        final InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
     }
 }

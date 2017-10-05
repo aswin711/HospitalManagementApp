@@ -23,7 +23,7 @@ import javax.inject.Inject;
 
 import butterknife.ButterKnife;
 
-import static com.synnefx.cqms.event.core.Constants.Extra.HH_SESSION_ADD_OBSERVATION;
+import static com.synnefx.cqms.event.core.Constants.Extra.EDIT_REPORT_COMMAND;
 import static com.synnefx.cqms.event.core.Constants.Extra.INCIDENT_ITEM;
 import static com.synnefx.cqms.event.core.Constants.Extra.INCIDENT_REF;
 
@@ -48,7 +48,7 @@ public class MedicationErrorActivity extends BootstrapFragmentActivity {
         ButterKnife.bind(this);
         if (getIntent() != null && getIntent().getExtras() != null) {
             report = (MedicationError) getIntent().getExtras().getSerializable(INCIDENT_ITEM);
-            editable = getIntent().getExtras().getBoolean(HH_SESSION_ADD_OBSERVATION);
+            editable = getIntent().getExtras().getBoolean(EDIT_REPORT_COMMAND);
             viewable = getIntent().getBooleanExtra(getString(R.string.view_details),false);
             if(viewable){
                 startActivity(new Intent(this,MedicationErrorViewActivity.class).putExtra(INCIDENT_ITEM,report));
@@ -58,7 +58,9 @@ public class MedicationErrorActivity extends BootstrapFragmentActivity {
                 Long reportRef = getIntent().getExtras().getLong(INCIDENT_REF);
                 Log.e("reportRef ", String.valueOf(reportRef));
                 if (null != reportRef && 0 < reportRef) {
-                    report = databaseHelper.getMedicationErrorById(reportRef);
+                    report = new MedicationError();
+                    report.setId(reportRef);
+                    //report = databaseHelper.getMedicationErrorById(reportRef);
                 }
             }
         }
@@ -136,7 +138,6 @@ public class MedicationErrorActivity extends BootstrapFragmentActivity {
         if (null != report) {
             Bundle bundle = new Bundle();
             bundle.putSerializable(Constants.Extra.INCIDENT_ITEM, report);
-            bundle.putBoolean(HH_SESSION_ADD_OBSERVATION,editable);
             detailsFragment.setArguments(bundle);
         }
         final FragmentManager fragmentManager = getSupportFragmentManager();

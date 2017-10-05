@@ -14,19 +14,21 @@ import com.synnefx.cqms.event.ui.SpashscreenActivity;
 import com.synnefx.cqms.event.ui.base.BootstrapActivity;
 import com.synnefx.cqms.event.ui.base.BootstrapFragmentActivity;
 import com.synnefx.cqms.event.ui.base.NavigationDrawerFragment;
+import com.synnefx.cqms.event.ui.drugreaction.DrugInfoFragment;
 import com.synnefx.cqms.event.ui.drugreaction.DrugReactionActivity;
 import com.synnefx.cqms.event.ui.drugreaction.DrugReactionDetailsFragment;
+import com.synnefx.cqms.event.ui.drugreaction.DrugReactionDiagnosisDetailsFragment;
 import com.synnefx.cqms.event.ui.drugreaction.DrugReactionListActivity;
 import com.synnefx.cqms.event.ui.drugreaction.DrugReactionListFragment;
-import com.synnefx.cqms.event.ui.drugreaction.DrugReactionPersonDetailsFragment;
 import com.synnefx.cqms.event.ui.drugreaction.DrugReactionReportedByDetailsFragment;
-import com.synnefx.cqms.event.ui.incident.IncidentReportViewActivity;
-import com.synnefx.cqms.event.ui.incident.ReportedByDetailsFragment;
+import com.synnefx.cqms.event.ui.drugreaction.PatientDetailsFragment;
 import com.synnefx.cqms.event.ui.incident.IncidentDetailsFragment;
 import com.synnefx.cqms.event.ui.incident.IncidentPersonDetailsFragment;
 import com.synnefx.cqms.event.ui.incident.IncidentReportActivity;
 import com.synnefx.cqms.event.ui.incident.IncidentReportListActivity;
 import com.synnefx.cqms.event.ui.incident.IncidentReportListFragment;
+import com.synnefx.cqms.event.ui.incident.IncidentReportViewActivity;
+import com.synnefx.cqms.event.ui.incident.ReportedByDetailsFragment;
 import com.synnefx.cqms.event.ui.medicationerror.ErrorReportedByDetailsFragment;
 import com.synnefx.cqms.event.ui.medicationerror.MedicationErrorActivity;
 import com.synnefx.cqms.event.ui.medicationerror.MedicationErrorDetailsFragment;
@@ -113,7 +115,11 @@ public interface BootstrapComponent {
 
     void inject(DrugReactionDetailsFragment target);
 
-    void inject(DrugReactionPersonDetailsFragment target);
+    void inject(PatientDetailsFragment target);
+
+    void inject(DrugReactionDiagnosisDetailsFragment target);
+
+    void inject(DrugInfoFragment target);
 
     void inject(DrugReactionReportedByDetailsFragment target);
 

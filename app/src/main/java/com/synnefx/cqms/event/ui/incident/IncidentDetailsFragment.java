@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -19,10 +20,6 @@ import android.widget.LinearLayout;
 import android.widget.RadioButton;
 
 import com.rengwuxian.materialedittext.MaterialEditText;
-import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
-import com.wdullaer.materialdatetimepicker.time.RadialPickerLayout;
-import com.wdullaer.materialdatetimepicker.time.TimePickerDialog;
-import com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner;
 import com.synnefx.cqms.event.BootstrapApplication;
 import com.synnefx.cqms.event.R;
 import com.synnefx.cqms.event.core.Constants;
@@ -33,6 +30,10 @@ import com.synnefx.cqms.event.sqlite.DatabaseHelper;
 import com.synnefx.cqms.event.util.CalenderUtils;
 import com.synnefx.cqms.event.util.PrefUtils;
 import com.synnefx.cqms.event.util.ViewUtils;
+import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
+import com.wdullaer.materialdatetimepicker.time.RadialPickerLayout;
+import com.wdullaer.materialdatetimepicker.time.TimePickerDialog;
+import com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -565,5 +566,17 @@ public class IncidentDetailsFragment extends Fragment implements View.OnClickLis
         fragmentManager.beginTransaction()
                 .replace(R.id.incident_report_form_container, personDetailsFragment,"SecondFragment")
                 .commit();
+    }
+
+
+    /**
+     * Used to hide the soft input n fragment start
+     * @param savedInstanceState
+     */
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        final InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
     }
 }

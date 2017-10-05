@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -19,8 +20,6 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 import com.rengwuxian.materialedittext.MaterialEditText;
-import com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner;
-import com.wrapp.floatlabelededittext.FloatLabeledEditText;
 import com.synnefx.cqms.event.BootstrapApplication;
 import com.synnefx.cqms.event.R;
 import com.synnefx.cqms.event.core.Constants;
@@ -28,6 +27,8 @@ import com.synnefx.cqms.event.core.modal.event.PersonInvolved;
 import com.synnefx.cqms.event.core.modal.event.incident.IncidentReport;
 import com.synnefx.cqms.event.sqlite.DatabaseHelper;
 import com.synnefx.cqms.event.util.ViewUtils;
+import com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner;
+import com.wrapp.floatlabelededittext.FloatLabeledEditText;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -148,7 +149,7 @@ public class IncidentPersonDetailsFragment extends Fragment{
             }
         }
 
-            initScreen();
+        initScreen();
 
 
         saveDetailsBtn.setOnClickListener(new View.OnClickListener() {
@@ -206,11 +207,14 @@ public class IncidentPersonDetailsFragment extends Fragment{
             if (null != personInvolved) {
                 personInvolvedName.setText(personInvolved.getName());
                 // reportedByDesignation.setText(report.getCorrectiveActionTaken());
+            }else{
+                personInvolvedName.requestFocus();
             }
         }
         if (null == personInvolved) {
             personInvolved = new PersonInvolved();
             personInvolved.setEventRef(report.getId());
+            personInvolvedName.requestFocus();
         }
 
         personTypeAdapter = ArrayAdapter.createFromResource(getActivity(),
@@ -353,6 +357,7 @@ public class IncidentPersonDetailsFragment extends Fragment{
                     } else {
                         radioMale.setError("Gender required");
                         personInvolved.setGenderCode(0);
+                        error = true;
                     }
                     personInvolved.setStaffId(null);
                     personInvolved.setDesignation(null);
@@ -494,5 +499,16 @@ public class IncidentPersonDetailsFragment extends Fragment{
         fragmentManager.beginTransaction()
                 .replace(R.id.incident_report_form_container, reportedByDetailsFragment,"ThirdFragment")
                 .commit();
+    }
+
+    /**
+     * Used to hide the soft input n fragment start
+     * @param savedInstanceState
+     */
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        final InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
     }
 }

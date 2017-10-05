@@ -1,5 +1,6 @@
 package com.synnefx.cqms.event.ui.drugreaction;
 
+import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
@@ -9,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 
 import com.rengwuxian.materialedittext.MaterialEditText;
@@ -19,7 +21,7 @@ import com.synnefx.cqms.event.core.modal.event.PersonInvolved;
 import com.synnefx.cqms.event.core.modal.event.ReportedBy;
 import com.synnefx.cqms.event.core.modal.event.drugreaction.AdverseDrugEvent;
 import com.synnefx.cqms.event.sqlite.DatabaseHelper;
-import com.synnefx.cqms.event.sync.incident.IncidentReportSyncContentProvider;
+import com.synnefx.cqms.event.sync.drugreaction.DrugReactionSyncContentProvider;
 import com.synnefx.cqms.event.util.ConnectionUtils;
 import com.synnefx.cqms.event.util.ServiceUtils;
 
@@ -70,8 +72,8 @@ public class DrugReactionReportedByDetailsFragment extends Fragment {
      * @return A new instance of fragment MedicationErrorPersonDetailsFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static DrugReactionPersonDetailsFragment newInstance(String param1, String param2) {
-        DrugReactionPersonDetailsFragment fragment = new DrugReactionPersonDetailsFragment();
+    public static DrugReactionReportedByDetailsFragment newInstance(String param1, String param2) {
+        DrugReactionReportedByDetailsFragment fragment = new DrugReactionReportedByDetailsFragment();
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;
@@ -155,6 +157,8 @@ public class DrugReactionReportedByDetailsFragment extends Fragment {
             if (null != reportedBy) {
                 reportedByName.setText(reportedBy.getFullName());
                 reportedByDesignation.setText(reportedBy.getDesignation());
+            }else{
+                reportedByName.requestFocus();
             }
         }
 
@@ -162,8 +166,8 @@ public class DrugReactionReportedByDetailsFragment extends Fragment {
             reportedBy = new ReportedBy();
             reportedBy.setEventRef(report.getId());
             reportedBy.setReportedOn(Calendar.getInstance());
+            reportedByName.requestFocus();
         }
-
     }
 
     public void saveEventPersonDetails() {
@@ -173,7 +177,7 @@ public class DrugReactionReportedByDetailsFragment extends Fragment {
             if (databaseHelper.completeAdverseDrugEvent(report) > 0) {
                 Snackbar.make(getView().getRootView(), "Details updated", Snackbar.LENGTH_LONG).show();
                 if (ConnectionUtils.isInternetAvaialable(getContext())) {
-                    ServiceUtils.initiateSync(getContext(), IncidentReportSyncContentProvider.AUTHORITY);
+                    ServiceUtils.initiateSync(getContext(), DrugReactionSyncContentProvider.AUTHORITY);
                 }
                 //startActivity(new Intent(getActivity(), DrugReactionListActivity.class));
                 getActivity().finish();
@@ -215,6 +219,17 @@ public class DrugReactionReportedByDetailsFragment extends Fragment {
             reportedBy.setDesignation(reportedByDesignation.getText().toString().trim());
         }
         return error;
+    }
+
+    /**
+     * Used to hide the soft input n fragment start
+     * @param savedInstanceState
+     */
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        final InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
     }
 
 }

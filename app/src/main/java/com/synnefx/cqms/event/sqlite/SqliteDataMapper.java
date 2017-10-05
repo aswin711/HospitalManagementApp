@@ -26,6 +26,20 @@ import static com.synnefx.cqms.event.sqlite.DatabaseHelper.Columns.KEY_SPECIALTY
 import static com.synnefx.cqms.event.sqlite.DatabaseHelper.Columns.KEY_STATUS_CODE;
 import static com.synnefx.cqms.event.sqlite.DatabaseHelper.Columns.KEY_UNIT_REF;
 import static com.synnefx.cqms.event.sqlite.DatabaseHelper.Columns.KEY_UPDATED_ON;
+import static com.synnefx.cqms.event.sqlite.DatabaseHelper.DrugReactionKey.KEY_ADMITTED_POST_REACTION;
+import static com.synnefx.cqms.event.sqlite.DatabaseHelper.DrugReactionKey.KEY_COMMENTS;
+import static com.synnefx.cqms.event.sqlite.DatabaseHelper.DrugReactionKey.KEY_DATE_CEASED;
+import static com.synnefx.cqms.event.sqlite.DatabaseHelper.DrugReactionKey.KEY_DATE_DEATH;
+import static com.synnefx.cqms.event.sqlite.DatabaseHelper.DrugReactionKey.KEY_DATE_RECOVERY;
+import static com.synnefx.cqms.event.sqlite.DatabaseHelper.DrugReactionKey.KEY_DATE_STARTED;
+import static com.synnefx.cqms.event.sqlite.DatabaseHelper.DrugReactionKey.KEY_DOSE;
+import static com.synnefx.cqms.event.sqlite.DatabaseHelper.DrugReactionKey.KEY_DRUG;
+import static com.synnefx.cqms.event.sqlite.DatabaseHelper.DrugReactionKey.KEY_FREQUENCY;
+import static com.synnefx.cqms.event.sqlite.DatabaseHelper.DrugReactionKey.KEY_REACTION_ADDED_CASESHEET;
+import static com.synnefx.cqms.event.sqlite.DatabaseHelper.DrugReactionKey.KEY_REACTION_DATE;
+import static com.synnefx.cqms.event.sqlite.DatabaseHelper.DrugReactionKey.KEY_REACTION_OUTCOME_CODE;
+import static com.synnefx.cqms.event.sqlite.DatabaseHelper.DrugReactionKey.KEY_ROUTE;
+import static com.synnefx.cqms.event.sqlite.DatabaseHelper.DrugReactionKey.KEY_SUSPECTED_DRUG;
 import static com.synnefx.cqms.event.sqlite.DatabaseHelper.EventReportKey.KEY_CONSUTANT;
 import static com.synnefx.cqms.event.sqlite.DatabaseHelper.EventReportKey.KEY_CORRECTIVE_ACTION;
 import static com.synnefx.cqms.event.sqlite.DatabaseHelper.EventReportKey.KEY_DEPARTMENT;
@@ -53,8 +67,6 @@ import static com.synnefx.cqms.event.sqlite.DatabaseHelper.EventReportKey.KEY_WE
 import static com.synnefx.cqms.event.sqlite.DatabaseHelper.IncidentReportKey.KEY_INCIDENT_LEVEL;
 import static com.synnefx.cqms.event.sqlite.DatabaseHelper.IncidentReportKey.KEY_INCIDENT_TYPE_REF;
 import static com.synnefx.cqms.event.sqlite.DatabaseHelper.IncidentReportKey.KEY_MEDICAL_REPORT;
-
-import  static com.synnefx.cqms.event.sqlite.DatabaseHelper.DrugReactionKey.*;
 
 /**
  * Created by Josekutty on 1/31/2017.
@@ -478,6 +490,15 @@ public class SqliteDataMapper {
         }
 
         report.setPersonInvolvedRef(c.getLong(c.getColumnIndex(KEY_PERSON_INVOLVED_REF)));
+        if(null != report.getPersonInvolvedRef()){
+            PersonInvolved person = new PersonInvolved();
+            person.setId(report.getPersonInvolvedRef());
+            person.setName(c.getString(c.getColumnIndex(KEY_PERSON_NAME)));
+            person.setHospitalNumber(c.getString(c.getColumnIndex(KEY_HOSPITAL_NUMBER)));
+            person.setPatientTypeCode(c.getInt(c.getColumnIndex(KEY_PATIENT_TYPE)));
+            report.setPersonInvolved(person);
+        }
+
         report.setReportedByRef(c.getLong(c.getColumnIndex(KEY_REPORTED_BY_REF)));
         if (null != report.getReportedByRef()) {
             ReportedBy reportedBy = new ReportedBy();

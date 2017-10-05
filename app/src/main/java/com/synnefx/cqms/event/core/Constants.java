@@ -65,8 +65,7 @@ public final class Constants {
          * List Users URL
          */
         public static final String URL_USER_PROFILE = "user";
-        public static final String URL_USERS_FRAG = "1/users";
-        public static final String URL_USERS = URL_BASE + URL_USERS_FRAG;
+
 
 
         /**
@@ -83,15 +82,6 @@ public final class Constants {
          */
         public static final String URL_IMPORT_UNITS = "import/units";
 
-        public static final String URL_IMPORT_CASESHETT_QUESTIONS = "import/casesheetform";
-
-        public static final String URL_PUSH_CASESHEET_AUDIT = "casesheet/openCaseSheet";
-
-        public static final String URL_PULL_CASESHEET_AUDIT = "casesheet/openCaseSheet";
-
-        public static final String URL_PUSH_HH_AUDIT = "hhaudit/hhAuditSession";
-
-        public static final String URL_PULL_HH_AUDIT = "hhaudit/hhAuditSession";
 
         //Incident report
         public static final String URL_PUSH_INCIDENT = "eventreport/incident";
@@ -109,18 +99,9 @@ public final class Constants {
         public static final String URL_PULL_DRUGREACTION_ERROR = "eventreport/adverseDrugReactionr";
 
 
-        /**
-         * List News URL
-         */
-        public static final String URL_NEWS_FRAG = "1/classes/News";
-        public static final String URL_NEWS = URL_BASE + URL_NEWS_FRAG;
 
 
-        /**
-         * List Checkin's URL
-         */
-        public static final String URL_CHECKINS_FRAG = "1/classes/Locations";
-        public static final String URL_CHECKINS = URL_BASE + URL_CHECKINS_FRAG;
+
 
         /**
          * PARAMS for auth
@@ -148,19 +129,15 @@ public final class Constants {
     public static final class Extra {
         private Extra() {
         }
-
-        public static final String NEWS_ITEM = "session_item";
-        public static final String HH_SESSION_ITEM = "hh_session_item";
-        public static final String HH_SESSION_REF = "hh_session_ref";
-        public static final String HH_SESSION_STATUS = "hh_session_status";
-        public static final String HH_SESSION_ADD_OBSERVATION = "hh_sessionadd_observation";
+        public static final String EDIT_REPORT_COMMAND = "edit_report";
         public static final String USER = "user";
 
-        public static final String CASESHEET_ITEM = "casesheet_item";
-        public static final String CASESHEET_REF = "casesheet_ref";
 
         public static final String INCIDENT_ITEM = "incident_item";
         public static final String INCIDENT_REF = "incident_ref";
+
+        public static final String PATIENT_ITEM = "patient_item";
+        public static final String PATIENT_REF = "patient_ref";
 
     }
 

@@ -2,6 +2,7 @@ package com.synnefx.cqms.event.ui.drugreaction;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -35,7 +37,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import static com.synnefx.cqms.event.core.Constants.Extra.HH_SESSION_ADD_OBSERVATION;
+import static com.synnefx.cqms.event.core.Constants.Extra.EDIT_REPORT_COMMAND;
 import static com.synnefx.cqms.event.core.Constants.Extra.INCIDENT_ITEM;
 
 
@@ -72,10 +74,10 @@ public class DrugReactionListFragment extends ItemListFragment<AdverseDrugEvent>
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         setEmptyText(R.string.no_drug_reactions);
-
+        // Used to hide the soft input n fragment start
+        final InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
     }
-
-
 
     @Override
     protected void configureList(Activity activity, ListView listView) {
@@ -93,7 +95,7 @@ public class DrugReactionListFragment extends ItemListFragment<AdverseDrugEvent>
                 loadNextPage();
             }
         });
-        Log.e(TAG, "set click listener fo footer");
+        Log.e(TAG, "set click listener for footer");
     }
 
     @Override
@@ -185,7 +187,8 @@ public class DrugReactionListFragment extends ItemListFragment<AdverseDrugEvent>
     }
 
     private void editSession(AdverseDrugEvent adverseDrugEvent) {
-        startActivity(new Intent(getActivity(), DrugReactionActivity.class).putExtra(INCIDENT_ITEM, adverseDrugEvent));
+        adverseDrugEvent = databaseHelper.getAdverseDrugEventById(adverseDrugEvent.getId());
+        startActivity(new Intent(getActivity(), DrugReactionActivity.class).putExtra(INCIDENT_ITEM, adverseDrugEvent).putExtra(EDIT_REPORT_COMMAND,true));
     }
 
     private boolean deleteSession(AdverseDrugEvent adverseDrugEvent) {
@@ -193,8 +196,9 @@ public class DrugReactionListFragment extends ItemListFragment<AdverseDrugEvent>
         return true;
     }
 
-    private void openSession(AdverseDrugEvent session, boolean editable) {
-        startActivity(new Intent(getActivity(), DrugReactionActivity.class).putExtra(INCIDENT_ITEM, session).putExtra(HH_SESSION_ADD_OBSERVATION, editable));
+    private void openSession(AdverseDrugEvent adverseDrugEvent, boolean editable) {
+        adverseDrugEvent = databaseHelper.getAdverseDrugEventById(adverseDrugEvent.getId());
+        startActivity(new Intent(getActivity(), DrugReactionActivity.class).putExtra(INCIDENT_ITEM, adverseDrugEvent));
     }
 
     private void showRecordActionPrompt(final AdverseDrugEvent report, final View view) {
@@ -241,5 +245,7 @@ public class DrugReactionListFragment extends ItemListFragment<AdverseDrugEvent>
         }
         alertDialog.show();
     }
+
+
 
 }

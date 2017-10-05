@@ -6,10 +6,12 @@
     android:layout_height="match_parent"
     android:background="#fff"
     android:orientation="vertical"
-    tools:context="com.synnefx.cqms.event.ui.incident.IncidentDetailsFragment">
+    tools:context="com.synnefx.cqms.event.ui.drugreaction.DrugReactionActivity">
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -19,41 +21,46 @@
             android:paddingRight="15dp"
             android:paddingTop="5dp">
 
+            <com.wrapp.floatlabelededittext.FloatLabeledEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/edit_margin"
+                float:fletPadding="5dp">
+
+                <com.rengwuxian.materialedittext.MaterialEditText
+                    android:id="@+id/event_corrective_action"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:completionThreshold="1"
+                    android:hint="@string/event_corrective_action"
+                    android:imeOptions="actionNext|flagNoExtractUi"
+                    android:inputType="textMultiLine"
+                    android:maxLength="1000"
+                    android:minLines="4"
+                    float:met_maxCharacters="1000" />
+            </com.wrapp.floatlabelededittext.FloatLabeledEditText>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
                 <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
-                    android:id="@+id/incident_units"
+                    android:id="@+id/action_outcome"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/edit_height"
                     android:layout_marginTop="@dimen/edit_margin"
-                    android:hint="@string/event_unit" />
+                    android:hint="@string/action_outcome" />
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/incident_types_holder"
+                android:id="@+id/recovered_dt_holder"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
+                android:orientation="horizontal"
                 android:visibility="gone">
-
-                <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
-                    android:id="@+id/incident_types"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/incident_type" />
-            </LinearLayout>
-
-
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
                 <com.rengwuxian.materialedittext.MaterialEditText
-                    android:id="@+id/event_time"
+                    android:id="@+id/recovery_date"
                     android:completionThreshold="1"
                     android:layout_width="0dp"
                     android:layout_weight="0.75"
@@ -64,9 +71,41 @@
                     android:inputType="none"
                     android:layout_marginBottom="8dp"
                     android:layout_marginTop="@dimen/edit_margin"
-                    android:hint="@string/event_time"/>
+                    android:hint="@string/recovered_on"/>
                 <com.rey.material.widget.Button
-                    android:id="@+id/event_time_btn"
+                    android:id="@+id/recovered_on_btn"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/bt_height"
+                    android:layout_weight="0.25"
+                    android:text="Change"
+                    android:textColor="#fff"
+                    android:layout_marginTop="@dimen/edit_margin"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:background="@color/colorPrimary"
+                    app:v_styleId="@array/button_raise"/>
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/death_dt_holder"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:visibility="gone">
+                <com.rengwuxian.materialedittext.MaterialEditText
+                    android:id="@+id/death_date"
+                    android:completionThreshold="1"
+                    android:layout_width="0dp"
+                    android:layout_weight="0.75"
+                    android:editable="false"
+                    android:focusable="false"
+                    android:layout_height="wrap_content"
+                    android:imeOptions="actionNext|flagNoExtractUi"
+                    android:inputType="none"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginTop="@dimen/edit_margin"
+                    android:hint="@string/death_date"/>
+                <com.rey.material.widget.Button
+                    android:id="@+id/death_date_btn"
                     android:layout_width="0dp"
                     android:layout_height="@dimen/bt_height"
                     android:layout_weight="0.25"
@@ -79,7 +118,6 @@
                     app:v_styleId="@array/button_raise"/>
             </LinearLayout>
 
-
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -89,24 +127,24 @@
                 android:layout_marginTop="20dp"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:textColor="@color/table_text"
-                android:text="@string/incident_level"/>
+                android:text="@string/reaction_in_casesheet"/>
 
             <RadioGroup
-                android:id="@+id/incident_level_grp"
+                android:id="@+id/reaction_in_casesheet"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/edit_margin"
                 android:orientation="horizontal">
-                <RadioButton android:id="@+id/incident_level_near_miss"
+                <RadioButton android:id="@+id/reaction_in_casesheet_yes"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:buttonTint="@color/colorPrimary"
-                    android:text="@string/incident_level_near_miss"/>
-                <RadioButton android:id="@+id/incident_level_harm"
+                    android:text="@string/reaction_in_casesheet_yes"/>
+                <RadioButton android:id="@+id/reaction_in_casesheet_no"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:buttonTint="@color/colorPrimary"
-                    android:text="@string/incident_level_harm"
+                    android:text="@string/reaction_in_casesheet_no"
                     android:layout_marginLeft="35dp" />
             </RadioGroup>
 
@@ -115,37 +153,20 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/edit_margin"
                 float:fletPadding="5dp">
-                <com.rengwuxian.materialedittext.MaterialEditText
-                    android:id="@+id/event_description"
-                    android:completionThreshold="1"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:imeOptions="actionNext|flagNoExtractUi"
-                    android:inputType="textMultiLine"
-                    float:met_maxCharacters="1000"
-                    android:maxLength="1000"
-                    android:minLines="4"
-                    android:hint="@string/incident_description"/>
-            </com.wrapp.floatlabelededittext.FloatLabeledEditText>
-
-            <com.wrapp.floatlabelededittext.FloatLabeledEditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/edit_margin"
-                float:fletPadding="5dp">
 
                 <com.rengwuxian.materialedittext.MaterialEditText
-                    android:id="@+id/event_corrective_action"
-                    android:completionThreshold="1"
+                    android:id="@+id/other_comments"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:completionThreshold="1"
+                    android:hint="@string/other_comments"
                     android:imeOptions="actionNext|flagNoExtractUi"
                     android:inputType="textMultiLine"
-                    float:met_maxCharacters="1000"
                     android:maxLength="1000"
                     android:minLines="4"
-                    android:hint="@string/event_corrective_action"/>
+                    float:met_maxCharacters="1000" />
             </com.wrapp.floatlabelededittext.FloatLabeledEditText>
+
             <Button
                 android:id="@+id/incident_details_save"
                 style="@style/ShadowText"
@@ -157,8 +178,7 @@
                 android:padding="10dp"
                 android:text="@string/incident_details_save"
                 android:textColor="#fff"
-                android:textSize="18dp"
-                 />
+                android:textSize="18dp" />
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

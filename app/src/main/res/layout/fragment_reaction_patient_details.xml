@@ -1,0 +1,180 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:float="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#fff"
+    android:orientation="vertical"
+    tools:context="com.synnefx.cqms.event.ui.drugreaction.DrugReactionActivity">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingBottom="10dp"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:paddingTop="5dp">
+
+            <com.wrapp.floatlabelededittext.FloatLabeledEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                float:fletPadding="2dp">
+
+                <com.rengwuxian.materialedittext.MaterialEditText
+                    android:id="@+id/patient_involved_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/edit_height"
+                    android:completionThreshold="1"
+                    android:hint="@string/patient_involved_name"
+                    android:imeOptions="actionNext|flagNoExtractUi"
+                    android:inputType="textPersonName" />
+            </com.wrapp.floatlabelededittext.FloatLabeledEditText>
+
+            <com.wrapp.floatlabelededittext.FloatLabeledEditText
+                android:id="@+id/patient_number_holder"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="visible"
+                float:fletPadding="2dp">
+
+                <com.rengwuxian.materialedittext.MaterialEditText
+                    android:id="@+id/patient_number"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/edit_height"
+                    android:layout_marginTop="@dimen/edit_margin"
+                    android:completionThreshold="1"
+                    android:hint="@string/patient_number"
+                    android:imeOptions="actionNext|flagNoExtractUi"
+                    android:inputType="textPersonName" />
+            </com.wrapp.floatlabelededittext.FloatLabeledEditText>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:paddingBottom="5dp"
+                android:paddingLeft="2dp"
+                android:paddingRight="5dp"
+                android:text="@string/patient_type"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textColor="@color/table_text" />
+
+            <RadioGroup
+                android:id="@+id/patient_type_grp"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/edit_margin"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/patient_type_ip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:buttonTint="@color/colorPrimary"
+                    android:text="@string/patient_type_ip" />
+
+                <RadioButton
+                    android:id="@+id/patient_type_op"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="35dp"
+                    android:buttonTint="@color/colorPrimary"
+                    android:text="@string/patient_type_op" />
+            </RadioGroup>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <com.rengwuxian.materialedittext.MaterialEditText
+                    android:id="@+id/patient_dob"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginTop="@dimen/edit_margin"
+                    android:layout_weight="0.75"
+                    android:completionThreshold="1"
+                    android:editable="false"
+                    android:focusable="false"
+                    android:hint="@string/patient_dob"
+                    android:imeOptions="actionNext|flagNoExtractUi"
+                    android:inputType="none" />
+
+                <com.rey.material.widget.Button
+                    android:id="@+id/patient_dob_btn"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/bt_height"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="@dimen/edit_margin"
+                    android:layout_weight="0.25"
+                    android:background="@color/colorPrimary"
+                    android:text="Change"
+                    android:textColor="#fff"
+                    app:v_styleId="@array/button_raise" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
+                    android:id="@+id/patient_gender"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/edit_height"
+                    android:layout_marginTop="@dimen/edit_margin"
+                    android:hint="@string/patient_gender" />
+            </LinearLayout>
+
+            <com.wrapp.floatlabelededittext.FloatLabeledEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                float:fletPadding="2dp">
+
+                <com.rengwuxian.materialedittext.MaterialEditText
+                    android:id="@+id/patient_height"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/edit_height"
+                    android:completionThreshold="1"
+                    android:hint="@string/patient_height"
+                    android:imeOptions="actionNext|flagNoExtractUi"
+                    android:inputType="numberDecimal" />
+            </com.wrapp.floatlabelededittext.FloatLabeledEditText>
+            <com.wrapp.floatlabelededittext.FloatLabeledEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                float:fletPadding="2dp">
+
+                <com.rengwuxian.materialedittext.MaterialEditText
+                    android:id="@+id/patient_weight"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/edit_height"
+                    android:completionThreshold="1"
+                    android:hint="@string/patient_weight"
+                    android:imeOptions="actionNext|flagNoExtractUi"
+                    android:inputType="numberDecimal" />
+            </com.wrapp.floatlabelededittext.FloatLabeledEditText>
+            <Button
+                android:id="@+id/incident_details_save"
+                style="@style/ShadowText"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="15dp"
+                android:background="@color/colorPrimary"
+                android:gravity="center"
+                android:padding="10dp"
+                android:text="@string/incident_details_save"
+                android:textColor="#fff"
+                android:textSize="18dp" />
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>
+
+

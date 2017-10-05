@@ -340,16 +340,14 @@ public class EventReport implements Serializable, Syncable {
         setCorrectiveActionTaken(localReport.getCorrectiveActionTaken());
         setReportedBy(localReport.getReportedBy());
         setPersonInvolved(localReport.getPersonInvolved());
-
     }
 
-
     public boolean canEdit() {
-        return 1 == this.getStatusCode();
+        return 0 == this.getStatusCode();
     }
 
     public boolean canDelete() {
-        return 3 != this.getStatusCode();
+        return 0 == this.getStatusCode() || 1 == this.getStatusCode();
     }
 
 }

@@ -1,7 +1,7 @@
 package com.synnefx.cqms.event.ui.incident;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -83,7 +83,9 @@ public class IncidentReportViewActivity extends AppCompatActivity {
         Log.d(INCIDENT_ITEM, ListViewer.view(report));
 
         IncidentReport errorReport = databaseHelper.getIncidentReportById(report.getId());
-
+        if(null == errorReport){
+            return;
+        }
 
         //Unit unit1 = errorReport.getUnit();
 
@@ -97,43 +99,52 @@ public class IncidentReportViewActivity extends AppCompatActivity {
         description.setText(report.getDescription());
         correctiveAction.setText(report.getCorrectiveActionTaken());
 
+        PersonInvolved personInvolved = null;
         Long personelRef = errorReport.getPersonInvolvedRef();
-        PersonInvolved personInvolved = databaseHelper.getPersonInvolvedById(personelRef);
-
-        personName.setText(personInvolved.getName());
-
-        switch (personInvolved.getPersonnelTypeCode()){
-            case 1:
-                patientLayout.setVisibility(View.VISIBLE);
-                visitorLayout.setVisibility(View.GONE);
-                staffLayout.setVisibility(View.GONE);
-                patientNumber.setText(personInvolved.getHospitalNumber());
-                int code = personInvolved.getGenderCode();
-                patientGender.setText(code==1?"Male":(code==2?"Female":(code==3?"Indeterminate":"Not stated/inadequately described")));
-                break;
-            case 2:
-                patientLayout.setVisibility(View.GONE);
-                staffLayout.setVisibility(View.VISIBLE);
-                visitorLayout.setVisibility(View.GONE);
-                staffNumber.setText(personInvolved.getStaffId());
-                staffDesignation.setText(personInvolved.getDesignation());
-                break;
-            case 3:
-                visitorLayout.setVisibility(View.VISIBLE);
-                patientLayout.setVisibility(View.GONE);
-                staffLayout.setVisibility(View.GONE);
-                break;
-            default:
-                visitorLayout.setVisibility(View.GONE);
-                patientLayout.setVisibility(View.GONE);
-                staffLayout.setVisibility(View.GONE);
+        if(null != personelRef && 0 < personelRef){
+            personInvolved = databaseHelper.getPersonInvolvedById(personelRef);
         }
 
-        ReportedBy reportedBy = databaseHelper.getReproteeByID(errorReport.getReportedByRef());
+        if(null != personInvolved){
+            personName.setText(personInvolved.getName());
+            switch (personInvolved.getPersonnelTypeCode()){
+                case 1:
+                    patientLayout.setVisibility(View.VISIBLE);
+                    visitorLayout.setVisibility(View.GONE);
+                    staffLayout.setVisibility(View.GONE);
+                    patientNumber.setText(personInvolved.getHospitalNumber());
+                    int code = personInvolved.getGenderCode();
+                    patientGender.setText(code==1?"Male":(code==2?"Female":(code==3?"Indeterminate":"Not stated/inadequately described")));
+                    break;
+                case 2:
+                    patientLayout.setVisibility(View.GONE);
+                    staffLayout.setVisibility(View.VISIBLE);
+                    visitorLayout.setVisibility(View.GONE);
+                    staffNumber.setText(personInvolved.getStaffId());
+                    staffDesignation.setText(personInvolved.getDesignation());
+                    break;
+                case 3:
+                    visitorLayout.setVisibility(View.VISIBLE);
+                    patientLayout.setVisibility(View.GONE);
+                    staffLayout.setVisibility(View.GONE);
+                    break;
+                default:
+                    visitorLayout.setVisibility(View.GONE);
+                    patientLayout.setVisibility(View.GONE);
+                    staffLayout.setVisibility(View.GONE);
+                    break;
+            }
+        }
 
-        reportedByName.setText(reportedBy.getLastName());
-        reportedByDesignation.setText(reportedBy.getDesignation());
-
+        ReportedBy reportedBy = null;
+        Long reportedByRef = errorReport.getReportedByRef();
+        if(null != reportedByRef && 0 < reportedByRef){
+            reportedBy = databaseHelper.getReproteeByID(reportedByRef);
+        }
+        if(null != reportedBy){
+            reportedByName.setText(reportedBy.getLastName());
+            reportedByDesignation.setText(reportedBy.getDesignation());
+        }
     }
 
     @Override

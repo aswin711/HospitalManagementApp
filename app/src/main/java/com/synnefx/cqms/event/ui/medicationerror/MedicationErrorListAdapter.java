@@ -45,7 +45,7 @@ public class MedicationErrorListAdapter extends AlternatingColorListAdapter<Medi
     @Override
     protected void update(final int position, final MedicationError item) {
         //super.update(position, item);
-        // setText(0, item.getIncidentTypeName());
+        setText(0, "#"+item.getId());
         String desription = item.getDescription();
         if (!TextUtils.isEmpty(desription) && desription.length() > 250) {
             desription = String.format("%s..", desription.substring(0, 249));

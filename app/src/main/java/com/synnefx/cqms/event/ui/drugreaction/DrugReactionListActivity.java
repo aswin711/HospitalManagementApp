@@ -31,7 +31,6 @@ public class DrugReactionListActivity extends BootstrapFragmentActivity {
         newIncidentBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Snackbar.make(view, "Hello Snackbar", Snackbar.LENGTH_LONG).show();
                 final Intent i = new Intent(DrugReactionListActivity.this, DrugReactionActivity.class);
                 startActivity(i);
             }

@@ -35,7 +35,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import static com.synnefx.cqms.event.core.Constants.Extra.HH_SESSION_ADD_OBSERVATION;
+import static com.synnefx.cqms.event.core.Constants.Extra.EDIT_REPORT_COMMAND;
 import static com.synnefx.cqms.event.core.Constants.Extra.INCIDENT_ITEM;
 
 
@@ -186,7 +186,7 @@ public class IncidentReportListFragment extends ItemListFragment<IncidentReport>
     }
 
     private void editSession(IncidentReport incidentReport) {
-        startActivity(new Intent(getActivity(), IncidentReportActivity.class).putExtra(INCIDENT_ITEM, incidentReport).putExtra(HH_SESSION_ADD_OBSERVATION,true));
+        startActivity(new Intent(getActivity(), IncidentReportActivity.class).putExtra(INCIDENT_ITEM, incidentReport).putExtra(EDIT_REPORT_COMMAND,true));
     }
 
     private boolean deleteSession(IncidentReport incidentReport) {
@@ -195,7 +195,7 @@ public class IncidentReportListFragment extends ItemListFragment<IncidentReport>
     }
 
     private void openSession(IncidentReport session) {
-        startActivity(new Intent(getActivity(), IncidentReportActivity.class).putExtra(INCIDENT_ITEM, session).putExtra(HH_SESSION_ADD_OBSERVATION, false));
+        startActivity(new Intent(getActivity(), IncidentReportActivity.class).putExtra(INCIDENT_ITEM, session));
     }
 
     private void showRecordActionPrompt(final IncidentReport report, final View view) {
@@ -207,7 +207,7 @@ public class IncidentReportListFragment extends ItemListFragment<IncidentReport>
         // alertDialog.setIcon(R.drawable.ic_action_discard_dark);
         // Setting Positive "Yes" Button
         if (null != report) {
-            if (!report.canEdit()) {
+            if (report.canEdit()) {
                 alertDialog.setPositiveButton("Edit",
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {

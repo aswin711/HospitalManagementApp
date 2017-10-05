@@ -20,7 +20,7 @@ android:elevation="5dp">
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
                     android:textSize="16dp"
-                    android:text="Sample text .."
+                    android:text=""
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:textColor="#595959" />
                 <TextView
@@ -59,7 +59,7 @@ android:elevation="5dp">
                     android:id="@+id/event_time"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="On Feeb 21,2017"
+                    android:text="[Unknown]"
                     android:layout_below="@+id/event_unit"
                     android:layout_alignParentRight="true"
                     android:layout_marginRight="5dp"

@@ -2,6 +2,7 @@ package com.synnefx.cqms.event.ui.medicationerror;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -35,7 +37,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import static com.synnefx.cqms.event.core.Constants.Extra.HH_SESSION_ADD_OBSERVATION;
+import static com.synnefx.cqms.event.core.Constants.Extra.EDIT_REPORT_COMMAND;
 import static com.synnefx.cqms.event.core.Constants.Extra.INCIDENT_ITEM;
 
 
@@ -73,10 +75,10 @@ public class MedicationErrorListFragment extends ItemListFragment<MedicationErro
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         setEmptyText(R.string.no_medication_errors);
-
+        // Used to hide the soft input n fragment start
+        final InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
     }
-
-
 
     @Override
     protected void configureList(Activity activity, ListView listView) {
@@ -120,7 +122,7 @@ public class MedicationErrorListFragment extends ItemListFragment<MedicationErro
     @Subscribe
     public void onEventListened(String data){
         if(data.equals(getString(R.string.fab_clicked))){
-            startActivity(new Intent(getActivity(),MedicationErrorActivity.class).putExtra(HH_SESSION_ADD_OBSERVATION,true));
+            startActivity(new Intent(getActivity(),MedicationErrorActivity.class));
         }
 
     }
@@ -190,7 +192,7 @@ public class MedicationErrorListFragment extends ItemListFragment<MedicationErro
     }
 
     private void editSession(MedicationError incidentReport) {
-        startActivity(new Intent(getActivity(), MedicationErrorActivity.class).putExtra(INCIDENT_ITEM, incidentReport).putExtra(HH_SESSION_ADD_OBSERVATION,true));
+        startActivity(new Intent(getActivity(), MedicationErrorActivity.class).putExtra(INCIDENT_ITEM, incidentReport).putExtra(EDIT_REPORT_COMMAND,true));
     }
 
     private boolean deleteSession(MedicationError incidentReport) {
@@ -211,7 +213,7 @@ public class MedicationErrorListFragment extends ItemListFragment<MedicationErro
         // alertDialog.setIcon(R.drawable.ic_action_discard_dark);
         // Setting Positive "Yes" Button
         if (null != report) {
-            if (!report.canEdit()) {
+            if (report.canEdit()) {
                 alertDialog.setPositiveButton("Edit",
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
@@ -246,5 +248,4 @@ public class MedicationErrorListFragment extends ItemListFragment<MedicationErro
         }
         alertDialog.show();
     }
-
 }

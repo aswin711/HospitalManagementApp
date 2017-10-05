@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 
 import com.rengwuxian.materialedittext.MaterialEditText;
@@ -168,6 +169,8 @@ public class ReportedByDetailsFragment extends Fragment{
             if (null != reportedBy) {
                 reportedByName.setText(reportedBy.getFullName());
                 reportedByDesignation.setText(reportedBy.getDesignation());
+            }else{
+                reportedByName.requestFocus();
             }
         }
 
@@ -175,6 +178,7 @@ public class ReportedByDetailsFragment extends Fragment{
             reportedBy = new ReportedBy();
             reportedBy.setEventRef(report.getId());
             reportedBy.setReportedOn(Calendar.getInstance());
+            reportedByName.requestFocus();
         }
 
     }
@@ -267,4 +271,14 @@ public class ReportedByDetailsFragment extends Fragment{
         return report;
     }
 
+    /**
+     * Used to hide the soft input n fragment start
+     * @param savedInstanceState
+     */
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        final InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
+    }
 }

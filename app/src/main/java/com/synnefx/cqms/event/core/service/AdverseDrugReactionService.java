@@ -2,8 +2,8 @@ package com.synnefx.cqms.event.core.service;
 
 import com.synnefx.cqms.event.core.Constants;
 import com.synnefx.cqms.event.core.modal.ApiRequest;
-import com.synnefx.cqms.event.core.modal.event.drugreaction.ApiResponse;
 import com.synnefx.cqms.event.core.modal.event.drugreaction.AdverseDrugEvent;
+import com.synnefx.cqms.event.core.modal.event.drugreaction.ApiResponse;
 
 import retrofit2.Call;
 import retrofit2.http.Body;

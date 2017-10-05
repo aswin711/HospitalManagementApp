@@ -31,8 +31,6 @@ import javax.inject.Inject;
 
 import butterknife.Bind;
 
-import static com.synnefx.cqms.event.core.Constants.Notification.IMPORT_INCIDENTTYPE_NOTIFICATION_ID;
-
 public class ImportConfigActivity extends BootstrapFragmentActivity {
 
     @Inject
