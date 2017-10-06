@@ -747,10 +747,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor c = db.rawQuery(selectQuery, new String[]{String.valueOf(personRef)});
         // looping through all rows and adding to list
+        PersonInvolved personInvolved = new PersonInvolved();
         try {
             if (c.moveToFirst()) {
                 do {
-                    return SqliteDataMapper.setPersonInvolved(c);
+                    personInvolved =  SqliteDataMapper.setPersonInvolved(c);
                 } while (c.moveToNext());
             }
         } catch (Exception e) {
@@ -760,7 +761,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 c.close();
             }
         }
-        return null;
+        return personInvolved;
     }
 
     public ReportedBy getReproteeByID(Long reporteeRef) {
@@ -1544,23 +1545,26 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         String selectQuery = "SELECT DISTINCT s.id as id, s.serverId as serverId, s.hospitalID as hospitalID, " + EventReportKey.KEY_INCIDENT_NUMBER
                 + ", s.unitRef, " + EventReportKey.KEY_INCIDENT_LOCATION + ", " + EventReportKey.KEY_INCIDENT_LOCATION
                 + ", " + EventReportKey.KEY_REPORTED_BY_REF + ", " + EventReportKey.KEY_LNAME + ", "
-                + EventReportKey.KEY_FNAME + ", " + EventReportKey.KEY_PERSON_INVOLVED_REF + ", "
+                + EventReportKey.KEY_FNAME + ", " + EventReportKey.KEY_PERSON_INVOLVED_REF + ", "+EventReportKey.KEY_PERSON_NAME+", "
+                + EventReportKey.KEY_PATIENT_TYPE+", "+EventReportKey.KEY_HOSPITAL_NUMBER+", "
                 + EventReportKey.KEY_DESCRIPTION + ", " + EventReportKey.KEY_CORRECTIVE_ACTION + ", " + EventReportKey.KEY_INCIDENT_TIME + ", "
                 + DrugReactionKey.KEY_REACTION_DATE+", " +DrugReactionKey.KEY_REACTION_OUTCOME_CODE+", "
                 + DrugReactionKey.KEY_DATE_RECOVERY+", "+DrugReactionKey.KEY_DATE_DEATH+", " +DrugReactionKey.KEY_COMMENTS+","
                 + DrugReactionKey.KEY_ADMITTED_POST_REACTION +", "+DrugReactionKey.KEY_REACTION_ADDED_CASESHEET+", "
                 + " s.status_code as status_code, s.createdOn as createdOn, s.updatedOn as updatedOn, u.name as unitName FROM " +
-                EventReportKey.TABLE_ADVERSE_DRUGG_REACTION_REPORT + " s LEFT JOIN " + TABLE_UNITS + " u ON s." + Columns.KEY_UNIT_REF + " = u." +
+                EventReportKey.TABLE_ADVERSE_DRUGG_REACTION_REPORT + " s JOIN "+EventReportKey.TABLE_PERSON_INVOLVED +" p on p.id = s."+EventReportKey.KEY_PERSON_INVOLVED_REF
+                +" LEFT JOIN " + TABLE_UNITS + " u ON s." + Columns.KEY_UNIT_REF + " = u." +
                 Columns.KEY_UNIT_REF + " LEFT JOIN " + EventReportKey.TABLE_REPORTED_BY + " rep ON rep.id = "
                 + EventReportKey.KEY_REPORTED_BY_REF + " WHERE s." + Columns.KEY_ID + " = ?";
 
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor c = db.rawQuery(selectQuery, new String[]{String.valueOf(reportRef)});
         // looping through all rows and adding to list
+        AdverseDrugEvent report = new AdverseDrugEvent();
         try {
             if (c.moveToFirst()) {
                 do {
-                    AdverseDrugEvent report = SqliteDataMapper.setAdverseDrugEvent(c);
+                    report = SqliteDataMapper.setAdverseDrugEvent(c);
                     report.setUnit(report.getUnitRef());
                     report.setPersonInvolved(getPersonInvolvedById(report.getPersonInvolvedRef()));
                     report.setReportedBy(getReproteeByID(report.getReportedByRef()));
@@ -1568,13 +1572,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 } while (c.moveToNext());
             }
         } catch (Exception e) {
+            Log.e(LOG,e.getMessage());
             Timber.e(LOG, e);
         } finally {
             if (c != null && !c.isClosed()) {
                 c.close();
             }
         }
-        return null;
+        return report;
     }
 
     public List<AdverseDrugEvent> getFullyLoadedAdverseDrugEventsByStatus(Integer statusCode, int pageNumber, int size) throws DataAccessException {

@@ -37,6 +37,8 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import timber.log.Timber;
+
 import static com.synnefx.cqms.event.core.Constants.Extra.EDIT_REPORT_COMMAND;
 import static com.synnefx.cqms.event.core.Constants.Extra.INCIDENT_ITEM;
 
@@ -187,6 +189,7 @@ public class DrugReactionListFragment extends ItemListFragment<AdverseDrugEvent>
     }
 
     private void editSession(AdverseDrugEvent adverseDrugEvent) {
+        Log.d("EditClicked",adverseDrugEvent.getId()+"");
         AdverseDrugEvent adverseDrugEvent1 = databaseHelper.getAdverseDrugEventById(adverseDrugEvent.getId());
         startActivity(new Intent(getActivity(), DrugReactionActivity.class).putExtra(INCIDENT_ITEM, adverseDrugEvent1).putExtra(EDIT_REPORT_COMMAND,true));
     }
