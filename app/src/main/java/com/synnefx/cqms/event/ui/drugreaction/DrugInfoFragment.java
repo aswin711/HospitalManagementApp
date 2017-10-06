@@ -35,14 +35,7 @@ import timber.log.Timber;
 
 import static com.synnefx.cqms.event.core.Constants.Extra.INCIDENT_ITEM;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link DrugInfoFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link DrugInfoFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+
 public class DrugInfoFragment extends Fragment implements View.OnClickListener,
         DatePickerDialog.OnDateSetListener {
 
@@ -80,17 +73,7 @@ public class DrugInfoFragment extends Fragment implements View.OnClickListener,
     private AdverseDrugEvent report;
     private DrugInfo drugInfo;
 
-      private OnFragmentInteractionListener mListener;
 
-
-    public static DrugInfoFragment newInstance(String param1, String param2) {
-        DrugInfoFragment fragment = new DrugInfoFragment();
-        Bundle args = new Bundle();
-        //args.putString(ARG_PARAM1, param1);
-        //args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
 
     public DrugInfoFragment() {
         // Required empty public constructor
@@ -126,37 +109,14 @@ public class DrugInfoFragment extends Fragment implements View.OnClickListener,
                 saveEvent();
             }
         });
+        initDatepicker(drugStartedDtBtn,"Set drug started date", "Start");
+        initDatepicker(drugCeasedDtBtn,"Set drug ceased date", "Ceased");
         return fragmentView;
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
 
 
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p/>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        public void onFragmentInteraction(Uri uri);
-    }
 
 
     private void initScreen() {
@@ -191,11 +151,11 @@ public class DrugInfoFragment extends Fragment implements View.OnClickListener,
                 }else {
                     drugCeasedDtBtn.setText("Set");
                 }
-                initDatepicker(drugStartedDtBtn, "Date Started","Start");
-                initDatepicker(drugCeasedDtBtn, "Date Ceased","Ceased");
                 saveDetailsBtn.setText("Update");
             }
         }
+        initDatepicker(drugStartedDtBtn, "Date Started","Started");
+        initDatepicker(drugCeasedDtBtn, "Date Ceased","Ceased");
     }
 
 
@@ -247,13 +207,15 @@ public class DrugInfoFragment extends Fragment implements View.OnClickListener,
     public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
         Calendar selectedDate = Calendar.getInstance();
         selectedDate.set(year, monthOfYear, dayOfMonth);
-        if ("StartedDatepickerdialog".equals(view.getTag())) {
-            report.setDateOfRecovery(selectedDate);
-            drugStartedDt.setText(CalenderUtils.formatCalendarToString(report.getDateOfRecovery(), Constants.Common.DATE_DISPLAY_FORMAT));
-        } else if ("CeasedDatepickerdialog".equals(view.getTag())) {
+        if ("CeasedDatepickerdialog".equals(view.getTag())) {
             report.setDateOfDeath(selectedDate);
 
             drugCeasedDt.setText(CalenderUtils.formatCalendarToString(report.getDateOfDeath(), Constants.Common.DATE_DISPLAY_FORMAT));
+
+        } else {
+            report.setDateOfRecovery(selectedDate);
+            drugStartedDt.setText(CalenderUtils.formatCalendarToString(report.getDateOfRecovery(), Constants.Common.DATE_DISPLAY_FORMAT));
+
         }
     }
 
@@ -284,7 +246,7 @@ public class DrugInfoFragment extends Fragment implements View.OnClickListener,
     private boolean validateDrugDeatils() {
         boolean error = false;
         if (TextUtils.isEmpty(drugName.getText())) {
-            drugName.setError("Corrective action required");
+            drugName.setError("Drug name is required");
             drugName.requestFocus();
             error = true;
         } else {
@@ -292,17 +254,42 @@ public class DrugInfoFragment extends Fragment implements View.OnClickListener,
         }
 
         if (TextUtils.isEmpty(drugDose.getText())) {
-            drugDose.setError("Corrective action required");
+            drugDose.setError("Drug dose is required");
             drugDose.requestFocus();
             error = true;
         } else {
             drugInfo.setDose(drugDose.getText().toString().trim());
         }
+        if (TextUtils.isEmpty(drugFreequency.getText())){
+            drugFreequency.setError("Drug frequency is required");
+            drugFreequency.requestFocus();
+            error = true;
+        }else {
+            drugInfo.setFrequency(drugFreequency.getText().toString().trim());
+        }
+        if (TextUtils.isEmpty(drugRoute.getText())){
+            drugRoute.setError("Drug route is required");
+            drugRoute.requestFocus();
+            error = true;
+        }else {
+            drugInfo.setRoute(drugRoute.getText().toString().trim());
+        }
+
+
         if(null != drugInfo.getDateCeased() && null != drugInfo.getDateStarted()){
+            String err = "Invalid date";
+            error = true;
             if(drugInfo.getDateStarted().after(drugInfo.getDateCeased())){
-                drugStartedDt.setError("Invalid Dates");
-                drugCeasedDt.setError("Invalid Dates");
+                err = "Invalid dates";
             }
+            if(null == drugInfo.getDateStarted()){
+                drugStartedDt.setError(err);
+            }else if(null == drugInfo.getDateCeased()){
+                drugCeasedDt.setError(err);
+            }
+
+            drugCeasedDt.requestFocus();
+            drugStartedDt.requestFocus();
         }
         return error;
     }

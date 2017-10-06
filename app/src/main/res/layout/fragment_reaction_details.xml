@@ -40,10 +40,6 @@
                     float:met_maxCharacters="1000" />
             </com.wrapp.floatlabelededittext.FloatLabeledEditText>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
 
                 <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
                     android:id="@+id/action_outcome"
@@ -51,14 +47,13 @@
                     android:layout_height="@dimen/edit_height"
                     android:layout_marginTop="@dimen/edit_margin"
                     android:hint="@string/action_outcome" />
-            </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/recovered_dt_holder"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:visibility="gone">
+                android:visibility="visible">
                 <com.rengwuxian.materialedittext.MaterialEditText
                     android:id="@+id/recovery_date"
                     android:completionThreshold="1"
@@ -82,15 +77,14 @@
                     android:layout_marginTop="@dimen/edit_margin"
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
-                    android:background="@color/colorPrimary"
-                    app:v_styleId="@array/button_raise"/>
+                    android:background="@drawable/date_btn_bg" />
             </LinearLayout>
             <LinearLayout
                 android:id="@+id/death_dt_holder"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:visibility="gone">
+                android:visibility="visible">
                 <com.rengwuxian.materialedittext.MaterialEditText
                     android:id="@+id/death_date"
                     android:completionThreshold="1"
@@ -114,8 +108,8 @@
                     android:layout_marginTop="@dimen/edit_margin"
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
-                    android:background="@color/colorPrimary"
-                    app:v_styleId="@array/button_raise"/>
+                    android:background="@drawable/date_btn_bg"
+                    />
             </LinearLayout>
 
             <TextView

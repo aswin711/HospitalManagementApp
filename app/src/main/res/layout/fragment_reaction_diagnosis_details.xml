@@ -97,8 +97,8 @@
                     android:layout_marginTop="@dimen/edit_margin"
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
-                    android:background="@color/colorPrimary"
-                    app:v_styleId="@array/button_raise"/>
+                    android:background="@drawable/date_btn_bg"
+                    />
             </LinearLayout>
 
             <Button

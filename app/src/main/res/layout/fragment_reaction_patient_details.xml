@@ -114,10 +114,10 @@
                     android:layout_marginRight="10dp"
                     android:layout_marginTop="@dimen/edit_margin"
                     android:layout_weight="0.25"
-                    android:background="@color/colorPrimary"
+                    android:background="@drawable/date_btn_bg"
                     android:text="Change"
                     android:textColor="#fff"
-                    app:v_styleId="@array/button_raise" />
+                     />
             </LinearLayout>
 
             <LinearLayout
