@@ -316,6 +316,7 @@ public class PatientDetailsFragment extends Fragment implements View.OnClickList
             report.setUpdated(Calendar.getInstance());
             patient.setPersonnelTypeCode(1);
             report.setPersonInvolved(patient);
+            report.setUnitRef(01L);
             long reportId = 0;
             if(null != report && (null == report.getId() || 0 >= report.getId())){
                 reportId = databaseHelper.insertAdverseDrugReaction(report);

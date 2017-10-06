@@ -70,7 +70,7 @@ public class IncidentReportActivity extends BootstrapFragmentActivity {
         if (null == report) {
             report = new IncidentReport();
         }
-        Log.e("Opening  session", String.valueOf(report.getId()));
+        Log.e("Opening session", String.valueOf(report.getId()));
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);

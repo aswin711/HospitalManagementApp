@@ -187,8 +187,8 @@ public class DrugReactionListFragment extends ItemListFragment<AdverseDrugEvent>
     }
 
     private void editSession(AdverseDrugEvent adverseDrugEvent) {
-        adverseDrugEvent = databaseHelper.getAdverseDrugEventById(adverseDrugEvent.getId());
-        startActivity(new Intent(getActivity(), DrugReactionActivity.class).putExtra(INCIDENT_ITEM, adverseDrugEvent).putExtra(EDIT_REPORT_COMMAND,true));
+        AdverseDrugEvent adverseDrugEvent1 = databaseHelper.getAdverseDrugEventById(adverseDrugEvent.getId());
+        startActivity(new Intent(getActivity(), DrugReactionActivity.class).putExtra(INCIDENT_ITEM, adverseDrugEvent1).putExtra(EDIT_REPORT_COMMAND,true));
     }
 
     private boolean deleteSession(AdverseDrugEvent adverseDrugEvent) {
