@@ -85,15 +85,6 @@ public class PatientDetailsFragment extends Fragment implements View.OnClickList
 
     ArrayAdapter<CharSequence> gendorAdapter;
 
-    private PatientDetailsFragment.OnFragmentInteractionListener mListener;
-
-
-    public static PatientDetailsFragment newInstance(String param1, String param2) {
-        PatientDetailsFragment fragment = new PatientDetailsFragment();
-        Bundle args = new Bundle();
-        fragment.setArguments(args);
-        return fragment;
-    }
 
     public PatientDetailsFragment() {
         // Required empty public constructor
@@ -110,7 +101,8 @@ public class PatientDetailsFragment extends Fragment implements View.OnClickList
                              Bundle savedInstanceState) {
         fragmentView = inflater.inflate(R.layout.fragment_reaction_patient_details, container, false);
         ButterKnife.bind(this, fragmentView);
-
+        patient = new PersonInvolved();
+        report = new AdverseDrugEvent();
         Bundle bundle = this.getArguments();
         if (bundle != null) {
             report = (AdverseDrugEvent) bundle.getSerializable(INCIDENT_ITEM);
@@ -136,8 +128,11 @@ public class PatientDetailsFragment extends Fragment implements View.OnClickList
                 }
             }else{
                // patient = new PersonInvolved();
+
             }
             report.setPersonInvolved(patient);
+        }else{
+            //report.setUnitRef(0L);
         }
         initScreen();
         saveDetailsBtn.setOnClickListener(new View.OnClickListener() {
@@ -149,33 +144,12 @@ public class PatientDetailsFragment extends Fragment implements View.OnClickList
         return fragmentView;
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
 
 
     @Override
     public void onDetach() {
         super.onDetach();
-        mListener = null;
-    }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p/>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        public void onFragmentInteraction(Uri uri);
     }
 
 
@@ -316,7 +290,6 @@ public class PatientDetailsFragment extends Fragment implements View.OnClickList
             report.setUpdated(Calendar.getInstance());
             patient.setPersonnelTypeCode(1);
             report.setPersonInvolved(patient);
-            report.setUnitRef(01L);
             long reportId = 0;
             if(null != report && (null == report.getId() || 0 >= report.getId())){
                 reportId = databaseHelper.insertAdverseDrugReaction(report);

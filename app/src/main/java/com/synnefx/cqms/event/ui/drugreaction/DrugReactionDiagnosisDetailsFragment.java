@@ -43,14 +43,7 @@ import timber.log.Timber;
 
 import static com.synnefx.cqms.event.core.Constants.Extra.INCIDENT_ITEM;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link DrugReactionDiagnosisDetailsFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link DrugReactionDiagnosisDetailsFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+
 public class DrugReactionDiagnosisDetailsFragment extends Fragment implements View.OnClickListener,
         DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener{
 
@@ -75,7 +68,6 @@ public class DrugReactionDiagnosisDetailsFragment extends Fragment implements Vi
     ArrayAdapter<Unit> unitAdapter;
 
 
-    private OnFragmentInteractionListener mListener;
 
 
     @Inject
@@ -83,21 +75,6 @@ public class DrugReactionDiagnosisDetailsFragment extends Fragment implements Vi
 
     private AdverseDrugEvent report;
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment MedicationErrorPersonDetailsFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static DrugReactionDiagnosisDetailsFragment newInstance(String param1, String param2) {
-        DrugReactionDiagnosisDetailsFragment fragment = new DrugReactionDiagnosisDetailsFragment();
-        Bundle args = new Bundle();
-        fragment.setArguments(args);
-        return fragment;
-    }
 
     public DrugReactionDiagnosisDetailsFragment() {
         // Required empty public constructor
@@ -138,34 +115,15 @@ public class DrugReactionDiagnosisDetailsFragment extends Fragment implements Vi
         return fragmentView;
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
 
 
     @Override
     public void onDetach() {
         super.onDetach();
-        mListener = null;
+
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p/>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        public void onFragmentInteraction(Uri uri);
-    }
+
 
     private void initScreen() {
         if (null != report && null != report.getId() && 0 < report.getId()) {
@@ -201,6 +159,17 @@ public class DrugReactionDiagnosisDetailsFragment extends Fragment implements Vi
         unitAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_dropdown_item_1line, units);
         unitsSpinner.setAdapter(unitAdapter);
 
+        Unit selectedUnit = new Unit();
+        selectedUnit.setHospitalUUID(hospitalRef);
+        selectedUnit.setServerId(report.getUnitRef());
+        int pos = unitAdapter.getPosition(selectedUnit);
+        if (pos >= 0) {
+            //serviceSpinner.setSelection(pos);
+            unitsSpinner.setText(report.getDepartment());
+        }else{
+            report.setUnitRef(0L);
+        }
+
         unitsSpinner.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
@@ -210,20 +179,12 @@ public class DrugReactionDiagnosisDetailsFragment extends Fragment implements Vi
                     report.setUnitRef(selectedUnit.getServerId());
                     report.setDepartment(selectedUnit.getName());
                 } else {
-                    report.setUnitRef(0l);
+                    report.setUnitRef(0L);
                     report.setDepartment(null);
                 }
             }
         });
 
-        Unit selectedUnit = new Unit();
-        selectedUnit.setHospitalUUID(hospitalRef);
-        selectedUnit.setServerId(report.getUnitRef());
-        int pos = unitAdapter.getPosition(selectedUnit);
-        if (pos >= 0) {
-            //serviceSpinner.setSelection(pos);
-            unitsSpinner.setText(report.getDepartment());
-        }
     }
 
     private void initDatepicker() {
@@ -349,11 +310,22 @@ public class DrugReactionDiagnosisDetailsFragment extends Fragment implements Vi
 
     private boolean validateDeatils() {
         boolean error = false;
+
         if (null == report.getUnitRef() || 0 >= report.getUnitRef()) {
             unitsSpinner.setError("Unit required");
             error = true;
             report.setUnitRef(0l);
             unitsSpinner.requestFocus();
+        }else{
+
+        }
+
+        if (TextUtils.isEmpty(consultantName.getText())){
+            consultantName.setError("Consultant name is required.");
+            consultantName.requestFocus();
+            error = true;
+        }else {
+            report.getPersonInvolved().setConsultantName(consultantName.getText().toString().trim());
         }
         if (TextUtils.isEmpty(diagnosis.getText())) {
             diagnosis.setError("Patient diagnosis required");
