@@ -1,9 +1,11 @@
 package com.synnefx.cqms.event.ui.drugreaction;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -16,6 +18,8 @@ import com.synnefx.cqms.event.core.modal.event.drugreaction.AdverseDrugEvent;
 import com.synnefx.cqms.event.sqlite.DatabaseHelper;
 import com.synnefx.cqms.event.ui.base.BootstrapFragmentActivity;
 import com.synnefx.cqms.event.ui.incident.IncidentReportViewActivity;
+
+import org.greenrobot.eventbus.EventBus;
 
 import javax.inject.Inject;
 
@@ -30,9 +34,12 @@ public class DrugReactionActivity extends BootstrapFragmentActivity {
 
     @Inject
     protected DatabaseHelper databaseHelper;
+    @Inject
+    EventBus eventBus;
     private AdverseDrugEvent report;
 
     private Boolean editable;
+    private boolean doubleBackPressed = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,6 +104,40 @@ public class DrugReactionActivity extends BootstrapFragmentActivity {
     protected Activity getActivity() {
         return DrugReactionActivity.this;
     }
+
+
+    @Override
+    public void onBackPressed() {
+
+        if (!doubleBackPressed) {
+            doubleBackPressed = true;
+            AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+            alertDialog.setCancelable(true);
+            alertDialog.setTitle("Save to Drafts");
+            alertDialog.setMessage("Do you want to save it to drafts before exit?");
+            alertDialog.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+
+                    eventBus.post(getString(R.string.save_draft));
+
+                    onBackPressed();
+                }
+            });
+            alertDialog.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    onBackPressed();
+                }
+            });
+
+            alertDialog.show();
+
+        } else {
+            super.onBackPressed();
+        }
+    }
+
 
     private void loadFragment() {
         PatientDetailsFragment detailsFragment = new PatientDetailsFragment();

@@ -122,40 +122,41 @@ public class DrugInfoFragment extends Fragment implements View.OnClickListener,
     private void initScreen() {
         if (null != report) {
             drugInfo = report.getSuspectedDrug();
-            if(null == drugInfo){
+            if (null == drugInfo) {
+                //TODO Please refer this line
                 List<DrugInfo> drugInfoList = databaseHelper.getDrugInfoByEventID(report.getId());
-                if(null != drugInfoList){
-                    for(DrugInfo drugInfo :drugInfoList){
-                        if(drugInfo.isSuspectedDrug()){
-                            drugInfo = drugInfo;
+                if (null != drugInfoList) {
+                    for (DrugInfo drugInfo1 : drugInfoList) {
+
+                            drugInfo = drugInfo1;
                             break;
-                        }
+
                     }
                 }
-            }
-            if(null == drugInfo){
-                drugInfo = new DrugInfo();
-                report.setSuspectedDrug(drugInfo);
-            }else{
-                drugName.setText(drugInfo.getDrug());
-                drugDose.setText(drugInfo.getDose());
-                drugRoute.setText(drugInfo.getRoute());
-                drugFreequency.setText(drugInfo.getFrequency());
-                if(null != drugInfo.getDateStarted()){
-                    drugStartedDt.setText(CalenderUtils.formatCalendarToString(drugInfo.getDateStarted(), Constants.Common.DATE_DISPLAY_FORMAT));
-                }else {
-                    drugStartedDtBtn.setText("Set");
+                if (null == drugInfo) {
+                    drugInfo = new DrugInfo();
+                    report.setSuspectedDrug(drugInfo);
+                } else {
+                    drugName.setText(drugInfo.getDrug());
+                    drugDose.setText(drugInfo.getDose());
+                    drugRoute.setText(drugInfo.getRoute());
+                    drugFreequency.setText(drugInfo.getFrequency());
+                    if (null != drugInfo.getDateStarted()) {
+                        drugStartedDt.setText(CalenderUtils.formatCalendarToString(drugInfo.getDateStarted(), Constants.Common.DATE_DISPLAY_FORMAT));
+                    } else {
+                        drugStartedDtBtn.setText("Set");
+                    }
+                    if (null != drugInfo.getDateCeased()) {
+                        drugCeasedDt.setText(CalenderUtils.formatCalendarToString(drugInfo.getDateCeased(), Constants.Common.DATE_DISPLAY_FORMAT));
+                    } else {
+                        drugCeasedDtBtn.setText("Set");
+                    }
+                    saveDetailsBtn.setText("Update");
                 }
-                if(null != drugInfo.getDateCeased()){
-                    drugCeasedDt.setText(CalenderUtils.formatCalendarToString(drugInfo.getDateCeased(), Constants.Common.DATE_DISPLAY_FORMAT));
-                }else {
-                    drugCeasedDtBtn.setText("Set");
-                }
-                saveDetailsBtn.setText("Update");
             }
+            initDatepicker(drugStartedDtBtn, "Date Started", "Started");
+            initDatepicker(drugCeasedDtBtn, "Date Ceased", "Ceased");
         }
-        initDatepicker(drugStartedDtBtn, "Date Started","Started");
-        initDatepicker(drugCeasedDtBtn, "Date Ceased","Ceased");
     }
 
 
@@ -209,11 +210,12 @@ public class DrugInfoFragment extends Fragment implements View.OnClickListener,
         selectedDate.set(year, monthOfYear, dayOfMonth);
         if ("CeasedDatepickerdialog".equals(view.getTag())) {
             report.setDateOfDeath(selectedDate);
-
+            drugInfo.setDateCeased(selectedDate);
             drugCeasedDt.setText(CalenderUtils.formatCalendarToString(report.getDateOfDeath(), Constants.Common.DATE_DISPLAY_FORMAT));
 
         } else {
             report.setDateOfRecovery(selectedDate);
+            drugInfo.setDateStarted(selectedDate);
             drugStartedDt.setText(CalenderUtils.formatCalendarToString(report.getDateOfRecovery(), Constants.Common.DATE_DISPLAY_FORMAT));
 
         }
@@ -221,7 +223,7 @@ public class DrugInfoFragment extends Fragment implements View.OnClickListener,
 
     public void saveEvent() {
         if (saveDrugDetails()) {
-            Snackbar.make(getActivity().findViewById(R.id.footer_view), "Reaction details dded/updated added", Snackbar.LENGTH_LONG).show();
+            Snackbar.make(getActivity().findViewById(R.id.footer_view), "Reaction details added/updated added", Snackbar.LENGTH_LONG).show();
             nextScreen();
         } else {
             Snackbar.make(getActivity().findViewById(R.id.footer_view), "Correct all validation errors", Snackbar.LENGTH_LONG).show();
@@ -233,7 +235,7 @@ public class DrugInfoFragment extends Fragment implements View.OnClickListener,
             report.setUpdated(Calendar.getInstance());
             drugInfo.setIsSuspectedDrug(true);
             drugInfo.setEventRef(report.getId());
-            long id = databaseHelper.saveDrugInfo(drugInfo);
+            long id = databaseHelper.insertOrUpdateDrugInfo(drugInfo);
             if (0 < id) {
                 Timber.e("saveDrugDetails " + id);
                 report.setSuspectedDrug(drugInfo);
@@ -278,9 +280,9 @@ public class DrugInfoFragment extends Fragment implements View.OnClickListener,
 
         if(null != drugInfo.getDateCeased() && null != drugInfo.getDateStarted()){
             String err = "Invalid date";
-            error = true;
             if(drugInfo.getDateStarted().after(drugInfo.getDateCeased())){
                 err = "Invalid dates";
+                error = true;
             }
             if(null == drugInfo.getDateStarted()){
                 drugStartedDt.setError(err);

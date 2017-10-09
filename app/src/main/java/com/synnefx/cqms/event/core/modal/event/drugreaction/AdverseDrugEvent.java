@@ -51,6 +51,9 @@ public class AdverseDrugEvent extends EventReport {
     @Expose
     private String comments;
 
+    @Expose
+    private long drugInfoRef;
+
 
 
     public AdverseDrugEvent() {
@@ -88,6 +91,7 @@ public class AdverseDrugEvent extends EventReport {
         setDateOfDeath(remoteReport.getDateOfDeath());
         setSuspectedDrug(remoteReport.getSuspectedDrug());
         setOtherDrugsTaken(remoteReport.getOtherDrugsTaken());
+
     }
 
     @Override
@@ -103,6 +107,7 @@ public class AdverseDrugEvent extends EventReport {
         setDateOfDeath(localReport.getDateOfDeath());
         setSuspectedDrug(localReport.getSuspectedDrug());
         setOtherDrugsTaken(localReport.getOtherDrugsTaken());
+
     }
 
 
@@ -201,5 +206,6 @@ public class AdverseDrugEvent extends EventReport {
     public void setComments(String comments) {
         this.comments = comments;
     }
+
 
 }

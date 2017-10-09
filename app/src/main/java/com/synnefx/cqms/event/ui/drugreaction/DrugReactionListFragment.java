@@ -195,7 +195,7 @@ public class DrugReactionListFragment extends ItemListFragment<AdverseDrugEvent>
     }
 
     private boolean deleteSession(AdverseDrugEvent adverseDrugEvent) {
-        databaseHelper.deleteIncidentReportById(adverseDrugEvent.getId());
+        databaseHelper.deleteAdverseDrugEventById(adverseDrugEvent.getId());
         return true;
     }
 

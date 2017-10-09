@@ -16,6 +16,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.RadioButton;
+import android.widget.Toast;
 
 import com.rengwuxian.materialedittext.MaterialEditText;
 import com.synnefx.cqms.event.BootstrapApplication;
@@ -25,9 +26,13 @@ import com.synnefx.cqms.event.core.modal.event.PersonInvolved;
 import com.synnefx.cqms.event.core.modal.event.drugreaction.AdverseDrugEvent;
 import com.synnefx.cqms.event.sqlite.DatabaseHelper;
 import com.synnefx.cqms.event.util.CalenderUtils;
+import com.synnefx.cqms.event.util.ListViewer;
 import com.synnefx.cqms.event.util.PrefUtils;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 import com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.Calendar;
 
@@ -79,6 +84,8 @@ public class PatientDetailsFragment extends Fragment implements View.OnClickList
 
     @Inject
     protected DatabaseHelper databaseHelper;
+    @Inject
+    EventBus eventBus;
 
     private AdverseDrugEvent report;
     private PersonInvolved patient;
@@ -145,6 +152,10 @@ public class PatientDetailsFragment extends Fragment implements View.OnClickList
     }
 
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+    }
 
     @Override
     public void onDetach() {
@@ -280,6 +291,63 @@ public class PatientDetailsFragment extends Fragment implements View.OnClickList
         }
     }
 
+  /*  @Subscribe
+    public void onEventListened(String data){
+        if (data.equals(getString(R.string.save_draft))){
+            if(saveDraft() != null){
+                Toast.makeText(getActivity(),"Draft saved",Toast.LENGTH_SHORT).show();
+                databaseHelper.updateAdverseDrugEventPersonInvolved(saveDraft());
+
+            }
+        }
+    }*/
+
+
+    private AdverseDrugEvent saveDraft(){
+        String hospitalRef = PrefUtils.getFromPrefs(getActivity().getApplicationContext(), PrefUtils.PREFS_HOSP_ID, null);
+        report.setHospital(hospitalRef);
+        if (0 == report.getStatusCode()) {
+            report.setCreatedOn(Calendar.getInstance());
+        }
+        report.setUpdated(Calendar.getInstance());
+        patient.setPersonnelTypeCode(1);
+        report.setUnitRef(0l);
+
+        patient.setName(patientName.getText().toString().trim());
+        patient.setHospitalNumber(patientNumber.getText().toString().trim());
+
+        if (ipPatient.isChecked()) {
+            patient.setPatientTypeCode(1);
+        } else if (opPatient.isChecked()) {
+            patient.setPatientTypeCode(2);
+        } else {
+            patient.setGenderCode(0);
+        }
+
+
+        try{
+            Double height = Double.valueOf(patientHeight.getText().toString());
+            patient.setHeight(height);
+        }catch (Exception e){
+            patient.setHeight(0.0);
+        }
+
+
+        try{
+            Double weight = Double.valueOf(patientWeight.getText().toString());
+            patient.setWeight(weight);
+
+        }catch (Exception e){
+            patient.setWeight(0.0);
+        }
+
+        report.setPersonInvolved(patient);
+
+        Log.d("PatientDetailsFragment", ListViewer.view(report));
+        return report;
+
+    }
+
     private boolean saveIncidentDetails() {
         if (!validatePatientDeatils()) {
             String hospitalRef = PrefUtils.getFromPrefs(getActivity().getApplicationContext(), PrefUtils.PREFS_HOSP_ID, null);
@@ -292,6 +360,9 @@ public class PatientDetailsFragment extends Fragment implements View.OnClickList
             report.setPersonInvolved(patient);
             long reportId = 0;
             if(null != report && (null == report.getId() || 0 >= report.getId())){
+                if (report.getUnitRef()==null){
+                    report.setUnitRef(0l);
+                }
                 reportId = databaseHelper.insertAdverseDrugReaction(report);
                 report.setId(reportId);
             }else{

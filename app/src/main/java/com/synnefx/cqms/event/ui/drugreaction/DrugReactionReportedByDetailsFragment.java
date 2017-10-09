@@ -213,7 +213,7 @@ public class DrugReactionReportedByDetailsFragment extends Fragment {
         }
 
         if (TextUtils.isEmpty(reportedByDesignation.getText())) {
-            reportedByDesignation.setError("Reported by  designation required");
+            reportedByDesignation.setError("Reported by designation required");
             error = true;
         } else {
             reportedBy.setDesignation(reportedByDesignation.getText().toString().trim());

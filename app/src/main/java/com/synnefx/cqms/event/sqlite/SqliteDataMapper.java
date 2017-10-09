@@ -475,7 +475,6 @@ public class SqliteDataMapper {
         report.setDepartment(c.getString(c.getColumnIndex("unitName")));
         report.setUnitRef(c.getLong((c.getColumnIndex(KEY_UNIT_REF))));
         report.setUnit(report.getUnitRef());
-
         report.setIncidentNumber(c.getString(c.getColumnIndex(KEY_INCIDENT_NUMBER)));
         report.setDescription(c.getString(c.getColumnIndex(KEY_DESCRIPTION)));
         report.setCorrectiveActionTaken(c.getString(c.getColumnIndex(KEY_CORRECTIVE_ACTION)));
