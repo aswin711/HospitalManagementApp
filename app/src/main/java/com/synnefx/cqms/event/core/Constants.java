@@ -21,7 +21,7 @@ public final class Constants {
         /**
          * Account name
          */
-        public static final String BOOTSTRAP_ACCOUNT_NAME = "CQMS Events";
+        public static final String BOOTSTRAP_ACCOUNT_NAME = "HQPulse Events";
 
         /**
          * Provider id
@@ -94,9 +94,9 @@ public final class Constants {
         public static final String URL_PULL_MEDICATION_ERROR = "eventreport/medicationError";
 
 
-        public static final String URL_PUSH_DRUGREACTION_ERROR = "eventreport/adverseDrugReactionr";
+        public static final String URL_PUSH_DRUGREACTION_ERROR = "eventreport/adverseDrugReaction";
 
-        public static final String URL_PULL_DRUGREACTION_ERROR = "eventreport/adverseDrugReactionr";
+        public static final String URL_PULL_DRUGREACTION_ERROR = "eventreport/adverseDrugReaction";
 
 
 

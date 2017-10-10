@@ -127,7 +127,7 @@ public class PatientDetailsFragment extends Fragment implements View.OnClickList
                     patient = databaseHelper.getPersonInvolvedById(patientRef);
                 }
             }else{
-               // patient = new PersonInvolved();
+                patient = new PersonInvolved();
 
             }
             report.setPersonInvolved(patient);
