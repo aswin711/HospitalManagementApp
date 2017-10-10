@@ -40,6 +40,7 @@ import com.synnefx.cqms.event.core.Constants;
 import com.synnefx.cqms.event.core.modal.event.incident.IncidentReport;
 import com.synnefx.cqms.event.events.NetworkErrorEvent;
 import com.synnefx.cqms.event.services.gcm.QuickstartPreferences;
+import com.synnefx.cqms.event.sqlite.DataAccessException;
 import com.synnefx.cqms.event.sqlite.DatabaseHelper;
 import com.synnefx.cqms.event.sync.drugreaction.DrugReactionSyncContentProvider;
 import com.synnefx.cqms.event.sync.incident.IncidentReportSyncContentProvider;
@@ -214,6 +215,12 @@ public class MainActivity extends BootstrapActivity implements NavigationView.On
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
         checkAuth();
+
+        try {
+            databaseHelper.getFullyLoadedAdverseDrugEventsByStatus(1,0,0);
+        } catch (DataAccessException e) {
+            e.printStackTrace();
+        }
 
         onNavigationItemSelected(navigationView.getMenu().getItem(0));
         navigationView.getMenu().getItem(0).setChecked(true);

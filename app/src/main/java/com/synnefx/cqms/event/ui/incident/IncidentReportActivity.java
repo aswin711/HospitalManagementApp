@@ -82,7 +82,6 @@ public class IncidentReportActivity extends BootstrapFragmentActivity {
     public void onBackPressed() {
 
         if(!doubleBackPressed){
-            doubleBackPressed = true;
             AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
             alertDialog.setCancelable(true);
             alertDialog.setTitle("Save to Drafts");
@@ -91,6 +90,7 @@ public class IncidentReportActivity extends BootstrapFragmentActivity {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
 
+                    doubleBackPressed = true;
                     eventBus.post(getString(R.string.save_draft));
 
                     onBackPressed();
@@ -99,6 +99,7 @@ public class IncidentReportActivity extends BootstrapFragmentActivity {
             alertDialog.setNegativeButton("NO", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
+                    doubleBackPressed = true;
                     onBackPressed();
                 }
             });

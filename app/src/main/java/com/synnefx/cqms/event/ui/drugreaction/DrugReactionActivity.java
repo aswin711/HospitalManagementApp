@@ -76,7 +76,9 @@ public class DrugReactionActivity extends BootstrapFragmentActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
 
-        loadFragment();
+
+            loadFragment();
+
     }
 
     @Override
@@ -110,7 +112,6 @@ public class DrugReactionActivity extends BootstrapFragmentActivity {
     public void onBackPressed() {
 
         if (!doubleBackPressed) {
-            doubleBackPressed = true;
             AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
             alertDialog.setCancelable(true);
             alertDialog.setTitle("Save to Drafts");
@@ -118,7 +119,7 @@ public class DrugReactionActivity extends BootstrapFragmentActivity {
             alertDialog.setPositiveButton("YES", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-
+                    doubleBackPressed = true;
                     eventBus.post(getString(R.string.save_draft));
 
                     onBackPressed();
@@ -127,6 +128,7 @@ public class DrugReactionActivity extends BootstrapFragmentActivity {
             alertDialog.setNegativeButton("NO", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
+                    doubleBackPressed = true;
                     onBackPressed();
                 }
             });
@@ -138,6 +140,11 @@ public class DrugReactionActivity extends BootstrapFragmentActivity {
         }
     }
 
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
+    }
 
     private void loadFragment() {
         PatientDetailsFragment detailsFragment = new PatientDetailsFragment();

@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.rengwuxian.materialedittext.MaterialEditText;
 import com.synnefx.cqms.event.BootstrapApplication;
@@ -23,6 +24,9 @@ import com.synnefx.cqms.event.core.modal.event.drugreaction.DrugInfo;
 import com.synnefx.cqms.event.sqlite.DatabaseHelper;
 import com.synnefx.cqms.event.util.CalenderUtils;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.Calendar;
 import java.util.List;
@@ -69,6 +73,8 @@ public class DrugInfoFragment extends Fragment implements View.OnClickListener,
 
     @Inject
     protected DatabaseHelper databaseHelper;
+    @Inject
+    protected EventBus eventBus;
 
     private AdverseDrugEvent report;
     private DrugInfo drugInfo;
@@ -90,7 +96,7 @@ public class DrugInfoFragment extends Fragment implements View.OnClickListener,
                              Bundle savedInstanceState) {
         fragmentView = inflater.inflate(R.layout.fragment_drug_details, container, false);
         ButterKnife.bind(this, fragmentView);
-
+        eventBus.register(this);
         Bundle bundle = this.getArguments();
         if (bundle != null) {
             report = (AdverseDrugEvent) bundle.getSerializable(INCIDENT_ITEM);
@@ -115,9 +121,11 @@ public class DrugInfoFragment extends Fragment implements View.OnClickListener,
     }
 
 
-
-
-
+    @Override
+    public void onDestroyView() {
+        eventBus.unregister(this);
+        super.onDestroyView();
+    }
 
     private void initScreen() {
         if (null != report) {
@@ -228,6 +236,41 @@ public class DrugInfoFragment extends Fragment implements View.OnClickListener,
         } else {
             Snackbar.make(getActivity().findViewById(R.id.footer_view), "Correct all validation errors", Snackbar.LENGTH_LONG).show();
         }
+    }
+
+    @Subscribe
+    public void onEventListened(String data){
+        if (data.equals(getString(R.string.save_draft))){
+            if(saveDraft() != null){
+                Toast.makeText(getActivity(),"Draft saved",Toast.LENGTH_SHORT).show();
+                report.setUpdated(Calendar.getInstance());
+                drugInfo.setIsSuspectedDrug(true);
+                drugInfo.setEventRef(report.getId());
+                long id = databaseHelper.insertOrUpdateDrugInfo(drugInfo);
+                if (0 < id) {
+                    Timber.e("saveDrugDetails " + id);
+                    report.setSuspectedDrug(drugInfo);
+                }
+            }
+        }
+    }
+
+    public AdverseDrugEvent saveDraft(){
+        if (!TextUtils.isEmpty(drugName.getText())) {
+            drugInfo.setDrug(drugName.getText().toString().trim());
+        }
+
+        if (!TextUtils.isEmpty(drugDose.getText())) {
+            drugInfo.setDose(drugDose.getText().toString().trim());
+        }
+        if (!TextUtils.isEmpty(drugFreequency.getText())){
+            drugInfo.setFrequency(drugFreequency.getText().toString().trim());
+        }
+        if (!TextUtils.isEmpty(drugRoute.getText())){
+            drugInfo.setRoute(drugRoute.getText().toString().trim());
+        }
+
+        return report;
     }
 
     private boolean saveDrugDetails() {

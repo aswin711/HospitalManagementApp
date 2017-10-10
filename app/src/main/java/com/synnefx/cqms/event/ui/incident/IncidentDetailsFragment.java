@@ -371,14 +371,18 @@ public class IncidentDetailsFragment extends Fragment implements View.OnClickLis
             correctiveAction.setError("Corrective action required");
             correctiveAction.requestFocus();
             error = true;
-        }else{
+        }else if(correctiveAction.getText().toString().length() < 10){
+            correctiveAction.setError("Incident description must have minimum 10 characters.");
+            error = true;
+        }
+        else{
             report.setCorrectiveActionTaken(correctiveAction.getText().toString().trim());
         }
 
         if (TextUtils.isEmpty(description.getText())) {
             description.setError("Incident description required");
             error = true;
-        }else if (description.getText().length() <10){
+        }else if (description.getText().length() < 10){
             description.setError("Incident description must have minimum 10 characters.");
             description.requestFocus();
             error = true;

@@ -16,6 +16,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.rengwuxian.materialedittext.MaterialEditText;
 import com.synnefx.cqms.event.BootstrapApplication;
@@ -30,6 +31,9 @@ import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 import com.wdullaer.materialdatetimepicker.time.RadialPickerLayout;
 import com.wdullaer.materialdatetimepicker.time.TimePickerDialog;
 import com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -73,6 +77,9 @@ public class DrugReactionDiagnosisDetailsFragment extends Fragment implements Vi
     @Inject
     protected DatabaseHelper databaseHelper;
 
+    @Inject
+    protected EventBus eventBus;
+
     private AdverseDrugEvent report;
 
 
@@ -94,6 +101,7 @@ public class DrugReactionDiagnosisDetailsFragment extends Fragment implements Vi
                              Bundle savedInstanceState) {
         fragmentView = inflater.inflate(R.layout.fragment_reaction_diagnosis_details, container, false);
         ButterKnife.bind(this, fragmentView);
+        eventBus.register(this);
         Bundle bundle = this.getArguments();
         if (bundle != null) {
             report = (AdverseDrugEvent) bundle.getSerializable(INCIDENT_ITEM);
@@ -116,6 +124,11 @@ public class DrugReactionDiagnosisDetailsFragment extends Fragment implements Vi
     }
 
 
+    @Override
+    public void onDestroyView() {
+        eventBus.unregister(this);
+        super.onDestroyView();
+    }
 
     @Override
     public void onDetach() {
@@ -280,6 +293,36 @@ public class DrugReactionDiagnosisDetailsFragment extends Fragment implements Vi
         eventTime.setText(CalenderUtils.formatCalendarToString(report.getIncidentTime(), Constants.Common.DATE_TIME_DISPLAY_FORMAT));
     }
 
+
+    @Subscribe
+    public void onEventListened(String data){
+        if (data.equals(getString(R.string.save_draft))){
+            if(saveDraft() != null){
+                Toast.makeText(getActivity(),"Draft saved",Toast.LENGTH_SHORT).show();
+                long id = databaseHelper.updateAdverseDrugEvent(saveDraft());
+                if (0 < id){
+                    databaseHelper.updateAdverseDrugEventPersonInvolved(saveDraft());
+                }
+            }
+        }
+    }
+
+
+    public AdverseDrugEvent saveDraft(){
+
+        if (null == report.getUnitRef() || 0 >= report.getUnitRef()) {
+            report.setUnitRef(0l);
+        }
+
+        if (!TextUtils.isEmpty(consultantName.getText())){
+            report.getPersonInvolved().setConsultantName(consultantName.getText().toString().trim());
+        }
+        if (!TextUtils.isEmpty(diagnosis.getText())) {
+            report.getPersonInvolved().setDiagnosis(diagnosis.getText().toString().trim());
+        }
+
+        return report;
+    }
 
     public void saveEventDetails() {
         if (saveIncidentDetails()) {

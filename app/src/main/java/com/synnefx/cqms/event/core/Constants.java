@@ -94,9 +94,9 @@ public final class Constants {
         public static final String URL_PULL_MEDICATION_ERROR = "eventreport/medicationError";
 
 
-        public static final String URL_PUSH_DRUGREACTION_ERROR = "eventreport/adverseDrugReactionr";
+        public static final String URL_PUSH_DRUGREACTION_ERROR = "eventreport/adverseDrugReaction";
 
-        public static final String URL_PULL_DRUGREACTION_ERROR = "eventreport/adverseDrugReactionr";
+        public static final String URL_PULL_DRUGREACTION_ERROR = "eventreport/adverseDrugReaction";
 
 
 

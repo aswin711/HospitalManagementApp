@@ -1505,7 +1505,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         } else {
             Log.e(LOG, "insertOrUpdateAdverseDrugReaction - " + report.toString());
             SQLiteDatabase db = this.getWritableDatabase();
-            db.beginTransaction();
+            if (!db.inTransaction()) {
+                db.beginTransaction();
+            }
             ContentValues values = SqliteDataMapper.setAdverseDrugEventContent(report);
             try {
                 int id = db.update(EventReportKey.TABLE_ADVERSE_DRUGG_REACTION_REPORT, values, Columns.KEY_ID + "=" + report.getId(), null);
@@ -1530,7 +1532,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             Log.e(LOG, "updateAdverseDrugEventReportedBy - " + report.toString());
             SQLiteDatabase db = this.getWritableDatabase();
             try {
-                db.beginTransaction();
+                if (!db.inTransaction()) {
+                    db.beginTransaction();
+                }else{
+                    db.endTransaction();
+                    db.beginTransaction();
+                }
                 long reportedById = this.insertOrUpdateIncidentReportedBy(report.getReportedBy(), db);
                 if (0 < reportedById) {
                     ContentValues values = SqliteDataMapper.setAdverseDrugEventContent(report);
@@ -1558,6 +1565,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             Log.e(LOG, "updateAdverseDrugEventPersonInvolved - " + report.toString());
             SQLiteDatabase db = this.getWritableDatabase();
             try {
+                if (db.inTransaction()){
+                    db.endTransaction();
+                }
                 db.beginTransaction();
                 long personInvolvedId = this.insertOrUpdateIncidentPersonInvolved(report.getPersonInvolved(), db);
                 if (0 < personInvolvedId) {
@@ -1625,12 +1635,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 + " s.incident_number, s.unitRef, " + EventReportKey.KEY_INCIDENT_LOCATION + ", "
                 + EventReportKey.KEY_INCIDENT_LOCATION + ", " + EventReportKey.KEY_REPORTED_BY_REF + ", " + EventReportKey.KEY_LNAME + ", "
                 + EventReportKey.KEY_FNAME + ", " + EventReportKey.KEY_PERSON_INVOLVED_REF + ", "
+                + EventReportKey.KEY_PERSON_NAME+", "+EventReportKey.KEY_PATIENT_TYPE+", "+EventReportKey.KEY_HOSPITAL_NUMBER+", "
                 + EventReportKey.KEY_DESCRIPTION + ", " + EventReportKey.KEY_CORRECTIVE_ACTION + ", " + EventReportKey.KEY_INCIDENT_TIME + ", "
                 + DrugReactionKey.KEY_REACTION_DATE+", " +DrugReactionKey.KEY_REACTION_OUTCOME_CODE+", "
                 + DrugReactionKey.KEY_DATE_RECOVERY+", "+DrugReactionKey.KEY_DATE_DEATH+", " +DrugReactionKey.KEY_COMMENTS+","
                 + DrugReactionKey.KEY_ADMITTED_POST_REACTION +", "+DrugReactionKey.KEY_REACTION_ADDED_CASESHEET+", "
                 + " s.status_code as status_code, s.createdOn as createdOn, s.updatedOn as updatedOn, u.name as unitName FROM " +
-                EventReportKey.TABLE_ADVERSE_DRUGG_REACTION_REPORT + " s JOIN " + TABLE_UNITS + " u ON s." + Columns.KEY_UNIT_REF + " = u." +
+                EventReportKey.TABLE_ADVERSE_DRUGG_REACTION_REPORT +" s JOIN "+EventReportKey.TABLE_PERSON_INVOLVED+" p on p.id = s."+
+                EventReportKey.KEY_PERSON_INVOLVED_REF+ " LEFT JOIN " + TABLE_UNITS + " u ON s." + Columns.KEY_UNIT_REF + " = u." +
                 Columns.KEY_UNIT_REF + " JOIN " + EventReportKey.TABLE_REPORTED_BY + " rep ON rep.id = "
                 + EventReportKey.KEY_REPORTED_BY_REF + " WHERE (s.serverId IS NULL or s.serverId <= 0) AND s." + Columns.KEY_STATUS_CODE +
                 " = ? ORDER BY s." + EventReportKey.KEY_INCIDENT_TIME + " DESC");

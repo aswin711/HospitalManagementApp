@@ -1,4 +1,4 @@
-package com.synnefx.cqms.audit.services;
+package com.synnefx.cqms.event.services;
 
 /**
  * Created by Josekutty on 8/13/2016.

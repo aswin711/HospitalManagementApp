@@ -108,6 +108,7 @@ public class PatientDetailsFragment extends Fragment implements View.OnClickList
                              Bundle savedInstanceState) {
         fragmentView = inflater.inflate(R.layout.fragment_reaction_patient_details, container, false);
         ButterKnife.bind(this, fragmentView);
+        eventBus.register(this);
         patient = new PersonInvolved();
         report = new AdverseDrugEvent();
         Bundle bundle = this.getArguments();
@@ -133,13 +134,8 @@ public class PatientDetailsFragment extends Fragment implements View.OnClickList
                 if (0 < patientRef) {
                     patient = databaseHelper.getPersonInvolvedById(patientRef);
                 }
-            }else{
-               // patient = new PersonInvolved();
-
             }
             report.setPersonInvolved(patient);
-        }else{
-            //report.setUnitRef(0L);
         }
         initScreen();
         saveDetailsBtn.setOnClickListener(new View.OnClickListener() {
@@ -154,14 +150,10 @@ public class PatientDetailsFragment extends Fragment implements View.OnClickList
 
     @Override
     public void onDestroyView() {
+        eventBus.unregister(this);
         super.onDestroyView();
     }
 
-    @Override
-    public void onDetach() {
-        super.onDetach();
-
-    }
 
 
     private void initScreen() {
@@ -291,16 +283,20 @@ public class PatientDetailsFragment extends Fragment implements View.OnClickList
         }
     }
 
-  /*  @Subscribe
+   @Subscribe
     public void onEventListened(String data){
         if (data.equals(getString(R.string.save_draft))){
             if(saveDraft() != null){
                 Toast.makeText(getActivity(),"Draft saved",Toast.LENGTH_SHORT).show();
-                databaseHelper.updateAdverseDrugEventPersonInvolved(saveDraft());
+                long id = databaseHelper.updateAdverseDrugEvent(saveDraft());
+                report.setId(id);
+                if (0 < id){
+                    databaseHelper.updateAdverseDrugEventPersonInvolved(saveDraft());
+                }
 
             }
         }
-    }*/
+    }
 
 
     private AdverseDrugEvent saveDraft(){
@@ -311,7 +307,10 @@ public class PatientDetailsFragment extends Fragment implements View.OnClickList
         }
         report.setUpdated(Calendar.getInstance());
         patient.setPersonnelTypeCode(1);
-        report.setUnitRef(0l);
+
+        if (report.getUnitRef()==null){
+            report.setUnitRef(0L);
+        }
 
         patient.setName(patientName.getText().toString().trim());
         patient.setHospitalNumber(patientNumber.getText().toString().trim());

@@ -199,6 +199,8 @@ public class AdverseDrugEvent extends EventReport {
         this.reactionAddedToCasesheet = reactionAddedToCasesheet;
     }
 
+
+
     public String getComments() {
         return comments;
     }
