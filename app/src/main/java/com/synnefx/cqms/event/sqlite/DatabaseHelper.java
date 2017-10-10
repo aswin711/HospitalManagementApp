@@ -23,6 +23,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 import java.util.TimeZone;
 
@@ -1621,6 +1622,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     report.setPersonInvolved(getPersonInvolvedById(report.getPersonInvolvedRef()));
                     report.setReportedBy(getReproteeByID(report.getReportedByRef()));
                     report.setOtherDrugsTaken(getDrugInfoByEventID(report.getId()));
+                    if(null != report.getOtherDrugsTaken()){
+                        Iterator<DrugInfo> drugInfoIterator = report.getOtherDrugsTaken().iterator();
+                        while(drugInfoIterator.hasNext()){
+                            DrugInfo drugInfo = drugInfoIterator.next();
+                            if(null != drugInfo && drugInfo.isSuspectedDrug()){
+                                report.setSuspectedDrug(drugInfo);
+                                drugInfoIterator.remove();
+                                break;
+                            }
+                        }
+                    }
                     reports.add(report);
                 } while (c.moveToNext());
             }
