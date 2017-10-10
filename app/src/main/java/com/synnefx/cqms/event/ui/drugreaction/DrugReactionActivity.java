@@ -1,5 +1,6 @@
 package com.synnefx.cqms.event.ui.drugreaction;
 
+import android.accounts.OperationCanceledException;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -12,12 +13,16 @@ import android.view.MenuItem;
 
 import com.synnefx.cqms.event.BootstrapApplication;
 import com.synnefx.cqms.event.R;
+import com.synnefx.cqms.event.core.BootstrapService;
 import com.synnefx.cqms.event.core.Constants;
 import com.synnefx.cqms.event.core.modal.event.PersonInvolved;
 import com.synnefx.cqms.event.core.modal.event.drugreaction.AdverseDrugEvent;
 import com.synnefx.cqms.event.sqlite.DatabaseHelper;
+import com.synnefx.cqms.event.ui.MainActivity;
 import com.synnefx.cqms.event.ui.base.BootstrapFragmentActivity;
 import com.synnefx.cqms.event.ui.incident.IncidentReportViewActivity;
+import com.synnefx.cqms.event.util.PrefUtils;
+import com.synnefx.cqms.event.util.SafeAsyncTask;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -25,6 +30,7 @@ import javax.inject.Inject;
 
 import butterknife.ButterKnife;
 
+import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
 import static com.synnefx.cqms.event.core.Constants.Extra.EDIT_REPORT_COMMAND;
 import static com.synnefx.cqms.event.core.Constants.Extra.INCIDENT_ITEM;
 import static com.synnefx.cqms.event.core.Constants.Extra.INCIDENT_REF;
@@ -81,27 +87,7 @@ public class DrugReactionActivity extends BootstrapFragmentActivity {
 
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_incident_report, menu);
-        return true;
-    }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
 
     protected Activity getActivity() {
         return DrugReactionActivity.this;
@@ -144,6 +130,67 @@ public class DrugReactionActivity extends BootstrapFragmentActivity {
     public boolean onSupportNavigateUp() {
         onBackPressed();
         return true;
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.global, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(final MenuItem item) {
+        switch (item.getItemId()) {
+            // This is the home button in the top left corner of the screen.
+            case R.id.logout:
+                logout();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+
+    protected void logout() {
+        logoutService.logout(new Runnable() {
+            @Override
+            public void run() {
+                // Calling a refresh will force the service to look for a logged in user
+                // and when it finds none the user will be requested to log in again.
+                PrefUtils.deleteFromPrefs(getApplicationContext());
+                checkAuth();
+            }
+        });
+    }
+
+    private void checkAuth() {
+        new SafeAsyncTask<Boolean>() {
+            @Override
+            public Boolean call() throws Exception {
+                final BootstrapService svc = serviceProvider.getService(getActivity());
+                return svc != null;
+            }
+
+            @Override
+            protected void onException(final Exception e) throws RuntimeException {
+                super.onException(e);
+                if (e instanceof OperationCanceledException) {
+                    // cancelled the authentication process (back button, etc).
+                    // Since auth could not take place, lets finish this activity.
+                } else {
+                }
+            }
+
+            @Override
+            protected void onSuccess(final Boolean hasAuthenticated) throws Exception {
+                Intent i = new Intent(getApplicationContext(), MainActivity.class);
+                i.addFlags(FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(i);
+                finish();
+                super.onSuccess(hasAuthenticated);
+            }
+        }.execute();
     }
 
     private void loadFragment() {

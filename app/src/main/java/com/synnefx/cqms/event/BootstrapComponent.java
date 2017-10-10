@@ -12,6 +12,7 @@ import com.synnefx.cqms.event.ui.ImportConfigActivity;
 import com.synnefx.cqms.event.ui.MainActivity;
 import com.synnefx.cqms.event.ui.SpashscreenActivity;
 import com.synnefx.cqms.event.ui.base.BootstrapActivity;
+import com.synnefx.cqms.event.ui.base.BootstrapFragment;
 import com.synnefx.cqms.event.ui.base.BootstrapFragmentActivity;
 import com.synnefx.cqms.event.ui.base.NavigationDrawerFragment;
 import com.synnefx.cqms.event.ui.drugreaction.DrugInfoFragment;
@@ -126,4 +127,5 @@ public interface BootstrapComponent {
     void inject(DrugReactionSyncService target);
 
 
+    void inject(BootstrapFragment bootstrapFragment);
 }

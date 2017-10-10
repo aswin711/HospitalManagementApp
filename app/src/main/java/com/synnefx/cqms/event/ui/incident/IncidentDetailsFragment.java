@@ -27,6 +27,7 @@ import com.synnefx.cqms.event.core.modal.IncidentType;
 import com.synnefx.cqms.event.core.modal.Unit;
 import com.synnefx.cqms.event.core.modal.event.incident.IncidentReport;
 import com.synnefx.cqms.event.sqlite.DatabaseHelper;
+import com.synnefx.cqms.event.ui.base.BootstrapFragment;
 import com.synnefx.cqms.event.util.CalenderUtils;
 import com.synnefx.cqms.event.util.PrefUtils;
 import com.synnefx.cqms.event.util.ViewUtils;
