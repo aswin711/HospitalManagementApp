@@ -347,7 +347,7 @@ public class EventReport implements Serializable, Syncable {
     }
 
     public boolean canDelete() {
-        return 0 == this.getStatusCode() || 1 == this.getStatusCode();
+        return 0 == this.getStatusCode() || 1 == this.getStatusCode() || 2 == this.getStatusCode();
     }
 
 }

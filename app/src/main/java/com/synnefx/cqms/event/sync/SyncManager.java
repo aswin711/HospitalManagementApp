@@ -2,6 +2,8 @@ package com.synnefx.cqms.event.sync;
 
 import android.util.Log;
 
+import com.synnefx.cqms.event.util.ListViewer;
+
 import java.util.List;
 
 /***
@@ -96,6 +98,7 @@ public class SyncManager<L extends Syncable, R extends Syncable> {
         Log.d(TAG, "push...");
         List<L> localData = mLocalStore.get();
         List<R> remoteData = mRemoteStore.get();
+        Log.d(TAG, ListViewer.view(localData));
         if (null != localData && 0 < localData.size()) {
             for (L localItem : localData) {
                 Log.e(TAG, "check local item: " + localItem.toString());

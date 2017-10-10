@@ -455,7 +455,7 @@ public class SqliteDataMapper {
 
         values.put(KEY_REACTION_OUTCOME_CODE, report.getActionOutcomeCode());
         values.put(KEY_ADMITTED_POST_REACTION, report.getActionOutcomeCode());
-        values.put(KEY_REACTION_ADDED_CASESHEET, report.getActionOutcomeCode());
+        values.put(KEY_REACTION_ADDED_CASESHEET, report.isReactionAddedToCasesheet()?1:0);
         values.put(KEY_COMMENTS, report.getComments());
 
         if(null != report.getDateOfRecovery())
@@ -475,10 +475,16 @@ public class SqliteDataMapper {
         report.setDepartment(c.getString(c.getColumnIndex("unitName")));
         report.setUnitRef(c.getLong((c.getColumnIndex(KEY_UNIT_REF))));
         report.setUnit(report.getUnitRef());
-
         report.setIncidentNumber(c.getString(c.getColumnIndex(KEY_INCIDENT_NUMBER)));
         report.setDescription(c.getString(c.getColumnIndex(KEY_DESCRIPTION)));
         report.setCorrectiveActionTaken(c.getString(c.getColumnIndex(KEY_CORRECTIVE_ACTION)));
+        int caseSheetAdded = c.getInt(c.getColumnIndex(KEY_REACTION_ADDED_CASESHEET));
+        if (caseSheetAdded ==1){
+            report.setReactionAddedToCasesheet(true);
+        }else{
+            report.setReactionAddedToCasesheet(false);
+        }
+
 
         report.setIncidentLocation(c.getString(c.getColumnIndex(KEY_INCIDENT_LOCATION)));
 
@@ -487,6 +493,13 @@ public class SqliteDataMapper {
             Calendar cal = Calendar.getInstance();
             cal.setTimeInMillis(incidentTimeMill);
             report.setIncidentTime(cal);
+        }
+
+        Long reactionTimeMill = c.getLong(c.getColumnIndex(KEY_REACTION_DATE));
+        if (null != reactionTimeMill && 0 < reactionTimeMill) {
+            Calendar cal = Calendar.getInstance();
+            cal.setTimeInMillis(reactionTimeMill);
+            report.setReactionDate(cal);
         }
 
         report.setPersonInvolvedRef(c.getLong(c.getColumnIndex(KEY_PERSON_INVOLVED_REF)));
@@ -535,13 +548,6 @@ public class SqliteDataMapper {
             report.setReactionAddedToCasesheet(false);
         }else{
             report.setReactionAddedToCasesheet(true);
-        }
-
-        Long reactionTimeMill = c.getLong(c.getColumnIndex(KEY_REACTION_DATE));
-        if (null != reactionTimeMill && 0 < reactionTimeMill) {
-            Calendar cal = Calendar.getInstance();
-            cal.setTimeInMillis(reactionTimeMill);
-            report.setReactionDate(cal);
         }
 
         Long recoveredTimeMill = c.getLong(c.getColumnIndex(KEY_DATE_RECOVERY));

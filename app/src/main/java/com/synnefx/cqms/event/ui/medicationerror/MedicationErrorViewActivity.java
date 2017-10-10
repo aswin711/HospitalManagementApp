@@ -83,49 +83,58 @@ public class MedicationErrorViewActivity extends AppCompatActivity {
         //Unit unit1 = errorReport.getUnit();
 
         //List<Unit> units = databaseHelper.getAllUnitsTypes(unit1.getHospitalID());
-        unit.setText(errorReport.getDepartment());
+        if (errorReport.getDepartment() !=null){
+            unit.setText(errorReport.getDepartment());
+        }
+       //
         //Toast.makeText(this, ""+unit1.get, Toast.LENGTH_SHORT).show();
         time.setText(CalenderUtils.formatCalendarToString(report.getIncidentTime(), Constants.Common.DATE_TIME_DISPLAY_FORMAT));
         level.setText(report.getIncidentLevelCode()==1?"Near Miss":(report.getIncidentLevelCode()==2?"Actual Harm":""));
         description.setText(report.getDescription());
         correctiveAction.setText(report.getCorrectiveActionTaken());
+        if (errorReport.getPersonInvolvedRef() != null){
+            Long personelRef = errorReport.getPersonInvolvedRef();
+            PersonInvolved personInvolved = databaseHelper.getPersonInvolvedById(personelRef);
 
-        Long personelRef = errorReport.getPersonInvolvedRef();
-        PersonInvolved personInvolved = databaseHelper.getPersonInvolvedById(personelRef);
+            personName.setText(personInvolved.getName());
 
-        personName.setText(personInvolved.getName());
+            switch (personInvolved.getPersonnelTypeCode()){
+                case 1:
+                    patientLayout.setVisibility(View.VISIBLE);
+                    visitorLayout.setVisibility(View.GONE);
+                    staffLayout.setVisibility(View.GONE);
+                    patientNumber.setText(personInvolved.getHospitalNumber());
+                    int code = personInvolved.getGenderCode();
+                    patientGender.setText(code==1?"Male":(code==2?"Female":(code==3?"Indeterminate":"Not stated/inadequately described")));
+                    break;
+                case 2:
+                    patientLayout.setVisibility(View.GONE);
+                    staffLayout.setVisibility(View.VISIBLE);
+                    visitorLayout.setVisibility(View.GONE);
+                    staffNumber.setText(personInvolved.getStaffId());
+                    staffDesignation.setText(personInvolved.getDesignation());
+                    break;
+                case 3:
+                    visitorLayout.setVisibility(View.VISIBLE);
+                    patientLayout.setVisibility(View.GONE);
+                    staffLayout.setVisibility(View.GONE);
+                    break;
+                default:
+                    visitorLayout.setVisibility(View.GONE);
+                    patientLayout.setVisibility(View.GONE);
+                    staffLayout.setVisibility(View.GONE);
+            }
 
-        switch (personInvolved.getPersonnelTypeCode()){
-            case 1:
-                patientLayout.setVisibility(View.VISIBLE);
-                visitorLayout.setVisibility(View.GONE);
-                staffLayout.setVisibility(View.GONE);
-                patientNumber.setText(personInvolved.getHospitalNumber());
-                int code = personInvolved.getGenderCode();
-                patientGender.setText(code==1?"Male":(code==2?"Female":(code==3?"Indeterminate":"Not stated/inadequately described")));
-                break;
-            case 2:
-                patientLayout.setVisibility(View.GONE);
-                staffLayout.setVisibility(View.VISIBLE);
-                visitorLayout.setVisibility(View.GONE);
-                staffNumber.setText(personInvolved.getStaffId());
-                staffDesignation.setText(personInvolved.getDesignation());
-                break;
-            case 3:
-                visitorLayout.setVisibility(View.VISIBLE);
-                patientLayout.setVisibility(View.GONE);
-                staffLayout.setVisibility(View.GONE);
-                break;
-            default:
-                visitorLayout.setVisibility(View.GONE);
-                patientLayout.setVisibility(View.GONE);
-                staffLayout.setVisibility(View.GONE);
+        }
+        if (errorReport.getReportedByRef() != null){
+            ReportedBy reportedBy = databaseHelper.getReproteeByID(errorReport.getReportedByRef());
+
+            reportedByName.setText(reportedBy.getLastName());
+            reportedByDesignation.setText(reportedBy.getDesignation());
         }
 
-        ReportedBy reportedBy = databaseHelper.getReproteeByID(errorReport.getReportedByRef());
 
-        reportedByName.setText(reportedBy.getLastName());
-        reportedByDesignation.setText(reportedBy.getDesignation());
+
 
 
     }

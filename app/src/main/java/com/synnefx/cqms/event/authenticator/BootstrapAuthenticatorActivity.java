@@ -23,6 +23,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
@@ -161,33 +162,6 @@ public class BootstrapAuthenticatorActivity extends ActionBarAccountAuthenticato
         setContentView(layout.login_activity);
 
         ButterKnife.bind(this);
-
-        //emailText.setAdapter(new ArrayAdapter<String>(this,
-              //  simple_dropdown_item_1line, userEmailAccounts()));
-
-       /* passwordText.setOnKeyListener(new OnKeyListener() {
-
-            public boolean onKey(final View v, final int keyCode, final KeyEvent event) {
-                if (event != null && ACTION_DOWN == event.getAction()
-                        && keyCode == KEYCODE_ENTER && signInButton.isEnabled()) {
-                    handleLogin(signInButton);
-                    return true;
-                }
-                return false;
-            }
-        });*/
-
-       /* passwordText.setOnEditorActionListener(new OnEditorActionListener() {
-
-            public boolean onEditorAction(final TextView v, final int actionId,
-                                          final KeyEvent event) {
-                if (actionId == IME_ACTION_DONE && signInButton.isEnabled()) {
-                    handleLogin(signInButton);
-                    return true;
-                }
-                return false;
-            }
-        });*/
 
         emailText.addTextChangedListener(new MyTextWatcher(emailText));
         passwordText.addTextChangedListener(new MyTextWatcher(passwordText));
@@ -402,8 +376,10 @@ public class BootstrapAuthenticatorActivity extends ActionBarAccountAuthenticato
         }*/
         setAccountAuthenticatorResult(intent.getExtras());
         setResult(RESULT_OK, intent);
+
         //startActivity(new Intent(getApplicationContext(),MainActivity.class));
         //finish();
+
     }
 
     private void syncConfig() {
@@ -512,18 +488,19 @@ public class BootstrapAuthenticatorActivity extends ActionBarAccountAuthenticato
 
             @Override
             public void onSuccess(final Boolean authSuccess) {
+                hideProgress();
+                //importing begins here......
+                Intent intent1 = new Intent(getApplicationContext(),ImportConfigActivity.class);
+                intent1.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent1);
+                finish();
+                //importing ends here
                 syncConfig();
                 scheduleSync();
-                //importing begins here......
-                Intent intent = new Intent(getApplicationContext(),ImportConfigActivity.class);
-                startActivity(intent);
-                finish();
-                // importing stops......
             }
 
             @Override
             protected void onFinally() throws RuntimeException {
-                hideProgress();
                 profileLoadTask = null;
             }
         };

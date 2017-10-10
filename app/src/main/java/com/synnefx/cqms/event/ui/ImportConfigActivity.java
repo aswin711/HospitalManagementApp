@@ -12,6 +12,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.squareup.otto.Bus;
 import com.synnefx.cqms.event.BootstrapApplication;
@@ -56,6 +57,7 @@ public class ImportConfigActivity extends BootstrapFragmentActivity {
         super.onCreate(savedInstanceState);
         BootstrapApplication.component().inject(this);
         setContentView(R.layout.activity_import_config);
+        //Toast.makeText(this, "Import Activity", Toast.LENGTH_SHORT).show();
         if (!isInternetAvaialable()) {
             showConnectionAlert();
         } else {

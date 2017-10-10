@@ -123,7 +123,9 @@ public class DrugReactionListFragment extends ItemListFragment<AdverseDrugEvent>
 
     @Subscribe
     public void onEventListened(String data){
-        startActivity(new Intent(getActivity(),DrugReactionActivity.class));
+        if (data.equals(getString(R.string.fab_clicked))) {
+            startActivity(new Intent(getActivity(), DrugReactionActivity.class));
+        }
     }
 
     @Override
@@ -195,7 +197,7 @@ public class DrugReactionListFragment extends ItemListFragment<AdverseDrugEvent>
     }
 
     private boolean deleteSession(AdverseDrugEvent adverseDrugEvent) {
-        databaseHelper.deleteIncidentReportById(adverseDrugEvent.getId());
+        databaseHelper.deleteAdverseDrugEventById(adverseDrugEvent.getId());
         return true;
     }
 

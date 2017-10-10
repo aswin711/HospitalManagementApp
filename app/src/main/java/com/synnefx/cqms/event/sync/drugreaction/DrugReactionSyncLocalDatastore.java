@@ -41,6 +41,9 @@ public class DrugReactionSyncLocalDatastore implements Datastore<AdverseDrugEven
 
     @Override
     public AdverseDrugEvent update(AdverseDrugEvent localDataInstance) {
+        if(localDataInstance.getServerId()>0){
+            localDataInstance.setStatusCode(2);
+        }
         dao.updateAdverseDrugEvent(localDataInstance);
         AdverseDrugEvent result = dao.getAdverseDrugEventById(localDataInstance.getId());
         return result;

@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.rengwuxian.materialedittext.MaterialEditText;
 import com.synnefx.cqms.event.BootstrapApplication;
@@ -25,23 +26,20 @@ import com.synnefx.cqms.event.sync.drugreaction.DrugReactionSyncContentProvider;
 import com.synnefx.cqms.event.util.ConnectionUtils;
 import com.synnefx.cqms.event.util.ServiceUtils;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+
 import java.util.Calendar;
 
 import javax.inject.Inject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import timber.log.Timber;
 
 import static com.synnefx.cqms.event.core.Constants.Extra.INCIDENT_ITEM;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link DrugReactionReportedByDetailsFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link DrugReactionReportedByDetailsFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+
 public class DrugReactionReportedByDetailsFragment extends Fragment {
 
     protected View fragmentView;
@@ -53,31 +51,17 @@ public class DrugReactionReportedByDetailsFragment extends Fragment {
     @Bind(R.id.event_reported_by_designation)
     protected MaterialEditText reportedByDesignation;
 
-    private OnFragmentInteractionListener mListener;
 
 
     @Inject
     protected DatabaseHelper databaseHelper;
+    @Inject
+    protected EventBus eventBus;
     private AdverseDrugEvent report;
     private ReportedBy reportedBy;
     private PersonInvolved personInvolved;
 
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment MedicationErrorPersonDetailsFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static DrugReactionReportedByDetailsFragment newInstance(String param1, String param2) {
-        DrugReactionReportedByDetailsFragment fragment = new DrugReactionReportedByDetailsFragment();
-        Bundle args = new Bundle();
-        fragment.setArguments(args);
-        return fragment;
-    }
 
     public DrugReactionReportedByDetailsFragment() {
         // Required empty public constructor
@@ -97,6 +81,7 @@ public class DrugReactionReportedByDetailsFragment extends Fragment {
                              Bundle savedInstanceState) {
         fragmentView = inflater.inflate(R.layout.fragment_reported_by_details, container, false);
         ButterKnife.bind(this, fragmentView);
+        eventBus.register(this);
         Bundle bundle = this.getArguments();
         if (bundle != null) {
             report = (AdverseDrugEvent) bundle.getSerializable(INCIDENT_ITEM);
@@ -118,34 +103,20 @@ public class DrugReactionReportedByDetailsFragment extends Fragment {
         return fragmentView;
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
 
+    @Override
+    public void onDestroyView() {
+        eventBus.unregister(this);
+        super.onDestroyView();
+    }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        mListener = null;
+
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p/>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        public void onFragmentInteraction(Uri uri);
-    }
+
 
     private void initScreen() {
         if (null != report && null != report.getId() && 0 < report.getId()) {
@@ -189,6 +160,28 @@ public class DrugReactionReportedByDetailsFragment extends Fragment {
         }
     }
 
+    @Subscribe
+    public void onEventListened(String data){
+        if (data.equals(getString(R.string.save_draft))){
+            if(saveDraft() != null){
+                Toast.makeText(getActivity(),"Draft saved",Toast.LENGTH_SHORT).show();
+                report.setUpdated(Calendar.getInstance());
+                report.setReportedBy(reportedBy);
+                databaseHelper.updateAdverseDrugEventReportedBy(report);
+            }
+        }
+    }
+
+    public AdverseDrugEvent saveDraft(){
+        if (!TextUtils.isEmpty(reportedByName.getText())) {
+            reportedBy.setLastName(reportedByName.getText().toString().trim());
+        }
+        if (!TextUtils.isEmpty(reportedByDesignation.getText())) {
+            reportedBy.setDesignation(reportedByDesignation.getText().toString().trim());
+        }
+        return report;
+    }
+
     private boolean saveIncidentDetails() {
         if (!validateDeatils()) {
             report.setUpdated(Calendar.getInstance());
@@ -213,7 +206,7 @@ public class DrugReactionReportedByDetailsFragment extends Fragment {
         }
 
         if (TextUtils.isEmpty(reportedByDesignation.getText())) {
-            reportedByDesignation.setError("Reported by  designation required");
+            reportedByDesignation.setError("Reported by designation required");
             error = true;
         } else {
             reportedBy.setDesignation(reportedByDesignation.getText().toString().trim());

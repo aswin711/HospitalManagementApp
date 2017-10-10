@@ -21,7 +21,7 @@ import static com.synnefx.cqms.event.core.Constants.Notification.UPLOAD_NOTIFICA
 
 
 public class DrugReactionSyncAdapter extends AbstractThreadedSyncAdapter {
-    private static final String TAG = "IncidentSync";
+    private static final String TAG = "DrugReactionSync";
 
     /**
      * URL to fetch content from during a sync.

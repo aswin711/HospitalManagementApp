@@ -17,6 +17,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
+import android.widget.Toast;
 
 import com.rengwuxian.materialedittext.MaterialEditText;
 import com.synnefx.cqms.event.BootstrapApplication;
@@ -29,6 +30,9 @@ import com.synnefx.cqms.event.util.PrefUtils;
 import com.synnefx.cqms.event.util.ViewUtils;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 import com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.Calendar;
 
@@ -78,6 +82,8 @@ public class DrugReactionDetailsFragment extends Fragment implements View.OnClic
 
     @Inject
     protected DatabaseHelper databaseHelper;
+    @Inject
+    protected EventBus eventBus;
     private AdverseDrugEvent report;
 
     ArrayAdapter<CharSequence> actionOutcomeAdapter;
@@ -99,7 +105,7 @@ public class DrugReactionDetailsFragment extends Fragment implements View.OnClic
                              Bundle savedInstanceState) {
         fragmentView = inflater.inflate(R.layout.fragment_reaction_details, container, false);
         ButterKnife.bind(this, fragmentView);
-
+        eventBus.register(this);
         Bundle bundle = this.getArguments();
         if (bundle != null) {
             report = (AdverseDrugEvent) bundle.getSerializable(INCIDENT_ITEM);
@@ -122,6 +128,11 @@ public class DrugReactionDetailsFragment extends Fragment implements View.OnClic
     }
 
 
+    @Override
+    public void onDestroyView() {
+        eventBus.unregister(this);
+        super.onDestroyView();
+    }
 
     @Override
     public void onDetach() {
@@ -294,6 +305,35 @@ public class DrugReactionDetailsFragment extends Fragment implements View.OnClic
         }
     }
 
+    @Subscribe
+    public void onEventListened(String data){
+        if (data.equals(getString(R.string.save_draft))){
+            if(saveDraft() != null){
+                Toast.makeText(getActivity(),"Draft saved",Toast.LENGTH_SHORT).show();
+                databaseHelper.insertOrUpdateAdverseDrugReaction(saveDraft());
+            }
+        }
+    }
+
+
+    public AdverseDrugEvent saveDraft(){
+
+        if (!TextUtils.isEmpty(correctiveAction.getText())) {
+            report.setCorrectiveActionTaken(correctiveAction.getText().toString().trim());
+        }
+
+        if(casesheetAddedYes.isChecked()){
+            report.setReactionAddedToCasesheet(true);
+        }else if (casesheetAddedNo.isChecked()){
+            report.setReactionAddedToCasesheet(false);
+        }
+        if (comments.getText() != null){
+            report.setComments(comments.getText().toString().trim());
+        }
+
+        return report;
+    }
+
     private boolean saveIncidentDetails() {
         if (!validateIncidentDeatils()) {
             String hospitalRef = PrefUtils.getFromPrefs(getActivity().getApplicationContext(), PrefUtils.PREFS_HOSP_ID, null);
@@ -319,7 +359,12 @@ public class DrugReactionDetailsFragment extends Fragment implements View.OnClic
             correctiveAction.setError("Corrective action required");
             correctiveAction.requestFocus();
             error = true;
-        } else {
+        } else if(correctiveAction.getText().length()<=10){
+            correctiveAction.setError("Corrective action must have atleast 11 characters");
+            correctiveAction.requestFocus();
+            error = true;
+        }
+        else {
             report.setCorrectiveActionTaken(correctiveAction.getText().toString().trim());
         }
 

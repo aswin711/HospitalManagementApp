@@ -168,15 +168,15 @@ public abstract class BootstrapActivity extends AppCompatActivity {
                 if (e instanceof OperationCanceledException) {
                     // cancelled the authentication process (back button, etc).
                     // Since auth could not take place, lets finish this activity.
-                } else {
-                    final Intent i = new Intent(getApplicationContext(), MainActivity.class);
-                    startActivity(i);
-                    finish();
                 }
             }
 
             @Override
             protected void onSuccess(final Boolean hasAuthenticated) throws Exception {
+                final Intent i = new Intent(getApplicationContext(), MainActivity.class);
+                i.addFlags(FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(i);
+                finish();
                 super.onSuccess(hasAuthenticated);
             }
         }.execute();

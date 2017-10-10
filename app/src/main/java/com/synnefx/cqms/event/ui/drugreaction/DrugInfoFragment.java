@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.rengwuxian.materialedittext.MaterialEditText;
 import com.synnefx.cqms.event.BootstrapApplication;
@@ -23,6 +24,9 @@ import com.synnefx.cqms.event.core.modal.event.drugreaction.DrugInfo;
 import com.synnefx.cqms.event.sqlite.DatabaseHelper;
 import com.synnefx.cqms.event.util.CalenderUtils;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.Calendar;
 import java.util.List;
@@ -69,6 +73,8 @@ public class DrugInfoFragment extends Fragment implements View.OnClickListener,
 
     @Inject
     protected DatabaseHelper databaseHelper;
+    @Inject
+    protected EventBus eventBus;
 
     private AdverseDrugEvent report;
     private DrugInfo drugInfo;
@@ -90,7 +96,7 @@ public class DrugInfoFragment extends Fragment implements View.OnClickListener,
                              Bundle savedInstanceState) {
         fragmentView = inflater.inflate(R.layout.fragment_drug_details, container, false);
         ButterKnife.bind(this, fragmentView);
-
+        eventBus.register(this);
         Bundle bundle = this.getArguments();
         if (bundle != null) {
             report = (AdverseDrugEvent) bundle.getSerializable(INCIDENT_ITEM);
@@ -115,47 +121,50 @@ public class DrugInfoFragment extends Fragment implements View.OnClickListener,
     }
 
 
-
-
-
+    @Override
+    public void onDestroyView() {
+        eventBus.unregister(this);
+        super.onDestroyView();
+    }
 
     private void initScreen() {
         if (null != report) {
             drugInfo = report.getSuspectedDrug();
-            if(null == drugInfo){
+            if (null == drugInfo) {
+                //TODO Please refer this line
                 List<DrugInfo> drugInfoList = databaseHelper.getDrugInfoByEventID(report.getId());
-                if(null != drugInfoList){
-                    for(DrugInfo drugInfo :drugInfoList){
-                        if(drugInfo.isSuspectedDrug()){
-                            drugInfo = drugInfo;
+                if (null != drugInfoList) {
+                    for (DrugInfo drugInfo1 : drugInfoList) {
+
+                            drugInfo = drugInfo1;
                             break;
-                        }
+
                     }
                 }
-            }
-            if(null == drugInfo){
-                drugInfo = new DrugInfo();
-                report.setSuspectedDrug(drugInfo);
-            }else{
-                drugName.setText(drugInfo.getDrug());
-                drugDose.setText(drugInfo.getDose());
-                drugRoute.setText(drugInfo.getRoute());
-                drugFreequency.setText(drugInfo.getFrequency());
-                if(null != drugInfo.getDateStarted()){
-                    drugStartedDt.setText(CalenderUtils.formatCalendarToString(drugInfo.getDateStarted(), Constants.Common.DATE_DISPLAY_FORMAT));
-                }else {
-                    drugStartedDtBtn.setText("Set");
+                if (null == drugInfo) {
+                    drugInfo = new DrugInfo();
+                    report.setSuspectedDrug(drugInfo);
+                } else {
+                    drugName.setText(drugInfo.getDrug());
+                    drugDose.setText(drugInfo.getDose());
+                    drugRoute.setText(drugInfo.getRoute());
+                    drugFreequency.setText(drugInfo.getFrequency());
+                    if (null != drugInfo.getDateStarted()) {
+                        drugStartedDt.setText(CalenderUtils.formatCalendarToString(drugInfo.getDateStarted(), Constants.Common.DATE_DISPLAY_FORMAT));
+                    } else {
+                        drugStartedDtBtn.setText("Set");
+                    }
+                    if (null != drugInfo.getDateCeased()) {
+                        drugCeasedDt.setText(CalenderUtils.formatCalendarToString(drugInfo.getDateCeased(), Constants.Common.DATE_DISPLAY_FORMAT));
+                    } else {
+                        drugCeasedDtBtn.setText("Set");
+                    }
+                    saveDetailsBtn.setText("Update");
                 }
-                if(null != drugInfo.getDateCeased()){
-                    drugCeasedDt.setText(CalenderUtils.formatCalendarToString(drugInfo.getDateCeased(), Constants.Common.DATE_DISPLAY_FORMAT));
-                }else {
-                    drugCeasedDtBtn.setText("Set");
-                }
-                saveDetailsBtn.setText("Update");
             }
+            initDatepicker(drugStartedDtBtn, "Date Started", "Started");
+            initDatepicker(drugCeasedDtBtn, "Date Ceased", "Ceased");
         }
-        initDatepicker(drugStartedDtBtn, "Date Started","Started");
-        initDatepicker(drugCeasedDtBtn, "Date Ceased","Ceased");
     }
 
 
@@ -209,11 +218,12 @@ public class DrugInfoFragment extends Fragment implements View.OnClickListener,
         selectedDate.set(year, monthOfYear, dayOfMonth);
         if ("CeasedDatepickerdialog".equals(view.getTag())) {
             report.setDateOfDeath(selectedDate);
-
+            drugInfo.setDateCeased(selectedDate);
             drugCeasedDt.setText(CalenderUtils.formatCalendarToString(report.getDateOfDeath(), Constants.Common.DATE_DISPLAY_FORMAT));
 
         } else {
             report.setDateOfRecovery(selectedDate);
+            drugInfo.setDateStarted(selectedDate);
             drugStartedDt.setText(CalenderUtils.formatCalendarToString(report.getDateOfRecovery(), Constants.Common.DATE_DISPLAY_FORMAT));
 
         }
@@ -221,11 +231,46 @@ public class DrugInfoFragment extends Fragment implements View.OnClickListener,
 
     public void saveEvent() {
         if (saveDrugDetails()) {
-            Snackbar.make(getActivity().findViewById(R.id.footer_view), "Reaction details dded/updated added", Snackbar.LENGTH_LONG).show();
+            Snackbar.make(getActivity().findViewById(R.id.footer_view), "Reaction details added/updated added", Snackbar.LENGTH_LONG).show();
             nextScreen();
         } else {
             Snackbar.make(getActivity().findViewById(R.id.footer_view), "Correct all validation errors", Snackbar.LENGTH_LONG).show();
         }
+    }
+
+    @Subscribe
+    public void onEventListened(String data){
+        if (data.equals(getString(R.string.save_draft))){
+            if(saveDraft() != null){
+                Toast.makeText(getActivity(),"Draft saved",Toast.LENGTH_SHORT).show();
+                report.setUpdated(Calendar.getInstance());
+                drugInfo.setIsSuspectedDrug(true);
+                drugInfo.setEventRef(report.getId());
+                long id = databaseHelper.insertOrUpdateDrugInfo(drugInfo);
+                if (0 < id) {
+                    Timber.e("saveDrugDetails " + id);
+                    report.setSuspectedDrug(drugInfo);
+                }
+            }
+        }
+    }
+
+    public AdverseDrugEvent saveDraft(){
+        if (!TextUtils.isEmpty(drugName.getText())) {
+            drugInfo.setDrug(drugName.getText().toString().trim());
+        }
+
+        if (!TextUtils.isEmpty(drugDose.getText())) {
+            drugInfo.setDose(drugDose.getText().toString().trim());
+        }
+        if (!TextUtils.isEmpty(drugFreequency.getText())){
+            drugInfo.setFrequency(drugFreequency.getText().toString().trim());
+        }
+        if (!TextUtils.isEmpty(drugRoute.getText())){
+            drugInfo.setRoute(drugRoute.getText().toString().trim());
+        }
+
+        return report;
     }
 
     private boolean saveDrugDetails() {
@@ -233,7 +278,7 @@ public class DrugInfoFragment extends Fragment implements View.OnClickListener,
             report.setUpdated(Calendar.getInstance());
             drugInfo.setIsSuspectedDrug(true);
             drugInfo.setEventRef(report.getId());
-            long id = databaseHelper.saveDrugInfo(drugInfo);
+            long id = databaseHelper.insertOrUpdateDrugInfo(drugInfo);
             if (0 < id) {
                 Timber.e("saveDrugDetails " + id);
                 report.setSuspectedDrug(drugInfo);
@@ -278,9 +323,9 @@ public class DrugInfoFragment extends Fragment implements View.OnClickListener,
 
         if(null != drugInfo.getDateCeased() && null != drugInfo.getDateStarted()){
             String err = "Invalid date";
-            error = true;
             if(drugInfo.getDateStarted().after(drugInfo.getDateCeased())){
                 err = "Invalid dates";
+                error = true;
             }
             if(null == drugInfo.getDateStarted()){
                 drugStartedDt.setError(err);

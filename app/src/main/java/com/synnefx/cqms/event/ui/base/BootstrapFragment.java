@@ -1,19 +1,17 @@
 package com.synnefx.cqms.event.ui.base;
 
 import android.accounts.OperationCanceledException;
-import android.app.Activity;
-import android.app.AlertDialog;
+import android.app.Fragment;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import android.support.annotation.Nullable;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
-import com.squareup.otto.Bus;
 import com.synnefx.cqms.event.BootstrapApplication;
+import com.synnefx.cqms.event.BootstrapComponent;
 import com.synnefx.cqms.event.BootstrapServiceProvider;
 import com.synnefx.cqms.event.R;
 import com.synnefx.cqms.event.authenticator.LogoutService;
@@ -24,19 +22,13 @@ import com.synnefx.cqms.event.util.SafeAsyncTask;
 
 import javax.inject.Inject;
 
-import butterknife.ButterKnife;
-
 import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
-import static android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP;
-
 
 /**
- * Base class for all Bootstrap Activities that need fragments.
+ * Created by cedex on 10/10/2017.
  */
-public abstract class BootstrapFragmentActivity extends AppCompatActivity {
 
-    @Inject
-    protected Bus eventBus;
+public class BootstrapFragment extends Fragment {
 
     @Inject
     protected LogoutService logoutService;
@@ -44,79 +36,22 @@ public abstract class BootstrapFragmentActivity extends AppCompatActivity {
     @Inject
     protected BootstrapServiceProvider serviceProvider;
 
-    ConnectionDetector cd;
+    @Inject
+    protected Context mContext;
 
     @Override
-    protected void onCreate(final Bundle savedInstanceState) {
+    public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         BootstrapApplication.component().inject(this);
-
+        setHasOptionsMenu(true);
     }
 
     @Override
-    public void setContentView(final int layoutResId) {
-        super.setContentView(layoutResId);
-        ButterKnife.bind(this);
-    }
-
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        eventBus.register(this);
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        eventBus.unregister(this);
-    }
-
-    /**
-     * Function to display simple Alert Dialog
-     *
-     * @param context - application context
-     * @param title   - alert dialog title
-     * @param message - alert message
-     */
-    public void showAlertDialog(Context context, String title, String message,
-                                int icon) {
-        AlertDialog.Builder alertDialog = new AlertDialog.Builder(context);
-        alertDialog.setTitle(title);
-        alertDialog.setMessage(message);
-        alertDialog.setIcon(icon);
-        alertDialog.setPositiveButton("OK",
-                new DialogInterface.OnClickListener() {
-
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                    }
-                });
-        alertDialog.show();
-    }
-
-    protected void showConnectionAlert() {
-        showAlertDialog(this, "Connection Problem",
-                "Not connected to internet. Check WiFi.",
-                R.drawable.ic_action_network_wifi);
-    }
-
-    protected boolean isInternetAvaialable() {
-        if (null == cd) {
-            cd = new ConnectionDetector(getApplicationContext());
-        }
-        return cd.isConnectingToInternet();
-    }
-
-    protected abstract Activity getActivity();
-
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.global, menu);
-        return true;
     }
+
+
 
     @Override
     public boolean onOptionsItemSelected(final MenuItem item) {
@@ -137,7 +72,7 @@ public abstract class BootstrapFragmentActivity extends AppCompatActivity {
             public void run() {
                 // Calling a refresh will force the service to look for a logged in user
                 // and when it finds none the user will be requested to log in again.
-                PrefUtils.deleteFromPrefs(getApplicationContext());
+                PrefUtils.deleteFromPrefs(mContext);
                 checkAuth();
             }
         });
@@ -163,10 +98,10 @@ public abstract class BootstrapFragmentActivity extends AppCompatActivity {
 
             @Override
             protected void onSuccess(final Boolean hasAuthenticated) throws Exception {
-                Intent i = new Intent(getApplicationContext(), MainActivity.class);
+                Intent i = new Intent(getActivity(), MainActivity.class);
                 i.addFlags(FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(i);
-                finish();
+                getActivity().finish();
                 super.onSuccess(hasAuthenticated);
             }
         }.execute();
