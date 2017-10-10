@@ -2,7 +2,7 @@
 
 <resources>
 
-    <string name="app_name">CQMS Events</string>
+    <string name="app_name">HQPulse Events</string>
     <string name="content_column">Content</string>
     <string name="page_referrers">Referrers</string>
     <string name="refresh_action">Refresh</string>
@@ -42,7 +42,7 @@
     <string name="label_sign_in">Sign In</string>
     <string name="message_signing_in">Signing in…</string>
     <string name="blank_field_warning">Please populate this field</string>
-    <string name="signup_link">New to CQMS? &lt;a href=http://www.dev.cqms.synnefx.com/faq>Click here&lt;/a> to learn more.</string>
+    <string name="signup_link">New to HQPulse? &lt;a href=http://www.hqpulse.com/faq>Click here&lt;/a> to learn more.</string>
     <string name="recover_link">Forgot password?</string>
     <string name="message_bad_credentials">Email Address or Password is incorrect</string>
     <string name="message_auth_failed">Please enter a valid password</string>
@@ -58,51 +58,12 @@
     <string name="title_incident_report">Incident Report</string>
     <string name="title_medication_error">Medication Error</string>
     <string name="title_adverse_drug_reaction">Adverse Drug Reaction</string>
-    <string name="title_case_sheet">Case Sheet Audit</string>
-    <string name="title_hh_audit">Hand Hygiene Audit</string>
-    <string name="title_custom_audits">Custom Audits</string>
     <string name="title_configuration">Settings</string>
-    <string name="title_activity_hhaudit_list">Hand Hygiene Audits</string>
-    <string name="hello_world">Hello world!</string>
-    <string name="action_new_hh">New Audit Session</string>
     <string name="title_activity_import_config">Import Configuration</string>
     <string name="action_settings">Settings</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="title_activity_hhaudit">New Session</string>
-    <string name="audit_observer">Observer</string>
-    <string name="audit_hh_service">Service/Department</string>
-    <string name="audit_hh_specialty">Specialty</string>
-    <string name="audit_hh_specialty_other">Other (Specify)</string>
-    <string name="audit_hh_starttime">Start Time</string>
-    <string name="audit_hh_endtime">End Time</string>
-    <string name="audit_hh_period">Period</string>
-    <string name="audit_hh_period_pre">Pre-Intervention</string>
-    <string name="audit_hh_period_post">Post-Intervention</string>
-    <string name="audit_hh_sample">Sample Size</string>
-    <string name="audit_hh_start_session">Start Session</string>
 
-    <string-array name="hh_audit_specilties">
-        <item>Select a specialty</item>
-        <item>Medical, including dermatology, neurology, haematology, oncology, etc</item>
-        <item>Surgery, including neurosurgery, urology, EENT, ophthalmology, etc.</item>
-        <item>Mixed (medical &amp; surgical), including gynaecology</item>
-        <item>Obstetrics, including related surgery</item>
-        <item>Paediatrics, including related surgery</item>
-        <item>Intensive care &amp; resuscitation</item>
-        <item>Emergency unit</item>
-        <item>Long term care &amp; rehabilitation</item>
-        <item>Ambulatory care, including related surgery</item>
-        <item>Others (Specify)</item>
-    </string-array>
-    <string name="title_activity_hhsession_details">HH Session</string>
-    <string name="no_observations">No Observation added</string>
-    <string name="error_loading_observations">Could not load observations</string>
-    <string name="hh_obserations_title">Observations</string>
-    <string name="audit_hh_comple_session">Complete</string>
-    <string name="title_activity_hhobservation">HH Observation</string>
-    <string name="save_survey_btn">Continue</string>
-    <string name="prev_survey_btn">Previous</string>
+
 
 
     <!-- Observation card layout-->
@@ -111,24 +72,17 @@
 
     <!-- Notification -->
     <string name="notification_no_wifi">Not connected to internet.</string>
-    <string name="notification_upload_title">CQMS : Data sync in progress</string>
+    <string name="notification_upload_title">HQPulse : Data sync in progress</string>
     <string name="notification_upload_description">Records are being uploaded into cloud</string>
     <string name="notification_upload_completed_description">Records are successfully uploaded into cloud</string>
     <string name="notification_upload_failed_description">Date Sync failed</string>
-    <string name="title_activity_hhoblist">HHOBListActivity</string>
+
 
 
     <!--Case sheet audit -->
     <string name="field_mandatory_error">This field is required</string>
-    <string name="title_activity_casesheet_audit">Open Case sheet Audit</string>
-    <string name="title_activity_casesheet_audit_list">Open Case sheet Audits</string>
-    <string name="audit_cs_start_audit">Start Audit</string>
-    <string name="no_cs_audits">No Case sheets audits</string>
-    <string name="title_activity_casesheet_observation">Case sheet audit Observations</string>
-    <string name="error_loading_casesheet_audit">Loading case sheet audits failed</string>
     <string name="audit_cs_unit">Unit/Department</string>
     <string name="audit_cs_specialty">Clinical Specialty</string>
-    <string name="audit_cs_number">Case sheet Number</string>
 
 
     <string name="title_activity_incident_report_list">Incident Reports</string>
