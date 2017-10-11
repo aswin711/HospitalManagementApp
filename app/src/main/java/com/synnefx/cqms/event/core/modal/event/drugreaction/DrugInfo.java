@@ -37,6 +37,7 @@ public class DrugInfo implements Serializable {
 
     private String dateCeasedStr;
 
+    @Expose
     private boolean isSuspectedDrug;
 
     public Long getId() {

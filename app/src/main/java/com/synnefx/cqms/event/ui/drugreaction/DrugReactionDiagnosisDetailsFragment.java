@@ -249,7 +249,7 @@ public class DrugReactionDiagnosisDetailsFragment extends Fragment implements Vi
         Calendar selectedDate = Calendar.getInstance();
         selectedDate.set(year, monthOfYear, dayOfMonth);
         if ("EventDatepickerdialog".equals(view.getTag())) {
-            report.setIncidentTime(selectedDate);
+            report.setReactionDate(selectedDate);
             eventTime.setText(CalenderUtils.formatCalendarToString(report.getIncidentTime(), Constants.Common.DATE_DISPLAY_FORMAT));
             Calendar now = Calendar.getInstance();
             TimePickerDialog tpd = com.wdullaer.materialdatetimepicker.time.TimePickerDialog.newInstance(
