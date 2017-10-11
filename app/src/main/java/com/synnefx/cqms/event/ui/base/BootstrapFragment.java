@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -98,6 +99,7 @@ public class BootstrapFragment extends Fragment {
 
             @Override
             protected void onSuccess(final Boolean hasAuthenticated) throws Exception {
+                Log.d("LOGOUT","Logged out");
                 Intent i = new Intent(getActivity(), MainActivity.class);
                 i.addFlags(FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(i);

@@ -121,6 +121,8 @@ public class BootstrapAuthenticatorActivity extends ActionBarAccountAuthenticato
     private String authToken;
     private String authTokenType;
 
+    private ProgressDialog mProgressDialog;
+
     /**
      * If set we are just checking that the user knows their credentials; this
      * doesn't cause the user's password to be changed on the device.
@@ -151,6 +153,8 @@ public class BootstrapAuthenticatorActivity extends ActionBarAccountAuthenticato
         BootstrapApplication.component().inject(this);
 
         accountManager = AccountManager.get(this);
+
+        mProgressDialog = new ProgressDialog(this);
 
         final Intent intent = getIntent();
         email = intent.getStringExtra(PARAM_USERNAME);
@@ -225,25 +229,40 @@ public class BootstrapAuthenticatorActivity extends ActionBarAccountAuthenticato
         return editText.length() > 0;
     }
 
-    @Override
-    protected Dialog onCreateDialog(int id) {
-        final ProgressDialog dialog = new ProgressDialog(this);
-        dialog.setMessage(getText(string.message_signing_in));
-        dialog.setIndeterminate(true);
-        dialog.setCancelable(true);
-        dialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
-            public void onCancel(final DialogInterface dialog) {
+
+
+    protected void showProgressSignIn(){
+        mProgressDialog.setMessage("Signing in....");
+        mProgressDialog.setIndeterminate(true);
+        mProgressDialog.setCancelable(true);
+        mProgressDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
                 if (authenticationTask != null) {
                     authenticationTask.cancel(true);
                 }
             }
         });
-        return dialog;
+        hideProgressBar();
+        mProgressDialog.show();
+    }
+
+    protected void showProgressFetchProfile(){
+        if (mProgressDialog.isShowing()){
+            mProgressDialog.setMessage("Fetching profile....");
+        }
+    }
+
+    protected void hideProgressBar(){
+        if (mProgressDialog.isShowing()){
+            mProgressDialog.dismiss();
+        }
     }
 
     @Subscribe
     public void onUnAuthorizedErrorEvent(UnAuthorizedErrorEvent unAuthorizedErrorEvent) {
         // Could not authorize for some reason.
+        hideProgressBar();
         Toaster.showLong(BootstrapAuthenticatorActivity.this, R.string.message_bad_credentials);
     }
 
@@ -266,7 +285,6 @@ public class BootstrapAuthenticatorActivity extends ActionBarAccountAuthenticato
         }
 
         password = passwordText.getText().toString();
-        showProgress();
 
         authenticationTask = new SafeAsyncTask<Boolean>(getApplicationContext()) {
             private String errorMessage = "Something went wrong";
@@ -314,8 +332,12 @@ public class BootstrapAuthenticatorActivity extends ActionBarAccountAuthenticato
 
             @Override
             protected void onFinally() throws RuntimeException {
-                hideProgress();
                 authenticationTask = null;
+            }
+
+            @Override
+            protected void onPreExecute() throws Exception {
+                showProgressSignIn();
             }
         };
         authenticationTask.execute();
@@ -337,7 +359,7 @@ public class BootstrapAuthenticatorActivity extends ActionBarAccountAuthenticato
 
         setAccountAuthenticatorResult(intent.getExtras());
         setResult(RESULT_OK, intent);
-        //finish();
+
     }
 
     /**
@@ -359,7 +381,6 @@ public class BootstrapAuthenticatorActivity extends ActionBarAccountAuthenticato
             accountManager.setPassword(account, password);
         }
 
-        //fetchProfile();
         final Intent intent = new Intent();
         intent.putExtra(KEY_ACCOUNT_NAME, email);
         intent.putExtra(KEY_ACCOUNT_TYPE, Constants.Auth.BOOTSTRAP_ACCOUNT_TYPE);
@@ -442,6 +463,7 @@ public class BootstrapAuthenticatorActivity extends ActionBarAccountAuthenticato
     }
 
     protected void fetchProfile() {
+
         profileLoadTask = new SafeAsyncTask<Boolean>(getApplicationContext()) {
             private String errorMessage = "Something went wrong while setting profile";
 
@@ -473,6 +495,7 @@ public class BootstrapAuthenticatorActivity extends ActionBarAccountAuthenticato
             @Override
             protected void onException(final Exception e) throws RuntimeException {
                 // Retrofit Errors are handled inside of the {
+                hideProgressBar();
                 if (!(e instanceof AuthenticationException)) {
                     final Throwable cause = e.getCause() != null ? e.getCause() : e;
                     if (cause != null) {
@@ -488,40 +511,39 @@ public class BootstrapAuthenticatorActivity extends ActionBarAccountAuthenticato
 
             @Override
             public void onSuccess(final Boolean authSuccess) {
-                hideProgress();
+                //Toast.makeText(context, "Profile fetch completed.", Toast.LENGTH_SHORT).show();
                 //importing begins here......
-                Intent intent1 = new Intent(getApplicationContext(),ImportConfigActivity.class);
-                intent1.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent1);
-                finish();
+
                 //importing ends here
+
                 syncConfig();
                 scheduleSync();
             }
 
             @Override
             protected void onFinally() throws RuntimeException {
+                hideProgressBar();
+                importConfig();
                 profileLoadTask = null;
+            }
+
+            @Override
+            protected void onPreExecute() throws Exception {
+                //showProgressBar(1);
+               showProgressFetchProfile();
             }
         };
         profileLoadTask.execute();
     }
 
-    /**
-     * Hide progress dialog
-     */
-    @SuppressWarnings("deprecation")
-    protected void hideProgress() {
-        dismissDialog(0);
+
+    public void importConfig(){
+        Intent intent1 = new Intent(getApplicationContext(),ImportConfigActivity.class);
+        startActivity(intent1);
+        finish();
     }
 
-    /**
-     * Show progress dialog
-     */
-    @SuppressWarnings("deprecation")
-    protected void showProgress() {
-        showDialog(0);
-    }
+
 
     /**
      * Called when the authentication process completes (see attemptLogin()).
@@ -537,6 +559,7 @@ public class BootstrapAuthenticatorActivity extends ActionBarAccountAuthenticato
                 finishConfirmCredentials(true);
             }
         } else {
+            hideProgressBar();
             Timber.i("onAuthenticationResult: failed to authenticate" + message);
             if (requestNewAccount) {
                 Toaster.showLong(BootstrapAuthenticatorActivity.this,

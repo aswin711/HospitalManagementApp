@@ -3,12 +3,15 @@ package com.synnefx.cqms.event.ui.base;
 import android.accounts.OperationCanceledException;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
@@ -46,11 +49,14 @@ public abstract class BootstrapActivity extends AppCompatActivity {
     @Inject
     protected BootstrapServiceProvider serviceProvider;
 
+    protected ProgressDialog mProgressDialog;
+
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         BootstrapApplication.component().inject(this);
+        mProgressDialog = new ProgressDialog(this);
     }
 
     @Override
@@ -173,12 +179,36 @@ public abstract class BootstrapActivity extends AppCompatActivity {
 
             @Override
             protected void onSuccess(final Boolean hasAuthenticated) throws Exception {
-                final Intent i = new Intent(getApplicationContext(), MainActivity.class);
-                i.addFlags(FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(i);
-                finish();
-                super.onSuccess(hasAuthenticated);
+                //Toast.makeText(context, "Logout.", Toast.LENGTH_SHORT).show();
+               // Log.d("LOGOUT","Logged out");
+                //super.onSuccess(hasAuthenticated);
+            }
+
+            @Override
+            protected void onFinally() throws RuntimeException {
+                Log.d("LOGOUT","Logged out");
+                hideProgress();
+            }
+
+            @Override
+            protected void onPreExecute() throws Exception {
+                showProgressLogout();
             }
         }.execute();
+    }
+
+
+    private void showProgressLogout(){
+        mProgressDialog.setMessage("Logging out..");
+        mProgressDialog.setIndeterminate(true);
+        mProgressDialog.setCancelable(false);
+        hideProgress();
+        mProgressDialog.show();
+    }
+
+    private void hideProgress(){
+        if (mProgressDialog.isShowing()){
+            mProgressDialog.dismiss();
+        }
     }
 }
