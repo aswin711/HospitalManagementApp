@@ -47,34 +47,27 @@ public class ImportConfigActivity extends BootstrapFragmentActivity {
     @Bind(R.id.status_message_view)
     protected LinearLayout statusView;
 
-
-    private ProgressDialog progress;
-
     private AlertDialog mAlert;
+    private AlertDialog.Builder mAlertDialog;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         BootstrapApplication.component().inject(this);
         setContentView(R.layout.activity_import_config);
-        //Toast.makeText(this, "Import Activity", Toast.LENGTH_SHORT).show();
+
         if (!isInternetAvaialable()) {
             showConnectionAlert();
         } else {
-            //Fabric.with(this, new Crashlytics());
+                initImportAlert();
                 importConfig();
-
         }
     }
 
 
-
-
-
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_import_config, menu);
         return true;
     }
@@ -99,14 +92,6 @@ public class ImportConfigActivity extends BootstrapFragmentActivity {
     }
 
     private void importConfig() {
-
-        progress = new ProgressDialog(this);
-        progress.setMessage("Importing Services");
-        progress.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-        progress.setCancelable(false);
-        progress.setIndeterminate(true);
-        progress.setProgress(10);
-        progress.show();
         new SafeAsyncTask<Boolean>() {
             List<String> errorMessages = new ArrayList<String>(2);
             List<String> successessages = new ArrayList<String>(2);
@@ -119,9 +104,9 @@ public class ImportConfigActivity extends BootstrapFragmentActivity {
                         //Fetch Profile
                     }
                     if (null != hospitalRef && !"".equals(hospitalRef.trim())) {
-                        setProgressPercent(30);
+
                         List<Unit> units = serviceProvider.getAuthenticatedService(ImportConfigActivity.this).getUnits();
-                        setProgressPercent(60);
+
                         if (null != units && units.size() > 0) {
                             databaseHelper.insertOrUpdateUnits(units, hospitalRef);
                             successessages.add("Units added");
@@ -138,7 +123,6 @@ public class ImportConfigActivity extends BootstrapFragmentActivity {
                     } else {
                         //Show warning
                     }
-                    setProgressPercent(80);
                     return true;
                 } catch (Exception e) {
                     errorMessages.add("Error while importing configuration from server" + e.getMessage());
@@ -158,13 +142,13 @@ public class ImportConfigActivity extends BootstrapFragmentActivity {
                     //Toaster.showLong(ImportConfigActivity.this, "Error : " + e.getMessage());
                     //Toast.makeText(context, "Error: "+e.getMessage(), Toast.LENGTH_SHORT).show();
                 }
-                progress.hide();
+
             }
 
             @Override
             protected void onSuccess(final Boolean isUpdated) throws Exception {
-                super.onSuccess(isUpdated);
-                progress.hide();
+                hideProgress();
+
                 if (null != successessages) {
                     for (String msg : successessages) {
                         TextView displayView = (TextView) getLayoutInflater().inflate(R.layout.template_textview, null);
@@ -185,30 +169,44 @@ public class ImportConfigActivity extends BootstrapFragmentActivity {
                 }
             }
 
-            protected void onProgressUpdate(Integer... progress) {
-                setProgressPercent(progress[0]);
+            @Override
+            protected void onPreExecute() throws Exception {
+                showProgressImport();
             }
         }.execute();
 
     }
 
-    private void setProgressPercent(int perc) {
-        if (null != progress) {
-            progress.setProgress(perc);
-        }
+
+    public void initImportAlert(){
+        mAlertDialog = new AlertDialog.Builder(this);
+        mAlertDialog.setIcon(android.R.drawable.ic_dialog_info);
     }
 
-    public void showImportStatus(String msg, String subMsg, final int status){
+    public AlertDialog createAlert(){
+        mAlert = mAlertDialog.create();
+        return mAlert;
+    }
 
+    public void dismissAlert(){
+        if (mAlert!=null){
+            if (mAlert.isShowing()){
+                mAlert.dismiss();
+            }
+        }
+
+    }
+
+
+    public void showImportStatus(String msg, String subMsg, final int status){
+          dismissAlert();
         switch (status){
             case 1:
-                AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
-                int imageResource = android.R.drawable.ic_dialog_alert;
-                alertDialog.setTitle(msg);
-                alertDialog.setMessage(subMsg);
-                alertDialog.setIcon(imageResource);
-
-                alertDialog.setCancelable(false).setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                mAlertDialog
+                        .setMessage(subMsg)
+                        .setTitle(msg)
+                        .setCancelable(false)
+                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         dialog.dismiss();
                         Intent intent = new Intent(getActivity(), MainActivity.class);
@@ -217,32 +215,27 @@ public class ImportConfigActivity extends BootstrapFragmentActivity {
                         finish();
                     }
                 });
-
-                mAlert = alertDialog.create();
-                mAlert.show();
+                createAlert().show();
                 break;
             case 2:
-                AlertDialog.Builder alertDialog1 = new AlertDialog.Builder(getActivity());
-                int imageResource1 = android.R.drawable.ic_dialog_alert;
-                alertDialog1.setTitle(msg);
-                alertDialog1.setMessage(subMsg);
-                alertDialog1.setIcon(imageResource1);
-
-                alertDialog1.setCancelable(false).setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                mAlertDialog
+                        .setTitle(msg)
+                        .setMessage(subMsg)
+                        .setCancelable(false).setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        finish();
+                        dialog.dismiss();
                         startActivity(getIntent());
                     }
                 }).setNegativeButton("No", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
                         finish();
                         moveTaskToBack(true);
 
                     }
                 });
-                mAlert = alertDialog1.create();
-                mAlert.show();
+                createAlert().show();
                 break;
 
             default:
@@ -252,4 +245,9 @@ public class ImportConfigActivity extends BootstrapFragmentActivity {
 
     }
 
+    @Override
+    protected void onDestroy() {
+        dismissAlert();
+        super.onDestroy();
+    }
 }

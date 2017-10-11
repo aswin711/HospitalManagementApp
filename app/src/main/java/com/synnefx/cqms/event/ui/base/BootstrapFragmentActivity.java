@@ -3,6 +3,7 @@ package com.synnefx.cqms.event.ui.base;
 import android.accounts.OperationCanceledException;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -44,12 +45,15 @@ public abstract class BootstrapFragmentActivity extends AppCompatActivity {
     @Inject
     protected BootstrapServiceProvider serviceProvider;
 
+    protected ProgressDialog mProgressDialog;
+
     ConnectionDetector cd;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         BootstrapApplication.component().inject(this);
+        mProgressDialog = new ProgressDialog(this);
 
     }
 
@@ -70,6 +74,27 @@ public abstract class BootstrapFragmentActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
         eventBus.unregister(this);
+    }
+
+
+    protected void showProgressLogout(){
+        mProgressDialog.setMessage("Logging out....");
+        mProgressDialog.setIndeterminate(true);
+        hideProgress();
+        mProgressDialog.show();
+    }
+
+    protected void showProgressImport(){
+        mProgressDialog.setMessage("Importing Services....");
+        mProgressDialog.setIndeterminate(true);
+        hideProgress();
+        mProgressDialog.show();
+    }
+
+    protected void hideProgress(){
+        if (mProgressDialog.isShowing()){
+            mProgressDialog.dismiss();
+        }
     }
 
     /**
