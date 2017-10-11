@@ -91,6 +91,13 @@ public abstract class BootstrapFragmentActivity extends AppCompatActivity {
         mProgressDialog.show();
     }
 
+    protected void updateProgressImport(String update,int count){
+        if (mProgressDialog.isShowing()){
+            mProgressDialog.setMessage("Importing "+update+"....    ("+count+"/2)");
+
+        }
+    }
+
     protected void hideProgress(){
         if (mProgressDialog.isShowing()){
             mProgressDialog.dismiss();

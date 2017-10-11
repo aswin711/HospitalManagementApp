@@ -6,6 +6,7 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -61,7 +62,7 @@ public class ImportConfigActivity extends BootstrapFragmentActivity {
             showConnectionAlert();
         } else {
                 initImportAlert();
-                importConfig();
+                importConfigServices();
         }
     }
 
@@ -91,92 +92,10 @@ public class ImportConfigActivity extends BootstrapFragmentActivity {
         return ImportConfigActivity.this;
     }
 
-    private void importConfig() {
-        new SafeAsyncTask<Boolean>() {
-            List<String> errorMessages = new ArrayList<String>(2);
-            List<String> successessages = new ArrayList<String>(2);
 
-            @Override
-            public Boolean call() throws Exception {
-                try {
-                    String hospitalRef = PrefUtils.getFromPrefs(getApplicationContext(), PrefUtils.PREFS_HOSP_ID, null);
-                    if (null == hospitalRef || "".equals(hospitalRef.trim()) ) {
-                        //Fetch Profile
-                    }
-                    if (null != hospitalRef && !"".equals(hospitalRef.trim())) {
-
-                        List<Unit> units = serviceProvider.getAuthenticatedService(ImportConfigActivity.this).getUnits();
-
-                        if (null != units && units.size() > 0) {
-                            databaseHelper.insertOrUpdateUnits(units, hospitalRef);
-                            successessages.add("Units added");
-                        } else {
-                            errorMessages.add("Units not configured");
-                        }
-                        List<IncidentType> incidentTypes = serviceProvider.getAuthenticatedService().getIncidentTypes();
-                        if (null != incidentTypes && incidentTypes.size() > 0) {
-                            databaseHelper.syncIncidentTypes(incidentTypes, hospitalRef);
-                            successessages.add("Incident Types added");
-                        } else {
-                           errorMessages.add("Incident Types  not configured");
-                        }
-                    } else {
-                        //Show warning
-                    }
-                    return true;
-                } catch (Exception e) {
-                    errorMessages.add("Error while importing configuration from server" + e.getMessage());
-                    Log.e("Error", "Import", e);
-                }
-                return false;
-            }
-
-            @Override
-            protected void onException(final Exception e) throws RuntimeException {
-                super.onException(e);
-                if (e instanceof OperationCanceledException) {
-                    // User cancelled the authentication process (back button, etc).
-                    // Since auth could not take place, lets finish this activity.
-                    finish();
-                } else {
-                    //Toaster.showLong(ImportConfigActivity.this, "Error : " + e.getMessage());
-                    //Toast.makeText(context, "Error: "+e.getMessage(), Toast.LENGTH_SHORT).show();
-                }
-
-            }
-
-            @Override
-            protected void onSuccess(final Boolean isUpdated) throws Exception {
-                hideProgress();
-
-                if (null != successessages) {
-                    for (String msg : successessages) {
-                        TextView displayView = (TextView) getLayoutInflater().inflate(R.layout.template_textview, null);
-                        /*displayView.setText(msg);
-                        statusView.addView(displayView);*/
-
-                        showImportStatus("Configuration Imported Succesfully","Continue to Home Page?",1);
-                        //showImportStatus("An Error Occured While Importing","Do you want to import config again?",2);
-                    }
-                }
-                if (null != errorMessages) {
-                    for (String msg : errorMessages) {
-                        TextView displayView = (TextView) getLayoutInflater().inflate(R.layout.template_textview, null);
-                        /*displayView.setText(msg);
-                        statusView.addView(displayView);*/
-                        showImportStatus("An Error Occured While Importing","Do you want to import config again?",2);
-                    }
-                }
-            }
-
-            @Override
-            protected void onPreExecute() throws Exception {
-                showProgressImport();
-            }
-        }.execute();
-
+    private void importConfigServices(){
+        new ImportServices().execute();
     }
-
 
     public void initImportAlert(){
         mAlertDialog = new AlertDialog.Builder(this);
@@ -196,7 +115,6 @@ public class ImportConfigActivity extends BootstrapFragmentActivity {
         }
 
     }
-
 
     public void showImportStatus(String msg, String subMsg, final int status){
           dismissAlert();
@@ -249,5 +167,109 @@ public class ImportConfigActivity extends BootstrapFragmentActivity {
     protected void onDestroy() {
         dismissAlert();
         super.onDestroy();
+    }
+
+    @Override
+    public void onBackPressed() {
+        hideProgress();
+        finish();
+    }
+
+    //Importing Units and Types 
+    private class ImportServices extends AsyncTask<Void,Integer,Void>{
+
+        List<String> errorMessages = new ArrayList<String>(2);
+        List<String> successessages = new ArrayList<String>(2);
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            try {
+                String hospitalRef = PrefUtils.getFromPrefs(getApplicationContext(), PrefUtils.PREFS_HOSP_ID, null);
+                if (null == hospitalRef || "".equals(hospitalRef.trim()) ) {
+                    //Fetch Profile
+                }
+                if (null != hospitalRef && !"".equals(hospitalRef.trim())) {
+
+                    publishProgress(0);
+                    List<Unit> units = serviceProvider.getAuthenticatedService(ImportConfigActivity.this).getUnits();
+
+                    if (null != units && units.size() > 0) {
+                        databaseHelper.insertOrUpdateUnits(units, hospitalRef);
+                        successessages.add("Units added");
+                        publishProgress(1);
+
+                    } else {
+                        errorMessages.add("Units not configured");
+                    }
+
+                    publishProgress(2);
+                    List<IncidentType> incidentTypes = serviceProvider.getAuthenticatedService().getIncidentTypes();
+                    if (null != incidentTypes && incidentTypes.size() > 0) {
+                        databaseHelper.syncIncidentTypes(incidentTypes, hospitalRef);
+                        successessages.add("Incident Types added");
+                        publishProgress(3);
+
+                    } else {
+                        errorMessages.add("Incident Types  not configured");
+                    }
+                } else {
+                    //Show warning
+                }
+            } catch (Exception e) {
+                errorMessages.add("Error while importing configuration from server" + e.getMessage());
+                Log.e("Error", "Import", e);
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            showProgressImport();
+            updateProgressImport("Units",0);
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            hideProgress();
+
+            if (null != successessages) {
+                for (String msg : successessages) {
+                    TextView displayView = (TextView) getLayoutInflater().inflate(R.layout.template_textview, null);
+                        /*displayView.setText(msg);
+                        statusView.addView(displayView);*/
+
+                    showImportStatus("Configuration Imported Succesfully","Continue to Home Page?",1);
+                    //showImportStatus("An Error Occured While Importing","Do you want to import config again?",2);
+                }
+            }
+            if (null != errorMessages) {
+                for (String msg : errorMessages) {
+                    TextView displayView = (TextView) getLayoutInflater().inflate(R.layout.template_textview, null);
+                        /*displayView.setText(msg);
+                        statusView.addView(displayView);*/
+                    showImportStatus("An Error Occured While Importing","Do you want to import config again?",2);
+                }
+            }
+        }
+
+        @Override
+        protected void onProgressUpdate(Integer... values) {
+            switch (values[0]){
+                case 0:
+                    updateProgressImport("Units",0);
+                    break;
+                case 1:
+                    updateProgressImport("Units",1);
+                    break;
+                case 2:
+                    updateProgressImport("Types",1);
+                    break;
+                case 3:
+                    updateProgressImport("Types",2);
+                    break;
+                default:
+                    break;
+            }
+        }
     }
 }
