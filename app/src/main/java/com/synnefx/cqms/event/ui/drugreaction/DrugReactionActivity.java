@@ -105,15 +105,16 @@ public class DrugReactionActivity extends BootstrapFragmentActivity {
             alertDialog.setPositiveButton("YES", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
                     doubleBackPressed = true;
                     eventBus.post(getString(R.string.save_draft));
-
                     onBackPressed();
                 }
             });
             alertDialog.setNegativeButton("NO", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
                     doubleBackPressed = true;
                     onBackPressed();
                 }

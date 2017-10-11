@@ -6,6 +6,7 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -47,34 +48,27 @@ public class ImportConfigActivity extends BootstrapFragmentActivity {
     @Bind(R.id.status_message_view)
     protected LinearLayout statusView;
 
-
-    private ProgressDialog progress;
-
     private AlertDialog mAlert;
+    private AlertDialog.Builder mAlertDialog;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         BootstrapApplication.component().inject(this);
         setContentView(R.layout.activity_import_config);
-        //Toast.makeText(this, "Import Activity", Toast.LENGTH_SHORT).show();
+
         if (!isInternetAvaialable()) {
             showConnectionAlert();
         } else {
-            //Fabric.with(this, new Crashlytics());
-                importConfig();
-
+                initImportAlert();
+                importConfigServices();
         }
     }
 
 
-
-
-
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_import_config, menu);
         return true;
     }
@@ -98,117 +92,39 @@ public class ImportConfigActivity extends BootstrapFragmentActivity {
         return ImportConfigActivity.this;
     }
 
-    private void importConfig() {
 
-        progress = new ProgressDialog(this);
-        progress.setMessage("Importing Services");
-        progress.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-        progress.setCancelable(false);
-        progress.setIndeterminate(true);
-        progress.setProgress(10);
-        progress.show();
-        new SafeAsyncTask<Boolean>() {
-            List<String> errorMessages = new ArrayList<String>(2);
-            List<String> successessages = new ArrayList<String>(2);
-
-            @Override
-            public Boolean call() throws Exception {
-                try {
-                    String hospitalRef = PrefUtils.getFromPrefs(getApplicationContext(), PrefUtils.PREFS_HOSP_ID, null);
-                    if (null == hospitalRef || "".equals(hospitalRef.trim()) ) {
-                        //Fetch Profile
-                    }
-                    if (null != hospitalRef && !"".equals(hospitalRef.trim())) {
-                        setProgressPercent(30);
-                        List<Unit> units = serviceProvider.getAuthenticatedService(ImportConfigActivity.this).getUnits();
-                        setProgressPercent(60);
-                        if (null != units && units.size() > 0) {
-                            databaseHelper.insertOrUpdateUnits(units, hospitalRef);
-                            successessages.add("Units added");
-                        } else {
-                            errorMessages.add("Units not configured");
-                        }
-                        List<IncidentType> incidentTypes = serviceProvider.getAuthenticatedService().getIncidentTypes();
-                        if (null != incidentTypes && incidentTypes.size() > 0) {
-                            databaseHelper.syncIncidentTypes(incidentTypes, hospitalRef);
-                            successessages.add("Incident Types added");
-                        } else {
-                           errorMessages.add("Incident Types  not configured");
-                        }
-                    } else {
-                        //Show warning
-                    }
-                    setProgressPercent(80);
-                    return true;
-                } catch (Exception e) {
-                    errorMessages.add("Error while importing configuration from server" + e.getMessage());
-                    Log.e("Error", "Import", e);
-                }
-                return false;
-            }
-
-            @Override
-            protected void onException(final Exception e) throws RuntimeException {
-                super.onException(e);
-                if (e instanceof OperationCanceledException) {
-                    // User cancelled the authentication process (back button, etc).
-                    // Since auth could not take place, lets finish this activity.
-                    finish();
-                } else {
-                    //Toaster.showLong(ImportConfigActivity.this, "Error : " + e.getMessage());
-                    //Toast.makeText(context, "Error: "+e.getMessage(), Toast.LENGTH_SHORT).show();
-                }
-                progress.hide();
-            }
-
-            @Override
-            protected void onSuccess(final Boolean isUpdated) throws Exception {
-                super.onSuccess(isUpdated);
-                progress.hide();
-                if (null != successessages) {
-                    for (String msg : successessages) {
-                        TextView displayView = (TextView) getLayoutInflater().inflate(R.layout.template_textview, null);
-                        /*displayView.setText(msg);
-                        statusView.addView(displayView);*/
-
-                        showImportStatus("Configuration Imported Succesfully","Continue to Home Page?",1);
-                        //showImportStatus("An Error Occured While Importing","Do you want to import config again?",2);
-                    }
-                }
-                if (null != errorMessages) {
-                    for (String msg : errorMessages) {
-                        TextView displayView = (TextView) getLayoutInflater().inflate(R.layout.template_textview, null);
-                        /*displayView.setText(msg);
-                        statusView.addView(displayView);*/
-                        showImportStatus("An Error Occured While Importing","Do you want to import config again?",2);
-                    }
-                }
-            }
-
-            protected void onProgressUpdate(Integer... progress) {
-                setProgressPercent(progress[0]);
-            }
-        }.execute();
-
+    private void importConfigServices(){
+        new ImportServices().execute();
     }
 
-    private void setProgressPercent(int perc) {
-        if (null != progress) {
-            progress.setProgress(perc);
+    public void initImportAlert(){
+        mAlertDialog = new AlertDialog.Builder(this);
+        mAlertDialog.setIcon(android.R.drawable.ic_dialog_info);
+    }
+
+    public AlertDialog createAlert(){
+        mAlert = mAlertDialog.create();
+        return mAlert;
+    }
+
+    public void dismissAlert(){
+        if (mAlert!=null){
+            if (mAlert.isShowing()){
+                mAlert.dismiss();
+            }
         }
+
     }
 
     public void showImportStatus(String msg, String subMsg, final int status){
-
+          dismissAlert();
         switch (status){
             case 1:
-                AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
-                int imageResource = android.R.drawable.ic_dialog_alert;
-                alertDialog.setTitle(msg);
-                alertDialog.setMessage(subMsg);
-                alertDialog.setIcon(imageResource);
-
-                alertDialog.setCancelable(false).setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                mAlertDialog
+                        .setMessage(subMsg)
+                        .setTitle(msg)
+                        .setCancelable(false)
+                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         dialog.dismiss();
                         Intent intent = new Intent(getActivity(), MainActivity.class);
@@ -217,32 +133,27 @@ public class ImportConfigActivity extends BootstrapFragmentActivity {
                         finish();
                     }
                 });
-
-                mAlert = alertDialog.create();
-                mAlert.show();
+                createAlert().show();
                 break;
             case 2:
-                AlertDialog.Builder alertDialog1 = new AlertDialog.Builder(getActivity());
-                int imageResource1 = android.R.drawable.ic_dialog_alert;
-                alertDialog1.setTitle(msg);
-                alertDialog1.setMessage(subMsg);
-                alertDialog1.setIcon(imageResource1);
-
-                alertDialog1.setCancelable(false).setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                mAlertDialog
+                        .setTitle(msg)
+                        .setMessage(subMsg)
+                        .setCancelable(false).setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        finish();
+                        dialog.dismiss();
                         startActivity(getIntent());
                     }
                 }).setNegativeButton("No", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
                         finish();
                         moveTaskToBack(true);
 
                     }
                 });
-                mAlert = alertDialog1.create();
-                mAlert.show();
+                createAlert().show();
                 break;
 
             default:
@@ -252,4 +163,113 @@ public class ImportConfigActivity extends BootstrapFragmentActivity {
 
     }
 
+    @Override
+    protected void onDestroy() {
+        dismissAlert();
+        super.onDestroy();
+    }
+
+    @Override
+    public void onBackPressed() {
+        hideProgress();
+        finish();
+    }
+
+    //Importing Units and Types 
+    private class ImportServices extends AsyncTask<Void,Integer,Void>{
+
+        List<String> errorMessages = new ArrayList<String>(2);
+        List<String> successessages = new ArrayList<String>(2);
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            try {
+                String hospitalRef = PrefUtils.getFromPrefs(getApplicationContext(), PrefUtils.PREFS_HOSP_ID, null);
+                if (null == hospitalRef || "".equals(hospitalRef.trim()) ) {
+                    //Fetch Profile
+                }
+                if (null != hospitalRef && !"".equals(hospitalRef.trim())) {
+
+                    publishProgress(0);
+                    List<Unit> units = serviceProvider.getAuthenticatedService(ImportConfigActivity.this).getUnits();
+
+                    if (null != units && units.size() > 0) {
+                        databaseHelper.insertOrUpdateUnits(units, hospitalRef);
+                        successessages.add("Units added");
+                        publishProgress(1);
+
+                    } else {
+                        errorMessages.add("Units not configured");
+                    }
+
+                    publishProgress(2);
+                    List<IncidentType> incidentTypes = serviceProvider.getAuthenticatedService().getIncidentTypes();
+                    if (null != incidentTypes && incidentTypes.size() > 0) {
+                        databaseHelper.syncIncidentTypes(incidentTypes, hospitalRef);
+                        successessages.add("Incident Types added");
+                        publishProgress(3);
+
+                    } else {
+                        errorMessages.add("Incident Types  not configured");
+                    }
+                } else {
+                    //Show warning
+                }
+            } catch (Exception e) {
+                errorMessages.add("Error while importing configuration from server" + e.getMessage());
+                Log.e("Error", "Import", e);
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            showProgressImport();
+            updateProgressImport("Units",0);
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            hideProgress();
+
+            if (null != successessages) {
+                for (String msg : successessages) {
+                    TextView displayView = (TextView) getLayoutInflater().inflate(R.layout.template_textview, null);
+                        /*displayView.setText(msg);
+                        statusView.addView(displayView);*/
+
+                    showImportStatus("Configuration Imported Succesfully","Continue to Home Page?",1);
+                    //showImportStatus("An Error Occured While Importing","Do you want to import config again?",2);
+                }
+            }
+            if (null != errorMessages) {
+                for (String msg : errorMessages) {
+                    TextView displayView = (TextView) getLayoutInflater().inflate(R.layout.template_textview, null);
+                        /*displayView.setText(msg);
+                        statusView.addView(displayView);*/
+                    showImportStatus("An Error Occured While Importing","Do you want to import config again?",2);
+                }
+            }
+        }
+
+        @Override
+        protected void onProgressUpdate(Integer... values) {
+            switch (values[0]){
+                case 0:
+                    updateProgressImport("Units",0);
+                    break;
+                case 1:
+                    updateProgressImport("Units",1);
+                    break;
+                case 2:
+                    updateProgressImport("Types",1);
+                    break;
+                case 3:
+                    updateProgressImport("Types",2);
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
 }

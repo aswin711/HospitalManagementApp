@@ -256,6 +256,7 @@ public class DrugInfoFragment extends Fragment implements View.OnClickListener,
     }
 
     public AdverseDrugEvent saveDraft(){
+
         if (!TextUtils.isEmpty(drugName.getText())) {
             drugInfo.setDrug(drugName.getText().toString().trim());
         }

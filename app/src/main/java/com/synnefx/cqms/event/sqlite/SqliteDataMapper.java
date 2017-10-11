@@ -544,11 +544,7 @@ public class SqliteDataMapper {
             report.setAdmittedPostReaction(true);
         }
         Integer reactionAddedToCasesheet = c.getInt(c.getColumnIndex(KEY_REACTION_OUTCOME_CODE));
-        if(null == reactionAddedToCasesheet || 0 == reactionAddedToCasesheet){
-            report.setReactionAddedToCasesheet(false);
-        }else{
-            report.setReactionAddedToCasesheet(true);
-        }
+        report.setActionOutcomeCode(reactionAddedToCasesheet);
 
         Long recoveredTimeMill = c.getLong(c.getColumnIndex(KEY_DATE_RECOVERY));
         if (null != recoveredTimeMill && 0 < recoveredTimeMill) {

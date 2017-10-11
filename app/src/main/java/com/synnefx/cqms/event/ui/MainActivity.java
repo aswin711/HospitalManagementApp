@@ -5,6 +5,7 @@ import android.accounts.AccountManager;
 import android.accounts.OperationCanceledException;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.ContentResolver;
 import android.content.DialogInterface;
@@ -103,6 +104,7 @@ public class MainActivity extends BootstrapActivity implements NavigationView.On
     private List<IncidentReport> incidentReports;
     private Handler handler;
     private IncidentReportContentObserver incidentReportContentObserver;
+    private ProgressDialog mProgressDialog;
 
     /**
      * BroadcastReceiver used in service for Gcm registration.
@@ -114,6 +116,7 @@ public class MainActivity extends BootstrapActivity implements NavigationView.On
     private boolean userLoggedIn = false;
 
     private View header;
+    private NavigationView mNavigationView;
 
 
 
@@ -188,18 +191,17 @@ public class MainActivity extends BootstrapActivity implements NavigationView.On
         drawerLayout.setDrawerListener(drawerToggle);
         drawerToggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.navigation_drawer);
-        navigationView.setNavigationItemSelectedListener(this);
+        mNavigationView = (NavigationView) findViewById(R.id.navigation_drawer);
+        mNavigationView.setNavigationItemSelectedListener(this);
 
         //setting margin for pre-lollipop devices
         if(isPreLollipop()){
-            View v = navigationView;
-            DrawerLayout.LayoutParams params = (DrawerLayout.LayoutParams) v.getLayoutParams();
+            DrawerLayout.LayoutParams params = (DrawerLayout.LayoutParams) mNavigationView.getLayoutParams();
             params.setMargins(0,20-40,0,0);
-            v.setLayoutParams(params);
+            mNavigationView.setLayoutParams(params);
         }
 
-        header = navigationView.getHeaderView(0);
+        header = mNavigationView.getHeaderView(0);
         TextView user = (TextView) header.findViewById(R.id.navigation_drawer_list_header_user);
         TextView hospital = (TextView) header.findViewById(R.id.navigation_drawer_list_header_hospital);
 
@@ -216,16 +218,14 @@ public class MainActivity extends BootstrapActivity implements NavigationView.On
         getSupportActionBar().setHomeButtonEnabled(true);
         checkAuth();
 
-        try {
-            databaseHelper.getFullyLoadedAdverseDrugEventsByStatus(1,0,0);
-        } catch (DataAccessException e) {
-            e.printStackTrace();
-        }
 
-        onNavigationItemSelected(navigationView.getMenu().getItem(0));
-        navigationView.getMenu().getItem(0).setChecked(true);
 
         // GCM registration //
+    }
+
+    private void selectIncidentReport(){
+        onNavigationItemSelected(mNavigationView.getMenu().getItem(0));
+        mNavigationView.getMenu().getItem(0).setChecked(true);
     }
 
     @OnClick(R.id.floatingActionButton) void SelectEvent(){
@@ -321,6 +321,7 @@ public class MainActivity extends BootstrapActivity implements NavigationView.On
                 //importConfig();
                 registerPushyOnServer();
                 scheduleSync();
+                selectIncidentReport();
                 //initScreen();
 
                 /*
@@ -329,6 +330,16 @@ public class MainActivity extends BootstrapActivity implements NavigationView.On
                     startService(i);
                 }
                 */
+            }
+
+            @Override
+            protected void onFinally() throws RuntimeException {
+                hideLoading();
+            }
+
+            @Override
+            protected void onPreExecute() throws Exception {
+                showLoading();
             }
         }.execute();
     }
@@ -544,9 +555,16 @@ public class MainActivity extends BootstrapActivity implements NavigationView.On
         alertDialog.show();
     }
 
-    public void importConfig(){
-        startActivity(new Intent(getApplicationContext(),ImportConfigActivity.class));
-    }
+   private void showLoading(){
+       hideLoading();
+       mProgressDialog = UIUtils.showLoadingDialog(this);
+   }
+
+   private void hideLoading(){
+       if (mProgressDialog!=null&&mProgressDialog.isShowing()){
+           mProgressDialog.cancel();
+       }
+   }
 
     public boolean isPreLollipop(){
         return android.os.Build.VERSION.SDK_INT <= android.os.Build.VERSION_CODES.LOLLIPOP;

@@ -21,7 +21,7 @@
 
     <application
         android:name="com.synnefx.cqms.event.BootstrapApplicationImpl"
-        android:icon="@drawable/ic_launcher"
+        android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/Theme.Material.Dark">
         <activity

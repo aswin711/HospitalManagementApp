@@ -99,10 +99,9 @@ public class IncidentReportActivity extends BootstrapFragmentActivity {
             alertDialog.setPositiveButton("YES", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-
                     doubleBackPressed = true;
                     eventBus.post(getString(R.string.save_draft));
-
+                    dialog.dismiss();
                     onBackPressed();
                 }
             });
@@ -110,6 +109,7 @@ public class IncidentReportActivity extends BootstrapFragmentActivity {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     doubleBackPressed = true;
+                    dialog.dismiss();
                     onBackPressed();
                 }
             });
@@ -182,11 +182,17 @@ public class IncidentReportActivity extends BootstrapFragmentActivity {
 
             @Override
             protected void onSuccess(final Boolean hasAuthenticated) throws Exception {
+                hideProgress();
                 Intent i = new Intent(getApplicationContext(), MainActivity.class);
                 i.addFlags(FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(i);
                 finish();
-                super.onSuccess(hasAuthenticated);
+
+            }
+
+            @Override
+            protected void onPreExecute() throws Exception {
+                showProgressLogout();
             }
         }.execute();
     }

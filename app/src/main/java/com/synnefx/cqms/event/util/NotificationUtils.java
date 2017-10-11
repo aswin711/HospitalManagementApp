@@ -68,7 +68,7 @@ public class NotificationUtils {
         Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
                 .setContentTitle(title)
-                .setSmallIcon(R.drawable.ic_launcher)
+                .setSmallIcon(R.drawable.app_icon)
                 .setContentText(message)
                 .setAutoCancel(true)
                 .setOnlyAlertOnce(true)
