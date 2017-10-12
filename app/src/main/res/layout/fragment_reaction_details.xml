@@ -25,7 +25,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/edit_margin"
-                float:fletPadding="5dp">
+                float:fletPadding="2dp">
 
                 <com.rengwuxian.materialedittext.MaterialEditText
                     android:id="@+id/event_corrective_action"
@@ -40,7 +40,11 @@
                     float:met_maxCharacters="1000" />
             </com.wrapp.floatlabelededittext.FloatLabeledEditText>
 
-
+            <com.wrapp.floatlabelededittext.FloatLabeledEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/edit_margin"
+                float:fletPadding="2dp">
                 <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
                     android:id="@+id/action_outcome"
                     android:layout_width="match_parent"
@@ -48,31 +52,46 @@
                     android:layout_marginTop="@dimen/edit_margin"
                     android:hint="@string/action_outcome" />
 
+            </com.wrapp.floatlabelededittext.FloatLabeledEditText>
+
+
+
             <LinearLayout
                 android:id="@+id/recovered_dt_holder"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:visibility="visible">
-                <com.rengwuxian.materialedittext.MaterialEditText
-                    android:id="@+id/recovery_date"
-                    android:completionThreshold="1"
+                <com.wrapp.floatlabelededittext.FloatLabeledEditText
                     android:layout_width="0dp"
+                    android:layout_height="75dp"
                     android:layout_weight="0.75"
-                    android:editable="false"
-                    android:focusable="false"
-                    android:layout_height="wrap_content"
-                    android:imeOptions="actionNext|flagNoExtractUi"
-                    android:inputType="none"
-                    android:layout_marginBottom="8dp"
                     android:layout_marginTop="@dimen/edit_margin"
-                    android:hint="@string/recovered_on"/>
+                    float:fletPadding="2dp">
+                    <com.rengwuxian.materialedittext.MaterialEditText
+                        android:id="@+id/recovery_date"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginBottom="8dp"
+                        android:layout_marginTop="@dimen/edit_margin"
+                        android:layout_weight="0.75"
+                        android:completionThreshold="1"
+                        android:editable="false"
+                        android:focusable="false"
+                        android:hint="@string/recovered_on"
+                        android:imeOptions="actionNext|flagNoExtractUi"
+                        android:inputType="none" />
+                </com.wrapp.floatlabelededittext.FloatLabeledEditText>
+
+
+
                 <com.rey.material.widget.Button
                     android:id="@+id/recovered_on_btn"
                     android:layout_width="0dp"
                     android:layout_height="@dimen/bt_height"
                     android:layout_weight="0.25"
                     android:text="Change"
+                    android:layout_gravity="center_vertical"
                     android:textColor="#fff"
                     android:layout_marginTop="@dimen/edit_margin"
                     android:layout_marginLeft="10dp"
@@ -85,25 +104,34 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:visibility="visible">
-                <com.rengwuxian.materialedittext.MaterialEditText
-                    android:id="@+id/death_date"
-                    android:completionThreshold="1"
+                <com.wrapp.floatlabelededittext.FloatLabeledEditText
                     android:layout_width="0dp"
-                    android:layout_weight="0.75"
-                    android:editable="false"
-                    android:focusable="false"
                     android:layout_height="wrap_content"
-                    android:imeOptions="actionNext|flagNoExtractUi"
-                    android:inputType="none"
-                    android:layout_marginBottom="8dp"
+                    android:layout_weight="0.75"
                     android:layout_marginTop="@dimen/edit_margin"
-                    android:hint="@string/death_date"/>
+                    float:fletPadding="2dp">
+                    <com.rengwuxian.materialedittext.MaterialEditText
+                        android:id="@+id/death_date"
+                        android:completionThreshold="1"
+                        android:layout_width="match_parent"
+                        android:editable="false"
+                        android:focusable="false"
+                        android:layout_height="match_parent"
+                        android:imeOptions="actionNext|flagNoExtractUi"
+                        android:inputType="none"
+                        android:layout_marginBottom="8dp"
+                        android:layout_marginTop="@dimen/edit_margin"
+                        android:hint="@string/death_date"/>
+
+                </com.wrapp.floatlabelededittext.FloatLabeledEditText>
+
                 <com.rey.material.widget.Button
                     android:id="@+id/death_date_btn"
                     android:layout_width="0dp"
                     android:layout_height="@dimen/bt_height"
                     android:layout_weight="0.25"
                     android:text="Change"
+                    android:layout_gravity="center_vertical"
                     android:textColor="#fff"
                     android:layout_marginTop="@dimen/edit_margin"
                     android:layout_marginLeft="10dp"

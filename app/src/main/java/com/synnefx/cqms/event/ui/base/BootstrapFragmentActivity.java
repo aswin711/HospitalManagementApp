@@ -80,6 +80,7 @@ public abstract class BootstrapFragmentActivity extends AppCompatActivity {
     protected void showProgressLogout(){
         mProgressDialog.setMessage("Logging out....");
         mProgressDialog.setIndeterminate(true);
+        mProgressDialog.setCancelable(false);
         hideProgress();
         mProgressDialog.show();
     }
@@ -87,6 +88,7 @@ public abstract class BootstrapFragmentActivity extends AppCompatActivity {
     protected void showProgressImport(){
         mProgressDialog.setMessage("Importing Services....");
         mProgressDialog.setIndeterminate(true);
+        mProgressDialog.setCancelable(false);
         hideProgress();
         mProgressDialog.show();
     }

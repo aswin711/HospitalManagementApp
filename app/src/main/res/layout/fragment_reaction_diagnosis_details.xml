@@ -26,12 +26,19 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
-                    android:id="@+id/incident_units"
+                <com.wrapp.floatlabelededittext.FloatLabeledEditText
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/edit_height"
-                    android:layout_marginTop="@dimen/edit_margin"
-                    android:hint="@string/event_unit" />
+                    android:layout_height="wrap_content"
+                    float:fletPadding="2dp">
+                    <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
+                        android:id="@+id/incident_units"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/edit_height"
+                        android:layout_marginTop="@dimen/edit_margin"
+                        android:hint="@string/event_unit" />
+                </com.wrapp.floatlabelededittext.FloatLabeledEditText>
+
+
             </LinearLayout>
 
             <com.wrapp.floatlabelededittext.FloatLabeledEditText
@@ -74,24 +81,32 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
-                <com.rengwuxian.materialedittext.MaterialEditText
-                    android:id="@+id/event_time"
-                    android:completionThreshold="1"
+                <com.wrapp.floatlabelededittext.FloatLabeledEditText
                     android:layout_width="0dp"
+                    android:layout_height="75dp"
                     android:layout_weight="0.75"
-                    android:editable="false"
-                    android:focusable="false"
-                    android:layout_height="wrap_content"
-                    android:imeOptions="actionNext|flagNoExtractUi"
-                    android:inputType="none"
-                    android:layout_marginBottom="8dp"
-                    android:layout_marginTop="@dimen/edit_margin"
-                    android:hint="@string/event_time"/>
+                    float:fletPadding="2dp">
+                    <com.rengwuxian.materialedittext.MaterialEditText
+                        android:id="@+id/event_time"
+                        android:completionThreshold="1"
+                        android:layout_width="match_parent"
+                        android:layout_weight="0.75"
+                        android:editable="false"
+                        android:focusable="false"
+                        android:layout_height="wrap_content"
+                        android:imeOptions="actionNext|flagNoExtractUi"
+                        android:inputType="none"
+                        android:layout_marginBottom="8dp"
+                        android:layout_marginTop="@dimen/edit_margin"
+                        android:hint="@string/event_time"/>
+                </com.wrapp.floatlabelededittext.FloatLabeledEditText>
+
                 <com.rey.material.widget.Button
                     android:id="@+id/event_time_btn"
                     android:layout_width="0dp"
                     android:layout_height="@dimen/bt_height"
                     android:layout_weight="0.25"
+                    android:layout_gravity="center_vertical"
                     android:text="Change"
                     android:textColor="#fff"
                     android:layout_marginTop="@dimen/edit_margin"

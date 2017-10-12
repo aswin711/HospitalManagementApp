@@ -92,19 +92,29 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
-                <com.rengwuxian.materialedittext.MaterialEditText
-                    android:id="@+id/patient_dob"
+                <com.wrapp.floatlabelededittext.FloatLabeledEditText
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
-                    android:layout_marginTop="@dimen/edit_margin"
+                    android:layout_height="75dp"
                     android:layout_weight="0.75"
-                    android:completionThreshold="1"
-                    android:editable="false"
-                    android:focusable="false"
-                    android:hint="@string/patient_dob"
-                    android:imeOptions="actionNext|flagNoExtractUi"
-                    android:inputType="none" />
+                    android:layout_marginTop="@dimen/edit_margin"
+                    float:fletPadding="2dp">
+
+                    <com.rengwuxian.materialedittext.MaterialEditText
+                        android:id="@+id/patient_dob"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginBottom="8dp"
+                        android:layout_marginTop="@dimen/edit_margin"
+                        android:completionThreshold="1"
+                        android:editable="false"
+                        android:focusable="false"
+                        android:hint="@string/patient_dob"
+                        android:imeOptions="actionNext|flagNoExtractUi"
+                        android:inputType="none" />
+
+                </com.wrapp.floatlabelededittext.FloatLabeledEditText>
+
+
 
                 <com.rey.material.widget.Button
                     android:id="@+id/patient_dob_btn"
@@ -116,6 +126,7 @@
                     android:layout_weight="0.25"
                     android:background="@drawable/date_btn_bg"
                     android:text="Change"
+                    android:layout_gravity="center_vertical"
                     android:textColor="#fff"
                      />
             </LinearLayout>
@@ -125,12 +136,18 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
+                <com.wrapp.floatlabelededittext.FloatLabeledEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    float:fletPadding="2dp">
+
                 <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
                     android:id="@+id/patient_gender"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/edit_height"
                     android:layout_marginTop="@dimen/edit_margin"
                     android:hint="@string/patient_gender" />
+                </com.wrapp.floatlabelededittext.FloatLabeledEditText>
             </LinearLayout>
 
             <com.wrapp.floatlabelededittext.FloatLabeledEditText

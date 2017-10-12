@@ -84,19 +84,28 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
-                <com.rengwuxian.materialedittext.MaterialEditText
-                    android:id="@+id/drug_dt_started"
+                <com.wrapp.floatlabelededittext.FloatLabeledEditText
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
-                    android:layout_marginTop="@dimen/edit_margin"
+                    android:layout_height="75dp"
                     android:layout_weight="0.75"
-                    android:completionThreshold="1"
-                    android:editable="false"
-                    android:focusable="false"
-                    android:hint="@string/drug_dt_started"
-                    android:imeOptions="actionNext|flagNoExtractUi"
-                    android:inputType="none" />
+                    android:layout_marginTop="@dimen/edit_margin"
+                    float:fletPadding="2dp">
+
+                    <com.rengwuxian.materialedittext.MaterialEditText
+                        android:id="@+id/drug_dt_started"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginBottom="8dp"
+                        android:layout_marginTop="@dimen/edit_margin"
+                        android:completionThreshold="1"
+                        android:editable="false"
+                        android:focusable="false"
+                        android:hint="@string/drug_dt_started"
+                        android:imeOptions="actionNext|flagNoExtractUi"
+                        android:inputType="none" />
+                </com.wrapp.floatlabelededittext.FloatLabeledEditText>
+
+
 
                 <com.rey.material.widget.Button
                     android:id="@+id/drug_dt_started_btn"
@@ -108,6 +117,7 @@
                     android:layout_weight="0.25"
                     android:background="@drawable/date_btn_bg"
                     android:text="Change"
+                    android:layout_gravity="center_vertical"
                     android:textColor="#fff" />
             </LinearLayout>
 
@@ -115,20 +125,28 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
-
-                <com.rengwuxian.materialedittext.MaterialEditText
-                    android:id="@+id/drug_dt_ceased"
+                <com.wrapp.floatlabelededittext.FloatLabeledEditText
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
-                    android:layout_marginTop="@dimen/edit_margin"
+                    android:layout_height="75dp"
                     android:layout_weight="0.75"
-                    android:completionThreshold="1"
-                    android:editable="false"
-                    android:focusable="false"
-                    android:hint="@string/drug_dt_ceased"
-                    android:imeOptions="actionNext|flagNoExtractUi"
-                    android:inputType="none" />
+                    android:layout_marginTop="@dimen/edit_margin"
+                    float:fletPadding="2dp">
+                    <com.rengwuxian.materialedittext.MaterialEditText
+                        android:id="@+id/drug_dt_ceased"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginBottom="8dp"
+                        android:layout_marginTop="@dimen/edit_margin"
+                        android:completionThreshold="1"
+                        android:editable="false"
+                        android:focusable="false"
+                        android:hint="@string/drug_dt_ceased"
+                        android:imeOptions="actionNext|flagNoExtractUi"
+                        android:inputType="none" />
+
+                </com.wrapp.floatlabelededittext.FloatLabeledEditText>
+
+
 
                 <com.rey.material.widget.Button
                     android:id="@+id/drug_dt_ceased_btn"
@@ -140,6 +158,7 @@
                     android:layout_weight="0.25"
                     android:background="@drawable/date_btn_bg"
                     android:text="Change"
+                    android:layout_gravity="center_vertical"
                     android:textColor="#fff"
                     />
             </LinearLayout>

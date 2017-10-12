@@ -10,6 +10,7 @@ import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.synnefx.cqms.event.BootstrapApplication;
 import com.synnefx.cqms.event.R;
@@ -183,11 +184,17 @@ public class IncidentReportActivity extends BootstrapFragmentActivity {
             @Override
             protected void onSuccess(final Boolean hasAuthenticated) throws Exception {
                 hideProgress();
-                Intent i = new Intent(getApplicationContext(), MainActivity.class);
+                Intent i = new Intent(getActivity(), MainActivity.class);
                 i.addFlags(FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(i);
-                finish();
+                getActivity().finish();
 
+            }
+
+            @Override
+            protected void onFinally() throws RuntimeException {
+                hideProgress();
+                getActivity().finish();
             }
 
             @Override

@@ -119,6 +119,7 @@ public class IncidentReportListFragment extends ItemListFragment<IncidentReport>
     public void onEventListened(String data){
         if (data.equals(getString(R.string.fab_clicked))){
             startActivity(new Intent(getActivity(),IncidentReportActivity.class));
+            getActivity().finish();
         }
 
     }

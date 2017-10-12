@@ -134,11 +134,16 @@ public class MedicationErrorActivity extends BootstrapFragmentActivity {
             @Override
             protected void onSuccess(final Boolean hasAuthenticated) throws Exception {
                 hideProgress();
-                Intent i = new Intent(getApplicationContext(), MainActivity.class);
+                Intent i = new Intent(getActivity(), MainActivity.class);
                 i.addFlags(FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(i);
-                finish();
-                //super.onSuccess(hasAuthenticated);
+                getActivity().finish();
+            }
+
+            @Override
+            protected void onFinally() throws RuntimeException {
+                hideProgress();
+                getActivity().finish();
             }
 
             @Override
