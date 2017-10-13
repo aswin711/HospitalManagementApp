@@ -137,7 +137,6 @@ public class DrugReactionDetailsFragment extends Fragment implements View.OnClic
     @Override
     public void onDetach() {
         super.onDetach();
-
     }
 
 

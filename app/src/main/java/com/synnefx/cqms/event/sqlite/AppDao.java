@@ -63,7 +63,6 @@ public class AppDao {
     }
 
     //Medication Error
-
     public List<MedicationError> findAllMedicationErrorByStatusForUpload(Integer statusCode) throws DataAccessException {
         return databaseHelper.getFullyLoadedMedicationErrorsByStatus(statusCode, 0, 0);
     }
