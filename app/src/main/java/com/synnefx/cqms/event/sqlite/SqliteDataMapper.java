@@ -12,6 +12,7 @@ import com.synnefx.cqms.event.core.modal.event.drugreaction.AdverseDrugEvent;
 import com.synnefx.cqms.event.core.modal.event.drugreaction.DrugInfo;
 import com.synnefx.cqms.event.core.modal.event.incident.IncidentReport;
 import com.synnefx.cqms.event.core.modal.event.medicationerror.MedicationError;
+import com.synnefx.cqms.event.util.TimeUtil;
 
 import java.util.Calendar;
 import java.util.TimeZone;
@@ -500,6 +501,7 @@ public class SqliteDataMapper {
             Calendar cal = Calendar.getInstance();
             cal.setTimeInMillis(reactionTimeMill);
             report.setReactionDate(cal);
+            report.setReactionDateStr(TimeUtil.getDate(cal));
         }
 
         report.setPersonInvolvedRef(c.getLong(c.getColumnIndex(KEY_PERSON_INVOLVED_REF)));
@@ -551,6 +553,7 @@ public class SqliteDataMapper {
             Calendar cal = Calendar.getInstance();
             cal.setTimeInMillis(recoveredTimeMill);
             report.setDateOfRecovery(cal);
+            report.setReactionDateStr(TimeUtil.getDate(cal));
         }
 
         Long deathTimeMill = c.getLong(c.getColumnIndex(KEY_DATE_DEATH));
@@ -558,6 +561,7 @@ public class SqliteDataMapper {
             Calendar cal = Calendar.getInstance();
             cal.setTimeInMillis(deathTimeMill);
             report.setDateOfDeath(cal);
+            report.setDateOfDeathStr(TimeUtil.getDate(cal));
         }
         return report;
     }

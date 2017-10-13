@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.synnefx.cqms.event.core.modal.IncidentType;
 import com.synnefx.cqms.event.core.modal.Specialty;
@@ -18,6 +19,7 @@ import com.synnefx.cqms.event.core.modal.event.drugreaction.DrugInfo;
 import com.synnefx.cqms.event.core.modal.event.incident.IncidentReport;
 import com.synnefx.cqms.event.core.modal.event.medicationerror.MedicationError;
 import com.synnefx.cqms.event.util.ListViewer;
+import com.synnefx.cqms.event.util.PrefUtils;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -846,7 +848,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 Columns.KEY_UNIT_REF + " JOIN " + TABLE_INCIDENT_TYPE + " it ON s." + Columns.KEY_INCIDENTTYPE_REF + " = it." +
                 Columns.KEY_INCIDENTTYPE_REF + " JOIN " + EventReportKey.TABLE_REPORTED_BY + " rep ON rep.id = "
                 + EventReportKey.KEY_REPORTED_BY_REF + " WHERE (s.serverId IS NULL or s.serverId <= 0) AND s." + Columns.KEY_STATUS_CODE +
-                " = ? ORDER BY s." + EventReportKey.KEY_INCIDENT_TIME + " DESC");
+                " = ? AND s."+Columns.KEY_HOSPITAL_ID+" = ? ORDER BY s." + EventReportKey.KEY_INCIDENT_TIME + " DESC");
         List<IncidentReport> reports = new ArrayList<>();
         int start = 0;
         String[] params;
@@ -855,9 +857,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             if (pageNumber > 0) {
                 start = pageNumber * size;
             }
-            params = new String[]{String.valueOf(statusCode), String.valueOf(start), String.valueOf(size)};
+            params = new String[]{String.valueOf(statusCode),PrefUtils.getHospitalID(), String.valueOf(start), String.valueOf(size)};
         } else {
-            params = new String[]{String.valueOf(statusCode)};
+            params = new String[]{String.valueOf(statusCode),PrefUtils.getHospitalID()};
         }
         Cursor c = null;
         try {
@@ -1161,7 +1163,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 EventReportKey.TABLE_MEDICATION_ERR_REPORT + " s JOIN " + TABLE_UNITS + " u ON s." + Columns.KEY_UNIT_REF + " = u." +
                 Columns.KEY_UNIT_REF + " JOIN " + EventReportKey.TABLE_REPORTED_BY + " rep ON rep.id = "
                 + EventReportKey.KEY_REPORTED_BY_REF + " WHERE (s.serverId IS NULL or s.serverId <= 0) AND s." + Columns.KEY_STATUS_CODE +
-                " = ? ORDER BY s." + EventReportKey.KEY_INCIDENT_TIME + " DESC");
+                " = ? AND s."+Columns.KEY_HOSPITAL_ID+" = ? ORDER BY s." + EventReportKey.KEY_INCIDENT_TIME + " DESC");
         List<MedicationError> reports = new ArrayList<>();
         int start = 0;
         String[] params;
@@ -1170,9 +1172,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             if (pageNumber > 0) {
                 start = pageNumber * size;
             }
-            params = new String[]{String.valueOf(statusCode), String.valueOf(start), String.valueOf(size)};
+            params = new String[]{String.valueOf(statusCode), PrefUtils.getHospitalID(), String.valueOf(start), String.valueOf(size)};
         } else {
-            params = new String[]{String.valueOf(statusCode)};
+            params = new String[]{String.valueOf(statusCode),PrefUtils.getHospitalID()};
         }
         Cursor c = null;
         try {
@@ -1646,7 +1648,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 EventReportKey.KEY_PERSON_INVOLVED_REF+ " LEFT JOIN " + TABLE_UNITS + " u ON s." + Columns.KEY_UNIT_REF + " = u." +
                 Columns.KEY_UNIT_REF + " JOIN " + EventReportKey.TABLE_REPORTED_BY + " rep ON rep.id = "
                 + EventReportKey.KEY_REPORTED_BY_REF + " WHERE (s.serverId IS NULL or s.serverId <= 0) AND s." + Columns.KEY_STATUS_CODE +
-                " = ? ORDER BY s." + EventReportKey.KEY_INCIDENT_TIME + " DESC");
+                " = ? AND s."+Columns.KEY_HOSPITAL_ID+" = ? ORDER BY s." + EventReportKey.KEY_INCIDENT_TIME + " DESC");
         List<AdverseDrugEvent> reports = new ArrayList<>();
         int start = 0;
         String[] params;
@@ -1655,9 +1657,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             if (pageNumber > 0) {
                 start = pageNumber * size;
             }
-            params = new String[]{String.valueOf(statusCode), String.valueOf(start), String.valueOf(size)};
+            params = new String[]{String.valueOf(statusCode),PrefUtils.getHospitalID(), String.valueOf(start), String.valueOf(size)};
         } else {
-            params = new String[]{String.valueOf(statusCode)};
+            params = new String[]{String.valueOf(statusCode),PrefUtils.getHospitalID()};
         }
         Cursor c = null;
         try {

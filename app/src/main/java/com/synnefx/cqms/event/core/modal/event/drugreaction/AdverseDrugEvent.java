@@ -21,6 +21,7 @@ public class AdverseDrugEvent extends EventReport {
     @Expose
     private Calendar reactionDate;
 
+    @Expose
     private String reactionDateStr;
 
     @Expose
@@ -32,14 +33,14 @@ public class AdverseDrugEvent extends EventReport {
     @Expose
     private List<DrugInfo> otherDrugsTaken;
 
-    @Expose
     private Calendar dateOfRecovery;
 
+    @Expose
     private String dateOfRecoveryStr;
 
-    @Expose
     private Calendar dateOfDeath;
 
+    @Expose
     private String dateOfDeathStr;
 
     @Expose
@@ -57,7 +58,7 @@ public class AdverseDrugEvent extends EventReport {
 
     }
 
-    public AdverseDrugEvent(Long id, Long serverId, String hospital, int statusCode, Long unitRef, String incidentNumber, String incidentLocation, Calendar updated, Calendar incidentTime,Calendar reactionDate, String description, String correctiveActionTaken, PersonInvolved personInvolved, ReportedBy reportedBy, Integer actionOutcomeCode, DrugInfo suspectedDrug, List<DrugInfo> otherDrugsTaken, Calendar dateOfRecovery, Calendar dateOfDeath, boolean admittedPostReaction, boolean reactionAddedToCasesheet, String comments) {
+    public AdverseDrugEvent(Long id, Long serverId, String hospital, int statusCode, Long unitRef, String incidentNumber, String incidentLocation, Calendar updated, Calendar incidentTime,Calendar reactionDate, String description, String correctiveActionTaken, PersonInvolved personInvolved, ReportedBy reportedBy, Integer actionOutcomeCode, DrugInfo suspectedDrug, List<DrugInfo> otherDrugsTaken, Calendar dateOfRecovery, Calendar dateOfDeath, boolean admittedPostReaction, boolean reactionAddedToCasesheet, String comments,String reactionDateStr,String dateOfRecoveryStr,String dateOfDeathStr) {
         super(id, serverId, hospital, statusCode, unitRef, incidentNumber, incidentLocation, updated, incidentTime, description, correctiveActionTaken, personInvolved, reportedBy);
         this.reactionDate = reactionDate;
         this.actionOutcomeCode = actionOutcomeCode;
@@ -68,11 +69,14 @@ public class AdverseDrugEvent extends EventReport {
         this.admittedPostReaction = admittedPostReaction;
         this.reactionAddedToCasesheet = reactionAddedToCasesheet;
         this.comments = comments;
+        this.reactionDateStr = reactionDateStr;
+        this.dateOfDeathStr = dateOfDeathStr;
+        this.dateOfRecoveryStr = dateOfRecoveryStr;
     }
 
     // copy
     public AdverseDrugEvent copy() {
-        AdverseDrugEvent result = new AdverseDrugEvent(this.getId(), this.getServerId(), this.getHospital(), this.getStatusCode(), this.getUnitRef(), this.getIncidentNumber(), this.getIncidentLocation(), this.getUpdated(), this.getIncidentTime(),this.getReactionDate(), this.getDescription(), this.getCorrectiveActionTaken(), this.getPersonInvolved(), this.getReportedBy(), this.actionOutcomeCode, this.suspectedDrug, this.otherDrugsTaken, this.dateOfRecovery, this.dateOfDeath, this.admittedPostReaction, this.reactionAddedToCasesheet, this.comments);
+        AdverseDrugEvent result = new AdverseDrugEvent(this.getId(), this.getServerId(), this.getHospital(), this.getStatusCode(), this.getUnitRef(), this.getIncidentNumber(), this.getIncidentLocation(), this.getUpdated(), this.getIncidentTime(),this.getReactionDate(), this.getDescription(), this.getCorrectiveActionTaken(), this.getPersonInvolved(), this.getReportedBy(), this.actionOutcomeCode, this.suspectedDrug, this.otherDrugsTaken, this.dateOfRecovery, this.dateOfDeath, this.admittedPostReaction, this.reactionAddedToCasesheet, this.comments,this.reactionDateStr,this.dateOfRecoveryStr,this.dateOfDeathStr);
         return result;
     }
 

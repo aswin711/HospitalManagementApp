@@ -101,6 +101,7 @@
                         android:hint="@string/event_time"/>
                 </com.wrapp.floatlabelededittext.FloatLabeledEditText>
 
+
                 <com.rey.material.widget.Button
                     android:id="@+id/event_time_btn"
                     android:layout_width="0dp"
@@ -115,6 +116,25 @@
                     android:background="@drawable/date_btn_bg"
                     />
             </LinearLayout>
+
+            <com.wrapp.floatlabelededittext.FloatLabeledEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/edit_margin"
+                float:fletPadding="5dp">
+
+                <com.rengwuxian.materialedittext.MaterialEditText
+                    android:id="@+id/event_description"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:completionThreshold="1"
+                    android:hint="@string/incident_description"
+                    android:imeOptions="actionNext|flagNoExtractUi"
+                    android:inputType="textMultiLine"
+                    android:maxLength="1000"
+                    android:minLines="6"
+                    float:met_maxCharacters="1000" />
+            </com.wrapp.floatlabelededittext.FloatLabeledEditText>
 
             <Button
                 android:id="@+id/incident_details_save"
