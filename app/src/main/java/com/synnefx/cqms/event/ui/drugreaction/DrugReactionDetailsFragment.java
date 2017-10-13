@@ -290,8 +290,10 @@ public class DrugReactionDetailsFragment extends Fragment implements View.OnClic
         if ("RecoveryDatepickerdialog".equals(view.getTag())) {
             report.setDateOfRecovery(selectedDate);
             recoveredDate.setText(CalenderUtils.formatCalendarToString(report.getDateOfRecovery(), Constants.Common.DATE_DISPLAY_FORMAT));
+            report.setDateOfRecoveryStr(dayOfMonth+"/"+monthOfYear+"/"+year);
         } else if ("DeathDatepickerdialog".equals(view.getTag())) {
             report.setDateOfDeath(selectedDate);
+            report.setDateOfDeathStr(dayOfMonth+"/"+monthOfYear+"/"+year);
             deathDate.setText(CalenderUtils.formatCalendarToString(report.getDateOfDeath(), Constants.Common.DATE_DISPLAY_FORMAT));
         }
     }

@@ -1,5 +1,8 @@
 package com.synnefx.cqms.event.util;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
 public final class TimeUtil {
     private TimeUtil() {
     }
@@ -18,5 +21,13 @@ public final class TimeUtil {
                 (millis / (1000 * 60)) % 60,
                 (millis / 1000) % 60
         );
+    }
+
+    public static String getDate(Calendar calendar){
+        SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
+// Output "Wed Sep 26 14:23:28 EST 2012"
+
+        String formatted = format1.format(calendar.getTime());
+        return formatted;
     }
 }

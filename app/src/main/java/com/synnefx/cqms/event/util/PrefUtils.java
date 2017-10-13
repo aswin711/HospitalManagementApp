@@ -219,4 +219,10 @@ public class PrefUtils {
         SharedPreferences preferences = getSettings();
         return preferences.getBoolean(PREF_USER_LOGGED_IN,false);
     }
+
+    public static String getHospitalID(){
+        SharedPreferences prefs = PreferenceManager
+                .getDefaultSharedPreferences(BootstrapApplication.getInstance());
+        return prefs.getString(PREFS_HOSP_ID,"");
+    }
 }

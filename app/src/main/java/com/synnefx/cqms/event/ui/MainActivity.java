@@ -182,6 +182,8 @@ public class MainActivity extends BootstrapActivity implements NavigationView.On
         // View injection with Butterknife
         ButterKnife.bind(this);
 
+        Log.d("TAG",PrefUtils.getHospitalID());
+
         // Set up navigation drawer
         title = drawerTitle = getTitle();
 

@@ -64,6 +64,9 @@ public class DrugReactionDiagnosisDetailsFragment extends Fragment implements Vi
     @Bind(R.id.patient_diagnosis)
     protected MaterialEditText diagnosis;
 
+    @Bind(R.id.event_description)
+    protected MaterialEditText description;
+
     @Bind(R.id.event_time_btn)
     protected Button eventTimeBtn;
     @Bind(R.id.event_time)
@@ -151,6 +154,9 @@ public class DrugReactionDiagnosisDetailsFragment extends Fragment implements Vi
                 eventTime.setText(CalenderUtils.formatCalendarToString(report.getIncidentTime(), Constants.Common.DATE_TIME_DISPLAY_FORMAT));
             } else {
                 eventTimeBtn.setText("Set");
+            }
+            if (!TextUtils.isEmpty(report.getDescription())){
+                description.setText(report.getDescription());
             }
         }else{
             eventTimeBtn.setText("Set");
@@ -251,6 +257,7 @@ public class DrugReactionDiagnosisDetailsFragment extends Fragment implements Vi
         if ("EventDatepickerdialog".equals(view.getTag())) {
             report.setIncidentTime(selectedDate);
             report.setReactionDate(selectedDate);
+            report.setReactionDateStr(dayOfMonth+"/"+monthOfYear+"/"+year);
             eventTime.setText(CalenderUtils.formatCalendarToString(report.getIncidentTime(), Constants.Common.DATE_DISPLAY_FORMAT));
             Calendar now = Calendar.getInstance();
             TimePickerDialog tpd = com.wdullaer.materialdatetimepicker.time.TimePickerDialog.newInstance(
@@ -322,6 +329,10 @@ public class DrugReactionDiagnosisDetailsFragment extends Fragment implements Vi
             report.getPersonInvolved().setDiagnosis(diagnosis.getText().toString().trim());
         }
 
+        if (!TextUtils.isEmpty(description.getText())){
+            report.setDescription(description.getText().toString().trim());
+        }
+
         return report;
     }
 
@@ -380,6 +391,14 @@ public class DrugReactionDiagnosisDetailsFragment extends Fragment implements Vi
         }
         if(null == report.getIncidentTime()){
             eventTime.setError("Incident time required");
+        }
+
+        if (TextUtils.isEmpty(description.getText())){
+            description.setError("Incident description required.");
+            description.requestFocus();
+            error = true;
+        }else {
+            report.setDescription(description.getText().toString().trim());
         }
         return error;
     }
