@@ -46,8 +46,8 @@ public final class Constants {
         /**
          * Base URL for all requests
          */
-        public static final String URL_BASE = "https://dev.cqms.synnefx.com/api/";
-        // public static final String URL_BASE =  "http://192.168.0.100:8085/api/";
+       // public static final String URL_BASE = "https://dev.cqms.synnefx.com/api/";
+         public static final String URL_BASE =  "http://192.168.0.103:8085/api/";
 
         /**
          * Authentication URL
@@ -117,6 +117,7 @@ public final class Constants {
 
         public static final String HEADER_DEVICE_ID = "Device-ID";
         public static final String HEADER_AUTH_TOKEN = "X-Auth-Token";
+        public static final String HEADER_DEVICE_TOKEB = "Device-Auth-Token";
         public static final String CONTENT_TYPE_JSON = "application/json;versions=1";
         public static final String USERNAME = "username";
         public static final String PASSWORD = "password";

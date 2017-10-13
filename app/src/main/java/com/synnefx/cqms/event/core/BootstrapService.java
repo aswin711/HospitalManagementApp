@@ -2,6 +2,7 @@ package com.synnefx.cqms.event.core;
 
 import com.squareup.otto.Bus;
 import com.synnefx.cqms.event.authenticator.ApiKeyProvider;
+import com.synnefx.cqms.event.core.modal.ApiAuthResponse;
 import com.synnefx.cqms.event.core.modal.ApiRequest;
 import com.synnefx.cqms.event.core.modal.ApiResponse;
 import com.synnefx.cqms.event.core.modal.AuthHeader;
@@ -57,7 +58,7 @@ public class BootstrapService {
 
     private String accessToken;
 
-    private String deviceID;
+    private String deviceToken;
 
     /**
      * Create bootstrap service
@@ -81,17 +82,17 @@ public class BootstrapService {
     public BootstrapService(Retrofit.Builder retrofitBuilder, UserAgentProvider userAgentProvider, String authKey, String deviceID, Bus bus) {
         this.retrofitBuilder = retrofitBuilder;
         this.userAgentProvider = userAgentProvider;
-        this.deviceID = deviceID;
+        this.deviceToken = deviceID;
         this.accessToken = authKey;
         this.bus = bus;
     }
 
-    public String getDeviceID() {
-        return deviceID;
+    public String getDeviceToken() {
+        return deviceToken;
     }
 
-    public void setDeviceID(String deviceID) {
-        this.deviceID = deviceID;
+    public void setDeviceToken(String deviceToken) {
+        this.deviceToken = deviceToken;
     }
 
     public <S> S createService(Class<S> serviceClass) {
@@ -120,7 +121,7 @@ public class BootstrapService {
                 if (accessToken != null) {
                     request = original.newBuilder()
                             .header("Accept", Constants.Http.CONTENT_TYPE_JSON)
-                            .header(Constants.Http.HEADER_DEVICE_ID, deviceID)
+                            .header(Constants.Http.HEADER_DEVICE_TOKEB, deviceToken)
                             .header(Constants.Http.HEADER_AUTH_TOKEN, accessToken)
                             .header("User-Agent", userAgentProvider.get())
                             .method(original.method(), original.body())
@@ -180,10 +181,12 @@ public class BootstrapService {
     }
 
 
-    public ApiResponse<String> authenticate(String email, String password, String deviceID) {
+    public ApiResponse<ApiAuthResponse> authenticate(String email, String password, String deviceID) {
         ApiRequest<User> request = new ApiRequest<>();
         AuthHeader authHeader = new AuthHeader();
         authHeader.setDeviceID(deviceID);
+        authHeader.setAppCode(1);
+        authHeader.setPlatform(1);
         request.setAuthHeader(authHeader);
         User user = new User();
         user.setUserName(email);

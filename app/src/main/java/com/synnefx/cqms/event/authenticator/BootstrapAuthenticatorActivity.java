@@ -35,6 +35,7 @@ import com.synnefx.cqms.event.R.layout;
 import com.synnefx.cqms.event.R.string;
 import com.synnefx.cqms.event.core.BootstrapService;
 import com.synnefx.cqms.event.core.Constants;
+import com.synnefx.cqms.event.core.modal.ApiAuthResponse;
 import com.synnefx.cqms.event.core.modal.ApiResponse;
 import com.synnefx.cqms.event.core.modal.AuthenticationException;
 import com.synnefx.cqms.event.core.modal.User;
@@ -135,11 +136,16 @@ public class BootstrapAuthenticatorActivity extends ActionBarAccountAuthenticato
 
 
     /**
-     * In this instance the token is simply the sessionId returned from Parse.com. This could be a
+     * In this instance the token is simply the sessionId returned from HQPUlse.com This could be a
      * oauth token or some other type of timed token that expires/etc. We're just using the parse.com
      * sessionId to prove the example of how to utilize a token.
      */
     private String token;
+
+    /**
+     * Token obtained Per app to distinguish registred devices.
+     */
+    private String deviceToken;
 
     /**
      * Was the original caller asking for an entirely new account?
@@ -295,13 +301,15 @@ public class BootstrapAuthenticatorActivity extends ActionBarAccountAuthenticato
                         PARAM_USERNAME, email, PARAM_PASSWORD, password);
                 String android_id = Settings.Secure.getString(this.getContext().getContentResolver(),
                         Settings.Secure.ANDROID_ID);
-                ApiResponse<String> loginResponse = bootstrapService.authenticate(email, password, android_id);
-                if (null != loginResponse) {
-                    token = loginResponse.getRecord();
+                ApiResponse<ApiAuthResponse> loginResponse = bootstrapService.authenticate(email, password, android_id);
+                if (null != loginResponse && null != loginResponse.getRecord()) {
+                    ApiAuthResponse authResponse = loginResponse.getRecord();
+                    token = authResponse.getUserToken();
+                    deviceToken = authResponse.getDeviceToken();
                     if (!TextUtils.isEmpty(loginResponse.getError())) {
                         errorMessage = loginResponse.getError();
                     } else {
-                        if (!TextUtils.isEmpty(token)) {
+                        if (!TextUtils.isEmpty(token) && !TextUtils.isEmpty(deviceToken)) {
                             return true;
                         }
                     }
@@ -390,6 +398,8 @@ public class BootstrapAuthenticatorActivity extends ActionBarAccountAuthenticato
                 && authTokenType.equals(Constants.Auth.AUTHTOKEN_TYPE)) {
             intent.putExtra(KEY_AUTHTOKEN, authToken);
         }
+
+        PrefUtils.saveToPrefs(getApplicationContext(), PrefUtils.PREFS_DEVICE_TOKEN, deviceToken);
         fetchProfile();
         /*if(!isPushRecordServiceRunning()){
             final Intent i = new Intent(this, PushRecordService.class);

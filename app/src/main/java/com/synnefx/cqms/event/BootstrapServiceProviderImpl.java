@@ -8,6 +8,7 @@ import com.squareup.otto.Bus;
 import com.synnefx.cqms.event.authenticator.ApiKeyProvider;
 import com.synnefx.cqms.event.core.BootstrapService;
 import com.synnefx.cqms.event.core.UserAgentProvider;
+import com.synnefx.cqms.event.util.PrefUtils;
 
 import java.io.IOException;
 
@@ -56,9 +57,10 @@ public class BootstrapServiceProviderImpl implements BootstrapServiceProvider {
 
         // The call to keyProvider.getAuthKey(...) is what initiates the login screen. Call that now.
         String key = keyProvider.getAuthKey(activity);
-        String android_id = Settings.Secure.getString(activity.getContentResolver(),
-                Settings.Secure.ANDROID_ID);
-        BootstrapService service = new BootstrapService(retrofitBuilder, userAgentProvider, key, android_id, bus);
+        //String android_id = Settings.Secure.getString(activity.getContentResolver(),
+        //        Settings.Secure.ANDROID_ID);
+        String deviceToken = PrefUtils.getDeviceToken();
+        BootstrapService service = new BootstrapService(retrofitBuilder, userAgentProvider, key, deviceToken, bus);
         return service;
     }
 
@@ -67,9 +69,10 @@ public class BootstrapServiceProviderImpl implements BootstrapServiceProvider {
     public BootstrapService getAuthenticatedService()
             throws IOException, AccountsException {
         // The call to keyProvider.getAuthKey(...) is what initiates the login screen. Call that now.
-        String android_id = keyProvider.getDeviceID();
+        ///String android_id = keyProvider.getDeviceID();
+        String deviceToken = PrefUtils.getDeviceToken();
         String key = keyProvider.getAuthKey();
-        BootstrapService service = new BootstrapService(retrofitBuilder, userAgentProvider, key, android_id, bus);
+        BootstrapService service = new BootstrapService(retrofitBuilder, userAgentProvider, key, deviceToken, bus);
         return service;
     }
 }

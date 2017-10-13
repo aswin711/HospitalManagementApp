@@ -6,9 +6,6 @@ import java.io.Serializable;
 
 public class AuthHeader implements Serializable {
 
-    /**
-     *
-     */
     private static final long serialVersionUID = 1L;
 
     public AuthHeader() {
@@ -22,6 +19,12 @@ public class AuthHeader implements Serializable {
 
     @Expose
     private String deviceID;
+
+    @Expose
+    private Integer platform;
+
+    @Expose
+    private Integer appCode;
 
     public String getUserId() {
         return userId;
@@ -45,5 +48,25 @@ public class AuthHeader implements Serializable {
 
     public void setDeviceID(String deviceID) {
         this.deviceID = deviceID;
+    }
+
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
+    }
+
+    public Integer getPlatform() {
+        return platform;
+    }
+
+    public void setPlatform(Integer platform) {
+        this.platform = platform;
+    }
+
+    public Integer getAppCode() {
+        return appCode;
+    }
+
+    public void setAppCode(Integer appCode) {
+        this.appCode = appCode;
     }
 }

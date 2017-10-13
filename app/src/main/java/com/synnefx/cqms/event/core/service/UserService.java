@@ -1,6 +1,7 @@
 package com.synnefx.cqms.event.core.service;
 
 import com.synnefx.cqms.event.core.Constants;
+import com.synnefx.cqms.event.core.modal.ApiAuthResponse;
 import com.synnefx.cqms.event.core.modal.ApiRequest;
 import com.synnefx.cqms.event.core.modal.ApiResponse;
 import com.synnefx.cqms.event.core.modal.User;
@@ -26,7 +27,7 @@ public interface UserService {
      * @return A login response.
      */
     @POST(Constants.Http.URL_AUTH_FRAG)
-    Call<ApiResponse<String>> authenticate(@Body ApiRequest<User> userRequest);
+    Call<ApiResponse<ApiAuthResponse>> authenticate(@Body ApiRequest<User> userRequest);
 
     @GET(Constants.Http.URL_USER_PROFILE)
     Call<ApiResponse<User>> getProfile();

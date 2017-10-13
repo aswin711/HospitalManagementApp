@@ -20,6 +20,8 @@ public class PrefUtils {
 
     public static final String PREFS_AUTH_KEY = "__AUTHKEY__";
 
+    public static final String PREFS_DEVICE_TOKEN = "__DEVICE_TOKEN__";
+
     public static final String PREFS_ACTIVE_SURVEY_ID_KEY = "__SURVEY_ID__";
     public static final String PREFS_PRIMARY_LANG = "__LANG__";
     public static final String PREFS_QUESTION_ID = "__QUESTION_ID__";
@@ -224,5 +226,12 @@ public class PrefUtils {
         SharedPreferences prefs = PreferenceManager
                 .getDefaultSharedPreferences(BootstrapApplication.getInstance());
         return prefs.getString(PREFS_HOSP_ID,"");
+    }
+
+
+    public static String getDeviceToken(){
+        SharedPreferences prefs = PreferenceManager
+                .getDefaultSharedPreferences(BootstrapApplication.getInstance());
+        return prefs.getString(PREFS_DEVICE_TOKEN,"");
     }
 }
