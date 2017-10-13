@@ -211,6 +211,8 @@ public class PatientDetailsFragment extends Fragment implements View.OnClickList
                     if (null != selectedItem) {
                         patient.setGenderCode(position);
                     }
+                }else{
+                    patient.setGenderCode(0);
                 }
             }
         });
@@ -290,7 +292,7 @@ public class PatientDetailsFragment extends Fragment implements View.OnClickList
         if (data.equals(getString(R.string.save_draft))){
             if(saveDraft() != null){
                 Toast.makeText(getActivity(),"Draft saved",Toast.LENGTH_SHORT).show();
-                long id = databaseHelper.updateAdverseDrugEvent(saveDraft());
+                long id = databaseHelper.insertOrUpdateAdverseDrugReaction(saveDraft());
                 report.setId(id);
                 if (0 < id){
                     databaseHelper.updateAdverseDrugEventPersonInvolved(saveDraft());
@@ -321,8 +323,6 @@ public class PatientDetailsFragment extends Fragment implements View.OnClickList
             patient.setPatientTypeCode(1);
         } else if (opPatient.isChecked()) {
             patient.setPatientTypeCode(2);
-        } else {
-            patient.setGenderCode(0);
         }
 
 
@@ -330,7 +330,7 @@ public class PatientDetailsFragment extends Fragment implements View.OnClickList
             Double height = Double.valueOf(patientHeight.getText().toString());
             patient.setHeight(height);
         }catch (Exception e){
-            patient.setHeight(0.0);
+           patient.setHeight(0.0);
         }
 
 
@@ -401,6 +401,11 @@ public class PatientDetailsFragment extends Fragment implements View.OnClickList
             patient.setHospitalNumber(patientNumber.getText().toString().trim());
         }
 
+        if (patient.getGenderCode() == null || patient.getGenderCode()==0){
+            personGender.setError("Patient gender required");
+            personGender.requestFocus();
+        }
+
         if (ipPatient.isChecked()) {
             patient.setPatientTypeCode(1);
         } else if (opPatient.isChecked()) {
@@ -408,7 +413,7 @@ public class PatientDetailsFragment extends Fragment implements View.OnClickList
         } else {
             ipPatient.setError("Patient type required");
             ipPatient.requestFocus();
-            patient.setGenderCode(0);
+            //patient.setGenderCode(0);
             error = true;
         }
         if(null == patient.getDateOfBirthIndividual()){
@@ -417,7 +422,7 @@ public class PatientDetailsFragment extends Fragment implements View.OnClickList
         }
         if(!TextUtils.isEmpty(patientHeight.getText())){
             Double height = Double.valueOf(patientHeight.getText().toString());
-            if(height.compareTo(Double.valueOf(200.0)) > 0 || height.compareTo(Double.valueOf(0.0)) < 0 ){
+            if(height.compareTo(Double.valueOf(200.0)) > 0 || height.compareTo(Double.valueOf(0.0)) <= 0 ){
                 patientHeight.setError("Invalid height value. (Height in cm.)");
                 error = true;
             }else {
@@ -428,7 +433,7 @@ public class PatientDetailsFragment extends Fragment implements View.OnClickList
         }
         if(!TextUtils.isEmpty(patientWeight.getText())){
             Double weight = Double.valueOf(patientWeight.getText().toString());
-            if(weight.compareTo(Double.valueOf(300.0)) > 0 || weight.compareTo(Double.valueOf(0.0)) < 0 ){
+            if(weight.compareTo(Double.valueOf(300.0)) > 0 || weight.compareTo(Double.valueOf(0.0)) <= 0 ){
                 patientWeight.setError("Invalid weight value. (Weight in kg.)");
                 error = true;
             }else {

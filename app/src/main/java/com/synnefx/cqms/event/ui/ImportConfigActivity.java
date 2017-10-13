@@ -175,7 +175,7 @@ public class ImportConfigActivity extends BootstrapFragmentActivity {
         finish();
     }
 
-    //Importing Units and Types 
+    //Importing Units and Types
     private class ImportServices extends AsyncTask<Void,Integer,Void>{
 
         List<String> errorMessages = new ArrayList<String>(2);
