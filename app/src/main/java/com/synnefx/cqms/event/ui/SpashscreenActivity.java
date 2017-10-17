@@ -100,7 +100,7 @@ public class SpashscreenActivity extends Activity {
                     getApplicationContext().getPackageName(), 0);
             if (null != info) {
                 String currentVersion = info.versionName;
-                String latestVersion = PrefUtils.getLatestAppVersion();
+                String latestVersion = PrefUtils.getLatestAppVersion(getApplicationContext());
                 versionNumber.setText(currentVersion);
                 //TODO check both version and appropreatly prompt for update
                 if (!TextUtils.isEmpty(latestVersion) && !latestVersion.equalsIgnoreCase(currentVersion)) {

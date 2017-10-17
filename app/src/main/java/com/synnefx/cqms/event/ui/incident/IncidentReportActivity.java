@@ -42,7 +42,8 @@ public class IncidentReportActivity extends BootstrapFragmentActivity {
     @Inject
     EventBus eventBus;
     private IncidentReport report;
-    private Boolean editable;
+
+    private Boolean editable = true;
 
     private Boolean doubleBackPressed = false;
 
@@ -53,8 +54,6 @@ public class IncidentReportActivity extends BootstrapFragmentActivity {
         BootstrapApplication.component().inject(this);
         setContentView(R.layout.activity_incident_report);
         ButterKnife.bind(this);
-
-
 
         if (getIntent() != null && getIntent().getExtras() != null) {
             report = (IncidentReport) getIntent().getExtras().getSerializable(INCIDENT_ITEM);
@@ -90,39 +89,36 @@ public class IncidentReportActivity extends BootstrapFragmentActivity {
 
 
     @Override
-    public void onBackPressed() {
+    public void onBackPressed(){
 
-        if(!doubleBackPressed){
+        if(!doubleBackPressed && editable){
             AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+            alertDialog.setTitle("Save to draft before exit?");
+            alertDialog.setMessage("Do you want to save the details as a draft");
             alertDialog.setCancelable(true);
-            alertDialog.setTitle("Save to Drafts");
-            alertDialog.setMessage("Do you want to save it to drafts before exit?");
             alertDialog.setPositiveButton("YES", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    doubleBackPressed = true;
                     eventBus.post(getString(R.string.save_draft));
                     dialog.dismiss();
+                    doubleBackPressed = true;
                     onBackPressed();
+
                 }
             });
             alertDialog.setNegativeButton("NO", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    doubleBackPressed = true;
                     dialog.dismiss();
+                    doubleBackPressed = true;
                     onBackPressed();
+
                 }
             });
-
             alertDialog.show();
-
-        }else {
+        }else{
             super.onBackPressed();
         }
-
-
-
     }
 
     @Override
@@ -157,7 +153,7 @@ public class IncidentReportActivity extends BootstrapFragmentActivity {
             public void run() {
                 // Calling a refresh will force the service to look for a logged in user
                 // and when it finds none the user will be requested to log in again.
-                PrefUtils.deleteFromPrefs(getApplicationContext());
+                PrefUtils.deleteFromPrefs();
                 checkAuth();
             }
         });

@@ -42,8 +42,8 @@ public class AppDao {
     }
 
     //Incident Report
-    public List<IncidentReport> findAllIncidentReportByStatusForUpload(Integer statusCode) throws DataAccessException {
-        return databaseHelper.getFullyLoadedIncidentReportsByStatus(statusCode, 0, 0);
+    public List<IncidentReport> findAllIncidentReportByStatusForUpload(Integer statusCode,String hospitalID) throws DataAccessException {
+        return databaseHelper.getFullyLoadedIncidentReportsByStatus(statusCode, 0, 0,hospitalID);
     }
 
     public long addIncidentReport(IncidentReport report) {
@@ -63,8 +63,8 @@ public class AppDao {
     }
 
     //Medication Error
-    public List<MedicationError> findAllMedicationErrorByStatusForUpload(Integer statusCode) throws DataAccessException {
-        return databaseHelper.getFullyLoadedMedicationErrorsByStatus(statusCode, 0, 0);
+    public List<MedicationError> findAllMedicationErrorByStatusForUpload(Integer statusCode, String hospitalID) throws DataAccessException {
+        return databaseHelper.getFullyLoadedMedicationErrorsByStatus(statusCode, 0, 0,hospitalID);
     }
 
     public long addIncidentReport(MedicationError report) {
@@ -85,8 +85,8 @@ public class AppDao {
 
     //Advewrse Drug reaction
 
-    public List<AdverseDrugEvent> findAllAdverseDrugEventsByStatusForUpload(Integer statusCode) throws DataAccessException {
-        return databaseHelper.getFullyLoadedAdverseDrugEventsByStatus(statusCode, 0, 0);
+    public List<AdverseDrugEvent> findAllAdverseDrugEventsByStatusForUpload(Integer statusCode, String hospitalID) throws DataAccessException {
+        return databaseHelper.getFullyLoadedAdverseDrugEventsByStatus(statusCode, 0, 0,hospitalID);
     }
 
     public long addAdverseDrugEvent(AdverseDrugEvent report) {

@@ -8,6 +8,7 @@ import com.synnefx.cqms.event.core.modal.event.medicationerror.MedicationError;
 import com.synnefx.cqms.event.sqlite.AppDao;
 import com.synnefx.cqms.event.sqlite.DataAccessException;
 import com.synnefx.cqms.event.sync.Datastore;
+import com.synnefx.cqms.event.util.PrefUtils;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -27,7 +28,7 @@ public class MedicationErrorSyncLocalDatastore implements Datastore<MedicationEr
     public List<MedicationError> get() {
         try {
             Log.e("CSLD", "get");
-            return dao.findAllMedicationErrorByStatusForUpload(1);
+            return dao.findAllMedicationErrorByStatusForUpload(1, PrefUtils.getHospitalID());
         } catch (DataAccessException e) {
             //TODO
         }

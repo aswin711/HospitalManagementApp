@@ -154,7 +154,7 @@ public abstract class BootstrapActivity extends AppCompatActivity {
                 // Calling a refresh will force the service to look for a logged in user
                 // and when it finds none the user will be requested to log in again.
                 //checkAuth();
-                PrefUtils.deleteFromPrefs(getApplicationContext());
+                PrefUtils.deleteFromPrefs();
                 checkAuth();
             }
         });

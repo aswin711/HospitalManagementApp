@@ -42,27 +42,22 @@ public class PrefUtils {
     public static final String LATEST_VERSION_NUMBER = "LATEST_APP_VERSION";
 
 
-    private static User activeUser;
-    private static SharedPreferences sharedPref;
 
     /**
      * Called to save supplied value in shared preferences against given key.
      *
-     * @param context Context of caller activity
      * @param key     Key of value to save against
      * @param value   Value to save
      */
-    public static void saveToPrefs(Context context, String key, String value) {
-        SharedPreferences prefs = PreferenceManager
-                .getDefaultSharedPreferences(context);
+    public static void saveToPrefs(Context context,String key, String value) {
+        SharedPreferences prefs =  getSettings();
         final SharedPreferences.Editor editor = prefs.edit();
         editor.putString(key, value);
         editor.apply();
     }
 
-    public static void saveToPrefs(Context context, String key, Boolean value) {
-        SharedPreferences prefs = PreferenceManager
-                .getDefaultSharedPreferences(context);
+    public static void saveToPrefs(Context context,String key, Boolean value) {
+        SharedPreferences prefs =  getSettings();
         final SharedPreferences.Editor editor = prefs.edit();
         editor.putBoolean(key, value);
         editor.apply();
@@ -82,8 +77,7 @@ public class PrefUtils {
      */
     public static String getFromPrefs(Context context, String key,
                                       String defaultValue) {
-        SharedPreferences sharedPrefs = PreferenceManager
-                .getDefaultSharedPreferences(context);
+        SharedPreferences sharedPrefs = getSettings();
         try {
             return sharedPrefs.getString(key, defaultValue);
         } catch (Exception e) {
@@ -109,47 +103,6 @@ public class PrefUtils {
     }
 
 
-    /**
-     * Get active user info.
-     *
-     * @return user or null if nobody logged in.
-     */
-    public static User getActiveUser() {
-        if (activeUser != null) {
-            Timber.d("%s - Returned active user", TAG);
-            return activeUser;
-        } else {
-            SharedPreferences prefs = getSettings();
-            String json = prefs.getString(PREF_ACTIVE_USER, "");
-            if (json.isEmpty() || "null".equals(json)) {
-                Timber.d("%s - Returned null", TAG);
-                return null;
-            } else {
-                activeUser = Utils.getGsonParser().fromJson(json, User.class);
-                Timber.d("%s - Returned active user from memory: %s", TAG, activeUser.toString());
-                return activeUser;
-            }
-        }
-    }
-
-
-    /**
-     * Set active user.
-     *
-     * @param user active user or null for disable user.
-     */
-    public static void setActiveUser(User user) {
-        if (user != null)
-            Timber.d("%s - Set active user with name: %s", TAG, user.toString());
-        else
-            Timber.d("%s - Deleting active user", TAG);
-        PrefUtils.activeUser = user;
-
-        String json = Utils.getGsonParser().toJson(PrefUtils.activeUser);
-        SharedPreferences.Editor editor = getSettings().edit();
-        editor.putString(PREF_ACTIVE_USER, json);
-        editor.apply();
-    }
 
     /**
      * Get indicator, that GCM token was sent to third party server.
@@ -178,10 +131,7 @@ public class PrefUtils {
      * @return base instance of app SharedPreferences.
      */
     public static SharedPreferences getSettings() {
-        if (sharedPref == null) {
-            sharedPref = BootstrapApplication.getInstance().getSharedPreferences(BootstrapApplication.PACKAGE_NAME, Context.MODE_PRIVATE);
-        }
-        return sharedPref;
+        return BootstrapApplication.getInstance().getSharedPreferences(BootstrapApplication.PACKAGE_NAME, Context.MODE_PRIVATE);
     }
 
     private static boolean putParam(String key, String value) {
@@ -193,45 +143,34 @@ public class PrefUtils {
     private static boolean putParam(String key, boolean value) {
         SharedPreferences.Editor editor = getSettings().edit();
         editor.putBoolean(key, value);
+        editor.apply();
         return editor.commit();
     }
 
 
-    public static String getLatestAppVersion() {
+    public static String getLatestAppVersion(Context context) {
         SharedPreferences prefs = getSettings();
         String version = prefs.getString(LATEST_VERSION_NUMBER, "");
         Timber.d("%s - App version latest: %s", TAG, version);
         return version;
     }
 
-    public static void deleteFromPrefs(Context context){
-        SharedPreferences prefs = PreferenceManager
-                .getDefaultSharedPreferences(context);
-        final SharedPreferences.Editor editor = prefs.edit();
+    public static void deleteFromPrefs(){
+        SharedPreferences preferences = getSettings();
+        SharedPreferences.Editor editor = preferences.edit();
         editor.clear();
         editor.apply();
     }
 
-    public static void setUserLoggedIn(Boolean state){
-        putParam(PREF_USER_LOGGED_IN,state);
-
-    }
-
-    public static boolean isUserLoggedIn(){
-        SharedPreferences preferences = getSettings();
-        return preferences.getBoolean(PREF_USER_LOGGED_IN,false);
-    }
 
     public static String getHospitalID(){
-        SharedPreferences prefs = PreferenceManager
-                .getDefaultSharedPreferences(BootstrapApplication.getInstance());
+        SharedPreferences prefs = getSettings();
         return prefs.getString(PREFS_HOSP_ID,"");
     }
 
 
     public static String getDeviceToken(){
-        SharedPreferences prefs = PreferenceManager
-                .getDefaultSharedPreferences(BootstrapApplication.getInstance());
+        SharedPreferences prefs = getSettings();
         return prefs.getString(PREFS_DEVICE_TOKEN,"");
     }
 }

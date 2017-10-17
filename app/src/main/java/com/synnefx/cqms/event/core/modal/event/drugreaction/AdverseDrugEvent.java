@@ -33,11 +33,13 @@ public class AdverseDrugEvent extends EventReport {
     @Expose
     private List<DrugInfo> otherDrugsTaken;
 
+    @Expose
     private Calendar dateOfRecovery;
 
     @Expose
     private String dateOfRecoveryStr;
 
+    @Expose
     private Calendar dateOfDeath;
 
     @Expose

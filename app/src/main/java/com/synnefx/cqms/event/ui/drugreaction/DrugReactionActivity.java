@@ -159,7 +159,7 @@ public class DrugReactionActivity extends BootstrapFragmentActivity {
             public void run() {
                 // Calling a refresh will force the service to look for a logged in user
                 // and when it finds none the user will be requested to log in again.
-                PrefUtils.deleteFromPrefs(getApplicationContext());
+                PrefUtils.deleteFromPrefs();
                 checkAuth();
             }
         });

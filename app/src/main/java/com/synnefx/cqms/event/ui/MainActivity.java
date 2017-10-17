@@ -472,7 +472,8 @@ public class MainActivity extends BootstrapActivity implements NavigationView.On
 
         alertDialog.setCancelable(false).setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-                finish();
+                dialog.dismiss();
+                MainActivity.super.onBackPressed();
             }
         }).setNegativeButton("No", new DialogInterface.OnClickListener() {
             @Override

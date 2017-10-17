@@ -399,7 +399,7 @@ public class BootstrapAuthenticatorActivity extends ActionBarAccountAuthenticato
             intent.putExtra(KEY_AUTHTOKEN, authToken);
         }
 
-        PrefUtils.saveToPrefs(getApplicationContext(), PrefUtils.PREFS_DEVICE_TOKEN, deviceToken);
+        PrefUtils.saveToPrefs(getApplicationContext(),PrefUtils.PREFS_DEVICE_TOKEN, deviceToken);
         fetchProfile();
         /*if(!isPushRecordServiceRunning()){
             final Intent i = new Intent(this, PushRecordService.class);
@@ -490,10 +490,10 @@ public class BootstrapAuthenticatorActivity extends ActionBarAccountAuthenticato
                     } else {
                         if (null != user) {
 
-                            PrefUtils.saveToPrefs(getApplicationContext(), PrefUtils.PREFS_HOSP_ID, user.getAssociatedHospital());
-                            PrefUtils.saveToPrefs(getApplicationContext(), PrefUtils.PREFS_USER_ID, user.getUserName());
-                            PrefUtils.saveToPrefs(getApplicationContext(), PrefUtils.PREFS_USER_DISPLAY_NAME, user.getFullName());
-                            PrefUtils.saveToPrefs(getApplicationContext(), PrefUtils.PREFS_HOSP_DISPLAY_NAME, user.getAssociatedHospitalName());
+                            PrefUtils.saveToPrefs(getApplicationContext(),PrefUtils.PREFS_HOSP_ID, user.getAssociatedHospital());
+                            PrefUtils.saveToPrefs(getApplicationContext(),PrefUtils.PREFS_USER_ID, user.getUserName());
+                            PrefUtils.saveToPrefs(getApplicationContext(),PrefUtils.PREFS_USER_DISPLAY_NAME, user.getFullName());
+                            PrefUtils.saveToPrefs(getApplicationContext(),PrefUtils.PREFS_HOSP_DISPLAY_NAME, user.getAssociatedHospitalName());
                             PrefUtils.saveToPrefs(getApplicationContext(),PrefUtils.PREF_USER_LOGGED_IN,true);
                             return true;
                         }

@@ -134,8 +134,6 @@ public class PatientDetailsFragment extends Fragment implements View.OnClickList
                 if (0 < patientRef) {
                     patient = databaseHelper.getPersonInvolvedById(patientRef);
                 }
-            }else{
-               // patient = new PersonInvolved();
             }
             report.setPersonInvolved(patient);
         }
@@ -429,7 +427,9 @@ public class PatientDetailsFragment extends Fragment implements View.OnClickList
                 patient.setHeight(height);
             }
         }else {
-            patient.setHeight(0.0);
+            patientHeight.setError("Invalid height value. (Height in cm.)");
+            error = true;
+            patientHeight.requestFocus();
         }
         if(!TextUtils.isEmpty(patientWeight.getText())){
             Double weight = Double.valueOf(patientWeight.getText().toString());
@@ -440,7 +440,9 @@ public class PatientDetailsFragment extends Fragment implements View.OnClickList
                 patient.setWeight(weight);
             }
         }else {
-            patient.setWeight(0.0);
+            patientWeight.setError("Invalid weight value. (Weight in kg.)");
+            error = true;
+            patientWeight.requestFocus();
         }
         return error;
     }
