@@ -46,8 +46,8 @@ public final class Constants {
         /**
          * Base URL for all requests
          */
-       // public static final String URL_BASE = "https://dev.cqms.synnefx.com/api/";
-         public static final String URL_BASE =  "http://192.168.0.103:8085/api/";
+        public static final String URL_BASE = "https://dev.cqms.synnefx.com/api/";
+       //  public static final String URL_BASE =  "http://192.168.0.103:8085/api/";
 
         /**
          * Authentication URL
