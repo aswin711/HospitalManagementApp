@@ -37,6 +37,7 @@ public class PushReceiver extends BroadcastReceiver {
 
     private Bus bus;
 
+
     @Override
     public void onReceive(Context context, Intent intent) {
         String notificationTitle = "CQMS";

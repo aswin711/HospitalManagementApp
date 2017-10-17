@@ -836,7 +836,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return null;
     }
 
-    public List<IncidentReport> getFullyLoadedIncidentReportsByStatus(Integer statusCode, int pageNumber, int size) throws DataAccessException {
+    public List<IncidentReport> getFullyLoadedIncidentReportsByStatus(Integer statusCode, int pageNumber, int size,String hospitalID) throws DataAccessException {
         StringBuilder sb = new StringBuilder("SELECT DISTINCT s.id as id, s.serverId as serverId, s.hospitalID as hospitalID, s.incident_number, "
                 + "s.unitRef, s." + IncidentReportKey.KEY_INCIDENT_TYPE_REF + ", " + EventReportKey.KEY_INCIDENT_LOCATION + ", "
                 + EventReportKey.KEY_INCIDENT_LOCATION + ", " + EventReportKey.KEY_REPORTED_BY_REF + ", " + EventReportKey.KEY_LNAME + ", "
@@ -857,9 +857,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             if (pageNumber > 0) {
                 start = pageNumber * size;
             }
-            params = new String[]{String.valueOf(statusCode),PrefUtils.getHospitalID(), String.valueOf(start), String.valueOf(size)};
+            params = new String[]{String.valueOf(statusCode),hospitalID, String.valueOf(start), String.valueOf(size)};
         } else {
-            params = new String[]{String.valueOf(statusCode),PrefUtils.getHospitalID()};
+            params = new String[]{String.valueOf(statusCode),hospitalID};
         }
         Cursor c = null;
         try {
@@ -883,6 +883,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             if (c != null && !c.isClosed()) {
                 c.close();
             }
+        }
+        if (reports!=null){
+            Log.d("Fetched reports",ListViewer.view(reports));
+
         }
         return reports;
     }
@@ -1152,7 +1156,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return null;
     }
 
-    public List<MedicationError> getFullyLoadedMedicationErrorsByStatus(Integer statusCode, int pageNumber, int size) throws DataAccessException {
+    public List<MedicationError> getFullyLoadedMedicationErrorsByStatus(Integer statusCode, int pageNumber, int size,String hospitalID) throws DataAccessException {
         StringBuilder sb = new StringBuilder("SELECT DISTINCT s.id as id, s.serverId as serverId, s.hospitalID as hospitalID, "
                 + " s.incident_number, s.unitRef, " + EventReportKey.KEY_INCIDENT_LOCATION + ", "
                 + EventReportKey.KEY_INCIDENT_LOCATION + ", " + EventReportKey.KEY_REPORTED_BY_REF + ", " + EventReportKey.KEY_LNAME + ", "
@@ -1172,9 +1176,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             if (pageNumber > 0) {
                 start = pageNumber * size;
             }
-            params = new String[]{String.valueOf(statusCode), PrefUtils.getHospitalID(), String.valueOf(start), String.valueOf(size)};
+            params = new String[]{String.valueOf(statusCode), hospitalID, String.valueOf(start), String.valueOf(size)};
         } else {
-            params = new String[]{String.valueOf(statusCode),PrefUtils.getHospitalID()};
+            params = new String[]{String.valueOf(statusCode),hospitalID};
         }
         Cursor c = null;
         try {
@@ -1633,7 +1637,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return report;
     }
 
-    public List<AdverseDrugEvent> getFullyLoadedAdverseDrugEventsByStatus(Integer statusCode, int pageNumber, int size) throws DataAccessException {
+    public List<AdverseDrugEvent> getFullyLoadedAdverseDrugEventsByStatus(Integer statusCode, int pageNumber, int size,String hospitalID) throws DataAccessException {
         StringBuilder sb = new StringBuilder("SELECT DISTINCT s.id as id, s.serverId as serverId, s.hospitalID as hospitalID, "
                 + " s.incident_number, s.unitRef, " + EventReportKey.KEY_INCIDENT_LOCATION + ", "
                 + EventReportKey.KEY_INCIDENT_TIME + ", " + EventReportKey.KEY_REPORTED_BY_REF + ", " + EventReportKey.KEY_LNAME + ", "
@@ -1657,9 +1661,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             if (pageNumber > 0) {
                 start = pageNumber * size;
             }
-            params = new String[]{String.valueOf(statusCode),PrefUtils.getHospitalID(), String.valueOf(start), String.valueOf(size)};
+            params = new String[]{String.valueOf(statusCode),hospitalID, String.valueOf(start), String.valueOf(size)};
         } else {
-            params = new String[]{String.valueOf(statusCode),PrefUtils.getHospitalID()};
+            params = new String[]{String.valueOf(statusCode),hospitalID};
         }
         Cursor c = null;
         try {

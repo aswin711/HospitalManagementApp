@@ -21,6 +21,7 @@ import com.synnefx.cqms.event.core.Constants;
 import com.synnefx.cqms.event.core.modal.event.PersonInvolved;
 import com.synnefx.cqms.event.core.modal.event.ReportedBy;
 import com.synnefx.cqms.event.core.modal.event.drugreaction.AdverseDrugEvent;
+import com.synnefx.cqms.event.sqlite.DataAccessException;
 import com.synnefx.cqms.event.sqlite.DatabaseHelper;
 import com.synnefx.cqms.event.sync.drugreaction.DrugReactionSyncContentProvider;
 import com.synnefx.cqms.event.util.ConnectionUtils;

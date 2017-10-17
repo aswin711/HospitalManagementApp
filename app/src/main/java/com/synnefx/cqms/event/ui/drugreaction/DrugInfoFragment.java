@@ -321,21 +321,26 @@ public class DrugInfoFragment extends Fragment implements View.OnClickListener,
             drugInfo.setRoute(drugRoute.getText().toString().trim());
         }
 
+        if (drugInfo.getDateCeased()==null){
+            drugCeasedDt.setError("Date is required.");
+            drugCeasedDt.requestFocus();
+            error = true;
+        }
+
+        if (drugInfo.getDateStarted()==null){
+            drugStartedDt.setError("Date is required.");
+            drugStartedDt.requestFocus();
+            error = true;
+        }
 
         if(null != drugInfo.getDateCeased() && null != drugInfo.getDateStarted()){
-            String err = "Invalid date";
             if(drugInfo.getDateStarted().after(drugInfo.getDateCeased())){
-                err = "Invalid dates";
+                drugCeasedDt.setError("Invalid date");
+                drugCeasedDt.requestFocus();
+                drugStartedDt.requestFocus();
                 error = true;
             }
-            if(null == drugInfo.getDateStarted()){
-                drugStartedDt.setError(err);
-            }else if(null == drugInfo.getDateCeased()){
-                drugCeasedDt.setError(err);
-            }
 
-            drugCeasedDt.requestFocus();
-            drugStartedDt.requestFocus();
         }
         return error;
     }

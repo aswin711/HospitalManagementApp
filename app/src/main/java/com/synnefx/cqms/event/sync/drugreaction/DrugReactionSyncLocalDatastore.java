@@ -6,7 +6,9 @@ import com.synnefx.cqms.event.core.modal.event.drugreaction.AdverseDrugEvent;
 import com.synnefx.cqms.event.sqlite.AppDao;
 import com.synnefx.cqms.event.sqlite.DataAccessException;
 import com.synnefx.cqms.event.sync.Datastore;
+import com.synnefx.cqms.event.util.PrefUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -18,13 +20,15 @@ public class DrugReactionSyncLocalDatastore implements Datastore<AdverseDrugEven
 
     @Override
     public List<AdverseDrugEvent> get() {
+        List<AdverseDrugEvent> events = new ArrayList<>();
         try {
             Log.e("CSLD", "get");
-            return dao.findAllAdverseDrugEventsByStatusForUpload(1);
+            events =  dao.findAllAdverseDrugEventsByStatusForUpload(1, PrefUtils.getHospitalID());
         } catch (DataAccessException e) {
             //TODO
+            Log.e("CSLD", e.toString());
         }
-        return null;
+        return events;
     }
 
     @Override

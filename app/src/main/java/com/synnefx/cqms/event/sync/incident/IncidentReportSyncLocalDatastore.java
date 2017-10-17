@@ -6,6 +6,7 @@ import com.synnefx.cqms.event.core.modal.event.incident.IncidentReport;
 import com.synnefx.cqms.event.sqlite.AppDao;
 import com.synnefx.cqms.event.sqlite.DataAccessException;
 import com.synnefx.cqms.event.sync.Datastore;
+import com.synnefx.cqms.event.util.PrefUtils;
 
 import java.util.List;
 
@@ -13,16 +14,21 @@ import javax.inject.Inject;
 
 public class IncidentReportSyncLocalDatastore implements Datastore<IncidentReport> {
 
+    private static final String TAG = "IRSyncLocalDatastore";
+
     @Inject
     protected AppDao dao;
 
     @Override
     public List<IncidentReport> get() {
+
         try {
-            Log.e("CSLD", "get");
-            return dao.findAllIncidentReportByStatusForUpload(1);
+            Log.e("CSLD", "get records of: "+PrefUtils.getHospitalID());
+            //get all records with status code 1 (not uploaded) of a specific hospital
+            return dao.findAllIncidentReportByStatusForUpload(1,PrefUtils.getHospitalID());
         } catch (DataAccessException e) {
-            //TODO
+            //
+            Log.e(TAG,e.toString());
         }
         return null;
     }

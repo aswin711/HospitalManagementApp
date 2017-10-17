@@ -91,6 +91,8 @@ public class SyncManager<L extends Syncable, R extends Syncable> {
                     syncItem(localItem, remoteItem);
                 }
             }
+        }else{
+            Log.d(TAG, "remoteData is not avail ");
         }
     }
 
@@ -117,6 +119,8 @@ public class SyncManager<L extends Syncable, R extends Syncable> {
                     syncItem(localItem, remoteItem);
                 }
             }
+        }else{
+            Log.d(TAG, "localData is not avail.");
         }
     }
 

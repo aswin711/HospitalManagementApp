@@ -131,19 +131,9 @@ public class MedicationErrorListFragment extends ItemListFragment<MedicationErro
     public void onEventListened(String data){
         if(data.equals(getString(R.string.fab_clicked))){
             startActivity(new Intent(getActivity(),MedicationErrorActivity.class));
-        }else if (data.equals(getString(R.string.force_refresh))){
-            Toast.makeText(getContext(), "Entered!!", Toast.LENGTH_SHORT).show();
         }
 
 
-    }
-
-    @Subscribe(sticky = true,threadMode = ThreadMode.MAIN)
-    public void onEvent(String data) {
-        if (data.equals(getString(R.string.force_refresh))){
-            Log.e("eventbus","Received");
-            Toast.makeText(getContext(), "Entered!!", Toast.LENGTH_SHORT).show();
-        }
     }
 
 
