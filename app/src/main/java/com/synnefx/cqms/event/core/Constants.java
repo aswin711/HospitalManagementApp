@@ -56,7 +56,6 @@ public final class Constants {
         public static final String URL_AUTH = URL_BASE + URL_AUTH_FRAG;
 
         public static final String URL_GCM_REG = "user/gcmreg";
-        public static final String URL_DEVICE_REG = "user/devicereg";
 
         public static final String URL_APP_VERSION = "support/getLatestVersion";
 

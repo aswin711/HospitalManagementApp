@@ -14,7 +14,4 @@ import retrofit2.http.POST;
 public interface GCMRegistrationService {
     @POST(Constants.Http.URL_GCM_REG)
     Call<ApiResponse<String>> register(@Body ApiRequest<GCMRequest> gcmRequest);
-
-    @POST(Constants.Http.URL_DEVICE_REG)
-    Call<ApiResponse<String>> registerDevice(@Body ApiRequest<GCMRequest> gcmRequest);
 }

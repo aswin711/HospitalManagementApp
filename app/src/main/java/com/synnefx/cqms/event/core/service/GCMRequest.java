@@ -9,49 +9,42 @@ import java.io.Serializable;
  */
 public class GCMRequest implements Serializable {
 
-    @Expose
-    private String appID;
-    @Expose
-    private String platform;
+
     @Expose
     private String key;
+
+    @Expose
+    private String deviceToken;
+
     @Expose
     private String hospitalID;
 
-    public GCMRequest(String platform, String key) {
-        this.platform = platform;
+    public GCMRequest(String deviceToken, String key) {
+        this.deviceToken = deviceToken;
         this.key = key;
-    }
-
-    public void setPlatform(String platform) {
-        this.platform = platform;
     }
 
     public void setKey(String key) {
         this.key = key;
     }
 
-    public void setHospitalID(String hospitalID) {
-        this.hospitalID = hospitalID;
-    }
-
-    public String getAppID() {
-        return appID;
-    }
-
-    public void setAppID(String appID) {
-        this.appID = appID;
-    }
-
-    public String getPlatform() {
-        return platform;
-    }
-
     public String getKey() {
         return key;
     }
 
+    public String getDeviceToken() {
+        return deviceToken;
+    }
+
+    public void setDeviceToken(String deviceToken) {
+        this.deviceToken = deviceToken;
+    }
+
     public String getHospitalID() {
         return hospitalID;
+    }
+
+    public void setHospitalID(String hospitalID) {
+        this.hospitalID = hospitalID;
     }
 }

@@ -215,13 +215,12 @@ public class BootstrapService {
         return false;
     }
 
-    public boolean doDeviceRegistration(String platform, String key) {
-        GCMRequest gcmRequest = new GCMRequest(platform, key);
-        gcmRequest.setAppID(Constants.APP_ID);
+    public boolean doDeviceRegistration(String deviceToken, String key) {
+        GCMRequest gcmRequest = new GCMRequest(deviceToken, key);
         ApiRequest<GCMRequest> request = new ApiRequest<>();
         request.setRecord(gcmRequest);
         try {
-            ApiResponse<String> response = createAuthenticatedService(GCMRegistrationService.class).registerDevice(request).execute().body();
+            ApiResponse<String> response = createAuthenticatedService(GCMRegistrationService.class).register(request).execute().body();
             if (null != response && ApiResponse.Status.SUCCESS.equals(response.getStatus())) {
                 return true;
             }

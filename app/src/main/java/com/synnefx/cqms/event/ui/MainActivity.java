@@ -25,6 +25,7 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -496,16 +497,18 @@ public class MainActivity extends BootstrapActivity implements NavigationView.On
             try {
                 if (!PrefUtils.getTokenSentToServer()) {
                     // Assign a unique token to this device
-                    String deviceToken = Pushy.register(getApplicationContext());
+                    String pusyToken = Pushy.register(getApplicationContext());
+                    String deviceToken = PrefUtils.getDeviceToken();
                     SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
                     // Log it for debugging purposes
-                    Log.d("MyApp", "Pushy device token: " + deviceToken);
+                    Log.d("MyApp", "Pushy device token: " + pusyToken);
                     // Send the token to your backend server via an HTTP GET request
                     //new URL("https://{YOUR_API_HOSTNAME}/register/device?token=" + deviceToken).openConnection();
-
-                    boolean sent = serviceProvider.getAuthenticatedService().doDeviceRegistration("android", deviceToken);
-                    sharedPreferences.edit().putBoolean(QuickstartPreferences.SENT_TOKEN_TO_SERVER, true).apply();
-                    PrefUtils.setTokenSentToServer(sent);
+                    if(TextUtils.isEmpty(pusyToken) && TextUtils.isEmpty(deviceToken)){
+                        boolean sent = serviceProvider.getAuthenticatedService().doDeviceRegistration(deviceToken, pusyToken);
+                        sharedPreferences.edit().putBoolean(QuickstartPreferences.SENT_TOKEN_TO_SERVER, true).apply();
+                        PrefUtils.setTokenSentToServer(sent);
+                    }
                 }
             } catch (Exception exc) {
                 // Return exc to onPostExecute
