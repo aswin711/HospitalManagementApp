@@ -86,6 +86,17 @@ public class PrefUtils {
         }
     }
 
+    public static String getFromPrefs(String key,
+                                      String defaultValue) {
+        SharedPreferences sharedPrefs = getSettings();
+        try {
+            return sharedPrefs.getString(key, defaultValue);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return defaultValue;
+        }
+    }
+
 
     public static Long getLongFromPrefs(Context context, String key,
                                         Long defaultValue) {
@@ -130,9 +141,11 @@ public class PrefUtils {
      *
      * @return base instance of app SharedPreferences.
      */
+
     public static SharedPreferences getSettings() {
-        return BootstrapApplication.getInstance().getSharedPreferences(BootstrapApplication.PACKAGE_NAME, Context.MODE_PRIVATE);
+        return BootstrapApplication.getInstance().getSharedPreferences(BootstrapApplication.PACKAGE_NAME, 0);
     }
+
 
     private static boolean putParam(String key, String value) {
         SharedPreferences.Editor editor = getSettings().edit();
@@ -144,7 +157,7 @@ public class PrefUtils {
         SharedPreferences.Editor editor = getSettings().edit();
         editor.putBoolean(key, value);
         editor.apply();
-        return editor.commit();
+        return true;
     }
 
 
@@ -160,6 +173,8 @@ public class PrefUtils {
         SharedPreferences.Editor editor = preferences.edit();
         editor.clear();
         editor.apply();
+        SharedPreferences preferences1 = PreferenceManager.getDefaultSharedPreferences(BootstrapApplication.getInstance());
+        preferences1.edit().clear().apply();
     }
 
 
@@ -172,5 +187,9 @@ public class PrefUtils {
     public static String getDeviceToken(){
         SharedPreferences prefs = getSettings();
         return prefs.getString(PREFS_DEVICE_TOKEN,"");
+
     }
+
+
+
 }

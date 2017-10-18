@@ -104,4 +104,5 @@ public class AppDao {
     public long updateAdverseDrugEventStatus(long clientId, long serverId, int status) {
         return databaseHelper.updateAdverseDrugEventStatus(clientId, serverId, status);
     }
+
 }

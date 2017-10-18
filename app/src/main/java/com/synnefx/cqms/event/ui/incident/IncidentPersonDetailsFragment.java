@@ -391,7 +391,7 @@ public class IncidentPersonDetailsFragment extends Fragment{
         }
         final FragmentManager fragmentManager = getFragmentManager();
         fragmentManager.beginTransaction()
-                .replace(R.id.incident_report_form_container, reportedByDetailsFragment,"ThirdFragment")
+                .replace(R.id.incident_report_form_container, reportedByDetailsFragment,"ReportByFragment")
                 .commit();
     }
 

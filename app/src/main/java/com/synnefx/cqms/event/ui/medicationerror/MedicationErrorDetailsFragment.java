@@ -415,6 +415,12 @@ public class MedicationErrorDetailsFragment extends Fragment implements
                 report.setUnitRef(0l);
                 unitsSpinner.requestFocus();
             }
+
+            if (null == report.getIncidentTime()){
+                eventTime.setError("Time required.");
+                eventTime.requestFocus();
+                error = true;
+            }
         return error;
     }
 

@@ -21,6 +21,11 @@ import com.synnefx.cqms.event.R;
 import com.synnefx.cqms.event.authenticator.LogoutService;
 import com.synnefx.cqms.event.core.BootstrapService;
 import com.synnefx.cqms.event.events.NetworkErrorEvent;
+import com.synnefx.cqms.event.sqlite.DatabaseHelper;
+import com.synnefx.cqms.event.sync.conf.ConfSyncContentProvider;
+import com.synnefx.cqms.event.sync.drugreaction.DrugReactionSyncContentProvider;
+import com.synnefx.cqms.event.sync.incident.IncidentReportSyncContentProvider;
+import com.synnefx.cqms.event.sync.medicationerror.MedicationErrorSyncContentProvider;
 import com.synnefx.cqms.event.ui.MainActivity;
 import com.synnefx.cqms.event.util.PrefUtils;
 import com.synnefx.cqms.event.util.SafeAsyncTask;
@@ -48,6 +53,9 @@ public abstract class BootstrapActivity extends AppCompatActivity {
 
     @Inject
     protected BootstrapServiceProvider serviceProvider;
+
+    @Inject
+    protected DatabaseHelper databaseHelper;
 
     protected ProgressDialog mProgressDialog;
 

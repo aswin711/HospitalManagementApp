@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
@@ -91,6 +92,8 @@ public class IncidentReportActivity extends BootstrapFragmentActivity {
     @Override
     public void onBackPressed(){
 
+
+
         if(!doubleBackPressed && editable){
             AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
             alertDialog.setTitle("Save to draft before exit?");
@@ -117,7 +120,27 @@ public class IncidentReportActivity extends BootstrapFragmentActivity {
             });
             alertDialog.show();
         }else{
-            super.onBackPressed();
+            //super.onBackPressed();
+            if (getSupportFragmentManager().getBackStackEntryCount()>0){
+
+                Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.incident_report_form_container);
+
+                if (currentFragment instanceof IncidentDetailsFragment){
+                    Toast.makeText(this, "First", Toast.LENGTH_SHORT).show();
+                    super.onBackPressed();
+                }else if(currentFragment instanceof IncidentPersonDetailsFragment){
+                    Toast.makeText(this, "Person", Toast.LENGTH_SHORT).show();
+                    super.onBackPressed();
+                }else {
+                    Toast.makeText(this, "Report", Toast.LENGTH_SHORT).show();
+                    super.onBackPressed();
+                }
+            }else{
+                Log.e("FragSW","No fragments");
+                super.onBackPressed();
+            }
+
+
         }
     }
 
@@ -215,6 +238,43 @@ public class IncidentReportActivity extends BootstrapFragmentActivity {
         fragmentManager.beginTransaction()
                 .replace(R.id.incident_report_form_container, detailsFragment,"FirstFragment")
                 .commit();
+    }
+
+    private void loadFragmentByTag(int tagNo){
+        Bundle bundle = new Bundle();
+        if (null != report) {
+            bundle = new Bundle();
+            bundle.putSerializable(Constants.Extra.INCIDENT_ITEM, report);
+        }
+        switch (tagNo){
+            case 1:
+                IncidentDetailsFragment detailsFragment = new IncidentDetailsFragment();
+                detailsFragment.setArguments(bundle);
+                FragmentManager fragmentManager = getSupportFragmentManager();
+                fragmentManager.beginTransaction()
+                        .replace(R.id.incident_report_form_container, detailsFragment,"DetailsFragment")
+                        .commit();
+                break;
+            case 2:
+                IncidentPersonDetailsFragment personDetailsFragment = new IncidentPersonDetailsFragment();
+                personDetailsFragment.setArguments(bundle);
+                FragmentManager fragmentManager1 = getSupportFragmentManager();
+                fragmentManager1.beginTransaction()
+                        .replace(R.id.incident_report_form_container, personDetailsFragment,"PersonDetailsFragment")
+                        .commit();
+                break;
+            case 3:
+                ReportedByDetailsFragment reportedByDetailsFragment = new ReportedByDetailsFragment();
+                reportedByDetailsFragment.setArguments(bundle);
+                FragmentManager fragmentManager2 = getSupportFragmentManager();
+                fragmentManager2.beginTransaction()
+                        .replace(R.id.incident_report_form_container, reportedByDetailsFragment,"FirstFragment")
+                        .commit();
+                break;
+            default:
+                break;
+
+        }
     }
 
 

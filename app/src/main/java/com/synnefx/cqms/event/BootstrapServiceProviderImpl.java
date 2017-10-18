@@ -8,9 +8,12 @@ import com.squareup.otto.Bus;
 import com.synnefx.cqms.event.authenticator.ApiKeyProvider;
 import com.synnefx.cqms.event.core.BootstrapService;
 import com.synnefx.cqms.event.core.UserAgentProvider;
+import com.synnefx.cqms.event.sqlite.DatabaseHelper;
 import com.synnefx.cqms.event.util.PrefUtils;
 
 import java.io.IOException;
+
+import javax.inject.Inject;
 
 import retrofit2.Retrofit;
 
@@ -25,6 +28,7 @@ public class BootstrapServiceProviderImpl implements BootstrapServiceProvider {
     private Bus bus;
     private UserAgentProvider userAgentProvider;
     private ApiKeyProvider keyProvider;
+
 
 
     public BootstrapServiceProviderImpl(Retrofit.Builder retrofitBuilder, UserAgentProvider userAgentProvider, ApiKeyProvider keyProvider, Bus bus) {

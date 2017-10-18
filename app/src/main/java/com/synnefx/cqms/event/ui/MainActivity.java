@@ -183,8 +183,6 @@ public class MainActivity extends BootstrapActivity implements NavigationView.On
         // View injection with Butterknife
         ButterKnife.bind(this);
 
-        Log.d("TAG",PrefUtils.getHospitalID());
-
         // Set up navigation drawer
         title = drawerTitle = getTitle();
 
@@ -214,7 +212,6 @@ public class MainActivity extends BootstrapActivity implements NavigationView.On
         hospital.setText(PrefUtils.getFromPrefs(getApplicationContext(), PrefUtils.PREFS_HOSP_DISPLAY_NAME, "Hospital"));
         /*((TextView) navigationView.findViewById(R.id.navigation_drawer_list_header_user)).setText();
         ((TextView) navigationView.findViewById(R.id.navigation_drawer_list_header_hospital)).setText();*/
-
 
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -573,7 +570,7 @@ public class MainActivity extends BootstrapActivity implements NavigationView.On
    }
 
     public boolean isPreLollipop(){
-        return android.os.Build.VERSION.SDK_INT <= android.os.Build.VERSION_CODES.LOLLIPOP;
+        return android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.LOLLIPOP;
     }
 
 }

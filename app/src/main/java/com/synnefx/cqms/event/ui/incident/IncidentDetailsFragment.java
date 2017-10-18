@@ -415,6 +415,12 @@ public class IncidentDetailsFragment extends Fragment implements View.OnClickLis
             unitsSpinner.requestFocus();
         }
 
+        if (null == report.getIncidentTime()){
+            eventTime.setError("Time required");
+            error = true;
+            eventTime.requestFocus();
+        }
+
         return error;
     }
 
@@ -474,7 +480,7 @@ public class IncidentDetailsFragment extends Fragment implements View.OnClickLis
         }
         final FragmentManager fragmentManager = getFragmentManager();
         fragmentManager.beginTransaction()
-                .replace(R.id.incident_report_form_container, personDetailsFragment,"SecondFragment")
+                .replace(R.id.incident_report_form_container, personDetailsFragment,"PersonDetailsFragment")
                 .commit();
     }
 

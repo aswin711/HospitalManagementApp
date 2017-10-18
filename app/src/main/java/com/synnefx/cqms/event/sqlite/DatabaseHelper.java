@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.google.gson.annotations.Expose;
 import com.synnefx.cqms.event.core.modal.IncidentType;
 import com.synnefx.cqms.event.core.modal.Specialty;
 import com.synnefx.cqms.event.core.modal.Unit;
@@ -61,6 +62,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String TABLE_UNITS = "tbl_units";
     private static final String TABLE_SPECIALTY = "tbl_speciality";
     private static final String TABLE_INCIDENT_TYPE = "tbl_incident_types";
+    private static final String TABLE_HOSPITAL = "tbl_hospital";
 
 
     // Common column names
@@ -92,7 +94,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String CREATE_TABLE_USERS = "CREATE TABLE IF NOT EXISTS "
             + TABLE_USERS + " ( " + Columns.KEY_ID + " INTEGER PRIMARY KEY, " + Columns.KEY_USERNAME
             + " TEXT, " + Columns.KEY_NAME + " TEXT, " + Columns.KEY_EMAIL
-            + " TEXT, " + Columns.KEY_CREATED_ON + " DATETIME, " + Columns.KEY_HOSPITAL_ID + " TEXT NOT NULL )";
+            + " TEXT, "+ Columns.KEY_CREATED_ON + " DATETIME, " + Columns.KEY_HOSPITAL_ID + " TEXT NOT NULL )";
 
     private static final String CREATE_TABLE_UNITS = "CREATE TABLE IF NOT EXISTS "
             + TABLE_UNITS + " (" + Columns.KEY_ID + " INTEGER PRIMARY KEY, " + Columns.KEY_NAME + " TEXT NOT NULL, " + Columns.KEY_UNIT_REF
@@ -177,17 +179,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
         values.put(Columns.KEY_VERSION_CODE, key);
         return (int) db.insert(TABLE_VERSIONS, null, values);
-    }
-
-
-    public int inserUser(User user) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put(Columns.KEY_USERNAME, user.getUserName());
-        values.put(Columns.KEY_NAME, user.getFullName());
-        values.put(Columns.KEY_EMAIL, user.getContact().getEmailID());
-        values.put(Columns.KEY_CREATED_ON, Calendar.getInstance(TimeZone.getTimeZone("IST")).getTimeInMillis());
-        return (int) db.insert(TABLE_USERS, null, values);
     }
 
 
@@ -1795,5 +1786,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             db.endTransaction();
         }
     }
+
+
 
 }
