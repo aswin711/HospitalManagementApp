@@ -58,6 +58,8 @@ public class User implements Serializable {
     @Expose
     private Long id;
 
+    private String deviceToken;
+
     private String avatarUrl;
 
     /**

@@ -8,6 +8,7 @@ import android.content.ContentProviderClient;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.SyncResult;
 import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
@@ -107,7 +108,7 @@ public class ConfSyncAdapter extends AbstractThreadedSyncAdapter {
                 try {
                     updateNotification("Configuration import in progress");
                     //DatabaseHelper db = new DatabaseHelper(mContext);
-                    String hospitalRef = PrefUtils.getFromPrefs(getContext(), PrefUtils.PREFS_HOSP_ID, null);
+                    String hospitalRef = PrefUtils.getFromPrefs(mContext, PrefUtils.PREFS_HOSP_ID, null);
                     if (null != hospitalRef && !"".equals(hospitalRef.trim())) {
                         //List<ServiceType> serviceTypes = serviceProvider.getAuthenticatedService().getServiceTypes();
                         List<Unit> units = serviceProvider.getAuthenticatedService().getUnits();
@@ -139,6 +140,7 @@ public class ConfSyncAdapter extends AbstractThreadedSyncAdapter {
                 }
             }
             getContext().getContentResolver().notifyChange(ConfSyncContentProvider.CONTENT_URI, null);
+
         } catch (Exception e) {
             Log.e(TAG, "syncFailed:", e);
             updateNotification("Data sync failed!");

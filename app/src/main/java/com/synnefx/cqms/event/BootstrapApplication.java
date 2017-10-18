@@ -39,7 +39,6 @@ public abstract class BootstrapApplication extends Application {
                     public Iterable<ChromeDevtoolsDomain> get() {
                         return new Stetho.DefaultInspectorModulesBuilder(getApplicationContext()).runtimeRepl(
                                 new JsRuntimeReplFactoryBuilder(getApplicationContext())
-                                        // Pass to JavaScript: var foo = "bar";
                                         .addVariable("foo", "bar")
                                         .build()
                         ).finish();

@@ -8,6 +8,7 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.design.widget.TextInputLayout;
@@ -41,6 +42,7 @@ import com.synnefx.cqms.event.core.modal.AuthenticationException;
 import com.synnefx.cqms.event.core.modal.User;
 import com.synnefx.cqms.event.events.NetworkErrorEvent;
 import com.synnefx.cqms.event.events.UnAuthorizedErrorEvent;
+import com.synnefx.cqms.event.sqlite.DatabaseHelper;
 import com.synnefx.cqms.event.sync.conf.ConfSyncContentProvider;
 import com.synnefx.cqms.event.sync.drugreaction.DrugReactionSyncContentProvider;
 import com.synnefx.cqms.event.sync.incident.IncidentReportSyncContentProvider;
@@ -98,6 +100,9 @@ public class BootstrapAuthenticatorActivity extends ActionBarAccountAuthenticato
 
     @Inject
     protected BootstrapServiceProvider serviceProvider;
+
+    @Inject
+    protected DatabaseHelper databaseHelper;
 
     @Inject
     Bus bus;
@@ -491,6 +496,7 @@ public class BootstrapAuthenticatorActivity extends ActionBarAccountAuthenticato
                         if (null != user) {
 
                             PrefUtils.saveToPrefs(getApplicationContext(),PrefUtils.PREFS_HOSP_ID, user.getAssociatedHospital());
+                            //preferences.edit().putString(PrefUtils.PREFS_HOSP_ID,user.getAssociatedHospital()).apply();
                             PrefUtils.saveToPrefs(getApplicationContext(),PrefUtils.PREFS_USER_ID, user.getUserName());
                             PrefUtils.saveToPrefs(getApplicationContext(),PrefUtils.PREFS_USER_DISPLAY_NAME, user.getFullName());
                             PrefUtils.saveToPrefs(getApplicationContext(),PrefUtils.PREFS_HOSP_DISPLAY_NAME, user.getAssociatedHospitalName());

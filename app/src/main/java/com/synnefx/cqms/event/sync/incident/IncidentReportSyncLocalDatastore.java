@@ -2,6 +2,7 @@ package com.synnefx.cqms.event.sync.incident;
 
 import android.util.Log;
 
+import com.synnefx.cqms.event.BootstrapApplication;
 import com.synnefx.cqms.event.core.modal.event.incident.IncidentReport;
 import com.synnefx.cqms.event.sqlite.AppDao;
 import com.synnefx.cqms.event.sqlite.DataAccessException;
@@ -23,7 +24,7 @@ public class IncidentReportSyncLocalDatastore implements Datastore<IncidentRepor
     public List<IncidentReport> get() {
 
         try {
-            Log.e("CSLD", "get records of: "+PrefUtils.getHospitalID());
+            Log.e("CSLD", "get records of: "+PrefUtils.getFromPrefs(BootstrapApplication.getInstance(),PrefUtils.PREFS_HOSP_ID,"id"));
             //get all records with status code 1 (not uploaded) of a specific hospital
             return dao.findAllIncidentReportByStatusForUpload(1,PrefUtils.getHospitalID());
         } catch (DataAccessException e) {
