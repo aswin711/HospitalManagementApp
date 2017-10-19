@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
@@ -25,6 +26,7 @@ import com.synnefx.cqms.event.util.PrefUtils;
 import com.synnefx.cqms.event.util.SafeAsyncTask;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import javax.inject.Inject;
 
@@ -55,6 +57,7 @@ public class IncidentReportActivity extends BootstrapFragmentActivity {
         BootstrapApplication.component().inject(this);
         setContentView(R.layout.activity_incident_report);
         ButterKnife.bind(this);
+        eventBus.register(this);
 
         if (getIntent() != null && getIntent().getExtras() != null) {
             report = (IncidentReport) getIntent().getExtras().getSerializable(INCIDENT_ITEM);
@@ -87,7 +90,20 @@ public class IncidentReportActivity extends BootstrapFragmentActivity {
         loadFragment();
     }
 
+    //Enable save draft feature to capture the current screen
+    @Subscribe
+    public void onEventListened(String data){
+        if (data.equals(getString(R.string.save_btn_clicked))){
+            //Toast.makeText(this, "Save button clicked", Toast.LENGTH_SHORT).show();
+            doubleBackPressed = false;
+        }
+    }
 
+    @Override
+    protected void onDestroy() {
+        eventBus.unregister(this);
+        super.onDestroy();
+    }
 
     @Override
     public void onBackPressed(){
@@ -113,34 +129,14 @@ public class IncidentReportActivity extends BootstrapFragmentActivity {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     dialog.dismiss();
-                    doubleBackPressed = true;
-                    onBackPressed();
+                    IncidentReportActivity.super.onBackPressed();
 
                 }
             });
             alertDialog.show();
         }else{
+            navigateScreenBack();
             //super.onBackPressed();
-            if (getSupportFragmentManager().getBackStackEntryCount()>0){
-
-                Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.incident_report_form_container);
-
-                if (currentFragment instanceof IncidentDetailsFragment){
-                    Toast.makeText(this, "First", Toast.LENGTH_SHORT).show();
-                    super.onBackPressed();
-                }else if(currentFragment instanceof IncidentPersonDetailsFragment){
-                    Toast.makeText(this, "Person", Toast.LENGTH_SHORT).show();
-                    super.onBackPressed();
-                }else {
-                    Toast.makeText(this, "Report", Toast.LENGTH_SHORT).show();
-                    super.onBackPressed();
-                }
-            }else{
-                Log.e("FragSW","No fragments");
-                super.onBackPressed();
-            }
-
-
         }
     }
 
@@ -240,6 +236,24 @@ public class IncidentReportActivity extends BootstrapFragmentActivity {
                 .commit();
     }
 
+    private void navigateScreenBack(){
+        //Find which fragment present at the container
+        Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.incident_report_form_container);
+        if (report.getId() != null &&  report.getId() >= 0) {
+            report = databaseHelper.getIncidentReportById(report.getId());
+        }
+
+        if (currentFragment instanceof IncidentDetailsFragment){
+            super.onBackPressed();
+        }else if(currentFragment instanceof IncidentPersonDetailsFragment){
+            loadFragmentByTag(1);
+        }else {
+            loadFragmentByTag(2);
+        }
+
+
+    }
+
     private void loadFragmentByTag(int tagNo){
         Bundle bundle = new Bundle();
         if (null != report) {
@@ -263,16 +277,13 @@ public class IncidentReportActivity extends BootstrapFragmentActivity {
                         .replace(R.id.incident_report_form_container, personDetailsFragment,"PersonDetailsFragment")
                         .commit();
                 break;
-            case 3:
+            default:
                 ReportedByDetailsFragment reportedByDetailsFragment = new ReportedByDetailsFragment();
                 reportedByDetailsFragment.setArguments(bundle);
                 FragmentManager fragmentManager2 = getSupportFragmentManager();
                 fragmentManager2.beginTransaction()
                         .replace(R.id.incident_report_form_container, reportedByDetailsFragment,"FirstFragment")
                         .commit();
-                break;
-            default:
-                break;
 
         }
     }

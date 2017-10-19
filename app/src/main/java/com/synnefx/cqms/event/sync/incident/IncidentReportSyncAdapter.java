@@ -9,6 +9,7 @@ import android.content.Context;
 import android.content.SyncResult;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.synnefx.cqms.event.core.modal.event.incident.IncidentReport;
 import com.synnefx.cqms.event.sync.SyncManager;
@@ -104,12 +105,14 @@ public class IncidentReportSyncAdapter extends AbstractThreadedSyncAdapter {
                 //TaskDb db = new TaskDb(mContext);
                 //db.open();
                 try {
-                    updateNotification("Data sync in progress");
                     Log.e(TAG, "auditSyncLocalDatastore" + (null == auditSyncLocalDatastore));
                     Log.e(TAG, "auditSyncRemoteDatastore" + (null == auditSyncRemoteDatastore));
                     SyncManager<IncidentReport, IncidentReport> syncManager = new SyncManager<IncidentReport, IncidentReport>(auditSyncLocalDatastore, auditSyncRemoteDatastore);
-                    syncManager.sync();
-                    updateNotification("Data sync completed");
+                    if (syncManager.dataAvailForSync()){
+                        updateNotification("Data sync in progress");
+                        syncManager.sync();
+                        updateNotification("Data sync completed");
+                    }
                 } finally {
                     //db.close();
                 }

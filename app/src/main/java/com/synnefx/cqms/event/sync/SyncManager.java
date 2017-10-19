@@ -119,9 +119,16 @@ public class SyncManager<L extends Syncable, R extends Syncable> {
                     syncItem(localItem, remoteItem);
                 }
             }
+
         }else{
             Log.d(TAG, "localData is not avail.");
         }
+    }
+
+    public boolean dataAvailForSync(){
+        List<L> localData = mLocalStore.get();
+        List<R> remoteData = mRemoteStore.get();
+        return (localData !=null && !localData.isEmpty()) || (remoteData != null && !remoteData.isEmpty()) ;
     }
 
     /***

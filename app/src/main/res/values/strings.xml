@@ -177,5 +177,8 @@
     <string name="drug_route">Drug Route</string>
     <string name="drug_dt_started">Drug Started on</string>
     <string name="drug_dt_ceased">Drug ceased on</string>
+    <string name="save_btn_clicked">Save button clicked</string>
+    <string name="sync_completed">Sync completed</string>
+    <string name="nothng_to_sync">Nothing to sync</string>
 
 </resources>

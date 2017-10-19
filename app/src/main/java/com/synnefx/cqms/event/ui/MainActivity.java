@@ -335,6 +335,7 @@ public class MainActivity extends BootstrapActivity implements NavigationView.On
             @Override
             protected void onFinally() throws RuntimeException {
                 hideLoading();
+                initiateSync();
             }
 
             @Override
@@ -386,6 +387,7 @@ public class MainActivity extends BootstrapActivity implements NavigationView.On
         databaseHelper.close();
         super.onDestroy();
     }
+
 
     @Override
     protected void onStart() {
@@ -486,6 +488,7 @@ public class MainActivity extends BootstrapActivity implements NavigationView.On
     public void onNetworkErrorEvent(NetworkErrorEvent networkErrorEvent) {
         Toaster.showLong(MainActivity.this, R.string.message_bad_connection);
     }
+
 
 
     private class RegisterForPushNotificationsAsync extends AsyncTask<Void, Void, Exception> {
