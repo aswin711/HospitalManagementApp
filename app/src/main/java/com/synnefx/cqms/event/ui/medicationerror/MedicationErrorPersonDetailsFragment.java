@@ -348,6 +348,8 @@ public class MedicationErrorPersonDetailsFragment extends Fragment {
                     } else {
                         radioMale.setError("Gender required");
                         personInvolved.setGenderCode(0);
+                        radioMale.requestFocus();
+                        error = true;
                     }
                     personInvolved.setStaffId(null);
                     personInvolved.setDesignation(null);

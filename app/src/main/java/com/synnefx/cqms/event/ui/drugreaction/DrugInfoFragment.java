@@ -113,6 +113,7 @@ public class DrugInfoFragment extends Fragment implements View.OnClickListener,
             @Override
             public void onClick(View view) {
                 saveEvent();
+                eventBus.post(getString(R.string.save_btn_clicked));
             }
         });
         initDatepicker(drugStartedDtBtn,"Set drug started date", "Start");

@@ -60,9 +60,6 @@
     <string name="action_settings">Settings</string>
 
 
-
-
-
     <!-- Observation card layout-->
     <string name="action_view">View Observation details</string>
     <string name="action_delete">Delete Observation</string>
@@ -73,7 +70,6 @@
     <string name="notification_upload_description">Records are being uploaded into cloud</string>
     <string name="notification_upload_completed_description">Records are successfully uploaded into cloud</string>
     <string name="notification_upload_failed_description">Date Sync failed</string>
-
 
 
     <!--Case sheet audit -->

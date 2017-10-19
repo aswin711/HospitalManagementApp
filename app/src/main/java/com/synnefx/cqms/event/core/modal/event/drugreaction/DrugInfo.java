@@ -126,4 +126,5 @@ public class DrugInfo implements Serializable {
     public void setIsSuspectedDrug(boolean isSuspectedDrug) {
         this.isSuspectedDrug = isSuspectedDrug;
     }
+
 }

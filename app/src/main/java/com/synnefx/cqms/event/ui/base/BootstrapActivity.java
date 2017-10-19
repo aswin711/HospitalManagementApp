@@ -18,6 +18,7 @@ import com.squareup.otto.Subscribe;
 import com.synnefx.cqms.event.BootstrapApplication;
 import com.synnefx.cqms.event.BootstrapServiceProvider;
 import com.synnefx.cqms.event.R;
+import com.synnefx.cqms.event.authenticator.BootstrapAuthenticatorActivity;
 import com.synnefx.cqms.event.authenticator.LogoutService;
 import com.synnefx.cqms.event.core.BootstrapService;
 import com.synnefx.cqms.event.events.NetworkErrorEvent;
@@ -163,7 +164,8 @@ public abstract class BootstrapActivity extends AppCompatActivity {
                 // and when it finds none the user will be requested to log in again.
                 //checkAuth();
                 PrefUtils.deleteFromPrefs();
-                checkAuth();
+                startActivity(new Intent(getApplicationContext(), BootstrapAuthenticatorActivity.class));
+                finish();
             }
         });
     }
