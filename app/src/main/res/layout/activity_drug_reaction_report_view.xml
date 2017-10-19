@@ -1,0 +1,683 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#FFFFFF"
+    tools:context="com.synnefx.cqms.event.ui.medicationerror.MedicationErrorViewActivity">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_marginLeft="15sp"
+            android:layout_marginRight="15sp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/medication_error_view_details_title"
+                android:text="Patient Details"
+                android:textColor="@color/colorAccent"
+                android:textSize="14sp"
+                android:layout_marginTop="10sp"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="15sp"
+                >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Patient Name"
+                    android:textColor="@color/text_light"
+                    android:textSize="16sp"
+                    />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/drug_reaction_report_view_patient_name"
+                    android:text="@string/not_avail"
+                    android:textSize="18sp"
+                    android:textColor="@color/table_text"
+                    android:layout_marginTop="10sp"/>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.25sp"
+                    android:background="@color/text_title"
+                    android:layout_marginTop="10sp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Patient Number"
+                    android:textColor="@color/text_light"
+                    android:textSize="16sp"
+                    />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/drug_reaction_report_view_patient_num"
+                    android:text="@string/not_avail"
+                    android:textSize="18sp"
+                    android:textColor="@color/table_text"
+                    android:layout_marginTop="10sp"/>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.25sp"
+                    android:background="@color/text_title"
+                    android:layout_marginTop="10sp"/>
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Patient Type"
+                    android:textColor="@color/text_light"
+                    android:textSize="16sp"
+                    android:layout_marginTop="10sp"
+                    />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/drug_reaction_report_view_patient_type"
+                    android:text="@string/not_avail"
+                    android:textSize="18sp"
+                    android:textColor="@color/table_text"
+                    android:layout_marginTop="10sp"/>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.25sp"
+                    android:background="@color/text_title"
+                    android:layout_marginTop="10sp"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Date Of Birth"
+                    android:textColor="@color/text_light"
+                    android:textSize="16sp"
+                    android:layout_marginTop="10sp"
+                    />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/drug_reaction_report_view_patient_dob"
+                    android:text="@string/not_avail"
+                    android:textSize="18sp"
+                    android:textColor="@color/table_text"
+                    android:layout_marginTop="10sp"/>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.25sp"
+                    android:background="@color/text_title"
+                    android:layout_marginTop="10sp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Gender"
+                    android:textColor="@color/text_light"
+                    android:textSize="16sp"
+                    android:layout_marginTop="10sp"
+                    />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/drug_reaction_report_view_patient_gender"
+                    android:text="@string/not_avail"
+                    android:textSize="18sp"
+                    android:textColor="@color/table_text"
+                    android:layout_marginTop="10sp"/>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.25sp"
+                    android:background="@color/text_title"
+                    android:layout_marginTop="10sp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Height"
+                    android:textColor="@color/text_light"
+                    android:textSize="16sp"
+                    android:layout_marginTop="10sp"
+                    />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/drug_reaction_report_view_patient_ht"
+                    android:text="@string/not_avail"
+                    android:textSize="18sp"
+                    android:textColor="@color/table_text"
+                    android:layout_marginTop="10sp"/>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.25sp"
+                    android:background="@color/text_title"
+                    android:layout_marginTop="10sp"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Weight"
+                    android:textColor="@color/text_light"
+                    android:textSize="16sp"
+                    android:layout_marginTop="10sp"
+                    />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/drug_reaction_report_view_patient_wt"
+                    android:text="@string/not_avail"
+                    android:textSize="18sp"
+                    android:textColor="@color/table_text"
+                    android:layout_marginTop="10sp"/>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.25sp"
+                    android:background="@color/text_title"
+                    android:layout_marginTop="10sp"/>
+
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Drug Reaction Diagnosis Details"
+                android:textColor="@color/colorAccent"
+                android:textSize="14sp"
+                android:layout_marginTop="10sp"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="15sp"
+                >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Unit"
+                    android:textColor="@color/text_light"
+                    android:textSize="16sp"
+                    />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/drug_reaction_report_view_diagnosis_unit"
+                    android:text="@string/not_avail"
+                    android:textSize="18sp"
+                    android:textColor="@color/table_text"
+                    android:layout_marginTop="10sp"/>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.25sp"
+                    android:background="@color/text_title"
+                    android:layout_marginTop="10sp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Consultant"
+                    android:textColor="@color/text_light"
+                    android:textSize="16sp"
+                    />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/drug_reaction_report_view_diagnosis_consultant"
+                    android:text="@string/not_avail"
+                    android:textSize="18sp"
+                    android:textColor="@color/table_text"
+                    android:layout_marginTop="10sp"/>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.25sp"
+                    android:background="@color/text_title"
+                    android:layout_marginTop="10sp"/>
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Patient Diagnosis"
+                    android:textColor="@color/text_light"
+                    android:textSize="16sp"
+                    android:layout_marginTop="10sp"
+                    />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/drug_reaction_report_view_diagnosis_patient"
+                    android:text="@string/not_avail"
+                    android:textSize="18sp"
+                    android:textColor="@color/table_text"
+                    android:layout_marginTop="10sp"/>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.25sp"
+                    android:background="@color/text_title"
+                    android:layout_marginTop="10sp"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Time Of Event"
+                    android:textColor="@color/text_light"
+                    android:textSize="16sp"
+                    android:layout_marginTop="10sp"
+                    />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/drug_reaction_report_view_diagnosis_toe"
+                    android:text="@string/not_avail"
+                    android:textSize="18sp"
+                    android:textColor="@color/table_text"
+                    android:layout_marginTop="10sp"/>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.25sp"
+                    android:background="@color/text_title"
+                    android:layout_marginTop="10sp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Incident Description"
+                    android:textColor="@color/text_light"
+                    android:textSize="16sp"
+                    android:layout_marginTop="10sp"
+                    />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/drug_reaction_report_view_diagnosis_description"
+                    android:text="@string/not_avail"
+                    android:textSize="18sp"
+                    android:textColor="@color/table_text"
+                    android:layout_marginTop="10sp"/>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.25sp"
+                    android:background="@color/text_title"
+                    android:layout_marginTop="10sp"/>
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Drug Reaction Details"
+                android:textColor="@color/colorAccent"
+                android:textSize="14sp"
+                android:layout_marginTop="10sp"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="15sp"
+                >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Corrective Action Taken"
+                    android:textColor="@color/text_light"
+                    android:textSize="16sp"
+                    />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/drug_reaction_report_view_reaction_corrective"
+                    android:text="@string/not_avail"
+                    android:textSize="18sp"
+                    android:textColor="@color/table_text"
+                    android:layout_marginTop="10sp"/>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.25sp"
+                    android:background="@color/text_title"
+                    android:layout_marginTop="10sp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Action Outcome"
+                    android:textColor="@color/text_light"
+                    android:textSize="16sp"
+                    />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/drug_reaction_report_view_reaction_outcome"
+                    android:text="@string/not_avail"
+                    android:textSize="18sp"
+                    android:textColor="@color/table_text"
+                    android:layout_marginTop="10sp"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:id="@+id/drug_reaction_report_view_reaction_time_layout">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Time:"
+                        android:textColor="@color/text_light"
+                        android:textSize="18sp"
+                        />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/drug_reaction_report_view_reaction_time"
+                        android:text="@string/not_avail"
+                        android:layout_marginLeft="15dp"
+                        android:textSize="18sp"
+                        android:textColor="@color/table_text"
+                        />
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.25sp"
+                    android:background="@color/text_title"
+                    android:layout_marginTop="10sp"/>
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Patient Case Sheet Added"
+                    android:textColor="@color/text_light"
+                    android:textSize="16sp"
+                    android:layout_marginTop="10sp"
+                    />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/drug_reaction_report_view_reaction_casesheet"
+                    android:text="@string/not_avail"
+                    android:textSize="18sp"
+                    android:textColor="@color/table_text"
+                    android:layout_marginTop="10sp"/>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.25sp"
+                    android:background="@color/text_title"
+                    android:layout_marginTop="10sp"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Comments"
+                    android:textColor="@color/text_light"
+                    android:textSize="16sp"
+                    android:layout_marginTop="10sp"
+                    />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/drug_reaction_report_view_reaction_comments"
+                    android:text="@string/not_avail"
+                    android:textSize="18sp"
+                    android:textColor="@color/table_text"
+                    android:layout_marginTop="10sp"/>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.25sp"
+                    android:background="@color/text_title"
+                    android:layout_marginTop="10sp"/>
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Drug Info Details"
+                android:textColor="@color/colorAccent"
+                android:textSize="14sp"
+                android:layout_marginTop="10sp"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="15sp"
+                >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Suspected Drug"
+                    android:textColor="@color/text_light"
+                    android:textSize="16sp"
+                    />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/drug_reaction_report_view_druginfo_name"
+                    android:text="@string/not_avail"
+                    android:textSize="18sp"
+                    android:textColor="@color/table_text"
+                    android:layout_marginTop="10sp"/>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.25sp"
+                    android:background="@color/text_title"
+                    android:layout_marginTop="10sp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Dose"
+                    android:textColor="@color/text_light"
+                    android:textSize="16sp"
+                    />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/drug_reaction_report_view_druginfo_dose"
+                    android:text="@string/not_avail"
+                    android:textSize="18sp"
+                    android:textColor="@color/table_text"
+                    android:layout_marginTop="10sp"/>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.25sp"
+                    android:background="@color/text_title"
+                    android:layout_marginTop="10sp"/>
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Frequency"
+                    android:textColor="@color/text_light"
+                    android:textSize="16sp"
+                    android:layout_marginTop="10sp"
+                    />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/drug_reaction_report_view_druginfo_frequency"
+                    android:text="@string/not_avail"
+                    android:textSize="18sp"
+                    android:textColor="@color/table_text"
+                    android:layout_marginTop="10sp"/>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.25sp"
+                    android:background="@color/text_title"
+                    android:layout_marginTop="10sp"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Route"
+                    android:textColor="@color/text_light"
+                    android:textSize="16sp"
+                    android:layout_marginTop="10sp"
+                    />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/drug_reaction_report_view_druginfo_route"
+                    android:text="@string/not_avail"
+                    android:textSize="18sp"
+                    android:textColor="@color/table_text"
+                    android:layout_marginTop="10sp"/>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.25sp"
+                    android:background="@color/text_title"
+                    android:layout_marginTop="10sp"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Drug Started On"
+                    android:textColor="@color/text_light"
+                    android:textSize="16sp"
+                    android:layout_marginTop="10sp"
+                    />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/drug_reaction_report_view_druginfo_started"
+                    android:text="@string/not_avail"
+                    android:textSize="18sp"
+                    android:textColor="@color/table_text"
+                    android:layout_marginTop="10sp"/>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.25sp"
+                    android:background="@color/text_title"
+                    android:layout_marginTop="10sp"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Drug Ceased On"
+                    android:textColor="@color/text_light"
+                    android:textSize="16sp"
+                    android:layout_marginTop="10sp"
+                    />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/drug_reaction_report_view_druginfo_ceased"
+                    android:text="@string/not_avail"
+                    android:textSize="18sp"
+                    android:textColor="@color/table_text"
+                    android:layout_marginTop="10sp"/>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.25sp"
+                    android:background="@color/text_title"
+                    android:layout_marginTop="10sp"/>
+
+            </LinearLayout>
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Reported By"
+                android:textColor="@color/colorAccent"
+                android:textSize="14sp"
+                android:layout_marginTop="10sp"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10sp"
+                android:layout_marginBottom="10sp"
+                android:orientation="vertical"
+                >
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/drug_reaction_report_view_reported_by_name"
+                    android:text="@string/not_avail"
+                    android:textSize="18sp"
+                    android:textColor="@color/table_text"
+                    android:layout_marginTop="10sp"/>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Designation:"
+                        android:textSize="18sp"
+                        android:textColor="@color/table_text"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/drug_reaction_report_view_reported_by_designation"
+                        android:text="@string/not_avail"
+                        android:textSize="18sp"
+                        android:textColor="@color/table_text"
+                        android:layout_marginLeft="5sp"
+                        />
+
+
+                </LinearLayout>
+
+
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.25sp"
+                    android:background="@color/text_title"
+                    android:layout_marginTop="10sp"/>
+
+
+
+
+            </LinearLayout>
+
+
+
+
+        </LinearLayout>
+
+
+
+    </ScrollView>
+
+
+</LinearLayout>

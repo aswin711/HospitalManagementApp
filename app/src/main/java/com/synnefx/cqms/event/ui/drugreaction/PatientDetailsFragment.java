@@ -142,6 +142,7 @@ public class PatientDetailsFragment extends Fragment implements View.OnClickList
             @Override
             public void onClick(View view) {
                 saveEvent();
+                eventBus.post(getString(R.string.save_btn_clicked));
             }
         });
         return fragmentView;
@@ -402,6 +403,7 @@ public class PatientDetailsFragment extends Fragment implements View.OnClickList
         if (patient.getGenderCode() == null || patient.getGenderCode()==0){
             personGender.setError("Patient gender required");
             personGender.requestFocus();
+            error = true;
         }
 
         if (ipPatient.isChecked()) {

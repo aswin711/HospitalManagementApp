@@ -121,6 +121,7 @@ public class DrugReactionDiagnosisDetailsFragment extends Fragment implements Vi
             @Override
             public void onClick(View view) {
                 saveEventDetails();
+                eventBus.post(getString(R.string.save_btn_clicked));
             }
         });
         return fragmentView;
@@ -395,6 +396,10 @@ public class DrugReactionDiagnosisDetailsFragment extends Fragment implements Vi
 
         if (TextUtils.isEmpty(description.getText())){
             description.setError("Incident description required.");
+            description.requestFocus();
+            error = true;
+        }else if(description.getText().length()<=10){
+            description.setError("Incident description minimum 11 characters required.");
             description.requestFocus();
             error = true;
         }else {

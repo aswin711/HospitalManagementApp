@@ -21,6 +21,7 @@ import com.synnefx.cqms.event.ui.drugreaction.DrugReactionDetailsFragment;
 import com.synnefx.cqms.event.ui.drugreaction.DrugReactionDiagnosisDetailsFragment;
 import com.synnefx.cqms.event.ui.drugreaction.DrugReactionListActivity;
 import com.synnefx.cqms.event.ui.drugreaction.DrugReactionListFragment;
+import com.synnefx.cqms.event.ui.drugreaction.DrugReactionReportViewActivity;
 import com.synnefx.cqms.event.ui.drugreaction.DrugReactionReportedByDetailsFragment;
 import com.synnefx.cqms.event.ui.drugreaction.PatientDetailsFragment;
 import com.synnefx.cqms.event.ui.incident.IncidentDetailsFragment;
@@ -128,4 +129,6 @@ public interface BootstrapComponent {
 
 
     void inject(BootstrapFragment bootstrapFragment);
+
+    void inject(DrugReactionReportViewActivity drugReactionReportViewActivity);
 }

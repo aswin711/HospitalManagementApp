@@ -122,6 +122,7 @@ public class DrugReactionDetailsFragment extends Fragment implements View.OnClic
             @Override
             public void onClick(View view) {
                 saveEvent();
+                eventBus.post(getString(R.string.save_btn_clicked));
             }
         });
         return fragmentView;
@@ -286,6 +287,7 @@ public class DrugReactionDetailsFragment extends Fragment implements View.OnClic
     public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
         Calendar selectedDate = Calendar.getInstance();
         selectedDate.set(year, monthOfYear, dayOfMonth);
+        report.setReactionDate(selectedDate);
         if ("RecoveryDatepickerdialog".equals(view.getTag())) {
             report.setDateOfRecovery(selectedDate);
             recoveredDate.setText(CalenderUtils.formatCalendarToString(report.getDateOfRecovery(), Constants.Common.DATE_DISPLAY_FORMAT));
