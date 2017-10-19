@@ -53,7 +53,7 @@ public class NotificationUtils {
                 .setContentText(message)
                 .setAutoCancel(true)
                 .setOnlyAlertOnce(true)
-                .setOngoing(true)
+                .setOngoing(false)
                 .setWhen(System.currentTimeMillis())
                 .setContentIntent(pendingIntent);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {

@@ -173,6 +173,7 @@ public class PrefUtils {
         SharedPreferences.Editor editor = preferences.edit();
         editor.clear();
         editor.apply();
+        // Clearing default sharedpreference if any.
         SharedPreferences preferences1 = PreferenceManager.getDefaultSharedPreferences(BootstrapApplication.getInstance());
         preferences1.edit().clear().apply();
     }

@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
@@ -19,10 +20,14 @@ import com.synnefx.cqms.event.core.modal.event.medicationerror.MedicationError;
 import com.synnefx.cqms.event.sqlite.DatabaseHelper;
 import com.synnefx.cqms.event.ui.MainActivity;
 import com.synnefx.cqms.event.ui.base.BootstrapFragmentActivity;
+import com.synnefx.cqms.event.ui.incident.IncidentDetailsFragment;
+import com.synnefx.cqms.event.ui.incident.IncidentPersonDetailsFragment;
+import com.synnefx.cqms.event.ui.incident.ReportedByDetailsFragment;
 import com.synnefx.cqms.event.util.PrefUtils;
 import com.synnefx.cqms.event.util.SafeAsyncTask;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import javax.inject.Inject;
 
@@ -52,6 +57,7 @@ public class MedicationErrorActivity extends BootstrapFragmentActivity {
         BootstrapApplication.component().inject(this);
         setContentView(R.layout.activity_incident_report);
         ButterKnife.bind(this);
+        eventBus.register(this);
         if (getIntent() != null && getIntent().getExtras() != null) {
             report = (MedicationError) getIntent().getExtras().getSerializable(INCIDENT_ITEM);
             editable = getIntent().getExtras().getBoolean(EDIT_REPORT_COMMAND);
@@ -79,6 +85,21 @@ public class MedicationErrorActivity extends BootstrapFragmentActivity {
         getSupportActionBar().setHomeButtonEnabled(true);
 
         loadFragment();
+    }
+
+    @Override
+    protected void onDestroy() {
+        eventBus.unregister(this);
+        super.onDestroy();
+    }
+
+    //Enable save draft feature to capture the current screen
+    @Subscribe
+    public void onEventListened(String data){
+        if (data.equals(getString(R.string.save_btn_clicked))){
+            //Toast.makeText(this, "Save button clicked", Toast.LENGTH_SHORT).show();
+            doubleBackPressed = false;
+        }
     }
 
     @Override
@@ -176,14 +197,14 @@ public class MedicationErrorActivity extends BootstrapFragmentActivity {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     dialog.dismiss();
-                    doubleBackPressed = true;
-                    onBackPressed();
+                    MedicationErrorActivity.super.onBackPressed();
 
                 }
             });
             alertDialog.show();
         }else{
-            super.onBackPressed();
+            //super.onBackPressed();
+            navigateScreenBack();
         }
     }
 
@@ -209,5 +230,58 @@ public class MedicationErrorActivity extends BootstrapFragmentActivity {
                 .replace(R.id.incident_report_form_container, detailsFragment,"DetailsFragment")
                 .commit();
     }
+
+    private void navigateScreenBack(){
+        //Find which fragment present at the container
+        Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.incident_report_form_container);
+        if (report.getId() != null &&  report.getId() >= 0) {
+            report = databaseHelper.getMedicationErrorById(report.getId());
+        }
+
+        if (currentFragment instanceof MedicationErrorDetailsFragment){
+            super.onBackPressed();
+        }else if(currentFragment instanceof MedicationErrorPersonDetailsFragment){
+            loadFragmentByTag(1);
+        }else {
+            loadFragmentByTag(2);
+        }
+
+
+    }
+
+    private void loadFragmentByTag(int tagNo){
+        Bundle bundle = new Bundle();
+        if (null != report) {
+            bundle = new Bundle();
+            bundle.putSerializable(Constants.Extra.INCIDENT_ITEM, report);
+        }
+        switch (tagNo){
+            case 1:
+                MedicationErrorDetailsFragment detailsFragment = new MedicationErrorDetailsFragment();
+                detailsFragment.setArguments(bundle);
+                FragmentManager fragmentManager = getSupportFragmentManager();
+                fragmentManager.beginTransaction()
+                        .replace(R.id.incident_report_form_container, detailsFragment,"DetailsFragment")
+                        .commit();
+                break;
+            case 2:
+                MedicationErrorPersonDetailsFragment personDetailsFragment = new MedicationErrorPersonDetailsFragment();
+                personDetailsFragment.setArguments(bundle);
+                FragmentManager fragmentManager1 = getSupportFragmentManager();
+                fragmentManager1.beginTransaction()
+                        .replace(R.id.incident_report_form_container, personDetailsFragment,"PersonDetailsFragment")
+                        .commit();
+                break;
+            default:
+                ErrorReportedByDetailsFragment reportedByDetailsFragment = new ErrorReportedByDetailsFragment();
+                reportedByDetailsFragment.setArguments(bundle);
+                FragmentManager fragmentManager2 = getSupportFragmentManager();
+                fragmentManager2.beginTransaction()
+                        .replace(R.id.incident_report_form_container, reportedByDetailsFragment,"FirstFragment")
+                        .commit();
+
+        }
+    }
+
 
 }

@@ -120,6 +120,7 @@ public class IncidentDetailsFragment extends Fragment implements View.OnClickLis
             @Override
             public void onClick(View view) {
                 saveEvent();
+                eventBus.post(getString(R.string.save_btn_clicked));
             }
         });
         return fragmentView;

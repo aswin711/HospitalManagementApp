@@ -123,6 +123,7 @@ public class MedicationErrorDetailsFragment extends Fragment implements
             @Override
             public void onClick(View view) {
                 saveEvent();
+                eventBus.post(getString(R.string.save_btn_clicked));
             }
         });
         return fragmentView;
@@ -384,6 +385,9 @@ public class MedicationErrorDetailsFragment extends Fragment implements
             if (TextUtils.isEmpty(correctiveAction.getText())) {
                 correctiveAction.setError("Corrective action required");
                 correctiveAction.requestFocus();
+                error = true;
+            }else if(correctiveAction.getText().length()<10){
+                correctiveAction.setError("Corrective action length must be of minimum 10 characters.");
                 error = true;
             } else {
                 report.setCorrectiveActionTaken(correctiveAction.getText().toString().trim());

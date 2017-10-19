@@ -127,6 +127,7 @@ public class MedicationErrorPersonDetailsFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 saveEventPersonDetails();
+                eventBus.post(getString(R.string.save_btn_clicked));
             }
         });
         return fragmentView;

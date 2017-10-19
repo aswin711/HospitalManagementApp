@@ -9,6 +9,7 @@ import android.content.Context;
 import android.content.SyncResult;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.synnefx.cqms.event.R;
 import com.synnefx.cqms.event.core.modal.event.medicationerror.MedicationError;
@@ -53,8 +54,6 @@ public class MedicationErrorSyncAdapter extends AbstractThreadedSyncAdapter {
     @Inject
     protected NotificationManager notificationManager;
 
-    //  @Inject
-    // protected Bus eventBus;
 
 
     @Inject
@@ -108,13 +107,16 @@ public class MedicationErrorSyncAdapter extends AbstractThreadedSyncAdapter {
                 //TaskDb db = new TaskDb(mContext);
                 //db.open();
                 try {
-                    updateNotification("Data sync in progress");
-                    Log.e(TAG, "auditSyncLocalDatastore" + (null == itemSyncLocalDatastore));
-                    Log.e(TAG, "auditSyncRemoteDatastore" + (null == itemSyncRemoteDatastore));
-                    SyncManager<MedicationError, MedicationError> syncManager = new SyncManager<MedicationError, MedicationError>(itemSyncLocalDatastore, itemSyncRemoteDatastore);
-                    syncManager.sync();
-                    updateNotification("Data sync completed");
-
+                        Log.e(TAG, "auditSyncLocalDatastore" + (null == itemSyncLocalDatastore));
+                        Log.e(TAG, "auditSyncRemoteDatastore" + (null == itemSyncRemoteDatastore));
+                        SyncManager<MedicationError, MedicationError> syncManager = new SyncManager<MedicationError, MedicationError>(itemSyncLocalDatastore, itemSyncRemoteDatastore);
+                        if (syncManager.dataAvailForSync()){
+                            updateNotification("Data sync in progress");
+                            syncManager.sync();
+                            updateNotification("Data sync completed");
+                        }else{
+                            updateNotification("No data to sync");
+                        }
                 } finally {
                     //db.close();
                    // eventBus.postSticky(getContext().getString(R.string.force_refresh));

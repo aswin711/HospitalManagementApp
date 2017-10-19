@@ -20,15 +20,14 @@ public class DrugReactionSyncLocalDatastore implements Datastore<AdverseDrugEven
 
     @Override
     public List<AdverseDrugEvent> get() {
-        List<AdverseDrugEvent> events = new ArrayList<>();
         try {
             Log.e("CSLD", "get");
-            events =  dao.findAllAdverseDrugEventsByStatusForUpload(1, PrefUtils.getHospitalID());
+            return dao.findAllAdverseDrugEventsByStatusForUpload(1, PrefUtils.getHospitalID());
         } catch (DataAccessException e) {
             //TODO
             Log.e("CSLD", e.toString());
         }
-        return events;
+        return null;
     }
 
     @Override
