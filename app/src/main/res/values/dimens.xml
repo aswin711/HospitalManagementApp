@@ -40,4 +40,7 @@
     <!-- Editext dimensions -->
     <dimen name="edit_height">55dp</dimen>
     <dimen name="edit_margin">15dp</dimen>
+
+    <!-- Editext textsize -->
+    <dimen name="_18">18sp</dimen>
 </resources>

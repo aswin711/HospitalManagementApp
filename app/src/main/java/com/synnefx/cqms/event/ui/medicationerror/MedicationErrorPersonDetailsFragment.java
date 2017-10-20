@@ -289,7 +289,9 @@ public class MedicationErrorPersonDetailsFragment extends Fragment {
 
 
     public MedicationError saveDraft(){
-        personInvolved.setName(personInvolvedName.getText().toString());
+        if (!TextUtils.isEmpty(personInvolvedName.getText().toString())) {
+            personInvolved.setName(personInvolvedName.getText().toString());
+        }
 
         switch (personTypeSpinner.getText().toString()){
             case "Patient":

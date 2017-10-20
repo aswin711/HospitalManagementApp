@@ -236,7 +236,7 @@ public class MedicationErrorActivity extends BootstrapFragmentActivity {
     private void navigateScreenBack(){
         //Find which fragment present at the container
         Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.incident_report_form_container);
-        if (report.getId() != null &&  report.getId() >= 0 && !(currentFragment instanceof MedicationErrorPersonDetailsFragment)) {
+        if (report.getId() != null &&  report.getId() >= 0) {
             report = databaseHelper.getMedicationErrorById(report.getId());
         }
 

@@ -10,6 +10,7 @@ import com.facebook.stetho.inspector.protocol.ChromeDevtoolsDomain;
 import com.facebook.stetho.rhino.JsRuntimeReplFactoryBuilder;
 
 
+
 /**
  * CQMS application
  */
@@ -45,6 +46,7 @@ public abstract class BootstrapApplication extends Application {
                     }
                 })
                 .build());
+
 
         init();
 

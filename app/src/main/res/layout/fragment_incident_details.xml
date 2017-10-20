@@ -27,6 +27,7 @@
                 <com.wrapp.floatlabelededittext.FloatLabeledEditText
                     android:layout_width="match_parent"
                     android:layout_height="75dp"
+                    android:textSize="@dimen/_18"
                     float:fletPadding="2dp"
                     float:fletTextAppearance="@color/bootstrap_gray_dark">
                     <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
@@ -34,6 +35,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/edit_height"
                         android:layout_marginTop="@dimen/edit_margin"
+                        android:textSize="@dimen/_18"
                         android:hint="@string/event_unit" />
                 </com.wrapp.floatlabelededittext.FloatLabeledEditText>
 
@@ -56,7 +58,8 @@
                         android:id="@+id/incident_types"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="@string/incident_type" />
+                        android:hint="@string/incident_type"
+                        android:textSize="@dimen/_18"/>
 
                 </com.wrapp.floatlabelededittext.FloatLabeledEditText>
 
@@ -86,6 +89,7 @@
                         android:inputType="none"
                         android:layout_marginBottom="8dp"
                         android:minLines="1"
+                        android:textSize="@dimen/_18"
                         android:layout_marginTop="@dimen/edit_margin"
                         android:hint="@string/event_time"/>
 
@@ -126,6 +130,7 @@
                 <RadioButton android:id="@+id/incident_level_near_miss"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textSize="@dimen/_18"
                     android:buttonTint="@color/colorPrimary"
                     android:text="@string/incident_level_near_miss"/>
                 <RadioButton android:id="@+id/incident_level_harm"
@@ -133,6 +138,7 @@
                     android:layout_height="wrap_content"
                     android:buttonTint="@color/colorPrimary"
                     android:text="@string/incident_level_harm"
+                    android:textSize="@dimen/_18"
                     android:layout_marginLeft="35dp" />
             </RadioGroup>
 
@@ -150,6 +156,7 @@
                     float:met_maxCharacters="1000"
                     android:maxLength="1000"
                     android:minLines="4"
+                    android:textSize="@dimen/_18"
                     android:hint="@string/incident_description"/>
             </com.wrapp.floatlabelededittext.FloatLabeledEditText>
 
@@ -168,6 +175,7 @@
                     float:met_maxCharacters="1000"
                     android:maxLength="1000"
                     android:minLines="4"
+                    android:textSize="@dimen/_18"
                     android:hint="@string/event_corrective_action"/>
             </com.wrapp.floatlabelededittext.FloatLabeledEditText>
             <Button
@@ -181,7 +189,7 @@
                 android:padding="10dp"
                 android:text="@string/incident_details_save"
                 android:textColor="#fff"
-                android:textSize="18dp"
+                android:textSize="@dimen/_18"
                  />
         </LinearLayout>
     </ScrollView>
