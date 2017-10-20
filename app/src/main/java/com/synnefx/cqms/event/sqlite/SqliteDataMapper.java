@@ -463,6 +463,9 @@ public class SqliteDataMapper {
             values.put(KEY_DATE_RECOVERY, report.getDateOfRecovery().getTimeInMillis());
         if(null != report.getDateOfDeath())
             values.put(KEY_DATE_DEATH, report.getDateOfDeath().getTimeInMillis());
+        if (null != report.getPersonInvolvedRef()){
+            values.put(KEY_PERSON_INVOLVED_REF,report.getPersonInvolvedRef());
+        }
         return values;
     }
 
