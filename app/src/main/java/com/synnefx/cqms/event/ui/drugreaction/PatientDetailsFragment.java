@@ -247,7 +247,6 @@ public class PatientDetailsFragment extends Fragment implements View.OnClickList
                 dpd.setTitle("Select Date of Birth");
                 //Setting max date
                 dpd.setMaxDate(Calendar.getInstance());
-
                 dpd.show(getActivity().getFragmentManager(), "DOBDatepickerdialog");
             }
         });
@@ -373,7 +372,7 @@ public class PatientDetailsFragment extends Fragment implements View.OnClickList
                 long id = databaseHelper.updateAdverseDrugEventPersonInvolved(report);
                 if (0 < id) {
                     Timber.e("saveIncidentDetails " + id);
-                    //report.getPersonInvolved().setId(id);
+                    report.getPersonInvolved().setId(id);
                     return true;
                 }
             }
