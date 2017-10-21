@@ -268,8 +268,8 @@ public class DrugReactionDiagnosisDetailsFragment extends Fragment implements Vi
                     false
             );
 
-            if (now.getTime().after(selectedDate.getTime())) {
-                tpd.setMaxTime(now.get(Calendar.HOUR_OF_DAY), now.get(Calendar.MINUTE), now.get(Calendar.SECOND));
+            if (now.getTime().after(selectedDate.getTime()) && dayOfMonth == now.get(Calendar.DAY_OF_MONTH)) {
+                tpd.setMaxTime(now.get(Calendar.HOUR_OF_DAY), now.get(Calendar.MINUTE)-1, now.get(Calendar.SECOND));
             }
             tpd.setThemeDark(true);
             tpd.vibrate(true);
@@ -278,7 +278,7 @@ public class DrugReactionDiagnosisDetailsFragment extends Fragment implements Vi
             tpd.enableMinutes(true);
             // tpd.setAccentColor(Color.parseColor("#9C27B0"));
             tpd.setTitle("Select Time");
-            tpd.setTimeInterval(1, 5);
+            tpd.setTimeInterval(1, 1);
             tpd.setOnCancelListener(new DialogInterface.OnCancelListener() {
                 @Override
                 public void onCancel(DialogInterface dialogInterface) {
