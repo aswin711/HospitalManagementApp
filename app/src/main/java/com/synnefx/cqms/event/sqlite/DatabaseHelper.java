@@ -953,17 +953,18 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     public void deleteIncidentReportById(Long reportRef) {
+        IncidentReport report = getIncidentReportById(reportRef);
         String deleteQry = "DELETE FROM " + EventReportKey.TABLE_INCIDENT_REPORT + " WHERE " + Columns.KEY_ID + " =?";
         String deleteReproteeQry = "DELETE FROM " + EventReportKey.TABLE_REPORTED_BY + " WHERE " +
-                EventReportKey.KEY_EVENT_REPORT_REF + " =?";
+                Columns.KEY_ID + " =?";
         String deletePersonInvolvedQry = "DELETE FROM " + EventReportKey.TABLE_PERSON_INVOLVED + " WHERE " +
-                EventReportKey.KEY_EVENT_REPORT_REF + " =?";
+                Columns.KEY_ID + " =?";
         SQLiteDatabase db = this.getWritableDatabase();
         db.beginTransaction();
         try {
             Log.e(LOG, "deleteIncidentReportById - " + deleteQry);
-            db.execSQL(deleteReproteeQry, new String[]{String.valueOf(reportRef)});
-            db.execSQL(deletePersonInvolvedQry, new String[]{String.valueOf(reportRef)});
+            db.execSQL(deleteReproteeQry, new String[]{String.valueOf(report.getReportedByRef())});
+            db.execSQL(deletePersonInvolvedQry, new String[]{String.valueOf(report.getPersonInvolvedRef())});
             db.execSQL(deleteQry, new String[]{String.valueOf(reportRef)});
             db.setTransactionSuccessful();
         } catch (Throwable e) {
@@ -1125,10 +1126,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 + IncidentReportKey.KEY_INCIDENT_LEVEL + ", " + IncidentReportKey.KEY_MEDICAL_REPORT + ", "
                 + " s.status_code as status_code, s.createdOn as createdOn, s.updatedOn as updatedOn, u.name as unitName FROM " +
                 EventReportKey.TABLE_MEDICATION_ERR_REPORT + " s JOIN " + TABLE_UNITS + " u ON s." + Columns.KEY_UNIT_REF + " = u." +
-                Columns.KEY_UNIT_REF + " JOIN " + EventReportKey.TABLE_REPORTED_BY + " rep ON rep.id = "
+                Columns.KEY_UNIT_REF + " LEFT JOIN " + EventReportKey.TABLE_REPORTED_BY + " rep ON rep.id = "
                 + EventReportKey.KEY_REPORTED_BY_REF + " WHERE s." + Columns.KEY_ID + " = ?";
 
         SQLiteDatabase db = this.getReadableDatabase();
+        Log.e("QUERY",selectQuery);
         Cursor c = db.rawQuery(selectQuery, new String[]{String.valueOf(reportRef)});
         // looping through all rows and adding to list
         try {
@@ -1267,17 +1269,18 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     public void deleteMedicationErrorById(Long reportRef) {
+        MedicationError report = getMedicationErrorById(reportRef);
         String deleteQry = "DELETE FROM " + EventReportKey.TABLE_MEDICATION_ERR_REPORT + " WHERE " + Columns.KEY_ID + " =?";
         String deleteReproteeQry = "DELETE FROM " + EventReportKey.TABLE_REPORTED_BY + " WHERE " +
-                EventReportKey.KEY_EVENT_REPORT_REF + " =?";
+                Columns.KEY_ID + " =?";
         String deletePersonInvolvedQry = "DELETE FROM " + EventReportKey.TABLE_PERSON_INVOLVED + " WHERE " +
-                EventReportKey.KEY_EVENT_REPORT_REF + " =?";
+                Columns.KEY_ID + " =?";
         SQLiteDatabase db = this.getWritableDatabase();
         db.beginTransaction();
         try {
             Log.e(LOG, "deleteMedicationErrorById - " + deleteQry);
-            db.execSQL(deleteReproteeQry, new String[]{String.valueOf(reportRef)});
-            db.execSQL(deletePersonInvolvedQry, new String[]{String.valueOf(reportRef)});
+            db.execSQL(deleteReproteeQry, new String[]{String.valueOf(report.getReportedByRef())});
+            db.execSQL(deletePersonInvolvedQry, new String[]{String.valueOf(report.getPersonInvolvedRef())});
             db.execSQL(deleteQry, new String[]{String.valueOf(reportRef)});
             db.setTransactionSuccessful();
         } catch (Throwable e) {
@@ -1370,15 +1373,24 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             ContentValues values = SqliteDataMapper.setDrugInfoContent(drugInfo);
             //values.put(Columns.KEY_HOSPITAL_ID, reportedBy.getHospital());
             if (null != drugInfo.getId() && 0 < drugInfo.getId()) {
-                 db.beginTransaction();
-                int id = db.update(DrugReactionKey.TABLE_DRUG_INFO, values, Columns.KEY_ID + "=" + drugInfo.getId(), null);
-                Log.e(LOG, "Update insertOrUpdateDrugInfo result - " + id);
-                 db.setTransactionSuccessful();
-                return id > 0 ? drugInfo.getId() : id;
+                if (!db.inTransaction()){
+                    db.beginTransaction();
+                }
+                 try{
+                     int id = db.update(DrugReactionKey.TABLE_DRUG_INFO, values, Columns.KEY_ID + "=" + drugInfo.getId(), null);
+                     Log.e(LOG, "Update insertOrUpdateDrugInfo result - " + id);
+                     db.setTransactionSuccessful();
+                     return id > 0 ? drugInfo.getId() : id;
+                 }catch (Exception e){
+                     Log.e(LOG,"Update insertOrUpdateDrugInfo result - "+e.getMessage());
+                 }finally {
+                     db.endTransaction();
+                 }
             } else {
                 return insertDrugInfo(drugInfo);
             }
         }
+
         return -1;
     }
 
@@ -1764,19 +1776,20 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     public void deleteAdverseDrugEventById(Long reportRef) {
+        AdverseDrugEvent report = getAdverseDrugEventById(reportRef);
         String deleteQry = "DELETE FROM " + EventReportKey.TABLE_ADVERSE_DRUGG_REACTION_REPORT + " WHERE " + Columns.KEY_ID + " =?";
         String deleteReproteeQry = "DELETE FROM " + EventReportKey.TABLE_REPORTED_BY + " WHERE " +
-                EventReportKey.KEY_EVENT_REPORT_REF + " =?";
+                Columns.KEY_ID + " =?";
         String deletePersonInvolvedQry = "DELETE FROM " + EventReportKey.TABLE_PERSON_INVOLVED + " WHERE " +
-                EventReportKey.KEY_EVENT_REPORT_REF + " =?";
+                Columns.KEY_ID + " =?";
         String deleteDrugIngoQry = "DELETE FROM " + DrugReactionKey.TABLE_DRUG_INFO + " WHERE " +
-                EventReportKey.KEY_EVENT_REPORT_REF + " =?";
+                Columns.KEY_ID + " =?";
         SQLiteDatabase db = this.getWritableDatabase();
         db.beginTransaction();
         try {
             Log.e(LOG, "deleteAdverseDrugEventById - " + deleteQry);
-            db.execSQL(deleteReproteeQry, new String[]{String.valueOf(reportRef)});
-            db.execSQL(deletePersonInvolvedQry, new String[]{String.valueOf(reportRef)});
+            db.execSQL(deleteReproteeQry, new String[]{String.valueOf(report.getReportedByRef())});
+            db.execSQL(deletePersonInvolvedQry, new String[]{String.valueOf(report.getPersonInvolvedRef())});
             db.execSQL(deleteDrugIngoQry, new String[]{String.valueOf(reportRef)});
             db.execSQL(deleteQry, new String[]{String.valueOf(reportRef)});
             db.setTransactionSuccessful();

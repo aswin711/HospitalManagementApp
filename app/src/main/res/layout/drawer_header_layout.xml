@@ -42,7 +42,7 @@
             android:layout_marginTop="2dp"
             android:text="@string/Unknown_user"
             android:textColor="@color/text"
-            android:textSize="20dp"
+            android:textSize="20sp"
             android:textAppearance="?android:attr/textAppearanceLarge"/>
         <TextView
             android:id="@+id/navigation_drawer_list_header_hospital"
@@ -53,7 +53,7 @@
             android:layout_marginTop="2dp"
             android:text="@string/default_hospital_name"
             android:textColor="@color/text"
-            android:textSize="14dp"
+            android:textSize="14sp"
             android:textAppearance="?android:attr/textAppearanceMedium"/>
 
 

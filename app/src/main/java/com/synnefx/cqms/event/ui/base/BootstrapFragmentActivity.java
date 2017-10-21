@@ -17,6 +17,7 @@ import com.squareup.otto.Bus;
 import com.synnefx.cqms.event.BootstrapApplication;
 import com.synnefx.cqms.event.BootstrapServiceProvider;
 import com.synnefx.cqms.event.R;
+import com.synnefx.cqms.event.authenticator.BootstrapAuthenticatorActivity;
 import com.synnefx.cqms.event.authenticator.LogoutService;
 import com.synnefx.cqms.event.core.BootstrapService;
 import com.synnefx.cqms.event.ui.MainActivity;
@@ -172,7 +173,8 @@ public abstract class BootstrapFragmentActivity extends AppCompatActivity {
                 // Calling a refresh will force the service to look for a logged in user
                 // and when it finds none the user will be requested to log in again.
                 PrefUtils.deleteFromPrefs();
-                checkAuth();
+                startActivity(new Intent(getApplicationContext(), BootstrapAuthenticatorActivity.class));
+                finish();
             }
         });
     }

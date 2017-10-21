@@ -15,6 +15,7 @@ import com.synnefx.cqms.event.BootstrapApplication;
 import com.synnefx.cqms.event.BootstrapComponent;
 import com.synnefx.cqms.event.BootstrapServiceProvider;
 import com.synnefx.cqms.event.R;
+import com.synnefx.cqms.event.authenticator.BootstrapAuthenticatorActivity;
 import com.synnefx.cqms.event.authenticator.LogoutService;
 import com.synnefx.cqms.event.core.BootstrapService;
 import com.synnefx.cqms.event.ui.MainActivity;
@@ -74,7 +75,8 @@ public class BootstrapFragment extends Fragment {
                 // Calling a refresh will force the service to look for a logged in user
                 // and when it finds none the user will be requested to log in again.
                 PrefUtils.deleteFromPrefs();
-                checkAuth();
+                startActivity(new Intent(getActivity(), BootstrapAuthenticatorActivity.class));
+                getActivity().finish();
             }
         });
     }
