@@ -47,7 +47,7 @@
 
         <service
             android:name=".authenticator.AccountAuthenticatorService"
-            android:process=":auth">
+            >
             <intent-filter>
                 <action android:name="android.accounts.AccountAuthenticator" />
             </intent-filter>
@@ -61,7 +61,7 @@
         <service
             android:name=".sync.conf.ConfSyncService"
             android:exported="false"
-            android:process=":sync">
+            >
             <intent-filter>
                 <action android:name="android.content.SyncAdapter" />
             </intent-filter>
@@ -81,7 +81,7 @@
         <service
             android:name=".sync.incident.IncidentReportSyncService"
             android:exported="false"
-            android:process=":sync">
+            >
             <intent-filter>
                 <action android:name="android.content.SyncAdapter" />
             </intent-filter>
@@ -101,7 +101,7 @@
         <service
             android:name=".sync.medicationerror.MedicationErrorSyncService"
             android:exported="false"
-            android:process=":sync">
+            >
             <intent-filter>
                 <action android:name="android.content.SyncAdapter" />
             </intent-filter>
@@ -121,7 +121,7 @@
         <service
             android:name=".sync.drugreaction.DrugReactionSyncService"
             android:exported="false"
-            android:process=":sync">
+            >
             <intent-filter>
                 <action android:name="android.content.SyncAdapter" />
             </intent-filter>
