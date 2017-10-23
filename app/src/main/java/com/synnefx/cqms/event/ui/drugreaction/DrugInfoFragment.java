@@ -218,14 +218,12 @@ public class DrugInfoFragment extends Fragment implements View.OnClickListener,
         Calendar selectedDate = Calendar.getInstance();
         selectedDate.set(year, monthOfYear, dayOfMonth);
         if ("CeasedDatepickerdialog".equals(view.getTag())) {
-            report.setDateOfDeath(selectedDate);
             drugInfo.setDateCeased(selectedDate);
-            drugCeasedDt.setText(CalenderUtils.formatCalendarToString(report.getDateOfDeath(), Constants.Common.DATE_DISPLAY_FORMAT));
+            drugCeasedDt.setText(CalenderUtils.formatCalendarToString(drugInfo.getDateCeased(), Constants.Common.DATE_DISPLAY_FORMAT));
 
         } else {
-            report.setDateOfRecovery(selectedDate);
             drugInfo.setDateStarted(selectedDate);
-            drugStartedDt.setText(CalenderUtils.formatCalendarToString(report.getDateOfRecovery(), Constants.Common.DATE_DISPLAY_FORMAT));
+            drugStartedDt.setText(CalenderUtils.formatCalendarToString(drugInfo.getDateStarted(), Constants.Common.DATE_DISPLAY_FORMAT));
 
         }
     }
@@ -308,37 +306,36 @@ public class DrugInfoFragment extends Fragment implements View.OnClickListener,
             drugInfo.setDose(drugDose.getText().toString().trim());
         }
         if (TextUtils.isEmpty(drugFreequency.getText())){
-            drugFreequency.setError("Drug frequency is required");
+            /*drugFreequency.setError("Drug frequency is required");
             drugFreequency.requestFocus();
-            error = true;
+            error = true;*/
         }else {
             drugInfo.setFrequency(drugFreequency.getText().toString().trim());
         }
         if (TextUtils.isEmpty(drugRoute.getText())){
-            drugRoute.setError("Drug route is required");
+            /*drugRoute.setError("Drug route is required");
             drugRoute.requestFocus();
-            error = true;
+            error = true;*/
         }else {
             drugInfo.setRoute(drugRoute.getText().toString().trim());
         }
 
         if (drugInfo.getDateCeased()==null){
-            drugCeasedDt.setError("Date is required.");
+            /*drugCeasedDt.setError("Date is required.");
             drugCeasedDt.requestFocus();
-            error = true;
+            error = true;*/
         }
 
         if (drugInfo.getDateStarted()==null){
-            drugStartedDt.setError("Date is required.");
+            /*drugStartedDt.setError("Date is required.");
             drugStartedDt.requestFocus();
-            error = true;
+            error = true;*/
         }
 
         if(null != drugInfo.getDateCeased() && null != drugInfo.getDateStarted()){
-            if(drugInfo.getDateStarted().after(drugInfo.getDateCeased())){
+            if(drugInfo.getDateCeased().before(drugInfo.getDateStarted())){
                 drugCeasedDt.setError("Invalid date");
                 drugCeasedDt.requestFocus();
-                drugStartedDt.requestFocus();
                 error = true;
             }
 

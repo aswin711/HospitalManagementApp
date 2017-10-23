@@ -52,7 +52,7 @@ public class AdverseDrugEvent extends EventReport {
     private boolean reactionAddedToCasesheet;
 
     @Expose
-    private String comments;
+    private String additionalInfo;
 
     private long drugInfoRef;
 
@@ -60,7 +60,7 @@ public class AdverseDrugEvent extends EventReport {
 
     }
 
-    public AdverseDrugEvent(Long id, Long serverId, String hospital, int statusCode, Long unitRef, String incidentNumber, String incidentLocation, Calendar updated, Calendar incidentTime,Calendar reactionDate, String description, String correctiveActionTaken, PersonInvolved personInvolved, ReportedBy reportedBy, Integer actionOutcomeCode, DrugInfo suspectedDrug, List<DrugInfo> otherDrugsTaken, Calendar dateOfRecovery, Calendar dateOfDeath, boolean admittedPostReaction, boolean reactionAddedToCasesheet, String comments,String reactionDateStr,String dateOfRecoveryStr,String dateOfDeathStr) {
+    public AdverseDrugEvent(Long id, Long serverId, String hospital, int statusCode, Long unitRef, String incidentNumber, String incidentLocation, Calendar updated, Calendar incidentTime,Calendar reactionDate, String description, String correctiveActionTaken, PersonInvolved personInvolved, ReportedBy reportedBy, Integer actionOutcomeCode, DrugInfo suspectedDrug, List<DrugInfo> otherDrugsTaken, Calendar dateOfRecovery, Calendar dateOfDeath, boolean admittedPostReaction, boolean reactionAddedToCasesheet, String additionalInfo,String reactionDateStr,String dateOfRecoveryStr,String dateOfDeathStr) {
         super(id, serverId, hospital, statusCode, unitRef, incidentNumber, incidentLocation, updated, incidentTime, description, correctiveActionTaken, personInvolved, reportedBy);
         this.reactionDate = reactionDate;
         this.actionOutcomeCode = actionOutcomeCode;
@@ -70,7 +70,7 @@ public class AdverseDrugEvent extends EventReport {
         this.dateOfDeath = dateOfDeath;
         this.admittedPostReaction = admittedPostReaction;
         this.reactionAddedToCasesheet = reactionAddedToCasesheet;
-        this.comments = comments;
+        this.additionalInfo = additionalInfo;
         this.reactionDateStr = reactionDateStr;
         this.dateOfDeathStr = dateOfDeathStr;
         this.dateOfRecoveryStr = dateOfRecoveryStr;
@@ -78,7 +78,7 @@ public class AdverseDrugEvent extends EventReport {
 
     // copy
     public AdverseDrugEvent copy() {
-        AdverseDrugEvent result = new AdverseDrugEvent(this.getId(), this.getServerId(), this.getHospital(), this.getStatusCode(), this.getUnitRef(), this.getIncidentNumber(), this.getIncidentLocation(), this.getUpdated(), this.getIncidentTime(),this.getReactionDate(), this.getDescription(), this.getCorrectiveActionTaken(), this.getPersonInvolved(), this.getReportedBy(), this.actionOutcomeCode, this.suspectedDrug, this.otherDrugsTaken, this.dateOfRecovery, this.dateOfDeath, this.admittedPostReaction, this.reactionAddedToCasesheet, this.comments,this.reactionDateStr,this.dateOfRecoveryStr,this.dateOfDeathStr);
+        AdverseDrugEvent result = new AdverseDrugEvent(this.getId(), this.getServerId(), this.getHospital(), this.getStatusCode(), this.getUnitRef(), this.getIncidentNumber(), this.getIncidentLocation(), this.getUpdated(), this.getIncidentTime(),this.getReactionDate(), this.getDescription(), this.getCorrectiveActionTaken(), this.getPersonInvolved(), this.getReportedBy(), this.actionOutcomeCode, this.suspectedDrug, this.otherDrugsTaken, this.dateOfRecovery, this.dateOfDeath, this.admittedPostReaction, this.reactionAddedToCasesheet, this.additionalInfo,this.reactionDateStr,this.dateOfRecoveryStr,this.dateOfDeathStr);
         return result;
     }
 
@@ -89,7 +89,7 @@ public class AdverseDrugEvent extends EventReport {
         setReactionDate(remoteReport.getReactionDate());
         setActionOutcomeCode(remoteReport.getActionOutcomeCode());
         setAdmittedPostReaction(remoteReport.isAdmittedPostReaction());
-        setComments(remoteReport.getComments());
+        setAdditionalInfo(remoteReport.getAdditionalInfo());
         setDateOfRecovery(remoteReport.getDateOfRecovery());
         setDateOfDeath(remoteReport.getDateOfDeath());
         setSuspectedDrug(remoteReport.getSuspectedDrug());
@@ -105,7 +105,7 @@ public class AdverseDrugEvent extends EventReport {
         setReactionDate(localReport.getReactionDate());
         setActionOutcomeCode(localReport.getActionOutcomeCode());
         setAdmittedPostReaction(localReport.isAdmittedPostReaction());
-        setComments(localReport.getComments());
+        setAdditionalInfo(localReport.getAdditionalInfo());
         setDateOfRecovery(localReport.getDateOfRecovery());
         setDateOfDeath(localReport.getDateOfDeath());
         setSuspectedDrug(localReport.getSuspectedDrug());
@@ -203,14 +203,11 @@ public class AdverseDrugEvent extends EventReport {
     }
 
 
-
-    public String getComments() {
-        return comments;
+    public String getAdditionalInfo() {
+        return additionalInfo;
     }
 
-    public void setComments(String comments) {
-        this.comments = comments;
+    public void setAdditionalInfo(String additionalInfo) {
+        this.additionalInfo = additionalInfo;
     }
-
-
 }

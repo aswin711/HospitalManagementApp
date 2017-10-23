@@ -117,11 +117,8 @@ public class MedicationErrorSyncAdapter extends AbstractThreadedSyncAdapter {
                         }else{
                             updateNotification("No data to sync");
                         }
-                } finally {
-                    //db.close();
-                   // eventBus.postSticky(getContext().getString(R.string.force_refresh));
-                   // Log.e("eventbus","Entered");
-                    //eventBus.unregister(this);
+                } catch (Exception e){
+                    Log.e(TAG,e.getMessage());
                 }
             }
             //TODO What does the below code actually do???

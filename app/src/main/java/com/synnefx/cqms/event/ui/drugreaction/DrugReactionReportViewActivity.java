@@ -143,7 +143,7 @@ public class DrugReactionReportViewActivity extends AppCompatActivity {
 
             //DrugReactionDetails
             reactionCorrectiveAction.setText(report.getCorrectiveActionTaken());
-            reactionComments.setText(report.getComments()!=null?report.getComments():"N/A");
+            reactionComments.setText(report.getAdditionalInfo()!=null?report.getAdditionalInfo():"N/A");
             switch (report.getActionOutcomeCode()){
                 case 1:
                     reactionOutcome.setText("Recovered");
