@@ -173,9 +173,9 @@ public class PatientDetailsFragment extends Fragment implements View.OnClickList
                     opPatient.setChecked(Boolean.TRUE);
                 }
             }
-            if(null != patient.getHeight())
+            if(patient.getHeight()>0)
                 patientHeight.setText(patient.getHeight().toString());
-            if(null != patient.getWeight())
+            if(patient.getWeight()>0)
                 patientWeight.setText(patient.getWeight().toString());
 
             if (null != patient.getDateOfBirthIndividual()) {
@@ -324,7 +324,7 @@ public class PatientDetailsFragment extends Fragment implements View.OnClickList
         }
 
 
-        try{
+       /* try{
             Double height = Double.valueOf(patientHeight.getText().toString());
             patient.setHeight(height);
         }catch (Exception e){
@@ -338,7 +338,7 @@ public class PatientDetailsFragment extends Fragment implements View.OnClickList
 
         }catch (Exception e){
             patient.setWeight(0.0);
-        }
+        }*/
 
         report.setPersonInvolved(patient);
 

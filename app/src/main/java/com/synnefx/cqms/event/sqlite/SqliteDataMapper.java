@@ -457,7 +457,7 @@ public class SqliteDataMapper {
         values.put(KEY_REACTION_OUTCOME_CODE, report.getActionOutcomeCode());
         values.put(KEY_ADMITTED_POST_REACTION, report.getActionOutcomeCode());
         values.put(KEY_REACTION_ADDED_CASESHEET, report.isReactionAddedToCasesheet()?1:0);
-        values.put(KEY_COMMENTS, report.getComments());
+        values.put(KEY_COMMENTS, report.getAdditionalInfo());
 
         if(null != report.getDateOfRecovery())
             values.put(KEY_DATE_RECOVERY, report.getDateOfRecovery().getTimeInMillis());
@@ -540,7 +540,7 @@ public class SqliteDataMapper {
         }
 
         report.setActionOutcomeCode(c.getInt(c.getColumnIndex(KEY_REACTION_OUTCOME_CODE)));
-        report.setComments(c.getString(c.getColumnIndex(KEY_COMMENTS)));
+        report.setAdditionalInfo(c.getString(c.getColumnIndex(KEY_COMMENTS)));
 
         Integer admittedPostReaction = c.getInt(c.getColumnIndex(KEY_ADMITTED_POST_REACTION));
         if(null == admittedPostReaction || 0 == admittedPostReaction){

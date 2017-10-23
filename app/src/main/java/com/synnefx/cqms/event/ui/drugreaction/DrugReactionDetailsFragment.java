@@ -160,8 +160,8 @@ public class DrugReactionDetailsFragment extends Fragment implements View.OnClic
                 casesheetAddedNo.setChecked(true);
             }
             saveDetailsBtn.setText("Update");
-            if (report.getComments()!=null){
-                comments.setText(report.getComments());
+            if (report.getAdditionalInfo()!=null){
+                comments.setText(report.getAdditionalInfo());
             }
         } else {
             report.setIncidentTime(null);
@@ -330,8 +330,8 @@ public class DrugReactionDetailsFragment extends Fragment implements View.OnClic
         }else if (casesheetAddedNo.isChecked()){
             report.setReactionAddedToCasesheet(false);
         }
-        if (comments.getText() != null){
-            report.setComments(comments.getText().toString().trim());
+        if (!TextUtils.isEmpty(comments.getText())){
+            report.setAdditionalInfo(comments.getText().toString().trim());
         }
 
         return report;
@@ -362,8 +362,8 @@ public class DrugReactionDetailsFragment extends Fragment implements View.OnClic
             correctiveAction.setError("Corrective action required");
             correctiveAction.requestFocus();
             error = true;
-        } else if(correctiveAction.getText().length()<=10){
-            correctiveAction.setError("Corrective action must have atleast 11 characters");
+        } else if(correctiveAction.getText().length()<10){
+            correctiveAction.setError("Corrective action must have atleast 10 characters");
             correctiveAction.requestFocus();
             error = true;
         }
@@ -397,8 +397,8 @@ public class DrugReactionDetailsFragment extends Fragment implements View.OnClic
             error = true;
             casesheetAddedYes.setError("This field is required");
         }
-        if (comments.getText() != null){
-            report.setComments(comments.getText().toString().trim());
+        if (!TextUtils.isEmpty(comments.getText())){
+            report.setAdditionalInfo(comments.getText().toString().trim());
         }
         return error;
     }

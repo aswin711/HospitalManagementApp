@@ -1657,6 +1657,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public void deleteAdverseDrugEventById(Long reportRef) {
         AdverseDrugEvent report = getAdverseDrugEventById(reportRef);
+
         if (report != null){
             String deleteQry = "DELETE FROM " + EventReportKey.TABLE_ADVERSE_DRUGG_REACTION_REPORT + " WHERE " + Columns.KEY_ID + " =?";
             String deleteReproteeQry = "DELETE FROM " + EventReportKey.TABLE_REPORTED_BY + " WHERE " +
@@ -1679,6 +1680,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             } finally {
                 db.endTransaction();
             }
+
+
         }
 
     }

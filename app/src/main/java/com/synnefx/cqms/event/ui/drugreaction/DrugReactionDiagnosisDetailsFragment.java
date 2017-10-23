@@ -146,8 +146,6 @@ public class DrugReactionDiagnosisDetailsFragment extends Fragment implements Vi
         if (null != report && null != report.getId() && 0 < report.getId()) {
             if(!TextUtils.isEmpty(report.getPersonInvolved().getConsultantName())){
                 consultantName.setText(report.getPersonInvolved().getConsultantName());
-            }else{
-                consultantName.requestFocus();
             }
             diagnosis.setText(report.getPersonInvolved().getDiagnosis());
             if (null != report.getIncidentTime()) {
@@ -377,9 +375,9 @@ public class DrugReactionDiagnosisDetailsFragment extends Fragment implements Vi
         }
 
         if (TextUtils.isEmpty(consultantName.getText())){
-            consultantName.setError("Consultant name is required.");
+            /*consultantName.setError("Consultant name is required.");
             consultantName.requestFocus();
-            error = true;
+            error = true;*/
         }else {
             report.getPersonInvolved().setConsultantName(consultantName.getText().toString().trim());
         }
@@ -398,8 +396,8 @@ public class DrugReactionDiagnosisDetailsFragment extends Fragment implements Vi
             description.setError("Incident description required.");
             description.requestFocus();
             error = true;
-        }else if(description.getText().length()<=10){
-            description.setError("Incident description minimum 11 characters required.");
+        }else if(description.getText().length()<10){
+            description.setError("Incident description minimum 10 characters required.");
             description.requestFocus();
             error = true;
         }else {
