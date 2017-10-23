@@ -131,7 +131,6 @@ public class MedicationErrorDetailsFragment extends Fragment implements
 
 
 
-    // TODO: Rename method, update argument and hook method into UI event
 
 
 
@@ -193,7 +192,6 @@ public class MedicationErrorDetailsFragment extends Fragment implements
         unitsSpinner.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                // String mSelectedText = adapterView.getItemAtPosition(position).toString();
                 Unit selectedUnit = unitAdapter.getItem(position);
                 if (null != selectedUnit && null != selectedUnit.getServerId() && 0 < selectedUnit.getServerId()) {
                     report.setUnitRef(selectedUnit.getServerId());
@@ -210,7 +208,6 @@ public class MedicationErrorDetailsFragment extends Fragment implements
         selectedUnit.setServerId(report.getUnitRef());
         int pos = unitAdapter.getPosition(selectedUnit);
         if (pos >= 0) {
-            //serviceSpinner.setSelection(pos);
             unitsSpinner.setText(report.getDepartment());
         }
     }

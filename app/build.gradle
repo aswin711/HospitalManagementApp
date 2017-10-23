@@ -104,7 +104,9 @@ android {
     buildTypes {
         debug {
             //  applicationIdSuffix '.debug'
-            minifyEnabled false
+            minifyEnabled true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), '..\\proguard.cfg'
             debuggable true
             versionNameSuffix '-DEBUG'
             // zipAlign false // this is default for debug

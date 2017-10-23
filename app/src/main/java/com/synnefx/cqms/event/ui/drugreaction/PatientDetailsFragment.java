@@ -48,7 +48,7 @@ import static com.synnefx.cqms.event.core.Constants.Extra.INCIDENT_ITEM;
  * Created by hsrii on 10/4/2017.
  */
 
-public class PatientDetailsFragment extends Fragment implements View.OnClickListener,
+public class PatientDetailsFragment extends Fragment implements
         DatePickerDialog.OnDateSetListener{
 
     protected View fragmentView;
@@ -114,7 +114,6 @@ public class PatientDetailsFragment extends Fragment implements View.OnClickList
         Bundle bundle = this.getArguments();
         if (bundle != null) {
             report = (AdverseDrugEvent) bundle.getSerializable(INCIDENT_ITEM);
-            //patient = (PersonInvolved) bundle.getSerializable(PATIENT_ITEM);
             if (null == report) {
                 Long reportRef = bundle.getLong(Constants.Extra.INCIDENT_REF, 0l);
                 Log.e("reportRef ", String.valueOf(reportRef));
@@ -204,7 +203,6 @@ public class PatientDetailsFragment extends Fragment implements View.OnClickList
         personGender.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                // String mSelectedText = adapterView.getItemAtPosition(position).toString();
                 if (position > 0) {
                     CharSequence selectedItem = gendorAdapter.getItem(position);
                     if (null != selectedItem) {
@@ -252,11 +250,6 @@ public class PatientDetailsFragment extends Fragment implements View.OnClickList
         });
     }
 
-    @Override
-    public void onClick(View view) {
-        //if (enableSeconds.isChecked() && view.getId() == R.id.enable_seconds) enableMinutes.setChecked(true);
-        //if (!enableMinutes.isChecked() && view.getId() == R.id.enable_minutes) enableSeconds.setChecked(false);
-    }
 
     @Override
     public void onResume() {
@@ -322,24 +315,6 @@ public class PatientDetailsFragment extends Fragment implements View.OnClickList
         } else if (opPatient.isChecked()) {
             patient.setPatientTypeCode(2);
         }
-
-
-       /* try{
-            Double height = Double.valueOf(patientHeight.getText().toString());
-            patient.setHeight(height);
-        }catch (Exception e){
-           patient.setHeight(0.0);
-        }
-
-
-        try{
-            Double weight = Double.valueOf(patientWeight.getText().toString());
-            patient.setWeight(weight);
-
-        }catch (Exception e){
-            patient.setWeight(0.0);
-        }*/
-
         report.setPersonInvolved(patient);
 
         Log.d("PatientDetailsFragment", ListViewer.view(report));
@@ -412,7 +387,6 @@ public class PatientDetailsFragment extends Fragment implements View.OnClickList
         } else {
             ipPatient.setError("Patient type required");
             ipPatient.requestFocus();
-            //patient.setGenderCode(0);
             error = true;
         }
         if(null == patient.getDateOfBirthIndividual()){

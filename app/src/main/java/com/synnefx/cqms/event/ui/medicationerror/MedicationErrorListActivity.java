@@ -31,7 +31,6 @@ public class MedicationErrorListActivity extends BootstrapFragmentActivity {
         newIncidentBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Snackbar.make(view, "Hello Snackbar", Snackbar.LENGTH_LONG).show();
                 final Intent i = new Intent(MedicationErrorListActivity.this, MedicationErrorActivity.class);
                 startActivity(i);
             }

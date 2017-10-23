@@ -103,6 +103,9 @@ public class DrugReactionReportViewActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_drug_reaction_report_view);
+        setTitle("Adverse Drug Reaction Report");
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         ButterKnife.bind(this);
         BootstrapApplication.component().inject(this);
@@ -135,7 +138,7 @@ public class DrugReactionReportViewActivity extends AppCompatActivity {
             }
 
             //DrugReactionDiagnosis
-            diagnosisConsultant.setText(report.getPersonInvolved().getConsultantName());
+            diagnosisConsultant.setText(checkNullString(report.getPersonInvolved().getConsultantName()));
             diagnosisDescription.setText(report.getDescription());
             diagnosisPatient.setText(report.getPersonInvolved().getDiagnosis());
             diagnosisUnit.setText(report.getDepartment());
@@ -143,7 +146,7 @@ public class DrugReactionReportViewActivity extends AppCompatActivity {
 
             //DrugReactionDetails
             reactionCorrectiveAction.setText(report.getCorrectiveActionTaken());
-            reactionComments.setText(report.getAdditionalInfo()!=null?report.getAdditionalInfo():"N/A");
+            reactionComments.setText(checkNullString(report.getAdditionalInfo()));
             switch (report.getActionOutcomeCode()){
                 case 1:
                     reactionOutcome.setText("Recovered");
@@ -177,7 +180,7 @@ public class DrugReactionReportViewActivity extends AppCompatActivity {
                 }
             }
             if (report.getSuspectedDrug()!=null){
-                drugInfoSuspected.setText(report.getSuspectedDrug().getDrug()!=null?report.getSuspectedDrug().getDrug():"N/A");
+                drugInfoSuspected.setText(report.getSuspectedDrug().getDrug());
                 drugInfoDose.setText(report.getSuspectedDrug().getDose());
                 drugInfoFrequency.setText(report.getSuspectedDrug().getFrequency());
                 drugInfoRoute.setText(report.getSuspectedDrug().getRoute());
@@ -187,17 +190,30 @@ public class DrugReactionReportViewActivity extends AppCompatActivity {
                 Log.e("DRView","No suspected drug :\n"+ ListViewer.view(drugInfo));
                 drugInfoSuspected.setText(drugInfo.getDrug());
                 drugInfoDose.setText(drugInfo.getDose());
-                drugInfoFrequency.setText(drugInfo.getFrequency());
-                drugInfoRoute.setText(drugInfo.getRoute());
-                drugInfoStartedTime.setText(CalenderUtils.formatCalendarToString(drugInfo.getDateStarted(), Constants.Common.DATE_TIME_DISPLAY_FORMAT));
-                drugInfoCeasedTime.setText(CalenderUtils.formatCalendarToString(drugInfo.getDateCeased(), Constants.Common.DATE_TIME_DISPLAY_FORMAT));
+                drugInfoFrequency.setText(checkNullString(drugInfo.getFrequency()));
+                drugInfoRoute.setText(checkNullString(drugInfo.getRoute()));
+                drugInfoStartedTime.setText(checkNullString(CalenderUtils.formatCalendarToString(drugInfo.getDateStarted(), Constants.Common.DATE_TIME_DISPLAY_FORMAT)));
+                drugInfoCeasedTime.setText(checkNullString(CalenderUtils.formatCalendarToString(drugInfo.getDateCeased(), Constants.Common.DATE_TIME_DISPLAY_FORMAT)));
             }
 
 
 
             //ReportedBy
             reportedByName.setText(report.getReportedBy().getLastName());
-            reportedByDesignation.setText(report.getReportedBy().getDesignation());
+            reportedByDesignation.setText(checkNullString(report.getReportedBy().getDesignation()));
         }
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
+    }
+
+    public String checkNullString(String data){
+        if (data == null){
+            return "N/A";
+        }
+        return data;
     }
 }

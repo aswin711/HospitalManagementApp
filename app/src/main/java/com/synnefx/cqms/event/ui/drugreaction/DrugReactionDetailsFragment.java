@@ -44,7 +44,7 @@ import timber.log.Timber;
 
 import static com.synnefx.cqms.event.core.Constants.Extra.INCIDENT_ITEM;
 
-public class DrugReactionDetailsFragment extends Fragment implements View.OnClickListener,
+public class DrugReactionDetailsFragment extends Fragment implements
         DatePickerDialog.OnDateSetListener {
 
     protected View fragmentView;
@@ -176,7 +176,6 @@ public class DrugReactionDetailsFragment extends Fragment implements View.OnClic
         actionOutcomeSpinner.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                // String mSelectedText = adapterView.getItemAtPosition(position).toString();
                 if (position > 0) {
                     CharSequence selectedItem = actionOutcomeAdapter.getItem(position);
                     if (null != selectedItem) {
@@ -257,7 +256,6 @@ public class DrugReactionDetailsFragment extends Fragment implements View.OnClic
                 dpd.vibrate(true);
                 dpd.dismissOnPause(true);
                 dpd.showYearPickerFirst(true);
-                // dpd.setAccentColor(Color.parseColor("#9C27B0"));
                 dpd.setTitle(title);
                 //Setting max date
                 dpd.setMaxDate(Calendar.getInstance());
@@ -268,12 +266,6 @@ public class DrugReactionDetailsFragment extends Fragment implements View.OnClic
 
     }
 
-
-    @Override
-    public void onClick(View view) {
-        //if (enableSeconds.isChecked() && view.getId() == R.id.enable_seconds) enableMinutes.setChecked(true);
-        //if (!enableMinutes.isChecked() && view.getId() == R.id.enable_minutes) enableSeconds.setChecked(false);
-    }
 
     @Override
     public void onResume() {

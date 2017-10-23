@@ -55,7 +55,6 @@ public class ErrorReportedByDetailsFragment extends Fragment {
     EventBus eventBus;
     private MedicationError report;
     private ReportedBy reportedBy;
-    //private static PersonInvolved personInvolved;
     private Boolean editable = false;
 
 

@@ -44,7 +44,6 @@ public class DrugReactionListAdapter extends AlternatingColorListAdapter<Adverse
 
     @Override
     protected void update(final int position, final AdverseDrugEvent item) {
-        //super.update(position, item);
         String name = "Details not Provided";
         if(null != item.getPersonInvolved()){
             name = item.getPersonInvolved().getPatientTypeString()+"- "+ item.getPersonInvolved().getName();

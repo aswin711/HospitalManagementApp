@@ -44,7 +44,6 @@ public class IncidentReportListAdapter extends AlternatingColorListAdapter<Incid
 
     @Override
     protected void update(final int position, final IncidentReport item) {
-        //super.update(position, item);
         setText(0, item.getIncidentTypeName());
         String desription = item.getDescription();
         if (!TextUtils.isEmpty(desription) && desription.length() > 250) {

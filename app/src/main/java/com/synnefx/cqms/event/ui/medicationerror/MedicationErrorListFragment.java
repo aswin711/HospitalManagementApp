@@ -86,9 +86,6 @@ public class MedicationErrorListFragment extends ItemListFragment<MedicationErro
         super.configureList(activity, listView);
         listView.setFastScrollEnabled(true);
         listView.setDividerHeight(0);
-        /*getListAdapter()
-                .addHeader(activity.getLayoutInflater()
-                        .inflate(R.layout.incident_list_item_labels, null));*/
         View loadMore = getFooterView();
         getListAdapter().addFooter(getFooterView());
         loadMore.setOnClickListener(new View.OnClickListener() {
@@ -155,7 +152,6 @@ public class MedicationErrorListFragment extends ItemListFragment<MedicationErro
                     if (getActivity() != null) {
                         String hospitalRef = PrefUtils.getFromPrefs(getActivity().getApplicationContext(), PrefUtils.PREFS_HOSP_ID, null);
                         Log.e(TAG, "onCreateLoader - " + currentPage);
-                        //Log.d("ItemsinAdapter", ListViewer.view(databaseHelper.getMedicationErrorForDisplayByHospital(hospitalRef, currentPage)));
                         return databaseHelper.getMedicationErrorForDisplayByHospital(hospitalRef, currentPage);
                     } else {
                         return Collections.emptyList();
@@ -245,7 +241,6 @@ public class MedicationErrorListFragment extends ItemListFragment<MedicationErro
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
                                 if (deleteSession(report)) {
-                                    //ViewUtils.setGone(view, true);
                                     removeItem(report);
                                     Snackbar.make(view, "Record deleted", Snackbar.LENGTH_LONG).show();
                                 } else {

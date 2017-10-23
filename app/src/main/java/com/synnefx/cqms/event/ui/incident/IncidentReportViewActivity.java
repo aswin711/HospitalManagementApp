@@ -76,7 +76,7 @@ public class IncidentReportViewActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         BootstrapApplication.component().inject(this);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle("Incident Report View");
+        getSupportActionBar().setTitle("Incident Report");
 
         IncidentReport report = (IncidentReport) getIntent().getSerializableExtra(INCIDENT_ITEM);
 

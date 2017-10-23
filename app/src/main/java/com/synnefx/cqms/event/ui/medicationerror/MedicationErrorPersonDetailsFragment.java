@@ -188,7 +188,6 @@ public class MedicationErrorPersonDetailsFragment extends Fragment {
         personTypeSpinner.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                // String mSelectedText = adapterView.getItemAtPosition(position).toString();
                 if (position > 0) {
                     CharSequence selectedItem = personTypeAdapter.getItem(position);
                     if (null != selectedItem) {

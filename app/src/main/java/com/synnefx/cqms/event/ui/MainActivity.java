@@ -205,15 +205,8 @@ public class MainActivity extends BootstrapActivity implements NavigationView.On
         header = mNavigationView.getHeaderView(0);
         TextView user = (TextView) header.findViewById(R.id.navigation_drawer_list_header_user);
         TextView hospital = (TextView) header.findViewById(R.id.navigation_drawer_list_header_hospital);
-
-        //Toast.makeText(this, , Toast.LENGTH_SHORT).show();
-
         user.setText(PrefUtils.getFromPrefs(getApplicationContext(), PrefUtils.PREFS_USER_DISPLAY_NAME, "User"));
         hospital.setText(PrefUtils.getFromPrefs(getApplicationContext(), PrefUtils.PREFS_HOSP_DISPLAY_NAME, "Hospital"));
-        /*((TextView) navigationView.findViewById(R.id.navigation_drawer_list_header_user)).setText();
-        ((TextView) navigationView.findViewById(R.id.navigation_drawer_list_header_hospital)).setText();*/
-
-
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
         checkAuth();
@@ -237,9 +230,6 @@ public class MainActivity extends BootstrapActivity implements NavigationView.On
         super.onPostResume();
         TextView user = (TextView) header.findViewById(R.id.navigation_drawer_list_header_user);
         TextView hospital = (TextView) header.findViewById(R.id.navigation_drawer_list_header_hospital);
-
-        //Toast.makeText(this, , Toast.LENGTH_SHORT).show();
-
         user.setText(PrefUtils.getFromPrefs(getApplicationContext(), PrefUtils.PREFS_USER_DISPLAY_NAME, "User"));
         hospital.setText(PrefUtils.getFromPrefs(getApplicationContext(), PrefUtils.PREFS_HOSP_DISPLAY_NAME, "Hospital"));
 
@@ -248,7 +238,6 @@ public class MainActivity extends BootstrapActivity implements NavigationView.On
     @Override
     public boolean onNavigationItemSelected(MenuItem menuItem) {
         // Handle navigation view item clicks here.
-        //Bundle bundle = new Bundle();
         int id = menuItem.getItemId();
         FragmentManager manager = getSupportFragmentManager();
 
@@ -318,18 +307,9 @@ public class MainActivity extends BootstrapActivity implements NavigationView.On
                 super.onSuccess(hasAuthenticated);
                 Timber.e("onSuccess  Main");
                 userHasAuthenticated = true;
-                //importConfig();
                 registerPushyOnServer();
                 scheduleSync();
                 selectIncidentReport();
-                //initScreen();
-
-                /*
-                if(!isPushRecordServiceRunning()){
-                    final Intent i = new Intent(MainActivity.this, PushRecordService.class);
-                    startService(i);
-                }
-                */
             }
 
             @Override
@@ -356,7 +336,6 @@ public class MainActivity extends BootstrapActivity implements NavigationView.On
 
     public void registerPushyOnServer() {
         Timber.e("registerPushyOnServer  Main");
-        //registerReceiver();
         new RegisterForPushNotificationsAsync().execute();
 
     }
@@ -373,10 +352,6 @@ public class MainActivity extends BootstrapActivity implements NavigationView.On
             case android.R.id.home:
                 //menuDrawer.toggleMenu();
                 return true;
-           /* case R.id.timer:
-                navigateToTimer();
-                return true;
-                */
             default:
                 return super.onOptionsItemSelected(item);
         }
