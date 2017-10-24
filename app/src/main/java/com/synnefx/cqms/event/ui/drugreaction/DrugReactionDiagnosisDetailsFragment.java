@@ -247,7 +247,7 @@ public class DrugReactionDiagnosisDetailsFragment extends Fragment implements
         if ("EventDatepickerdialog".equals(view.getTag())) {
             report.setReactionDate(selectedDate);
             report.setReactionDateStr(dayOfMonth+"/"+monthOfYear+"/"+year);
-            eventTime.setText(CalenderUtils.formatCalendarToString(report.getIncidentTime(), Constants.Common.DATE_DISPLAY_FORMAT));
+            eventTime.setText(CalenderUtils.formatCalendarToString(report.getReactionDate(), Constants.Common.DATE_DISPLAY_FORMAT));
             Calendar now = Calendar.getInstance();
             TimePickerDialog tpd = com.wdullaer.materialdatetimepicker.time.TimePickerDialog.newInstance(
                     DrugReactionDiagnosisDetailsFragment.this,
@@ -363,8 +363,10 @@ public class DrugReactionDiagnosisDetailsFragment extends Fragment implements
         } else {
             report.getPersonInvolved().setDiagnosis(diagnosis.getText().toString().trim());
         }
-        if(null == report.getIncidentTime()){
-            eventTime.setError("Incident time required");
+        if (TextUtils.isEmpty(eventTime.getText())){
+            eventTime.setError("Reaction time required");
+            eventTime.requestFocus();
+            error = true;
         }
 
         if (TextUtils.isEmpty(description.getText())){

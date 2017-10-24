@@ -151,7 +151,7 @@ public class DrugReactionReportViewActivity extends AppCompatActivity {
                 case 1:
                     reactionOutcome.setText("Recovered");
                     reactionTimeLayout.setVisibility(View.VISIBLE);
-                    reactionTime.setText(CalenderUtils.formatCalendarToString(report.getReactionDate(), Constants.Common.DATE_TIME_DISPLAY_FORMAT));
+                    reactionTime.setText(CalenderUtils.formatCalendarToString(report.getDateOfRecovery(), Constants.Common.DATE_TIME_DISPLAY_FORMAT));
                     break;
                 case 2:
                     reactionOutcome.setText("Not yet recovered");
@@ -164,7 +164,7 @@ public class DrugReactionReportViewActivity extends AppCompatActivity {
                 case 4:
                     reactionOutcome.setText("Fatal");
                     reactionTimeLayout.setVisibility(View.VISIBLE);
-                    reactionTime.setText(CalenderUtils.formatCalendarToString(report.getReactionDate(), Constants.Common.DATE_TIME_DISPLAY_FORMAT));
+                    reactionTime.setText(CalenderUtils.formatCalendarToString(report.getDateOfDeath(), Constants.Common.DATE_TIME_DISPLAY_FORMAT));
                     break;
             }
             reactionCaseSheet.setText(report.isReactionAddedToCasesheet()?"Yes":"No");

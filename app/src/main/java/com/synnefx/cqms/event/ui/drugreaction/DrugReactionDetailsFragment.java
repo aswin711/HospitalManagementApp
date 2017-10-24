@@ -279,12 +279,11 @@ public class DrugReactionDetailsFragment extends Fragment implements
     public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
         Calendar selectedDate = Calendar.getInstance();
         selectedDate.set(year, monthOfYear, dayOfMonth);
-        report.setReactionDate(selectedDate);
         if ("RecoveryDatepickerdialog".equals(view.getTag())) {
             report.setDateOfRecovery(selectedDate);
             recoveredDate.setText(CalenderUtils.formatCalendarToString(report.getDateOfRecovery(), Constants.Common.DATE_DISPLAY_FORMAT));
             report.setDateOfRecoveryStr(dayOfMonth+"/"+monthOfYear+"/"+year);
-        } else if ("DeathDatepickerdialog".equals(view.getTag())) {
+        } else{
             report.setDateOfDeath(selectedDate);
             report.setDateOfDeathStr(dayOfMonth+"/"+monthOfYear+"/"+year);
             deathDate.setText(CalenderUtils.formatCalendarToString(report.getDateOfDeath(), Constants.Common.DATE_DISPLAY_FORMAT));
@@ -373,12 +372,23 @@ public class DrugReactionDetailsFragment extends Fragment implements
             if(null == report.getDateOfRecovery()){
                 error = true;
                 recoveredDate.setError("Date recovered required");
+                recoveredDate.requestFocus();
+            }else if(report.getDateOfRecovery().getTimeInMillis()<report.getReactionDate().getTimeInMillis()){
+                error = true;
+                recoveredDate.setError("Recovery date must be same or after reaction time.");
+                recoveredDate.requestFocus();
+
             }
         }else if (4== report.getActionOutcomeCode()){
             //death date is mandatory
             if(null == report.getDateOfDeath()){
                 error = true;
                 deathDate.setError("Death date required");
+            }else if(report.getDateOfDeath().getTimeInMillis()<report.getReactionDate().getTimeInMillis()){
+                error = true;
+                deathDate.setError("Death date must be same or after reaction time.");
+                deathDate.requestFocus();
+
             }
         }
         if(casesheetAddedYes.isChecked()){
