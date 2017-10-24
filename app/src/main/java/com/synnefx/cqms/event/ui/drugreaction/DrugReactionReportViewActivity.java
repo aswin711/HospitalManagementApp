@@ -142,7 +142,7 @@ public class DrugReactionReportViewActivity extends AppCompatActivity {
             diagnosisDescription.setText(report.getDescription());
             diagnosisPatient.setText(report.getPersonInvolved().getDiagnosis());
             diagnosisUnit.setText(report.getDepartment());
-            diagnosisTime.setText(CalenderUtils.formatCalendarToString(report.getIncidentTime(), Constants.Common.DATE_TIME_DISPLAY_FORMAT));
+            diagnosisTime.setText(CalenderUtils.formatCalendarToString(report.getReactionDate(), Constants.Common.DATE_TIME_DISPLAY_FORMAT));
 
             //DrugReactionDetails
             reactionCorrectiveAction.setText(report.getCorrectiveActionTaken());

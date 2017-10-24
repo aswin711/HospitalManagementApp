@@ -9,9 +9,12 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.SystemClock;
+import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
+import android.util.Log;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -19,9 +22,16 @@ import android.widget.TextView;
 import com.synnefx.cqms.event.BootstrapApplication;
 import com.synnefx.cqms.event.BootstrapServiceProvider;
 import com.synnefx.cqms.event.R;
+import com.synnefx.cqms.event.core.Constants;
+import com.synnefx.cqms.event.sqlite.DataAccessException;
+import com.synnefx.cqms.event.sqlite.DatabaseHelper;
 import com.synnefx.cqms.event.ui.view.util.SystemUiHider;
+import com.synnefx.cqms.event.util.CalenderUtils;
 import com.synnefx.cqms.event.util.PrefUtils;
 import com.synnefx.cqms.event.util.UIUtils;
+
+import java.util.Calendar;
+import java.util.Date;
 
 import javax.inject.Inject;
 
@@ -66,6 +76,8 @@ public class SpashscreenActivity extends Activity {
 
     @Inject
     BootstrapServiceProvider serviceProvider;
+    @Inject
+    protected DatabaseHelper databaseHelper;
 
     @Bind(R.id.splash_container)
     protected RelativeLayout splashContainer;
@@ -114,6 +126,7 @@ public class SpashscreenActivity extends Activity {
         } catch (Exception e) {
 
         }
+        checkForDumpData();
         hideSpashScreen();
     }
 
@@ -170,6 +183,34 @@ public class SpashscreenActivity extends Activity {
         });
         alertDialog.setCancelable(true);
         alertDialog.show();
+    }
+
+    private void checkForDumpData(){
+        String currentDate = CalenderUtils.formatCalendarToString(Calendar.getInstance(), Constants.Common.DATE_DISPLAY_FORMAT);
+        String lastCleanUpDate = PrefUtils.getLastCleanUpDate();
+        if (!lastCleanUpDate.equals(currentDate)){
+            //Find the date 2 months ago
+            long DAY_IN_MS = 1000 * 60 * 60 * 24;
+            long MON_IN_MS = 30 * DAY_IN_MS;
+
+            Date cDate = new Date(Calendar.getInstance().getTimeInMillis()- 2*MON_IN_MS);
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(cDate);
+
+            Log.e("CheckForDumpData", CalenderUtils.formatCalendarToString(cal, Constants.Common.DATE_DISPLAY_FORMAT));
+            try {
+                databaseHelper.deleteIncidentReportsBeforeDate(cal);
+                databaseHelper.deleteAdverseDrugReportsBeforeDate(cal);
+                databaseHelper.deleteMedicalErrorReportsBeforeDate(cal);
+                //update new cleanup date
+                PrefUtils.updateCleanUpDate(currentDate);
+            } catch (DataAccessException e) {
+                e.printStackTrace();
+            }
+
+        }else {
+            Log.e("CheckForDumpData", "Cleaned on: "+lastCleanUpDate+"\n Current date:"+currentDate);
+        }
     }
 
 }

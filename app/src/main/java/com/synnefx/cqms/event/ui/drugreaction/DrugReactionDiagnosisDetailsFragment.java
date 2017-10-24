@@ -143,14 +143,15 @@ public class DrugReactionDiagnosisDetailsFragment extends Fragment implements
 
 
     private void initScreen() {
+        consultantName.requestFocus();
         if (null != report && null != report.getId() && 0 < report.getId()) {
             if(!TextUtils.isEmpty(report.getPersonInvolved().getConsultantName())){
                 consultantName.setText(report.getPersonInvolved().getConsultantName());
             }
             diagnosis.setText(report.getPersonInvolved().getDiagnosis());
-            if (null != report.getIncidentTime()) {
+            if (null != report.getReactionDate()) {
                 eventTimeBtn.setText("Change");
-                eventTime.setText(CalenderUtils.formatCalendarToString(report.getIncidentTime(), Constants.Common.DATE_TIME_DISPLAY_FORMAT));
+                eventTime.setText(CalenderUtils.formatCalendarToString(report.getReactionDate(), Constants.Common.DATE_TIME_DISPLAY_FORMAT));
             } else {
                 eventTimeBtn.setText("Set");
             }
@@ -244,7 +245,6 @@ public class DrugReactionDiagnosisDetailsFragment extends Fragment implements
         Calendar selectedDate = Calendar.getInstance();
         selectedDate.set(year, monthOfYear, dayOfMonth);
         if ("EventDatepickerdialog".equals(view.getTag())) {
-            report.setIncidentTime(selectedDate);
             report.setReactionDate(selectedDate);
             report.setReactionDateStr(dayOfMonth+"/"+monthOfYear+"/"+year);
             eventTime.setText(CalenderUtils.formatCalendarToString(report.getIncidentTime(), Constants.Common.DATE_DISPLAY_FORMAT));
@@ -278,10 +278,10 @@ public class DrugReactionDiagnosisDetailsFragment extends Fragment implements
 
     @Override
     public void onTimeSet(RadialPickerLayout view, int hourOfDay, int minute, int second) {
-        report.getIncidentTime().set(Calendar.MINUTE, minute);
-        report.getIncidentTime().set(Calendar.HOUR_OF_DAY, hourOfDay);
-        report.getIncidentTime().set(Calendar.SECOND, second);
-        eventTime.setText(CalenderUtils.formatCalendarToString(report.getIncidentTime(), Constants.Common.DATE_TIME_DISPLAY_FORMAT));
+        report.getReactionDate().set(Calendar.MINUTE, minute);
+        report.getReactionDate().set(Calendar.HOUR_OF_DAY, hourOfDay);
+        report.getReactionDate().set(Calendar.SECOND, second);
+        eventTime.setText(CalenderUtils.formatCalendarToString(report.getReactionDate(), Constants.Common.DATE_TIME_DISPLAY_FORMAT));
     }
 
 

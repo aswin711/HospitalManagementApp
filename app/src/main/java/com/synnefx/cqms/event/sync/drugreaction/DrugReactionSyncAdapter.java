@@ -108,7 +108,7 @@ public class DrugReactionSyncAdapter extends AbstractThreadedSyncAdapter {
                     Log.e(TAG, "auditSyncLocalDatastore" + (null == itemSyncLocalDatastore));
                     Log.e(TAG, "auditSyncRemoteDatastore" + (null == itemSyncRemoteDatastore));
                     SyncManager<AdverseDrugEvent, AdverseDrugEvent> syncManager = new SyncManager<AdverseDrugEvent, AdverseDrugEvent>(itemSyncLocalDatastore, itemSyncRemoteDatastore);
-                    if (syncManager.dataAvailForSync()){
+                    if (syncManager.dataAvailForSync()) {
                         updateNotification("Data sync in progress");
                         syncManager.sync();
                         updateNotification("Data sync completed");

@@ -148,6 +148,8 @@ public class DrugReactionReportedByDetailsFragment extends Fragment {
                 Snackbar.make(getView().getRootView(), "Details updated", Snackbar.LENGTH_LONG).show();
                 if (ConnectionUtils.isInternetAvaialable(getContext())) {
                     ServiceUtils.initiateSync(getContext(), DrugReactionSyncContentProvider.AUTHORITY);
+                }else {
+                    Toast.makeText(getActivity(), "Please check network connection", Toast.LENGTH_SHORT).show();
                 }
                 getActivity().finish();
             } else {
@@ -183,6 +185,7 @@ public class DrugReactionReportedByDetailsFragment extends Fragment {
     private boolean saveIncidentDetails() {
         if (!validateDeatils()) {
             report.setUpdated(Calendar.getInstance());
+            report.setIncidentTime(Calendar.getInstance());
             report.setReportedBy(reportedBy);
             long id = databaseHelper.updateAdverseDrugEventReportedBy(report);
             if (id > 0) {

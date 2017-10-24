@@ -56,8 +56,8 @@ public class IncidentReportListAdapter extends AlternatingColorListAdapter<Incid
         } else {
             textView(3).setVisibility(View.GONE);
         }
-        if (null != item.getIncidentTime()) {
-            setText(5, "On : " + CalenderUtils.formatCalendarToString(item.getIncidentTime(), Constants.Common.DATE_DISPLAY_FORMAT));
+        if (null != item.getUpdated()) {
+            setText(5, "On : " + CalenderUtils.formatCalendarToString(item.getUpdated(), Constants.Common.DATE_DISPLAY_FORMAT));
         }
 
         if (0 == item.getStatusCode()) {

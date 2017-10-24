@@ -67,8 +67,8 @@ public class DrugReactionListAdapter extends AlternatingColorListAdapter<Adverse
         } else {
             textView(3).setVisibility(View.GONE);
         }
-        if (null != item.getIncidentTime()) {
-            setText(5, "On : " + CalenderUtils.formatCalendarToString(item.getIncidentTime(), Constants.Common.DATE_DISPLAY_FORMAT));
+        if (null != item.getUpdated()) {
+            setText(5, "On : " + CalenderUtils.formatCalendarToString(item.getUpdated(), Constants.Common.DATE_DISPLAY_FORMAT));
         }else{
             setText(2, "NA");
         }

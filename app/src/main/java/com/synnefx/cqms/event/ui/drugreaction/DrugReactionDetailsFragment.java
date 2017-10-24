@@ -293,7 +293,7 @@ public class DrugReactionDetailsFragment extends Fragment implements
 
     public void saveEvent() {
         if (saveIncidentDetails()) {
-            Snackbar.make(getActivity().findViewById(R.id.footer_view), "Reaction details dded/updated added", Snackbar.LENGTH_LONG).show();
+            Snackbar.make(getActivity().findViewById(R.id.footer_view), "Reaction details added/updated", Snackbar.LENGTH_LONG).show();
             nextScreen();
         } else {
             Snackbar.make(getActivity().findViewById(R.id.footer_view), "Correct all validation errors", Snackbar.LENGTH_LONG).show();

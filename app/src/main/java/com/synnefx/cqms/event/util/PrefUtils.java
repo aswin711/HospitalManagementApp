@@ -41,6 +41,8 @@ public class PrefUtils {
 
     public static final String LATEST_VERSION_NUMBER = "LATEST_APP_VERSION";
 
+    public static final String LAST_CLEAN_UP_DATE = "last_clean_up_date";
+
 
 
     /**
@@ -147,6 +149,11 @@ public class PrefUtils {
     }
 
 
+    private static boolean putParam(String key, Long value) {
+        SharedPreferences.Editor editor = getSettings().edit();
+        editor.putLong(key, value);
+        return editor.commit();
+    }
     private static boolean putParam(String key, String value) {
         SharedPreferences.Editor editor = getSettings().edit();
         editor.putString(key, value);
@@ -189,6 +196,14 @@ public class PrefUtils {
         SharedPreferences prefs = getSettings();
         return prefs.getString(PREFS_DEVICE_TOKEN,"");
 
+    }
+
+    public static void updateCleanUpDate(String date){
+        putParam(LAST_CLEAN_UP_DATE,date);
+    }
+
+    public static String getLastCleanUpDate(){
+     return getSettings().getString(LAST_CLEAN_UP_DATE,"");
     }
 
 

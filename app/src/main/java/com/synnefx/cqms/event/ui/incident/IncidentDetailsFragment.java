@@ -447,6 +447,7 @@ public class IncidentDetailsFragment extends Fragment implements
         }else {
             report.setIncidentLevelCode(0);
         }
+        report.setStatusCode(0);
         if (0 == report.getStatusCode()){
 
             report.setCreatedOn(Calendar.getInstance());

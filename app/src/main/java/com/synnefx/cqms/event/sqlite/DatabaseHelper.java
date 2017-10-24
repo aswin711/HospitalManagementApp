@@ -556,7 +556,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 EventReportKey.TABLE_INCIDENT_REPORT + " s LEFT JOIN " + TABLE_UNITS + " u ON s." + Columns.KEY_UNIT_REF + " = u." +
                 Columns.KEY_UNIT_REF + " LEFT JOIN " + TABLE_INCIDENT_TYPE + " it ON s." + Columns.KEY_INCIDENTTYPE_REF + " = it." +
                 Columns.KEY_INCIDENTTYPE_REF + " LEFT JOIN " + EventReportKey.TABLE_REPORTED_BY + " rep ON rep.id = " + EventReportKey.KEY_REPORTED_BY_REF + " WHERE s." + Columns.KEY_STATUS_CODE + " IN (?, ?, ?) AND s." +
-                Columns.KEY_HOSPITAL_ID + " = ? ORDER BY s." + EventReportKey.KEY_INCIDENT_TIME + " DESC LIMIT ?, 10";
+                Columns.KEY_HOSPITAL_ID + " = ? ORDER BY s." + Columns.KEY_UPDATED_ON + " DESC LIMIT ?, 10";
         Log.e(LOG, selectQuery);
         Cursor c = null;
         try {
@@ -943,7 +943,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 + " s.status_code as status_code, s.createdOn as createdOn, s.updatedOn as updatedOn, u.name as unitName FROM " +
                 EventReportKey.TABLE_MEDICATION_ERR_REPORT + " s LEFT JOIN " + TABLE_UNITS + " u ON s." + Columns.KEY_UNIT_REF + " = u." +
                 Columns.KEY_UNIT_REF + " LEFT JOIN " + EventReportKey.TABLE_REPORTED_BY + " rep ON rep.id = " + EventReportKey.KEY_REPORTED_BY_REF + " WHERE s." + Columns.KEY_STATUS_CODE + " IN (?, ?, ?) AND s." +
-                Columns.KEY_HOSPITAL_ID + " = ? ORDER BY s." + EventReportKey.KEY_INCIDENT_TIME + " DESC LIMIT ?, 10";
+                Columns.KEY_HOSPITAL_ID + " = ? ORDER BY s." + Columns.KEY_UPDATED_ON + " DESC LIMIT ?, 10";
         Log.e(LOG, selectQuery);
 
         Cursor c = null;
@@ -1357,7 +1357,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 EventReportKey.TABLE_ADVERSE_DRUGG_REACTION_REPORT + " s JOIN "+EventReportKey.TABLE_PERSON_INVOLVED +" p on p.id = s."+EventReportKey.KEY_PERSON_INVOLVED_REF
                 +" LEFT JOIN " + TABLE_UNITS + " u ON s." + Columns.KEY_UNIT_REF + " = u." +
                 Columns.KEY_UNIT_REF + " LEFT JOIN " + EventReportKey.TABLE_REPORTED_BY + " rep ON rep.id = " + EventReportKey.KEY_REPORTED_BY_REF + " WHERE s." + Columns.KEY_STATUS_CODE + " IN (?, ?, ?) AND s." +
-                Columns.KEY_HOSPITAL_ID + " = ? ORDER BY s." + EventReportKey.KEY_INCIDENT_TIME + " DESC LIMIT ?, 10";
+                Columns.KEY_HOSPITAL_ID + " = ? ORDER BY s." + Columns.KEY_UPDATED_ON + " DESC LIMIT ?, 10";
         Log.e(LOG, selectQuery);
         Cursor c = null;
         try {
@@ -1686,6 +1686,90 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     }
 
+    private List<Long> getUniqueReportIds(StringBuilder sb,String[] params) throws DataAccessException {
+        Cursor c = null;
+        List<Long> selectedIds = new ArrayList<>();
+        try {
+            SQLiteDatabase db = this.getReadableDatabase();
+            Log.e("QUERY", sb.toString());
+            c = db.rawQuery(sb.toString(), params);
+            // looping through all rows and adding to list
+            if (c.moveToFirst()) {
+                do {
+                    Long id = c.getLong(c.getColumnIndex(Columns.KEY_ID));
+                    selectedIds.add(id);
+                } while (c.moveToNext());
 
+            }
+        }catch (Exception e) {
+            throw new DataAccessException(e.getMessage());
+        } finally {
+            if (c != null && !c.isClosed()) {
+                c.close();
+            }
+        }
+       return selectedIds;
+    }
+
+
+    public boolean deleteIncidentReportsBeforeDate(Calendar date) throws DataAccessException {
+        Long upperDate = date.getTimeInMillis();
+        StringBuilder sb = new StringBuilder("SELECT DISTINCT "+Columns.KEY_ID+" FROM " +
+                EventReportKey.TABLE_INCIDENT_REPORT + " WHERE " + Columns.KEY_UPDATED_ON +
+                " <?");
+        String[] params = new String[]{String.valueOf(upperDate)};
+        List<Long> selectedIds = getUniqueReportIds(sb, params);
+        //Delete all selected reports
+
+        try {
+            for (Long id : selectedIds) {
+                deleteIncidentReportById(id);
+            }
+            return true;
+        } catch (Exception e) {
+            Log.e("deleteIncidentReports", e.getMessage());
+            return false;
+        }
+    }
+
+    public boolean deleteAdverseDrugReportsBeforeDate(Calendar date) throws DataAccessException {
+        Long upperDate = date.getTimeInMillis();
+        StringBuilder sb = new StringBuilder("SELECT DISTINCT "+Columns.KEY_ID+" FROM " +
+                EventReportKey.TABLE_ADVERSE_DRUGG_REACTION_REPORT + " WHERE " + Columns.KEY_UPDATED_ON +
+                " <?");
+        String[] params = new String[]{String.valueOf(upperDate)};
+        List<Long> selectedIds = getUniqueReportIds(sb, params);
+        //Delete all selected reports
+
+        try {
+            for (Long id : selectedIds) {
+                deleteAdverseDrugEventById(id);
+            }
+            return true;
+        } catch (Exception e) {
+            Log.e("deleteAdverseDgReports", e.getMessage());
+            return false;
+        }
+    }
+
+    public boolean deleteMedicalErrorReportsBeforeDate(Calendar date) throws DataAccessException {
+        Long upperDate = date.getTimeInMillis();
+        StringBuilder sb = new StringBuilder("SELECT DISTINCT "+Columns.KEY_ID+" FROM " +
+                EventReportKey.TABLE_MEDICATION_ERR_REPORT + " WHERE " + Columns.KEY_UPDATED_ON +
+                " <?");
+        String[] params = new String[]{String.valueOf(upperDate)};
+        List<Long> selectedIds = getUniqueReportIds(sb, params);
+        //Delete all selected reports
+
+        try {
+            for (Long id : selectedIds) {
+                deleteMedicationErrorById(id);
+            }
+            return true;
+        } catch (Exception e) {
+            Log.e("deleteMediErrReports", e.getMessage());
+            return false;
+        }
+    }
 
 }

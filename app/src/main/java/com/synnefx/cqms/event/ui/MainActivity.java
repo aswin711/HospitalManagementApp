@@ -52,6 +52,7 @@ import com.synnefx.cqms.event.ui.base.NavigationDrawerFragment;
 import com.synnefx.cqms.event.ui.drugreaction.DrugReactionListFragment;
 import com.synnefx.cqms.event.ui.incident.IncidentReportListFragment;
 import com.synnefx.cqms.event.ui.medicationerror.MedicationErrorListFragment;
+import com.synnefx.cqms.event.util.ConnectionUtils;
 import com.synnefx.cqms.event.util.PrefUtils;
 import com.synnefx.cqms.event.util.SafeAsyncTask;
 import com.synnefx.cqms.event.util.ServiceUtils;
@@ -405,26 +406,31 @@ public class MainActivity extends BootstrapActivity implements NavigationView.On
     private void initiateSync() {
         Timber.e("initiateSync Main");
         // Pass the settings flags by inserting them in a bundle
-        Bundle settingsBundle = new Bundle();
-        settingsBundle.putBoolean(
-                ContentResolver.SYNC_EXTRAS_MANUAL, true);
-        settingsBundle.putBoolean(
-                ContentResolver.SYNC_EXTRAS_EXPEDITED, true);
+        if (ConnectionUtils.isInternetAvaialable(getApplicationContext())){
+            Bundle settingsBundle = new Bundle();
+            settingsBundle.putBoolean(
+                    ContentResolver.SYNC_EXTRAS_MANUAL, true);
+            settingsBundle.putBoolean(
+                    ContentResolver.SYNC_EXTRAS_EXPEDITED, true);
             /*
 	         * Request the sync for the default account, authority, and
 	         * manual sync settings
 	         */
-        AccountManager accountManager = AccountManager.get(this);
-        final Account[] accounts = accountManager
-                .getAccountsByType(Constants.Auth.BOOTSTRAP_ACCOUNT_TYPE);
-        if (accounts.length > 0) {
-            ContentResolver.requestSync(accounts[0], IncidentReportSyncContentProvider.AUTHORITY, settingsBundle);
-            ContentResolver.addPeriodicSync(accounts[0], IncidentReportSyncContentProvider.AUTHORITY, Bundle.EMPTY, 600);
-            ContentResolver.requestSync(accounts[0], MedicationErrorSyncContentProvider.AUTHORITY, settingsBundle);
-            ContentResolver.addPeriodicSync(accounts[0], MedicationErrorSyncContentProvider.AUTHORITY, Bundle.EMPTY, 500);
-            ContentResolver.requestSync(accounts[0], DrugReactionSyncContentProvider.AUTHORITY, settingsBundle);
-            ContentResolver.addPeriodicSync(accounts[0], DrugReactionSyncContentProvider.AUTHORITY, Bundle.EMPTY, 550);
+            AccountManager accountManager = AccountManager.get(this);
+            final Account[] accounts = accountManager
+                    .getAccountsByType(Constants.Auth.BOOTSTRAP_ACCOUNT_TYPE);
+            if (accounts.length > 0) {
+                ContentResolver.requestSync(accounts[0], IncidentReportSyncContentProvider.AUTHORITY, settingsBundle);
+                ContentResolver.addPeriodicSync(accounts[0], IncidentReportSyncContentProvider.AUTHORITY, Bundle.EMPTY, 600);
+                ContentResolver.requestSync(accounts[0], MedicationErrorSyncContentProvider.AUTHORITY, settingsBundle);
+                ContentResolver.addPeriodicSync(accounts[0], MedicationErrorSyncContentProvider.AUTHORITY, Bundle.EMPTY, 500);
+                ContentResolver.requestSync(accounts[0], DrugReactionSyncContentProvider.AUTHORITY, settingsBundle);
+                ContentResolver.addPeriodicSync(accounts[0], DrugReactionSyncContentProvider.AUTHORITY, Bundle.EMPTY, 550);
+            }
+        }else{
+            Toast.makeText(this, "Please check network connection", Toast.LENGTH_SHORT).show();
         }
+
     }
 
     @Override
@@ -549,6 +555,12 @@ public class MainActivity extends BootstrapActivity implements NavigationView.On
 
     public boolean isPreLollipop(){
         return android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.LOLLIPOP;
+    }
+
+
+    //clean up records aged 2 months.
+    public void cleanReports(){
+
     }
 
 }

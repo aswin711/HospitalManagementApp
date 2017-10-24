@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.rengwuxian.materialedittext.MaterialEditText;
 import com.synnefx.cqms.event.BootstrapApplication;
@@ -156,6 +157,8 @@ public class ErrorReportedByDetailsFragment extends Fragment {
                 Snackbar.make(getView().getRootView(), "Details updated", Snackbar.LENGTH_LONG).show();
                 if (ConnectionUtils.isInternetAvaialable(getContext())) {
                     ServiceUtils.initiateSync(getContext(), MedicationErrorSyncContentProvider.AUTHORITY);
+                }else {
+                    Toast.makeText(getActivity(), "Please check network connection", Toast.LENGTH_SHORT).show();
                 }
                 getActivity().finish();
             } else {
