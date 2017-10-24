@@ -1,6 +1,7 @@
 package com.synnefx.cqms.event.util;
 
 import android.content.Context;
+import android.widget.Toast;
 
 import com.synnefx.cqms.event.ui.base.ConnectionDetector;
 

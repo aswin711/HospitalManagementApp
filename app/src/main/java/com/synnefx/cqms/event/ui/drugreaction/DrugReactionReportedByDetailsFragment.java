@@ -60,7 +60,6 @@ public class DrugReactionReportedByDetailsFragment extends Fragment {
     protected EventBus eventBus;
     private AdverseDrugEvent report;
     private ReportedBy reportedBy;
-    private PersonInvolved personInvolved;
 
 
 
@@ -118,7 +117,6 @@ public class DrugReactionReportedByDetailsFragment extends Fragment {
     }
 
 
-
     private void initScreen() {
         if (null != report && null != report.getId() && 0 < report.getId()) {
             Long reportedByRef = report.getReportedByRef();
@@ -150,8 +148,9 @@ public class DrugReactionReportedByDetailsFragment extends Fragment {
                 Snackbar.make(getView().getRootView(), "Details updated", Snackbar.LENGTH_LONG).show();
                 if (ConnectionUtils.isInternetAvaialable(getContext())) {
                     ServiceUtils.initiateSync(getContext(), DrugReactionSyncContentProvider.AUTHORITY);
+                }else {
+                    Toast.makeText(getActivity(), "Please check network connection", Toast.LENGTH_SHORT).show();
                 }
-                //startActivity(new Intent(getActivity(), DrugReactionListActivity.class));
                 getActivity().finish();
             } else {
                 Snackbar.make(getView().getRootView(), "Error while updating", Snackbar.LENGTH_LONG).show();
@@ -186,6 +185,7 @@ public class DrugReactionReportedByDetailsFragment extends Fragment {
     private boolean saveIncidentDetails() {
         if (!validateDeatils()) {
             report.setUpdated(Calendar.getInstance());
+            report.setIncidentTime(Calendar.getInstance());
             report.setReportedBy(reportedBy);
             long id = databaseHelper.updateAdverseDrugEventReportedBy(report);
             if (id > 0) {
@@ -206,10 +206,7 @@ public class DrugReactionReportedByDetailsFragment extends Fragment {
             reportedBy.setLastName(reportedByName.getText().toString().trim());
         }
 
-        if (TextUtils.isEmpty(reportedByDesignation.getText())) {
-           /* reportedByDesignation.setError("Reported by designation required");
-            error = true;*/
-        } else {
+        if (!TextUtils.isEmpty(reportedByDesignation.getText())) {
             reportedBy.setDesignation(reportedByDesignation.getText().toString().trim());
         }
         return error;

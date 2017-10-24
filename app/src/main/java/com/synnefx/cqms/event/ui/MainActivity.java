@@ -52,6 +52,7 @@ import com.synnefx.cqms.event.ui.base.NavigationDrawerFragment;
 import com.synnefx.cqms.event.ui.drugreaction.DrugReactionListFragment;
 import com.synnefx.cqms.event.ui.incident.IncidentReportListFragment;
 import com.synnefx.cqms.event.ui.medicationerror.MedicationErrorListFragment;
+import com.synnefx.cqms.event.util.ConnectionUtils;
 import com.synnefx.cqms.event.util.PrefUtils;
 import com.synnefx.cqms.event.util.SafeAsyncTask;
 import com.synnefx.cqms.event.util.ServiceUtils;
@@ -205,15 +206,8 @@ public class MainActivity extends BootstrapActivity implements NavigationView.On
         header = mNavigationView.getHeaderView(0);
         TextView user = (TextView) header.findViewById(R.id.navigation_drawer_list_header_user);
         TextView hospital = (TextView) header.findViewById(R.id.navigation_drawer_list_header_hospital);
-
-        //Toast.makeText(this, , Toast.LENGTH_SHORT).show();
-
         user.setText(PrefUtils.getFromPrefs(getApplicationContext(), PrefUtils.PREFS_USER_DISPLAY_NAME, "User"));
         hospital.setText(PrefUtils.getFromPrefs(getApplicationContext(), PrefUtils.PREFS_HOSP_DISPLAY_NAME, "Hospital"));
-        /*((TextView) navigationView.findViewById(R.id.navigation_drawer_list_header_user)).setText();
-        ((TextView) navigationView.findViewById(R.id.navigation_drawer_list_header_hospital)).setText();*/
-
-
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
         checkAuth();
@@ -237,9 +231,6 @@ public class MainActivity extends BootstrapActivity implements NavigationView.On
         super.onPostResume();
         TextView user = (TextView) header.findViewById(R.id.navigation_drawer_list_header_user);
         TextView hospital = (TextView) header.findViewById(R.id.navigation_drawer_list_header_hospital);
-
-        //Toast.makeText(this, , Toast.LENGTH_SHORT).show();
-
         user.setText(PrefUtils.getFromPrefs(getApplicationContext(), PrefUtils.PREFS_USER_DISPLAY_NAME, "User"));
         hospital.setText(PrefUtils.getFromPrefs(getApplicationContext(), PrefUtils.PREFS_HOSP_DISPLAY_NAME, "Hospital"));
 
@@ -248,7 +239,6 @@ public class MainActivity extends BootstrapActivity implements NavigationView.On
     @Override
     public boolean onNavigationItemSelected(MenuItem menuItem) {
         // Handle navigation view item clicks here.
-        //Bundle bundle = new Bundle();
         int id = menuItem.getItemId();
         FragmentManager manager = getSupportFragmentManager();
 
@@ -318,18 +308,9 @@ public class MainActivity extends BootstrapActivity implements NavigationView.On
                 super.onSuccess(hasAuthenticated);
                 Timber.e("onSuccess  Main");
                 userHasAuthenticated = true;
-                //importConfig();
                 registerPushyOnServer();
                 scheduleSync();
                 selectIncidentReport();
-                //initScreen();
-
-                /*
-                if(!isPushRecordServiceRunning()){
-                    final Intent i = new Intent(MainActivity.this, PushRecordService.class);
-                    startService(i);
-                }
-                */
             }
 
             @Override
@@ -356,7 +337,6 @@ public class MainActivity extends BootstrapActivity implements NavigationView.On
 
     public void registerPushyOnServer() {
         Timber.e("registerPushyOnServer  Main");
-        //registerReceiver();
         new RegisterForPushNotificationsAsync().execute();
 
     }
@@ -373,10 +353,6 @@ public class MainActivity extends BootstrapActivity implements NavigationView.On
             case android.R.id.home:
                 //menuDrawer.toggleMenu();
                 return true;
-           /* case R.id.timer:
-                navigateToTimer();
-                return true;
-                */
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -430,26 +406,31 @@ public class MainActivity extends BootstrapActivity implements NavigationView.On
     private void initiateSync() {
         Timber.e("initiateSync Main");
         // Pass the settings flags by inserting them in a bundle
-        Bundle settingsBundle = new Bundle();
-        settingsBundle.putBoolean(
-                ContentResolver.SYNC_EXTRAS_MANUAL, true);
-        settingsBundle.putBoolean(
-                ContentResolver.SYNC_EXTRAS_EXPEDITED, true);
+        if (ConnectionUtils.isInternetAvaialable(getApplicationContext())){
+            Bundle settingsBundle = new Bundle();
+            settingsBundle.putBoolean(
+                    ContentResolver.SYNC_EXTRAS_MANUAL, true);
+            settingsBundle.putBoolean(
+                    ContentResolver.SYNC_EXTRAS_EXPEDITED, true);
             /*
 	         * Request the sync for the default account, authority, and
 	         * manual sync settings
 	         */
-        AccountManager accountManager = AccountManager.get(this);
-        final Account[] accounts = accountManager
-                .getAccountsByType(Constants.Auth.BOOTSTRAP_ACCOUNT_TYPE);
-        if (accounts.length > 0) {
-            ContentResolver.requestSync(accounts[0], IncidentReportSyncContentProvider.AUTHORITY, settingsBundle);
-            ContentResolver.addPeriodicSync(accounts[0], IncidentReportSyncContentProvider.AUTHORITY, Bundle.EMPTY, 600);
-            ContentResolver.requestSync(accounts[0], MedicationErrorSyncContentProvider.AUTHORITY, settingsBundle);
-            ContentResolver.addPeriodicSync(accounts[0], MedicationErrorSyncContentProvider.AUTHORITY, Bundle.EMPTY, 500);
-            ContentResolver.requestSync(accounts[0], DrugReactionSyncContentProvider.AUTHORITY, settingsBundle);
-            ContentResolver.addPeriodicSync(accounts[0], DrugReactionSyncContentProvider.AUTHORITY, Bundle.EMPTY, 550);
+            AccountManager accountManager = AccountManager.get(this);
+            final Account[] accounts = accountManager
+                    .getAccountsByType(Constants.Auth.BOOTSTRAP_ACCOUNT_TYPE);
+            if (accounts.length > 0) {
+                ContentResolver.requestSync(accounts[0], IncidentReportSyncContentProvider.AUTHORITY, settingsBundle);
+                ContentResolver.addPeriodicSync(accounts[0], IncidentReportSyncContentProvider.AUTHORITY, Bundle.EMPTY, 600);
+                ContentResolver.requestSync(accounts[0], MedicationErrorSyncContentProvider.AUTHORITY, settingsBundle);
+                ContentResolver.addPeriodicSync(accounts[0], MedicationErrorSyncContentProvider.AUTHORITY, Bundle.EMPTY, 500);
+                ContentResolver.requestSync(accounts[0], DrugReactionSyncContentProvider.AUTHORITY, settingsBundle);
+                ContentResolver.addPeriodicSync(accounts[0], DrugReactionSyncContentProvider.AUTHORITY, Bundle.EMPTY, 550);
+            }
+        }else{
+            Toast.makeText(this, "Please check network connection", Toast.LENGTH_SHORT).show();
         }
+
     }
 
     @Override
@@ -574,6 +555,12 @@ public class MainActivity extends BootstrapActivity implements NavigationView.On
 
     public boolean isPreLollipop(){
         return android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.LOLLIPOP;
+    }
+
+
+    //clean up records aged 2 months.
+    public void cleanReports(){
+
     }
 
 }

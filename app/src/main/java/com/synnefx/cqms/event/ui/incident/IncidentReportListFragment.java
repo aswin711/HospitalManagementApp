@@ -80,9 +80,6 @@ public class IncidentReportListFragment extends ItemListFragment<IncidentReport>
         super.configureList(activity, listView);
         listView.setFastScrollEnabled(true);
         listView.setDividerHeight(0);
-        /*getListAdapter()
-                .addHeader(activity.getLayoutInflater()
-                        .inflate(R.layout.incident_list_item_labels, null));*/
         View loadMore = getFooterView();
         getListAdapter().addFooter(getFooterView());
         loadMore.setOnClickListener(new View.OnClickListener() {
@@ -165,7 +162,6 @@ public class IncidentReportListFragment extends ItemListFragment<IncidentReport>
     @Override
     public void onListItemClick(ListView l, View view, int position, long id) {
         IncidentReport incident = ((IncidentReport) l.getItemAtPosition(position));
-        //startActivity(new Intent(getActivity(), CasesheetAuditActivity.class).putExtra(INCIDENT_ITEM, audit));
         showRecordActionPrompt(incident, view);
     }
 
@@ -229,7 +225,6 @@ public class IncidentReportListFragment extends ItemListFragment<IncidentReport>
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
                                 if (deleteSession(report)) {
-                                    //ViewUtils.setGone(view, true);
                                     removeItem(report);
                                     Snackbar.make(view, "Record deleted", Snackbar.LENGTH_LONG).show();
                                 } else {

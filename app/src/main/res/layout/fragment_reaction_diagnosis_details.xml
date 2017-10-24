@@ -21,6 +21,21 @@
             android:paddingRight="15dp"
             android:paddingTop="5dp">
 
+            <com.wrapp.floatlabelededittext.FloatLabeledEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                float:fletPadding="2dp">
+
+                <com.rengwuxian.materialedittext.MaterialEditText
+                    android:id="@+id/consultant_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/edit_height"
+                    android:completionThreshold="1"
+                    android:hint="@string/consulant_name"
+                    android:imeOptions="actionNext|flagNoExtractUi"
+                    android:inputType="textPersonName" />
+            </com.wrapp.floatlabelededittext.FloatLabeledEditText>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -41,20 +56,6 @@
 
             </LinearLayout>
 
-            <com.wrapp.floatlabelededittext.FloatLabeledEditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                float:fletPadding="2dp">
-
-                <com.rengwuxian.materialedittext.MaterialEditText
-                    android:id="@+id/consultant_name"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/edit_height"
-                    android:completionThreshold="1"
-                    android:hint="@string/consulant_name"
-                    android:imeOptions="actionNext|flagNoExtractUi"
-                    android:inputType="textPersonName" />
-            </com.wrapp.floatlabelededittext.FloatLabeledEditText>
 
 
 

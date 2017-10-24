@@ -52,7 +52,7 @@ import timber.log.Timber;
 import static com.synnefx.cqms.event.core.Constants.Extra.INCIDENT_ITEM;
 
 
-public class IncidentDetailsFragment extends Fragment implements View.OnClickListener,
+public class IncidentDetailsFragment extends Fragment implements
         DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
 
 
@@ -187,7 +187,6 @@ public class IncidentDetailsFragment extends Fragment implements View.OnClickLis
         unitsSpinner.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                // String mSelectedText = adapterView.getItemAtPosition(position).toString();
                 Unit selectedUnit = unitAdapter.getItem(position);
                 if (null != selectedUnit && null != selectedUnit.getServerId() && 0 < selectedUnit.getServerId()) {
                     report.setUnitRef(selectedUnit.getServerId());
@@ -204,7 +203,6 @@ public class IncidentDetailsFragment extends Fragment implements View.OnClickLis
         selectedUnit.setServerId(report.getUnitRef());
         int pos = unitAdapter.getPosition(selectedUnit);
         if (pos >= 0) {
-            //serviceSpinner.setSelection(pos);
             unitsSpinner.setText(report.getDepartment());
         }
     }
@@ -223,7 +221,6 @@ public class IncidentDetailsFragment extends Fragment implements View.OnClickLis
         incidentTypeSpinner.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                // String mSelectedText = adapterView.getItemAtPosition(position).toString();
                 IncidentType selectedType = incidentTypeAdapter.getItem(position);
                 if (null != selectedType && null != selectedType.getServerId() && 0 < selectedType.getServerId()) {
                     report.setIncidentTypeRef(selectedType.getServerId());
@@ -276,12 +273,6 @@ public class IncidentDetailsFragment extends Fragment implements View.OnClickLis
 
 
     @Override
-    public void onClick(View view) {
-        //if (enableSeconds.isChecked() && view.getId() == R.id.enable_seconds) enableMinutes.setChecked(true);
-        //if (!enableMinutes.isChecked() && view.getId() == R.id.enable_minutes) enableSeconds.setChecked(false);
-    }
-
-    @Override
     public void onResume() {
         super.onResume();
         DatePickerDialog eventTimeDpd = (DatePickerDialog) getActivity().getFragmentManager().findFragmentByTag("EventDatepickerdialog");
@@ -312,7 +303,6 @@ public class IncidentDetailsFragment extends Fragment implements View.OnClickLis
             tpd.dismissOnPause(true);
             tpd.enableSeconds(false);
             tpd.enableMinutes(true);
-            // tpd.setAccentColor(Color.parseColor("#9C27B0"));
             tpd.setTitle("Select Time");
             tpd.setTimeInterval(1, 1);
             tpd.setOnCancelListener(new DialogInterface.OnCancelListener() {
@@ -327,11 +317,6 @@ public class IncidentDetailsFragment extends Fragment implements View.OnClickLis
 
     @Override
     public void onTimeSet(RadialPickerLayout view, int hourOfDay, int minute, int second) {
-        String hourString = hourOfDay < 10 ? "0" + hourOfDay : "" + hourOfDay;
-        String minuteString = minute < 10 ? "0" + minute : "" + minute;
-        String secondString = second < 10 ? "0" + second : "" + second;
-        String time = hourString + "h" + minuteString + "m" + secondString + "s";
-        String dateTime = eventTime.getText().toString();
         report.getIncidentTime().set(Calendar.MINUTE, minute);
         report.getIncidentTime().set(Calendar.HOUR_OF_DAY, hourOfDay);
         report.getIncidentTime().set(Calendar.SECOND, second);
@@ -437,7 +422,6 @@ public class IncidentDetailsFragment extends Fragment implements View.OnClickLis
 
     //saving contents as draft
     public IncidentReport saveDraft(){
-        //IncidentReport report = new IncidentReport();
         String hospitalRef = PrefUtils.getFromPrefs(getContext(), PrefUtils.PREFS_HOSP_ID, null);
 
         report.setHospital(hospitalRef);
@@ -463,6 +447,7 @@ public class IncidentDetailsFragment extends Fragment implements View.OnClickLis
         }else {
             report.setIncidentLevelCode(0);
         }
+        report.setStatusCode(0);
         if (0 == report.getStatusCode()){
 
             report.setCreatedOn(Calendar.getInstance());

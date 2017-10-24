@@ -40,7 +40,7 @@ import timber.log.Timber;
 import static com.synnefx.cqms.event.core.Constants.Extra.INCIDENT_ITEM;
 
 
-public class DrugInfoFragment extends Fragment implements View.OnClickListener,
+public class DrugInfoFragment extends Fragment implements
         DatePickerDialog.OnDateSetListener {
 
     protected View fragmentView;
@@ -187,7 +187,6 @@ public class DrugInfoFragment extends Fragment implements View.OnClickListener,
                 dpd.vibrate(true);
                 dpd.dismissOnPause(true);
                 dpd.showYearPickerFirst(true);
-                // dpd.setAccentColor(Color.parseColor("#9C27B0"));
                 dpd.setTitle(title);
                 //Setting max date
                 dpd.setMaxDate(Calendar.getInstance());
@@ -196,13 +195,6 @@ public class DrugInfoFragment extends Fragment implements View.OnClickListener,
             }
         });
 
-    }
-
-
-    @Override
-    public void onClick(View view) {
-        //if (enableSeconds.isChecked() && view.getId() == R.id.enable_seconds) enableMinutes.setChecked(true);
-        //if (!enableMinutes.isChecked() && view.getId() == R.id.enable_minutes) enableSeconds.setChecked(false);
     }
 
     @Override
@@ -305,38 +297,22 @@ public class DrugInfoFragment extends Fragment implements View.OnClickListener,
         } else {
             drugInfo.setDose(drugDose.getText().toString().trim());
         }
-        if (TextUtils.isEmpty(drugFreequency.getText())){
-            /*drugFreequency.setError("Drug frequency is required");
-            drugFreequency.requestFocus();
-            error = true;*/
-        }else {
+        if (!TextUtils.isEmpty(drugFreequency.getText())){
             drugInfo.setFrequency(drugFreequency.getText().toString().trim());
         }
-        if (TextUtils.isEmpty(drugRoute.getText())){
-            /*drugRoute.setError("Drug route is required");
-            drugRoute.requestFocus();
-            error = true;*/
-        }else {
+        if (!TextUtils.isEmpty(drugRoute.getText())) {
             drugInfo.setRoute(drugRoute.getText().toString().trim());
         }
 
-        if (drugInfo.getDateCeased()==null){
-            /*drugCeasedDt.setError("Date is required.");
-            drugCeasedDt.requestFocus();
-            error = true;*/
-        }
-
-        if (drugInfo.getDateStarted()==null){
-            /*drugStartedDt.setError("Date is required.");
-            drugStartedDt.requestFocus();
-            error = true;*/
-        }
-
         if(null != drugInfo.getDateCeased() && null != drugInfo.getDateStarted()){
-            if(drugInfo.getDateCeased().before(drugInfo.getDateStarted())){
-                drugCeasedDt.setError("Invalid date");
+            Log.e("DrugInfo",drugInfo.getDateCeased()+"\n"+drugInfo.getDateStarted());
+            if(!drugInfo.getDateCeased().after(drugInfo.getDateStarted())){
+                drugCeasedDt.setText("");
+                drugCeasedDt.setError("Ceased date must be same or after started date");
                 drugCeasedDt.requestFocus();
                 error = true;
+            }else{
+                Log.e("DrugInfo","Valid Dates");
             }
 
         }
@@ -363,6 +339,11 @@ public class DrugInfoFragment extends Fragment implements View.OnClickListener,
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        hideSoftKeyBoard();
+
+    }
+
+    public void hideSoftKeyBoard(){
         final InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
     }

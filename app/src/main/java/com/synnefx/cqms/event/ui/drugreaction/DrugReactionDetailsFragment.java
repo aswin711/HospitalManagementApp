@@ -44,7 +44,7 @@ import timber.log.Timber;
 
 import static com.synnefx.cqms.event.core.Constants.Extra.INCIDENT_ITEM;
 
-public class DrugReactionDetailsFragment extends Fragment implements View.OnClickListener,
+public class DrugReactionDetailsFragment extends Fragment implements
         DatePickerDialog.OnDateSetListener {
 
     protected View fragmentView;
@@ -176,7 +176,6 @@ public class DrugReactionDetailsFragment extends Fragment implements View.OnClic
         actionOutcomeSpinner.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                // String mSelectedText = adapterView.getItemAtPosition(position).toString();
                 if (position > 0) {
                     CharSequence selectedItem = actionOutcomeAdapter.getItem(position);
                     if (null != selectedItem) {
@@ -257,7 +256,6 @@ public class DrugReactionDetailsFragment extends Fragment implements View.OnClic
                 dpd.vibrate(true);
                 dpd.dismissOnPause(true);
                 dpd.showYearPickerFirst(true);
-                // dpd.setAccentColor(Color.parseColor("#9C27B0"));
                 dpd.setTitle(title);
                 //Setting max date
                 dpd.setMaxDate(Calendar.getInstance());
@@ -268,12 +266,6 @@ public class DrugReactionDetailsFragment extends Fragment implements View.OnClic
 
     }
 
-
-    @Override
-    public void onClick(View view) {
-        //if (enableSeconds.isChecked() && view.getId() == R.id.enable_seconds) enableMinutes.setChecked(true);
-        //if (!enableMinutes.isChecked() && view.getId() == R.id.enable_minutes) enableSeconds.setChecked(false);
-    }
 
     @Override
     public void onResume() {
@@ -287,12 +279,11 @@ public class DrugReactionDetailsFragment extends Fragment implements View.OnClic
     public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
         Calendar selectedDate = Calendar.getInstance();
         selectedDate.set(year, monthOfYear, dayOfMonth);
-        report.setReactionDate(selectedDate);
         if ("RecoveryDatepickerdialog".equals(view.getTag())) {
             report.setDateOfRecovery(selectedDate);
             recoveredDate.setText(CalenderUtils.formatCalendarToString(report.getDateOfRecovery(), Constants.Common.DATE_DISPLAY_FORMAT));
             report.setDateOfRecoveryStr(dayOfMonth+"/"+monthOfYear+"/"+year);
-        } else if ("DeathDatepickerdialog".equals(view.getTag())) {
+        } else{
             report.setDateOfDeath(selectedDate);
             report.setDateOfDeathStr(dayOfMonth+"/"+monthOfYear+"/"+year);
             deathDate.setText(CalenderUtils.formatCalendarToString(report.getDateOfDeath(), Constants.Common.DATE_DISPLAY_FORMAT));
@@ -301,7 +292,7 @@ public class DrugReactionDetailsFragment extends Fragment implements View.OnClic
 
     public void saveEvent() {
         if (saveIncidentDetails()) {
-            Snackbar.make(getActivity().findViewById(R.id.footer_view), "Reaction details dded/updated added", Snackbar.LENGTH_LONG).show();
+            Snackbar.make(getActivity().findViewById(R.id.footer_view), "Reaction details added/updated", Snackbar.LENGTH_LONG).show();
             nextScreen();
         } else {
             Snackbar.make(getActivity().findViewById(R.id.footer_view), "Correct all validation errors", Snackbar.LENGTH_LONG).show();
@@ -381,12 +372,23 @@ public class DrugReactionDetailsFragment extends Fragment implements View.OnClic
             if(null == report.getDateOfRecovery()){
                 error = true;
                 recoveredDate.setError("Date recovered required");
+                recoveredDate.requestFocus();
+            }else if(report.getDateOfRecovery().getTimeInMillis()<report.getReactionDate().getTimeInMillis()){
+                error = true;
+                recoveredDate.setError("Recovery date must be same or after reaction time.");
+                recoveredDate.requestFocus();
+
             }
         }else if (4== report.getActionOutcomeCode()){
             //death date is mandatory
             if(null == report.getDateOfDeath()){
                 error = true;
                 deathDate.setError("Death date required");
+            }else if(report.getDateOfDeath().getTimeInMillis()<report.getReactionDate().getTimeInMillis()){
+                error = true;
+                deathDate.setError("Death date must be same or after reaction time.");
+                deathDate.requestFocus();
+
             }
         }
         if(casesheetAddedYes.isChecked()){

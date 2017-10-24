@@ -67,7 +67,6 @@ public class DrugReactionListFragment extends ItemListFragment<AdverseDrugEvent>
     @Override
     public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
                              final Bundle savedInstanceState) {
-        //fragmentListener.viewFragment(2);
         eventBus.register(this);
         return inflater.inflate(R.layout.record_list, null);
     }
@@ -86,9 +85,6 @@ public class DrugReactionListFragment extends ItemListFragment<AdverseDrugEvent>
         super.configureList(activity, listView);
         listView.setFastScrollEnabled(true);
         listView.setDividerHeight(0);
-        /*getListAdapter()
-                .addHeader(activity.getLayoutInflater()
-                        .inflate(R.layout.incident_list_item_labels, null));*/
         View loadMore = getFooterView();
         getListAdapter().addFooter(getFooterView());
         loadMore.setOnClickListener(new View.OnClickListener() {
@@ -237,7 +233,6 @@ public class DrugReactionListFragment extends ItemListFragment<AdverseDrugEvent>
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
                                 if (deleteSession(report)) {
-                                    //ViewUtils.setGone(view, true);
                                     removeItem(report);
                                     Snackbar.make(view, "Record deleted", Snackbar.LENGTH_LONG).show();
                                 } else {

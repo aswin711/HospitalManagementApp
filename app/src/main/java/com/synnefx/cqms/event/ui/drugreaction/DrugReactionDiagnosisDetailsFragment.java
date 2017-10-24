@@ -48,7 +48,7 @@ import timber.log.Timber;
 import static com.synnefx.cqms.event.core.Constants.Extra.INCIDENT_ITEM;
 
 
-public class DrugReactionDiagnosisDetailsFragment extends Fragment implements View.OnClickListener,
+public class DrugReactionDiagnosisDetailsFragment extends Fragment implements
         DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener{
 
     protected View fragmentView;
@@ -143,14 +143,15 @@ public class DrugReactionDiagnosisDetailsFragment extends Fragment implements Vi
 
 
     private void initScreen() {
+        consultantName.requestFocus();
         if (null != report && null != report.getId() && 0 < report.getId()) {
             if(!TextUtils.isEmpty(report.getPersonInvolved().getConsultantName())){
                 consultantName.setText(report.getPersonInvolved().getConsultantName());
             }
             diagnosis.setText(report.getPersonInvolved().getDiagnosis());
-            if (null != report.getIncidentTime()) {
+            if (null != report.getReactionDate()) {
                 eventTimeBtn.setText("Change");
-                eventTime.setText(CalenderUtils.formatCalendarToString(report.getIncidentTime(), Constants.Common.DATE_TIME_DISPLAY_FORMAT));
+                eventTime.setText(CalenderUtils.formatCalendarToString(report.getReactionDate(), Constants.Common.DATE_TIME_DISPLAY_FORMAT));
             } else {
                 eventTimeBtn.setText("Set");
             }
@@ -182,7 +183,6 @@ public class DrugReactionDiagnosisDetailsFragment extends Fragment implements Vi
         selectedUnit.setServerId(report.getUnitRef());
         int pos = unitAdapter.getPosition(selectedUnit);
         if (pos >= 0) {
-            //serviceSpinner.setSelection(pos);
             unitsSpinner.setText(report.getDepartment());
         }else{
             report.setUnitRef(0L);
@@ -191,7 +191,6 @@ public class DrugReactionDiagnosisDetailsFragment extends Fragment implements Vi
         unitsSpinner.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                // String mSelectedText = adapterView.getItemAtPosition(position).toString();
                 Unit selectedUnit = unitAdapter.getItem(position);
                 if (null != selectedUnit && null != selectedUnit.getServerId() && 0 < selectedUnit.getServerId()) {
                     report.setUnitRef(selectedUnit.getServerId());
@@ -223,7 +222,6 @@ public class DrugReactionDiagnosisDetailsFragment extends Fragment implements Vi
                 dpd.vibrate(true);
                 dpd.dismissOnPause(true);
                 dpd.showYearPickerFirst(true);
-                // dpd.setAccentColor(Color.parseColor("#9C27B0"));
                 dpd.setTitle("Select Incident time");
                 //Setting max date
                 dpd.setMaxDate(Calendar.getInstance());
@@ -232,13 +230,6 @@ public class DrugReactionDiagnosisDetailsFragment extends Fragment implements Vi
             }
         });
 
-    }
-
-
-    @Override
-    public void onClick(View view) {
-        //if (enableSeconds.isChecked() && view.getId() == R.id.enable_seconds) enableMinutes.setChecked(true);
-        //if (!enableMinutes.isChecked() && view.getId() == R.id.enable_minutes) enableSeconds.setChecked(false);
     }
 
     @Override
@@ -254,10 +245,9 @@ public class DrugReactionDiagnosisDetailsFragment extends Fragment implements Vi
         Calendar selectedDate = Calendar.getInstance();
         selectedDate.set(year, monthOfYear, dayOfMonth);
         if ("EventDatepickerdialog".equals(view.getTag())) {
-            report.setIncidentTime(selectedDate);
             report.setReactionDate(selectedDate);
             report.setReactionDateStr(dayOfMonth+"/"+monthOfYear+"/"+year);
-            eventTime.setText(CalenderUtils.formatCalendarToString(report.getIncidentTime(), Constants.Common.DATE_DISPLAY_FORMAT));
+            eventTime.setText(CalenderUtils.formatCalendarToString(report.getReactionDate(), Constants.Common.DATE_DISPLAY_FORMAT));
             Calendar now = Calendar.getInstance();
             TimePickerDialog tpd = com.wdullaer.materialdatetimepicker.time.TimePickerDialog.newInstance(
                     DrugReactionDiagnosisDetailsFragment.this,
@@ -274,7 +264,6 @@ public class DrugReactionDiagnosisDetailsFragment extends Fragment implements Vi
             tpd.dismissOnPause(true);
             tpd.enableSeconds(false);
             tpd.enableMinutes(true);
-            // tpd.setAccentColor(Color.parseColor("#9C27B0"));
             tpd.setTitle("Select Time");
             tpd.setTimeInterval(1, 1);
             tpd.setOnCancelListener(new DialogInterface.OnCancelListener() {
@@ -289,15 +278,10 @@ public class DrugReactionDiagnosisDetailsFragment extends Fragment implements Vi
 
     @Override
     public void onTimeSet(RadialPickerLayout view, int hourOfDay, int minute, int second) {
-        String hourString = hourOfDay < 10 ? "0" + hourOfDay : "" + hourOfDay;
-        String minuteString = minute < 10 ? "0" + minute : "" + minute;
-        String secondString = second < 10 ? "0" + second : "" + second;
-        String time = hourString + "h" + minuteString + "m" + secondString + "s";
-        String dateTime = eventTime.getText().toString();
-        report.getIncidentTime().set(Calendar.MINUTE, minute);
-        report.getIncidentTime().set(Calendar.HOUR_OF_DAY, hourOfDay);
-        report.getIncidentTime().set(Calendar.SECOND, second);
-        eventTime.setText(CalenderUtils.formatCalendarToString(report.getIncidentTime(), Constants.Common.DATE_TIME_DISPLAY_FORMAT));
+        report.getReactionDate().set(Calendar.MINUTE, minute);
+        report.getReactionDate().set(Calendar.HOUR_OF_DAY, hourOfDay);
+        report.getReactionDate().set(Calendar.SECOND, second);
+        eventTime.setText(CalenderUtils.formatCalendarToString(report.getReactionDate(), Constants.Common.DATE_TIME_DISPLAY_FORMAT));
     }
 
 
@@ -346,8 +330,6 @@ public class DrugReactionDiagnosisDetailsFragment extends Fragment implements Vi
 
     private boolean saveIncidentDetails() {
         if (!validateDeatils()) {
-            // Long hospitalRef = PrefUtils.getLongFromPrefs(getActivity().getApplicationContext(), PrefUtils.PREFS_HOSP_ID, null);
-            //report.setHospital(hospitalRef);
             report.setUpdated(Calendar.getInstance());
             long reportId = databaseHelper.updateAdverseDrugEvent(report);
             if (0 < reportId) {
@@ -370,15 +352,8 @@ public class DrugReactionDiagnosisDetailsFragment extends Fragment implements Vi
             error = true;
             report.setUnitRef(0l);
             unitsSpinner.requestFocus();
-        }else{
-
         }
-
-        if (TextUtils.isEmpty(consultantName.getText())){
-            /*consultantName.setError("Consultant name is required.");
-            consultantName.requestFocus();
-            error = true;*/
-        }else {
+        if (!TextUtils.isEmpty(consultantName.getText())){
             report.getPersonInvolved().setConsultantName(consultantName.getText().toString().trim());
         }
         if (TextUtils.isEmpty(diagnosis.getText())) {
@@ -388,8 +363,10 @@ public class DrugReactionDiagnosisDetailsFragment extends Fragment implements Vi
         } else {
             report.getPersonInvolved().setDiagnosis(diagnosis.getText().toString().trim());
         }
-        if(null == report.getIncidentTime()){
-            eventTime.setError("Incident time required");
+        if (TextUtils.isEmpty(eventTime.getText())){
+            eventTime.setError("Reaction time required");
+            eventTime.requestFocus();
+            error = true;
         }
 
         if (TextUtils.isEmpty(description.getText())){

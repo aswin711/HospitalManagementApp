@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.rengwuxian.materialedittext.MaterialEditText;
 import com.synnefx.cqms.event.BootstrapApplication;
@@ -140,12 +141,14 @@ public class ReportedByDetailsFragment extends Fragment{
         if (saveIncidentDetails()) {
             Snackbar.make(getActivity().findViewById(R.id.footer_view), "Incident added", Snackbar.LENGTH_LONG).show();
             report.setStatusCode(1);
+            report.setUpdated(Calendar.getInstance());
             if (databaseHelper.completeIncidentReport(report) > 0) {
                 Snackbar.make(getView().getRootView(), "Details updated", Snackbar.LENGTH_LONG).show();
                 if (ConnectionUtils.isInternetAvaialable(getContext())) {
                     ServiceUtils.initiateSync(getContext(), IncidentReportSyncContentProvider.AUTHORITY);
+                }else {
+                    Toast.makeText(getActivity(), "Please check network connection", Toast.LENGTH_SHORT).show();
                 }
-                //startActivity(new Intent(getActivity(), IncidentReportListActivity.class));
                 getActivity().finish();
             } else {
                 Snackbar.make(getView().getRootView(), "Error while updating", Snackbar.LENGTH_LONG).show();

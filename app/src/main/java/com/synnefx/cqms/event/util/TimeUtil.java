@@ -30,4 +30,5 @@ public final class TimeUtil {
         String formatted = format1.format(calendar.getTime());
         return formatted;
     }
+
 }

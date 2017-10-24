@@ -72,22 +72,16 @@ public class MedicationErrorViewActivity extends AppCompatActivity {
         BootstrapApplication.component().inject(this);
         ButterKnife.bind(this);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle("Medical Error Report View");
+        getSupportActionBar().setTitle("Medical Error Report");
 
         MedicationError report = (MedicationError) getIntent().getSerializableExtra(INCIDENT_ITEM);
 
         Log.d(INCIDENT_ITEM, report.toString());
 
         MedicationError errorReport = databaseHelper.getMedicationErrorById(report.getId());
-
-        //Unit unit1 = errorReport.getUnit();
-
-        //List<Unit> units = databaseHelper.getAllUnitsTypes(unit1.getHospitalID());
         if (errorReport.getDepartment() !=null){
             unit.setText(errorReport.getDepartment());
         }
-       //
-        //Toast.makeText(this, ""+unit1.get, Toast.LENGTH_SHORT).show();
         time.setText(CalenderUtils.formatCalendarToString(report.getIncidentTime(), Constants.Common.DATE_TIME_DISPLAY_FORMAT));
         level.setText(report.getIncidentLevelCode()==1?"Near Miss":(report.getIncidentLevelCode()==2?"Actual Harm":""));
         description.setText(report.getDescription());

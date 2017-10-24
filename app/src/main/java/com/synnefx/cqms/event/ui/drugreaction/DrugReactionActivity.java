@@ -2,6 +2,7 @@ package com.synnefx.cqms.event.ui.drugreaction;
 
 import android.accounts.OperationCanceledException;
 import android.app.Activity;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,6 +12,8 @@ import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 
 import com.synnefx.cqms.event.BootstrapApplication;
 import com.synnefx.cqms.event.R;
@@ -76,7 +79,6 @@ public class DrugReactionActivity extends BootstrapFragmentActivity {
                     report = new AdverseDrugEvent();
                     report.setPersonInvolved(new PersonInvolved());
                     report.setId(reportRef);
-                    //report = databaseHelper.getAdverseDrugEventById(reportRef);
                 }
             }
         }
@@ -104,7 +106,6 @@ public class DrugReactionActivity extends BootstrapFragmentActivity {
     @Subscribe
     public void onEventListened(String data){
         if (data.equals(getString(R.string.save_btn_clicked))){
-            //Toast.makeText(this, "Save button clicked", Toast.LENGTH_SHORT).show();
             doubleBackPressed = false;
         }
     }
@@ -142,7 +143,6 @@ public class DrugReactionActivity extends BootstrapFragmentActivity {
             alertDialog.show();
 
         } else {
-            //super.onBackPressed();
             navigateScreenBack();
         }
     }
@@ -185,42 +185,6 @@ public class DrugReactionActivity extends BootstrapFragmentActivity {
             }
         });
     }
-
-    private void checkAuth() {
-        new SafeAsyncTask<Boolean>() {
-            @Override
-            public Boolean call() throws Exception {
-                final BootstrapService svc = serviceProvider.getService(getActivity());
-                return svc != null;
-            }
-
-            @Override
-            protected void onException(final Exception e) throws RuntimeException {
-                super.onException(e);
-                if (e instanceof OperationCanceledException) {
-                    // cancelled the authentication process (back button, etc).
-                    // Since auth could not take place, lets finish this activity.
-                } else {
-                }
-            }
-
-            @Override
-            protected void onSuccess(final Boolean hasAuthenticated) throws Exception {
-                hideProgress();
-                Intent i = new Intent(getActivity(), MainActivity.class);
-                i.addFlags(FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(i);
-                getActivity().finish();
-            }
-
-            @Override
-            protected void onFinally() throws RuntimeException {
-                hideProgress();
-                getActivity().finish();
-            }
-        }.execute();
-    }
-
     private void loadFragment() {
         PatientDetailsFragment detailsFragment = new PatientDetailsFragment();
         if (null != report) {
@@ -300,5 +264,6 @@ public class DrugReactionActivity extends BootstrapFragmentActivity {
 
         }
     }
+
 
 }
