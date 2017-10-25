@@ -117,7 +117,7 @@ public class DrugReactionActivity extends BootstrapFragmentActivity {
 
     @Override
     public void onBackPressed() {
-
+        hideSoftKeyboard(getActivity());
         if (!doubleBackPressed) {
             AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
             alertDialog.setCancelable(true);
@@ -264,6 +264,15 @@ public class DrugReactionActivity extends BootstrapFragmentActivity {
 
         }
     }
+    public void hideSoftKeyboard(Activity activity) {
+        InputMethodManager inputMethodManager =
+                (InputMethodManager) activity.getSystemService(
+                        Activity.INPUT_METHOD_SERVICE);
+        if (activity.getCurrentFocus() != null){
+            inputMethodManager.hideSoftInputFromWindow(
+                    activity.getCurrentFocus().getWindowToken(), 0);
+        }
 
+    }
 
 }
