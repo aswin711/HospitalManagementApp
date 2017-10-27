@@ -88,13 +88,13 @@ android {
     }
 
     signingConfigs {
-        // Uncomment and set values and then this will work
-//         release {
-//             storeFile file(System.getenv('ANDROID_KEYSTORE_PATH'))
-//             storePassword System.getenv('ANDROID_STORE_PASS')
-//             keyAlias System.getenv('ANDROID_KEY_ALIAS')
-//             keyPassword System.getenv('ANDROID_KEY_PASS')
-//         }
+       // Uncomment and set values and then this will work
+        release {
+//            storeFile file(System.getenv('ANDROID_KEYSTORE_PATH'))
+            //storePassword System.getenv('ANDROID_STORE_PASS')
+            //keyAlias System.getenv('ANDROID_KEY_ALIAS')
+            //keyPassword System.getenv('ANDROID_KEY_PASS')
+         }
     }
 
     lintOptions {
@@ -115,7 +115,7 @@ android {
             minifyEnabled false
             versionNameSuffix '-release'
             // proguardFile '..\proguard.cfg'
-            // signingConfig signingConfigs.release
+             signingConfig signingConfigs.release
             //zipAlign true // this is default for release
             // testPackageName 'com.synnefx.cqms.tests'
             // testInstrumentationRunner 'android.test.InstrumentationTestRunner' // this is the default
