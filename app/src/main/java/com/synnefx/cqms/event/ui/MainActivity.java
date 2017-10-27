@@ -485,7 +485,7 @@ public class MainActivity extends BootstrapActivity implements NavigationView.On
                     Log.d("MyApp", "Pushy device token: " + pusyToken);
                     // Send the token to your backend server via an HTTP GET request
                     //new URL("https://{YOUR_API_HOSTNAME}/register/device?token=" + deviceToken).openConnection();
-                    if(TextUtils.isEmpty(pusyToken) && TextUtils.isEmpty(deviceToken)){
+                    if(!TextUtils.isEmpty(pusyToken) && !TextUtils.isEmpty(deviceToken)){
                         boolean sent = serviceProvider.getAuthenticatedService().doDeviceRegistration(deviceToken, pusyToken);
                         sharedPreferences.edit().putBoolean(QuickstartPreferences.SENT_TOKEN_TO_SERVER, true).apply();
                         PrefUtils.setTokenSentToServer(sent);
