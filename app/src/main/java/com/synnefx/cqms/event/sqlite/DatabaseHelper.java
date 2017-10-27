@@ -664,7 +664,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             if (null != personInvolved.getId() && 0 < personInvolved.getId()) {
                 // db.beginTransaction();
                 int id = db.update(EventReportKey.TABLE_PERSON_INVOLVED, values, Columns.KEY_ID + "=" + personInvolved.getId(), null);
-                Log.e(LOG, "Update insertOrUpdateIncidentReportedBy result - " + id);
+                Log.e(LOG, "Update insertOrUpdateIncidentPersonInvolved result - " + id);
                 //db.setTransactionSuccessful();
                 return id > 0 ? personInvolved.getId() : id;
             } else {

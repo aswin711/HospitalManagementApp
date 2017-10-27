@@ -43,6 +43,7 @@ public class PushReceiver extends BroadcastReceiver {
         String notificationTitle = "CQMS";
         String notificationText = "";
         String mType = "0";
+        String hospitalUUID = null;
         BootstrapApplication.component().inject(this);
 
         // Attempt to extract the "message" property from the payload: {"message":"Hello World!"}
@@ -51,6 +52,9 @@ public class PushReceiver extends BroadcastReceiver {
         }
         if (intent.getStringExtra("type") != null) {
             mType = intent.getStringExtra("type");
+        }
+        if (intent.getStringExtra("hid") != null) {
+            hospitalUUID = intent.getStringExtra("hid");
         }
         Integer notificationType = 0;
         if (!TextUtils.isEmpty(mType) && TextUtils.isDigitsOnly(mType)) {
@@ -74,7 +78,9 @@ public class PushReceiver extends BroadcastReceiver {
                     break;
                 case 10:
                 case 15:
-                    syncConfig(context);
+                    if(!TextUtils.isEmpty(hospitalUUID) && hospitalUUID.equals(PrefUtils.getHospitalID())){
+                        syncConfig(context);
+                    }
                     break;
                 case 120:
                     updateIncidentReportStatus(intent.getStringExtra("clientid"), intent.getStringExtra("id"), intent.getStringExtra("status_code"), context);
