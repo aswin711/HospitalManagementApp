@@ -3,6 +3,7 @@ package com.synnefx.cqms.event;
 import android.accounts.AccountsException;
 import android.app.Activity;
 import android.provider.Settings;
+import android.util.Log;
 
 import com.squareup.otto.Bus;
 import com.synnefx.cqms.event.authenticator.ApiKeyProvider;
@@ -76,6 +77,7 @@ public class BootstrapServiceProviderImpl implements BootstrapServiceProvider {
         ///String android_id = keyProvider.getDeviceID();
         String deviceToken = PrefUtils.getDeviceToken();
         String key = keyProvider.getAuthKey();
+        Log.e("Login",key+"\n"+deviceToken);
         BootstrapService service = new BootstrapService(retrofitBuilder, userAgentProvider, key, deviceToken, bus);
         return service;
     }
