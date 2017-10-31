@@ -21,6 +21,8 @@ import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -114,7 +116,7 @@ public class BootstrapAuthenticatorActivity extends ActionBarAccountAuthenticato
     protected TextInputLayout passwordLayout;
 
     @Bind(id.et_email)
-    protected EditText emailText;
+    protected AutoCompleteTextView emailText;
     @Bind(id.et_password)
     protected EditText passwordText;
     @Bind(id.b_signin)
