@@ -65,6 +65,7 @@ public class BootstrapServiceProviderImpl implements BootstrapServiceProvider {
         //String android_id = Settings.Secure.getString(activity.getContentResolver(),
         //        Settings.Secure.ANDROID_ID);
         String deviceToken = PrefUtils.getDeviceToken();
+        Log.e("Login",key+"\n"+deviceToken);
         BootstrapService service = new BootstrapService(retrofitBuilder, userAgentProvider, key, deviceToken, bus);
         return service;
     }

@@ -344,7 +344,6 @@ public class MainActivity extends BootstrapActivity implements NavigationView.On
     @Override
     public boolean onOptionsItemSelected(final MenuItem item) {
 
-
         if(drawerToggle.onOptionsItemSelected(item)){
             return true;
         }

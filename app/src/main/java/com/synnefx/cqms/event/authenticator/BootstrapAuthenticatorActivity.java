@@ -485,10 +485,9 @@ public class BootstrapAuthenticatorActivity extends ActionBarAccountAuthenticato
             private String errorMessage = "Something went wrong while setting profile";
 
             public Boolean call() throws Exception {
-                String android_id = Settings.Secure.getString(this.getContext().getContentResolver(),
-                        Settings.Secure.ANDROID_ID);
+
                 ApiResponse<User> userResponse = serviceProvider.getAuthenticatedService(BootstrapAuthenticatorActivity.this).getProfile();
-                // ApiResponse<User> userResponse = bootstrapService.getProfile();
+
                 if (null != userResponse) {
                     User user = userResponse.getRecord();
                     Log.d("User",user.getFirstName()+" "+user.getLastName());

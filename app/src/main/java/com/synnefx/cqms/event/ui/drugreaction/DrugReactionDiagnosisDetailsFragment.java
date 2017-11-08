@@ -23,6 +23,7 @@ import com.synnefx.cqms.event.BootstrapApplication;
 import com.synnefx.cqms.event.R;
 import com.synnefx.cqms.event.core.Constants;
 import com.synnefx.cqms.event.core.modal.Unit;
+import com.synnefx.cqms.event.core.modal.event.PersonInvolved;
 import com.synnefx.cqms.event.core.modal.event.drugreaction.AdverseDrugEvent;
 import com.synnefx.cqms.event.sqlite.DatabaseHelper;
 import com.synnefx.cqms.event.util.CalenderUtils;
@@ -84,6 +85,7 @@ public class DrugReactionDiagnosisDetailsFragment extends Fragment implements
     protected EventBus eventBus;
 
     private AdverseDrugEvent report;
+    private PersonInvolved personInvolved;
 
 
     public DrugReactionDiagnosisDetailsFragment() {
@@ -315,7 +317,7 @@ public class DrugReactionDiagnosisDetailsFragment extends Fragment implements
         if (!TextUtils.isEmpty(description.getText())){
             report.setDescription(description.getText().toString().trim());
         }
-
+        report.getPersonInvolved().setId(report.getPersonInvolvedRef());
         return report;
     }
 
@@ -380,6 +382,7 @@ public class DrugReactionDiagnosisDetailsFragment extends Fragment implements
         }else {
             report.setDescription(description.getText().toString().trim());
         }
+        report.getPersonInvolved().setId(report.getPersonInvolvedRef());
         return error;
     }
 

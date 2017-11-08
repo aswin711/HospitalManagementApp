@@ -4,6 +4,7 @@ import android.app.Notification;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.media.RingtoneManager;
 import android.net.Uri;
@@ -54,13 +55,11 @@ public class NotificationUtils {
                 .setAutoCancel(true)
                 .setOnlyAlertOnce(true)
                 .setOngoing(false)
+                .setSmallIcon(R.drawable.ic_today_black_24dp)
+                .setLargeIcon(BitmapFactory.decodeResource(context.getResources(),R.mipmap.app_icon))
                 .setWhen(System.currentTimeMillis())
                 .setContentIntent(pendingIntent);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            builder.setSmallIcon(R.drawable.ic_notification_logo);
-        } else {
-            builder.setSmallIcon(R.drawable.ic_notification_logo);
-        }
+
         return builder;
     }
 
@@ -68,22 +67,17 @@ public class NotificationUtils {
         Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
                 .setContentTitle(title)
-                .setSmallIcon(R.drawable.app_icon)
                 .setContentText(message)
                 .setAutoCancel(true)
                 .setOnlyAlertOnce(true)
-                        //.setOngoing(true)
                 .setLights(Color.RED, 1000, 1000)
                 .setSound(defaultSoundUri)
+                .setSmallIcon(R.drawable.ic_today_black_24dp)
+                .setLargeIcon(BitmapFactory.decodeResource(context.getResources(),R.mipmap.app_icon))
                 .setVibrate(new long[]{0, 400, 250, 400})
                 .setWhen(System.currentTimeMillis())
                 .setContentIntent(pendingIntent);
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            builder.setSmallIcon(R.drawable.ic_notification_logo);
-        } else {
-            builder.setSmallIcon(R.drawable.ic_notification_logo);
-        }
         return builder;
     }
 }
