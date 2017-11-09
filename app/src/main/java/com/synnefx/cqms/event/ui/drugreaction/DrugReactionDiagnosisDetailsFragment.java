@@ -248,6 +248,7 @@ public class DrugReactionDiagnosisDetailsFragment extends Fragment implements
         selectedDate.set(year, monthOfYear, dayOfMonth);
         if ("EventDatepickerdialog".equals(view.getTag())) {
             report.setReactionDate(selectedDate);
+            report.setIncidentTime(Calendar.getInstance());
             report.setReactionDateStr(dayOfMonth+"/"+monthOfYear+"/"+year);
             eventTime.setText(CalenderUtils.formatCalendarToString(report.getReactionDate(), Constants.Common.DATE_DISPLAY_FORMAT));
             Calendar now = Calendar.getInstance();

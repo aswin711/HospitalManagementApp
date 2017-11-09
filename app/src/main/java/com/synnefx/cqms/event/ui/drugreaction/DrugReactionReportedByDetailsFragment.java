@@ -71,9 +71,6 @@ public class DrugReactionReportedByDetailsFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         BootstrapApplication.component().inject(this);
-        if (getArguments() != null) {
-
-        }
     }
 
     @Override
@@ -113,7 +110,6 @@ public class DrugReactionReportedByDetailsFragment extends Fragment {
     @Override
     public void onDetach() {
         super.onDetach();
-
     }
 
 
@@ -131,11 +127,9 @@ public class DrugReactionReportedByDetailsFragment extends Fragment {
                 reportedByName.requestFocus();
             }
         }
-
         if (null == reportedBy) {
             reportedBy = new ReportedBy();
             reportedBy.setEventRef(report.getId());
-            reportedBy.setReportedOn(Calendar.getInstance());
             reportedByName.requestFocus();
         }
     }
@@ -185,7 +179,8 @@ public class DrugReactionReportedByDetailsFragment extends Fragment {
     private boolean saveIncidentDetails() {
         if (!validateDeatils()) {
             report.setUpdated(Calendar.getInstance());
-            report.setIncidentTime(Calendar.getInstance());
+            // TODO : reported time must be a past time
+            //report.setIncidentTime(report.getReactionDate());
             report.setReportedBy(reportedBy);
             long id = databaseHelper.updateAdverseDrugEventReportedBy(report);
             if (id > 0) {

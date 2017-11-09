@@ -54,7 +54,6 @@ public class AdverseDrugEvent extends EventReport {
     @Expose
     private String additionalInfo;
 
-    private long drugInfoRef;
 
     public AdverseDrugEvent() {
 
@@ -94,7 +93,7 @@ public class AdverseDrugEvent extends EventReport {
         setDateOfDeath(remoteReport.getDateOfDeath());
         setSuspectedDrug(remoteReport.getSuspectedDrug());
         setOtherDrugsTaken(remoteReport.getOtherDrugsTaken());
-
+        setReactionAddedToCasesheet(remoteReport.isReactionAddedToCasesheet());
     }
 
     @Override
@@ -110,6 +109,7 @@ public class AdverseDrugEvent extends EventReport {
         setDateOfDeath(localReport.getDateOfDeath());
         setSuspectedDrug(localReport.getSuspectedDrug());
         setOtherDrugsTaken(localReport.getOtherDrugsTaken());
+        setReactionAddedToCasesheet(localReport.isReactionAddedToCasesheet());
 
     }
 
