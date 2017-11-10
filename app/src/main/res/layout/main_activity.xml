@@ -11,27 +11,13 @@
     >
 
     <!-- The main content view -->
-    <android.support.design.widget.CoordinatorLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" >
-
-        <include layout="@layout/content_main"
-            android:id="@+id/container"/>
 
 
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/floatingActionButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:clickable="true"
-            android:layout_gravity="bottom|end"
-            android:layout_margin="15dp"
-            app:fabSize="normal"
-            android:src="@drawable/ic_add_black_24dp"
-            app:backgroundTint="@color/colorPrimary"
+       <include
+           layout="@layout/app_bar_main"
+           android:layout_height="match_parent"
+           android:layout_width="match_parent"/>
 
-           />
-    </android.support.design.widget.CoordinatorLayout>
 
 
     <!-- android:layout_gravity="start" tells DrawerLayout to treat
@@ -55,6 +41,7 @@
         android:id="@+id/navigation_drawer"
         android:theme="@style/NavigationItemStyle"
         android:layout_gravity="start"
+        android:fitsSystemWindows="true"
         app:itemIconTint="#212121"
         app:itemTextColor="#212121"
         app:itemBackground="@drawable/activated_background"

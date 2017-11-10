@@ -9,6 +9,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.design.widget.TextInputLayout;
@@ -121,6 +123,8 @@ public class BootstrapAuthenticatorActivity extends ActionBarAccountAuthenticato
     protected EditText passwordText;
     @Bind(id.b_signin)
     protected Button signInButton;
+    @Bind(id.versionCode)
+    protected TextView versionNumber;
 
     private final TextWatcher watcher = validationTextWatcher();
 
@@ -153,6 +157,7 @@ public class BootstrapAuthenticatorActivity extends ActionBarAccountAuthenticato
      * Token obtained Per app to distinguish registred devices.
      */
     private String deviceToken;
+
 
     /**
      * Was the original caller asking for an entirely new account?
@@ -199,6 +204,23 @@ public class BootstrapAuthenticatorActivity extends ActionBarAccountAuthenticato
         });
         if (!isInternetAvaialable()) {
             showConnectionAlert();
+        }
+
+        setVersionName();
+    }
+
+    private void setVersionName() {
+        try {
+            PackageManager manager = getApplicationContext().getPackageManager();
+            PackageInfo info = manager.getPackageInfo(
+                    getApplicationContext().getPackageName(), 0);
+            if (null != info) {
+                String currentVersion = info.versionName;
+                versionNumber.setText(currentVersion);
+
+            }
+        } catch (Exception e) {
+
         }
     }
 
@@ -533,7 +555,7 @@ public class BootstrapAuthenticatorActivity extends ActionBarAccountAuthenticato
 
                 //importing ends here
 
-                syncConfig();
+                //syncConfig();
                 scheduleSync();
             }
 

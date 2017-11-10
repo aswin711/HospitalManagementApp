@@ -15,6 +15,7 @@ import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 import com.synnefx.cqms.event.BootstrapServiceProvider;
+import com.synnefx.cqms.event.core.Constants;
 import com.synnefx.cqms.event.core.modal.IncidentType;
 import com.synnefx.cqms.event.core.modal.Unit;
 import com.synnefx.cqms.event.sqlite.DatabaseHelper;
@@ -163,13 +164,13 @@ public class ConfSyncAdapter extends AbstractThreadedSyncAdapter {
 
     private void updateNotification(String message) {
         if (null != notificationManager) {
-            notificationManager.notify(IMPORT_NOTIFICATION_ID, NotificationUtils.getNotification(getContext(), "CQMS : Configuration update", message));
+            notificationManager.notify(IMPORT_NOTIFICATION_ID, NotificationUtils.getNotification(getContext(), "HQPulse : Configuration update", message));
         }
     }
 
     private void updateNotification(String message, int notificationID) {
         if (null != notificationManager) {
-            notificationManager.notify(notificationID, NotificationUtils.getNotification(getContext(), "CQMS : Configuration update", message));
+            notificationManager.notify(notificationID, NotificationUtils.getNotification(getContext(), "HQPulse : Configuration update", message));
         }
     }
 
@@ -177,7 +178,7 @@ public class ConfSyncAdapter extends AbstractThreadedSyncAdapter {
         if (null != notificationManager) {
             final Intent i = new Intent(getContext(), SettingsActivity.class);
             PendingIntent pendingIntent = PendingIntent.getActivity(getContext(), 0, i, 0);
-            NotificationCompat.Builder builder = NotificationUtils.getNotificationBuilder(getContext(), "CQMS : Configuration update", message, pendingIntent)
+            NotificationCompat.Builder builder = NotificationUtils.getNotificationBuilder(getContext(), "HQPulse : Configuration update", message, pendingIntent)
                     .setContentText(message);
             builder.setOngoing(false);
             notificationManager.notify(notificationID, builder.build());

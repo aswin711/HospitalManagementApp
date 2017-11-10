@@ -1,6 +1,7 @@
 package com.synnefx.cqms.event.ui.base;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
@@ -27,6 +28,7 @@ import com.synnefx.cqms.event.authenticator.LogoutService;
 import com.synnefx.cqms.event.ui.HeaderFooterListAdapter;
 import com.synnefx.cqms.event.util.SingleTypeAdapter;
 import com.synnefx.cqms.event.util.Toaster;
+import com.synnefx.cqms.event.util.UIUtils;
 import com.synnefx.cqms.event.util.ViewUtils;
 
 import java.util.Collections;
@@ -72,6 +74,8 @@ public abstract class ItemListFragment<E> extends Fragment
      * Progress bar
      */
     protected ProgressBar progressBar;
+
+    protected ProgressDialog mProgressDialog;
 
     /**
      * Is the list currently shown?
@@ -216,7 +220,7 @@ public abstract class ItemListFragment<E> extends Fragment
             return;
         }
         this.currentPage = 0;
-        getActivity().setProgressBarIndeterminateVisibility(true);
+        //getActivity().setProgressBarIndeterminateVisibility(true);
         getLoaderManager().restartLoader(0, args, this);
     }
 
@@ -230,7 +234,7 @@ public abstract class ItemListFragment<E> extends Fragment
 
     public void onLoadFinished(final Loader<List<E>> loader, final List<E> items) {
 
-        getActivity().setProgressBarIndeterminateVisibility(false);
+        //getActivity().setProgressBarIndeterminateVisibility(false);
 
         final Exception exception = getException(loader);
         if (exception != null) {
@@ -539,4 +543,16 @@ public abstract class ItemListFragment<E> extends Fragment
         getActivity().setProgressBarIndeterminateVisibility(true);
         getLoaderManager().restartLoader(0, null, this);
     }
+
+    private void showLoading(){
+        hideLoading();
+        mProgressDialog = UIUtils.showLoadingDialog(getContext());
+    }
+
+    private void hideLoading(){
+        if (mProgressDialog!=null&&mProgressDialog.isShowing()){
+            mProgressDialog.cancel();
+        }
+    }
+
 }

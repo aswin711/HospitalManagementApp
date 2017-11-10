@@ -3,11 +3,14 @@ package com.synnefx.cqms.event.ui;
 import android.accounts.OperationCanceledException;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -23,6 +26,7 @@ import com.synnefx.cqms.event.core.modal.IncidentType;
 import com.synnefx.cqms.event.core.modal.Unit;
 import com.synnefx.cqms.event.sqlite.DatabaseHelper;
 import com.synnefx.cqms.event.ui.base.BootstrapFragmentActivity;
+import com.synnefx.cqms.event.util.NotificationUtils;
 import com.synnefx.cqms.event.util.PrefUtils;
 import com.synnefx.cqms.event.util.SafeAsyncTask;
 
@@ -32,6 +36,10 @@ import java.util.List;
 import javax.inject.Inject;
 
 import butterknife.Bind;
+
+import static com.synnefx.cqms.event.core.Constants.Notification.IMPORT_INCIDENTTYPE_NOTIFICATION_ID;
+import static com.synnefx.cqms.event.core.Constants.Notification.IMPORT_NOTIFICATION_ID;
+import static com.synnefx.cqms.event.core.Constants.Notification.IMPORT_UNIT_NOTIFICATION_ID;
 
 public class ImportConfigActivity extends BootstrapFragmentActivity {
 
@@ -44,6 +52,8 @@ public class ImportConfigActivity extends BootstrapFragmentActivity {
 
     @Inject
     DatabaseHelper databaseHelper;
+    @Inject
+    protected NotificationManager notificationManager;
 
     @Bind(R.id.status_message_view)
     protected LinearLayout statusView;
@@ -189,7 +199,7 @@ public class ImportConfigActivity extends BootstrapFragmentActivity {
                     //Fetch Profile
                 }
                 if (null != hospitalRef && !"".equals(hospitalRef.trim())) {
-
+                    updateNotification("Configuration import in progress");
                     publishProgress(0);
                     List<Unit> units = serviceProvider.getAuthenticatedService(ImportConfigActivity.this).getUnits();
 
@@ -199,6 +209,7 @@ public class ImportConfigActivity extends BootstrapFragmentActivity {
                         publishProgress(1);
 
                     } else {
+                        updateClosableNotification("Units not configured", IMPORT_UNIT_NOTIFICATION_ID);
                         errorMessages.add("Units not configured");
                     }
 
@@ -210,6 +221,7 @@ public class ImportConfigActivity extends BootstrapFragmentActivity {
                         publishProgress(3);
 
                     } else {
+                        updateClosableNotification("Incident Types  not configured", IMPORT_INCIDENTTYPE_NOTIFICATION_ID);
                         errorMessages.add("Incident Types  not configured");
                     }
                 } else {
@@ -238,6 +250,7 @@ public class ImportConfigActivity extends BootstrapFragmentActivity {
                         /*displayView.setText(msg);
                         statusView.addView(displayView);*/
 
+                    updateClosableNotification("Configuration update completed", IMPORT_NOTIFICATION_ID);
                     showImportStatus("Configuration Imported Succesfully","Continue to Home Page?",1);
                     //showImportStatus("An Error Occured While Importing","Do you want to import config again?",2);
                 }
@@ -270,6 +283,30 @@ public class ImportConfigActivity extends BootstrapFragmentActivity {
                 default:
                     break;
             }
+        }
+    }
+
+
+    private void updateNotification(String message) {
+        if (null != notificationManager) {
+            notificationManager.notify(IMPORT_NOTIFICATION_ID, NotificationUtils.getNotification(getApplicationContext(), "HQpulse : Configuration update", message));
+        }
+    }
+
+    private void updateNotification(String message, int notificationID) {
+        if (null != notificationManager) {
+            notificationManager.notify(notificationID, NotificationUtils.getNotification(getApplicationContext(), "HQPulse : Configuration update", message));
+        }
+    }
+
+    private void updateClosableNotification(String message, int notificationID) {
+        if (null != notificationManager) {
+            final Intent i = new Intent(getApplicationContext(), SettingsActivity.class);
+            PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), 0, i, 0);
+            NotificationCompat.Builder builder = NotificationUtils.getNotificationBuilder(getApplicationContext(), "HQPulse : Configuration update", message, pendingIntent)
+                    .setContentText(message);
+            builder.setOngoing(false);
+            notificationManager.notify(notificationID, builder.build());
         }
     }
 }

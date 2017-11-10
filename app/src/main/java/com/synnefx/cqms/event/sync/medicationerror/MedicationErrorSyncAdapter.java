@@ -12,6 +12,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.synnefx.cqms.event.R;
+import com.synnefx.cqms.event.core.Constants;
 import com.synnefx.cqms.event.core.modal.event.medicationerror.MedicationError;
 import com.synnefx.cqms.event.sync.SyncManager;
 import com.synnefx.cqms.event.util.ConnectionUtils;
@@ -100,6 +101,7 @@ public class MedicationErrorSyncAdapter extends AbstractThreadedSyncAdapter {
     @Override
     public void onPerformSync(Account account, Bundle extras, String authority,
                               ContentProviderClient provider, SyncResult syncResult) {
+        Boolean manualSync = extras.getBoolean(Constants.Intent.SYNC_TYPE,false);
         Log.e(TAG, "onPerformSync");
         try {
             if (ConnectionUtils.isInternetAvaialable(getContext())) {
@@ -111,11 +113,11 @@ public class MedicationErrorSyncAdapter extends AbstractThreadedSyncAdapter {
                         Log.e(TAG, "auditSyncRemoteDatastore" + (null == itemSyncRemoteDatastore));
                         SyncManager<MedicationError, MedicationError> syncManager = new SyncManager<MedicationError, MedicationError>(itemSyncLocalDatastore, itemSyncRemoteDatastore);
                         if (syncManager.dataAvailForSync()){
-                            updateNotification("Data sync in progress");
+                            updateNotification("Data sync in progress",manualSync);
                             syncManager.sync();
-                            updateNotification("Data sync completed");
+                            updateNotification("Data sync completed",manualSync);
                         }else{
-                            updateNotification("No data to sync");
+                            updateNotification("No data to sync",manualSync);
                         }
                 } catch (Exception e){
                     Log.e(TAG,e.getMessage());
@@ -125,7 +127,7 @@ public class MedicationErrorSyncAdapter extends AbstractThreadedSyncAdapter {
             getContext().getContentResolver().notifyChange(MedicationErrorSyncContentProvider.CONTENT_URI, null);
         } catch (Exception e) {
             Log.e(TAG, "syncFailed:", e);
-            updateNotification("Data sync failed!");
+            updateNotification("Data sync failed!",manualSync);
         }
 
     }
@@ -146,8 +148,8 @@ public class MedicationErrorSyncAdapter extends AbstractThreadedSyncAdapter {
 
 
 
-    private void updateNotification(String message) {
-        if (null != notificationManager) {
+    private void updateNotification(String message,Boolean syncType) {
+        if (null != notificationManager && syncType) {
             notificationManager.notify(UPLOAD_NOTIFICATION_ID, NotificationUtils.getNotification(getContext(), "CQMS : Data Sync", message));
         }
     }

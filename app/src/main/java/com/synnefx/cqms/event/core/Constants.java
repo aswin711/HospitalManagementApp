@@ -148,6 +148,8 @@ public final class Constants {
          * Action prefix for all intents created
          */
         public static final String INTENT_PREFIX = "com.synnefx.cqms.";
+        public static final String SYNC_TYPE = "sync_type";
+
 
     }
 
