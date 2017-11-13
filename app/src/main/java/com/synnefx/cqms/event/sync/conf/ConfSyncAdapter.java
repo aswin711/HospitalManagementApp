@@ -15,6 +15,7 @@ import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 import com.synnefx.cqms.event.BootstrapServiceProvider;
+import com.synnefx.cqms.event.R;
 import com.synnefx.cqms.event.core.Constants;
 import com.synnefx.cqms.event.core.modal.IncidentType;
 import com.synnefx.cqms.event.core.modal.Unit;
@@ -73,11 +74,14 @@ public class ConfSyncAdapter extends AbstractThreadedSyncAdapter {
     @Inject
     BootstrapServiceProvider serviceProvider;
 
+    private String notificationTitle;
+
     public ConfSyncAdapter(Context context, boolean autoInitialize) {
         super(context, autoInitialize);
         mContext = context;
         Log.d(TAG, "ConfSyncAdapter constructor... " + autoInitialize);
         mContentResolver = context.getContentResolver();
+        notificationTitle = context.getString(R.string.app_full_name);
     }
 
     public ConfSyncAdapter(Context context, boolean autoInitialize,
@@ -85,6 +89,7 @@ public class ConfSyncAdapter extends AbstractThreadedSyncAdapter {
         super(context, autoInitialize, allowParallelSyncs);
         mContext = context;
         mContentResolver = context.getContentResolver();
+        notificationTitle = context.getString(R.string.app_full_name);
     }
 
     public ConfSyncAdapter(Context context, NotificationManager notificationManager, BootstrapServiceProvider serviceProvider, DatabaseHelper databaseHelper) {
@@ -95,6 +100,7 @@ public class ConfSyncAdapter extends AbstractThreadedSyncAdapter {
         mContentResolver = context.getContentResolver();
         this.databaseHelper = databaseHelper;
         this.serviceProvider = serviceProvider;
+        notificationTitle = context.getString(R.string.app_full_name);
     }
 
 
@@ -164,13 +170,13 @@ public class ConfSyncAdapter extends AbstractThreadedSyncAdapter {
 
     private void updateNotification(String message) {
         if (null != notificationManager) {
-            notificationManager.notify(IMPORT_NOTIFICATION_ID, NotificationUtils.getNotification(getContext(), "HQPulse : Configuration update", message));
+            notificationManager.notify(IMPORT_NOTIFICATION_ID, NotificationUtils.getNotification(getContext(), notificationTitle+" Configuration update", message));
         }
     }
 
     private void updateNotification(String message, int notificationID) {
         if (null != notificationManager) {
-            notificationManager.notify(notificationID, NotificationUtils.getNotification(getContext(), "HQPulse : Configuration update", message));
+            notificationManager.notify(notificationID, NotificationUtils.getNotification(getContext(), notificationTitle+" Configuration update", message));
         }
     }
 
@@ -178,7 +184,7 @@ public class ConfSyncAdapter extends AbstractThreadedSyncAdapter {
         if (null != notificationManager) {
             final Intent i = new Intent(getContext(), SettingsActivity.class);
             PendingIntent pendingIntent = PendingIntent.getActivity(getContext(), 0, i, 0);
-            NotificationCompat.Builder builder = NotificationUtils.getNotificationBuilder(getContext(), "HQPulse : Configuration update", message, pendingIntent)
+            NotificationCompat.Builder builder = NotificationUtils.getNotificationBuilder(getContext(), notificationTitle+" Configuration update", message,pendingIntent)
                     .setContentText(message);
             builder.setOngoing(false);
             notificationManager.notify(notificationID, builder.build());

@@ -289,13 +289,13 @@ public class ImportConfigActivity extends BootstrapFragmentActivity {
 
     private void updateNotification(String message) {
         if (null != notificationManager) {
-            notificationManager.notify(IMPORT_NOTIFICATION_ID, NotificationUtils.getNotification(getApplicationContext(), "HQpulse : Configuration update", message));
+            notificationManager.notify(IMPORT_NOTIFICATION_ID, NotificationUtils.getNotification(getApplicationContext(), getString(R.string.app_full_name)+": Configuration update", message));
         }
     }
 
     private void updateNotification(String message, int notificationID) {
         if (null != notificationManager) {
-            notificationManager.notify(notificationID, NotificationUtils.getNotification(getApplicationContext(), "HQPulse : Configuration update", message));
+            notificationManager.notify(notificationID, NotificationUtils.getNotification(getApplicationContext(), getString(R.string.app_full_name)+": Configuration update", message));
         }
     }
 
@@ -303,7 +303,7 @@ public class ImportConfigActivity extends BootstrapFragmentActivity {
         if (null != notificationManager) {
             final Intent i = new Intent(getApplicationContext(), SettingsActivity.class);
             PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), 0, i, 0);
-            NotificationCompat.Builder builder = NotificationUtils.getNotificationBuilder(getApplicationContext(), "HQPulse : Configuration update", message, pendingIntent)
+            NotificationCompat.Builder builder = NotificationUtils.getNotificationBuilder(getApplicationContext(), getString(R.string.app_full_name)+": Configuration update", message, pendingIntent)
                     .setContentText(message);
             builder.setOngoing(false);
             notificationManager.notify(notificationID, builder.build());

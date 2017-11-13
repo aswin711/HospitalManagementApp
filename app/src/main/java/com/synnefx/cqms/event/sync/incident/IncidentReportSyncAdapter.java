@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.synnefx.cqms.event.R;
 import com.synnefx.cqms.event.core.Constants;
 import com.synnefx.cqms.event.core.modal.event.incident.IncidentReport;
 import com.synnefx.cqms.event.sync.SyncManager;
@@ -64,12 +65,14 @@ public class IncidentReportSyncAdapter extends AbstractThreadedSyncAdapter {
     @Inject
     protected IncidentReportSyncRemoteDatastore auditSyncRemoteDatastore;
 
+    private String notificationTitle;
 
     public IncidentReportSyncAdapter(Context context, boolean autoInitialize) {
         super(context, autoInitialize);
         mContext = context;
         Log.d(TAG, "DrugReactionSyncAdapter constructor... " + autoInitialize);
         mContentResolver = context.getContentResolver();
+        notificationTitle = context.getString(R.string.app_full_name);
         // Register the bus so we can send notifications.
         //eventBus.register(this);
 
@@ -80,6 +83,7 @@ public class IncidentReportSyncAdapter extends AbstractThreadedSyncAdapter {
         super(context, autoInitialize, allowParallelSyncs);
         mContext = context;
         mContentResolver = context.getContentResolver();
+        notificationTitle = context.getString(R.string.app_full_name);
         // Register the bus so we can send notifications.
         //eventBus.register(this);
     }
@@ -92,6 +96,7 @@ public class IncidentReportSyncAdapter extends AbstractThreadedSyncAdapter {
         mContentResolver = context.getContentResolver();
         this.auditSyncLocalDatastore = localDatastore;
         this.auditSyncRemoteDatastore = remoteDatastore;
+        notificationTitle = context.getString(R.string.app_full_name);
         // Register the bus so we can send notifications.
         // eventBus.register(this);
     }
@@ -146,7 +151,7 @@ public class IncidentReportSyncAdapter extends AbstractThreadedSyncAdapter {
 
     private void updateNotification(String message,Boolean syncType) {
         if (null != notificationManager && syncType) {
-            notificationManager.notify(UPLOAD_NOTIFICATION_ID, NotificationUtils.getNotification(getContext(), "HQPulse : Data Sync", message));
+            notificationManager.notify(UPLOAD_NOTIFICATION_ID, NotificationUtils.getNotification(getContext(), notificationTitle+": Data Sync", message));
         }
     }
 }
