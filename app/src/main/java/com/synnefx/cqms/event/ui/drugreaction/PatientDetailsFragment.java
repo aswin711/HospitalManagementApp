@@ -315,6 +315,14 @@ public class PatientDetailsFragment extends Fragment implements
         } else if (opPatient.isChecked()) {
             patient.setPatientTypeCode(2);
         }
+
+        if (!TextUtils.isEmpty(patientHeight.getText().toString())){
+            patient.setHeight(Double.valueOf(patientHeight.getText().toString()));
+        }
+        if (!TextUtils.isEmpty(patientWeight.getText().toString())){
+            patient.setWeight(Double.valueOf(patientWeight.getText().toString()));
+        }
+
         report.setPersonInvolved(patient);
 
         Log.d("PatientDetailsFragment", ListViewer.view(report));

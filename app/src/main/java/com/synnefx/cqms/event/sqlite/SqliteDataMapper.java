@@ -483,7 +483,7 @@ public class SqliteDataMapper {
         report.setDescription(c.getString(c.getColumnIndex(KEY_DESCRIPTION)));
         report.setCorrectiveActionTaken(c.getString(c.getColumnIndex(KEY_CORRECTIVE_ACTION)));
         int caseSheetAdded = c.getInt(c.getColumnIndex(KEY_REACTION_ADDED_CASESHEET));
-        if (caseSheetAdded ==1){
+        if (caseSheetAdded == 1){
             report.setReactionAddedToCasesheet(true);
         }else{
             report.setReactionAddedToCasesheet(false);

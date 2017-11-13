@@ -11,6 +11,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.synnefx.cqms.event.R;
+import com.synnefx.cqms.event.core.Constants;
 import com.synnefx.cqms.event.core.modal.event.drugreaction.AdverseDrugEvent;
 import com.synnefx.cqms.event.sync.SyncManager;
 import com.synnefx.cqms.event.util.ConnectionUtils;
@@ -63,12 +65,15 @@ public class DrugReactionSyncAdapter extends AbstractThreadedSyncAdapter {
     @Inject
     protected DrugReactionSyncRemoteDatastore itemSyncRemoteDatastore;
 
+    private String notificationTitle;
+
 
     public DrugReactionSyncAdapter(Context context, boolean autoInitialize) {
         super(context, autoInitialize);
         mContext = context;
         Log.d(TAG, "DrugReactionSyncAdapter constructor... " + autoInitialize);
         mContentResolver = context.getContentResolver();
+        notificationTitle = context.getString(R.string.app_full_name);
         // Register the bus so we can send notifications.
         //eventBus.register(this);
 
@@ -79,6 +84,7 @@ public class DrugReactionSyncAdapter extends AbstractThreadedSyncAdapter {
         super(context, autoInitialize, allowParallelSyncs);
         mContext = context;
         mContentResolver = context.getContentResolver();
+        notificationTitle = context.getString(R.string.app_full_name);
         // Register the bus so we can send notifications.
         //eventBus.register(this);
     }
@@ -91,6 +97,7 @@ public class DrugReactionSyncAdapter extends AbstractThreadedSyncAdapter {
         mContentResolver = context.getContentResolver();
         this.itemSyncLocalDatastore = localDatastore;
         this.itemSyncRemoteDatastore = remoteDatastore;
+        notificationTitle = context.getString(R.string.app_full_name);
         // Register the bus so we can send notifications.
         // eventBus.register(this);
     }
@@ -98,6 +105,7 @@ public class DrugReactionSyncAdapter extends AbstractThreadedSyncAdapter {
     @Override
     public void onPerformSync(Account account, Bundle extras, String authority,
                               ContentProviderClient provider, SyncResult syncResult) {
+        Boolean manualSync = extras.getBoolean(Constants.Intent.SYNC_TYPE,false);
         Log.e(TAG, "onPerformSync");
         try {
             if (ConnectionUtils.isInternetAvaialable(getContext())) {
@@ -109,9 +117,11 @@ public class DrugReactionSyncAdapter extends AbstractThreadedSyncAdapter {
                     Log.e(TAG, "auditSyncRemoteDatastore" + (null == itemSyncRemoteDatastore));
                     SyncManager<AdverseDrugEvent, AdverseDrugEvent> syncManager = new SyncManager<AdverseDrugEvent, AdverseDrugEvent>(itemSyncLocalDatastore, itemSyncRemoteDatastore);
                     if (syncManager.dataAvailForSync()) {
-                        updateNotification("Data sync in progress");
+                        updateNotification("Data sync in progress",manualSync);
                         syncManager.sync();
-                        updateNotification("Data sync completed");
+                        updateNotification("Data sync completed",manualSync);
+                    }else{
+                        updateNotification("No data to sync",manualSync);
                     }
                 } finally {
                     //db.close();
@@ -121,7 +131,7 @@ public class DrugReactionSyncAdapter extends AbstractThreadedSyncAdapter {
             getContext().getContentResolver().notifyChange(DrugReactionSyncContentProvider.CONTENT_URI, null);
         } catch (Exception e) {
             Log.e(TAG, "syncFailed:", e);
-            updateNotification("Data sync failed!");
+            updateNotification("Data sync failed!",manualSync);
         }
     }
 
@@ -139,9 +149,9 @@ public class DrugReactionSyncAdapter extends AbstractThreadedSyncAdapter {
         super.onSyncCanceled(thread);
     }
 
-    private void updateNotification(String message) {
-        if (null != notificationManager) {
-            notificationManager.notify(UPLOAD_NOTIFICATION_ID, NotificationUtils.getNotification(getContext(), "CQMS : Data Sync", message));
+    private void updateNotification(String message,Boolean syncType) {
+        if (null != notificationManager && syncType) {
+            notificationManager.notify(UPLOAD_NOTIFICATION_ID, NotificationUtils.getNotification(getContext(), notificationTitle+": Data Sync", message));
         }
     }
 }

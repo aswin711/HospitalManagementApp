@@ -25,6 +25,7 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.MenuItem;
@@ -180,6 +181,9 @@ public class MainActivity extends BootstrapActivity implements NavigationView.On
 
         userLoggedIn = false;
 
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
         getSupportActionBar().setElevation(0);
         // View injection with Butterknife
         ButterKnife.bind(this);
@@ -273,9 +277,8 @@ public class MainActivity extends BootstrapActivity implements NavigationView.On
     @Override
     public void onConfigurationChanged(final Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-        if (!isTablet()) {
-            drawerToggle.onConfigurationChanged(newConfig);
-        }
+        drawerToggle.onConfigurationChanged(newConfig);
+
     }
 
     protected Activity getActivity() {
@@ -344,7 +347,6 @@ public class MainActivity extends BootstrapActivity implements NavigationView.On
     @Override
     public boolean onOptionsItemSelected(final MenuItem item) {
 
-
         if(drawerToggle.onOptionsItemSelected(item)){
             return true;
         }
@@ -412,6 +414,7 @@ public class MainActivity extends BootstrapActivity implements NavigationView.On
                     ContentResolver.SYNC_EXTRAS_MANUAL, true);
             settingsBundle.putBoolean(
                     ContentResolver.SYNC_EXTRAS_EXPEDITED, true);
+            settingsBundle.putBoolean(Constants.Intent.SYNC_TYPE,true);
             /*
 	         * Request the sync for the default account, authority, and
 	         * manual sync settings

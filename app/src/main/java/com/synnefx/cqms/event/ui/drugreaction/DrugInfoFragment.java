@@ -190,7 +190,6 @@ public class DrugInfoFragment extends Fragment implements
                 dpd.setTitle(title);
                 //Setting max date
                 dpd.setMaxDate(Calendar.getInstance());
-
                 dpd.show(getActivity().getFragmentManager(), key+"Datepickerdialog");
             }
         });

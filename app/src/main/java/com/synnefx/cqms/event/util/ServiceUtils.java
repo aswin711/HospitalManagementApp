@@ -36,6 +36,7 @@ public class ServiceUtils {
                 ContentResolver.SYNC_EXTRAS_MANUAL, true);
         settingsBundle.putBoolean(
                 ContentResolver.SYNC_EXTRAS_EXPEDITED, true);
+        settingsBundle.putBoolean(Constants.Intent.SYNC_TYPE,false);
             /*
 	         * Request the sync for the default account, authority, and
 	         * manual sync settings
