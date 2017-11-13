@@ -200,6 +200,12 @@ public class MainActivity extends BootstrapActivity implements NavigationView.On
         mNavigationView = (NavigationView) findViewById(R.id.navigation_drawer);
         mNavigationView.setNavigationItemSelectedListener(this);
 
+        //setting margin for pre-lollipop devices
+        if(isPreLollipop()){
+            DrawerLayout.LayoutParams params = (DrawerLayout.LayoutParams) mNavigationView.getLayoutParams();
+            params.setMargins(0,20-40,0,0);
+            mNavigationView.setLayoutParams(params);
+        }
 
         header = mNavigationView.getHeaderView(0);
         TextView user = (TextView) header.findViewById(R.id.navigation_drawer_list_header_user);
@@ -271,9 +277,8 @@ public class MainActivity extends BootstrapActivity implements NavigationView.On
     @Override
     public void onConfigurationChanged(final Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-        if (!isTablet()) {
-            drawerToggle.onConfigurationChanged(newConfig);
-        }
+        drawerToggle.onConfigurationChanged(newConfig);
+
     }
 
     protected Activity getActivity() {
