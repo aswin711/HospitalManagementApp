@@ -76,22 +76,21 @@ public class PushReceiver extends BroadcastReceiver {
                     sharedPreferences.edit().putBoolean(QuickstartPreferences.SENT_TOKEN_TO_SERVER, false).apply();
                     PrefUtils.setTokenSentToServer(false);
                     break;
-                case 10:
-                case 15:
+                case 10://Configuration updated
+                case 20://Incident template updated
                     if(!TextUtils.isEmpty(hospitalUUID) && hospitalUUID.equals(PrefUtils.getHospitalID())){
                         syncConfig(context);
                     }
                     break;
-                case 120:
+                case 120: //Incident rport reviewed
                     updateIncidentReportStatus(intent.getStringExtra("clientid"), intent.getStringExtra("id"), intent.getStringExtra("status_code"), context);
                     break;
-                case 125:
+                case 125: //Medicstion error report reviewed
                     updateMedicationErrortStatus(intent.getStringExtra("clientid"), intent.getStringExtra("id"), intent.getStringExtra("status_code"), context);
                     break;
                 case 403:
                     bus.post(new UnAuthorizedErrorEvent("Token expired"));
                 case 1:
-                default:
                     sendNotification(DEFAULT_NOTIFICATION_ID, notificationText, context);
                     break;
             }
