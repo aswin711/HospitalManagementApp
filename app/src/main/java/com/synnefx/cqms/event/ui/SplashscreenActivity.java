@@ -1,6 +1,5 @@
 package com.synnefx.cqms.event.ui;
 
-import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -9,10 +8,6 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.SystemClock;
-import android.provider.Settings;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.util.Log;
 import android.widget.ImageView;
@@ -45,7 +40,7 @@ import me.pushy.sdk.Pushy;
  *
  * @see SystemUiHider
  */
-public class SpashscreenActivity extends Activity {
+public class SplashscreenActivity extends Activity {
     /**
      * Whether or not the system UI should be auto-hidden after
      * {@link #AUTO_HIDE_DELAY_MILLIS} milliseconds.
@@ -150,7 +145,7 @@ public class SpashscreenActivity extends Activity {
             public void run() {
                 // This method will be executed once the timer is over
                 // Start your app main activity
-                Intent i = new Intent(SpashscreenActivity.this, MainActivity.class);
+                Intent i = new Intent(SplashscreenActivity.this, MainActivity.class);
                 startActivity(i);
                 // close this activity
                 finish();

@@ -49,7 +49,6 @@ import com.synnefx.cqms.event.sync.drugreaction.DrugReactionSyncContentProvider;
 import com.synnefx.cqms.event.sync.incident.IncidentReportSyncContentProvider;
 import com.synnefx.cqms.event.sync.medicationerror.MedicationErrorSyncContentProvider;
 import com.synnefx.cqms.event.ui.base.BootstrapActivity;
-import com.synnefx.cqms.event.ui.base.NavigationDrawerFragment;
 import com.synnefx.cqms.event.ui.drugreaction.DrugReactionListFragment;
 import com.synnefx.cqms.event.ui.incident.IncidentReportListFragment;
 import com.synnefx.cqms.event.ui.medicationerror.MedicationErrorListFragment;
@@ -97,12 +96,10 @@ public class MainActivity extends BootstrapActivity implements NavigationView.On
 
     private boolean userHasAuthenticated = false;
 
-    private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle drawerToggle;
     private CharSequence drawerTitle;
     private CharSequence title;
-    private NavigationDrawerFragment navigationDrawerFragment;
-    private FloatingActionButton floatingActionButton;
+
 
     private List<IncidentReport> incidentReports;
     private Handler handler;
