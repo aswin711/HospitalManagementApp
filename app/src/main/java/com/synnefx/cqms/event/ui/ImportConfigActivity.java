@@ -244,24 +244,13 @@ public class ImportConfigActivity extends BootstrapFragmentActivity {
         protected void onPostExecute(Void aVoid) {
             hideProgress();
 
-            if (null != successessages) {
-                for (String msg : successessages) {
-                    TextView displayView = (TextView) getLayoutInflater().inflate(R.layout.template_textview, null);
-                        /*displayView.setText(msg);
-                        statusView.addView(displayView);*/
-
-                    updateClosableNotification("Configuration update completed", IMPORT_NOTIFICATION_ID);
-                    showImportStatus("Configuration Imported Succesfully","Continue to Home Page?",1);
-                    //showImportStatus("An Error Occured While Importing","Do you want to import config again?",2);
-                }
+            if (successessages.size()>0) {
+                updateClosableNotification("Configuration update completed", IMPORT_NOTIFICATION_ID);
+                showImportStatus("Configuration Imported Succesfully","Continue to Home Page?",1);
             }
-            if (null != errorMessages) {
-                for (String msg : errorMessages) {
-                    TextView displayView = (TextView) getLayoutInflater().inflate(R.layout.template_textview, null);
-                        /*displayView.setText(msg);
-                        statusView.addView(displayView);*/
-                    showImportStatus("An Error Occured While Importing","Do you want to import config again?",2);
-                }
+            if (errorMessages.size()>0) {
+                updateClosableNotification("Configuration update completed, Some units are not configured", IMPORT_NOTIFICATION_ID);
+                showImportStatus("An Error Occured While Importing","Do you want to import config again?",2);
             }
         }
 
@@ -290,12 +279,6 @@ public class ImportConfigActivity extends BootstrapFragmentActivity {
     private void updateNotification(String message) {
         if (null != notificationManager) {
             notificationManager.notify(IMPORT_NOTIFICATION_ID, NotificationUtils.getNotification(getApplicationContext(), getString(R.string.app_full_name)+": Configuration update", message));
-        }
-    }
-
-    private void updateNotification(String message, int notificationID) {
-        if (null != notificationManager) {
-            notificationManager.notify(notificationID, NotificationUtils.getNotification(getApplicationContext(), getString(R.string.app_full_name)+": Configuration update", message));
         }
     }
 

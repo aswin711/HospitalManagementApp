@@ -10,11 +10,10 @@ import com.synnefx.cqms.event.sync.incident.IncidentReportSyncService;
 import com.synnefx.cqms.event.sync.medicationerror.MedicationErrorSyncService;
 import com.synnefx.cqms.event.ui.ImportConfigActivity;
 import com.synnefx.cqms.event.ui.MainActivity;
-import com.synnefx.cqms.event.ui.SpashscreenActivity;
+import com.synnefx.cqms.event.ui.SplashscreenActivity;
 import com.synnefx.cqms.event.ui.base.BootstrapActivity;
 import com.synnefx.cqms.event.ui.base.BootstrapFragment;
 import com.synnefx.cqms.event.ui.base.BootstrapFragmentActivity;
-import com.synnefx.cqms.event.ui.base.NavigationDrawerFragment;
 import com.synnefx.cqms.event.ui.drugreaction.DrugInfoFragment;
 import com.synnefx.cqms.event.ui.drugreaction.DrugReactionActivity;
 import com.synnefx.cqms.event.ui.drugreaction.DrugReactionDetailsFragment;
@@ -58,9 +57,7 @@ public interface BootstrapComponent {
 
     void inject(MainActivity target);
 
-    void inject(SpashscreenActivity target);
-
-    void inject(NavigationDrawerFragment target);
+    void inject(SplashscreenActivity target);
 
     void inject(PreferenceActivity target);
 

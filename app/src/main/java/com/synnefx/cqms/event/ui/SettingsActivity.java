@@ -52,8 +52,6 @@ public class SettingsActivity extends PreferenceActivity {
         // requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
         super.onCreate(savedInstanceState);
         BootstrapApplication.component().inject(this);
-        // getSupportActionBar().setHomeButtonEnabled(true);
-        // getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         // Display the fragment as the main content.
 
         getFragmentManager().beginTransaction()
