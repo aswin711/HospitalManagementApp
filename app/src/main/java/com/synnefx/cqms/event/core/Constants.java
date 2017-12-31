@@ -1,5 +1,7 @@
 package com.synnefx.cqms.event.core;
 
+import com.synnefx.cqms.event.BuildConfig;
+
 /**
  * Bootstrap constants
  */
@@ -46,7 +48,7 @@ public final class Constants {
         /**
          * Base URL for all requests
          */
-        public static final String URL_BASE = "https://dev.cqms.synnefx.com/api/";
+        public static final String URL_BASE = BuildConfig.API_URL+"api/";
 
         /**
          * Authentication URL
