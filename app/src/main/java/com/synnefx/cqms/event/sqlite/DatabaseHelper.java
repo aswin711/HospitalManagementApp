@@ -154,7 +154,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_TABLE_REPORTED_BY);
         db.execSQL(CREATE_TABLE_INCIDENT_REPORT);
 
-        db.execSQL(CREATE_TABLE_MEDICATION_ERR_REPORT);
+       // db.execSQL(CREATE_TABLE_MEDICATION_ERR_REPORT);
 
 
         db.execSQL(CREATE_TABLE_ADVERSE_DRUGG_REACTION_REPORT);

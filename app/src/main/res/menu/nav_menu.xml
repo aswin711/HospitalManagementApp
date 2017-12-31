@@ -8,10 +8,12 @@
             android:id="@+id/nav_incident_report"
             android:icon="@drawable/ic_report"
             android:title="Incident Report"/>
+        <!--
         <item
             android:id="@+id/nav_medication_error"
             android:icon="@drawable/icon_error"
             android:title="Medication Error"/>
+            -->
         <item
             android:id="@+id/nav_adverse_drug_error"
             android:icon="@drawable/ic_pill"

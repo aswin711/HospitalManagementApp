@@ -250,7 +250,7 @@ public class ImportConfigActivity extends BootstrapFragmentActivity {
             }
             if (errorMessages.size()>0) {
                 updateClosableNotification("Configuration update completed, Some units are not configured", IMPORT_NOTIFICATION_ID);
-                showImportStatus("An Error Occured While Importing","Do you want to import config again?",2);
+                showImportStatus("An Error Occurred While Importing",errorMessages.get(0)+". Do you want to import config again?",2);
             }
         }
 

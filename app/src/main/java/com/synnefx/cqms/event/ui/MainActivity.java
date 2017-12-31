@@ -247,11 +247,12 @@ public class MainActivity extends BootstrapActivity implements NavigationView.On
             manager.beginTransaction().replace(R.id.container,incidentReportListFragment).commit();
             setTitle("Incident Report");
 
-        } else if (id == R.id.nav_medication_error) {
+        }  /*else if (id == R.id.nav_medication_error) {
             manager.beginTransaction().replace(R.id.container,medicationErrorListFragment).commit();
             setTitle("Medication Error");
 
-        } else if (id == R.id.nav_adverse_drug_error) {
+        } */
+        else if (id == R.id.nav_adverse_drug_error) {
             manager.beginTransaction().replace(R.id.container,drugReactionListFragment).commit();
             setTitle("Adverse Drug Reaction");
 
@@ -398,7 +399,7 @@ public class MainActivity extends BootstrapActivity implements NavigationView.On
     //Schedules for every 15 minutes
     private void scheduleSync() {
         ServiceUtils.scheduleSync(this, IncidentReportSyncContentProvider.AUTHORITY, 600l);
-        ServiceUtils.scheduleSync(this, MedicationErrorSyncContentProvider.AUTHORITY, 500l);
+       // ServiceUtils.scheduleSync(this, MedicationErrorSyncContentProvider.AUTHORITY, 500l);
         ServiceUtils.scheduleSync(this, DrugReactionSyncContentProvider.AUTHORITY, 550l);
     }
 
@@ -422,8 +423,8 @@ public class MainActivity extends BootstrapActivity implements NavigationView.On
             if (accounts.length > 0) {
                 ContentResolver.requestSync(accounts[0], IncidentReportSyncContentProvider.AUTHORITY, settingsBundle);
                 ContentResolver.addPeriodicSync(accounts[0], IncidentReportSyncContentProvider.AUTHORITY, Bundle.EMPTY, 600);
-                ContentResolver.requestSync(accounts[0], MedicationErrorSyncContentProvider.AUTHORITY, settingsBundle);
-                ContentResolver.addPeriodicSync(accounts[0], MedicationErrorSyncContentProvider.AUTHORITY, Bundle.EMPTY, 500);
+                //ContentResolver.requestSync(accounts[0], MedicationErrorSyncContentProvider.AUTHORITY, settingsBundle);
+                //ContentResolver.addPeriodicSync(accounts[0], MedicationErrorSyncContentProvider.AUTHORITY, Bundle.EMPTY, 500);
                 ContentResolver.requestSync(accounts[0], DrugReactionSyncContentProvider.AUTHORITY, settingsBundle);
                 ContentResolver.addPeriodicSync(accounts[0], DrugReactionSyncContentProvider.AUTHORITY, Bundle.EMPTY, 550);
             }
