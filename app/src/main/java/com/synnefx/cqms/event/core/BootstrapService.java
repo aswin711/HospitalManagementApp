@@ -200,21 +200,6 @@ public class BootstrapService {
         return null;
     }
 
-    public boolean doGCMRegistration(String platform, String key) {
-        GCMRequest gcmRequest = new GCMRequest(platform, key);
-        ApiRequest<GCMRequest> request = new ApiRequest<>();
-        request.setRecord(gcmRequest);
-        try {
-            ApiResponse<String> response = createAuthenticatedService(GCMRegistrationService.class).register(request).execute().body();
-            if (null != response && ApiResponse.Status.SUCCESS.equals(response.getStatus())) {
-                return true;
-            }
-        } catch (Exception e) {
-            bus.post(new NetworkErrorEvent(e));
-        }
-        return false;
-    }
-
     public boolean doDeviceRegistration(String deviceToken, String key) {
         GCMRequest gcmRequest = new GCMRequest(deviceToken, key);
         ApiRequest<GCMRequest> request = new ApiRequest<>();
