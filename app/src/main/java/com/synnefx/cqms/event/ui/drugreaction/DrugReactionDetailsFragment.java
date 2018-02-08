@@ -210,6 +210,12 @@ public class DrugReactionDetailsFragment extends Fragment implements
                     recoveredDate.setText("");
                 }
                 initDatepicker(recoveryDtBtn,"Set Date of Recovery", "Recovery");
+                recoveredDate.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        openDatePicker("Set Date of Recovery", "Recovery");
+                    }
+                });
                 report.setDateOfDeath(null);
                 break;
             case 4:
@@ -221,6 +227,12 @@ public class DrugReactionDetailsFragment extends Fragment implements
                     deathDate.setText("");
                 }
                 initDatepicker(deathDtBtn,"Set Death date", "Death");
+                deathDate.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        openDatePicker("Set Death date", "Death");
+                    }
+                });
                 report.setDateOfRecovery(null);
                 break;
             default:
@@ -242,28 +254,32 @@ public class DrugReactionDetailsFragment extends Fragment implements
         dateSetter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Calendar date = Calendar.getInstance();
-                if (null != report && null != report.getIncidentTime()) {
-                    date = report.getIncidentTime();
-                }
-                DatePickerDialog dpd = DatePickerDialog.newInstance(
-                        DrugReactionDetailsFragment.this,
-                        date.get(Calendar.YEAR),
-                        date.get(Calendar.MONTH),
-                        date.get(Calendar.DAY_OF_MONTH)
-                );
-                dpd.setThemeDark(true);
-                dpd.vibrate(true);
-                dpd.dismissOnPause(true);
-                dpd.showYearPickerFirst(true);
-                dpd.setTitle(title);
-                //Setting max date
-                dpd.setMaxDate(Calendar.getInstance());
-
-                dpd.show(getActivity().getFragmentManager(), key+"Datepickerdialog");
+                openDatePicker(title,key);
             }
         });
 
+    }
+
+    private void openDatePicker(String title,String key) {
+        Calendar date = Calendar.getInstance();
+        if (null != report && null != report.getIncidentTime()) {
+            date = report.getIncidentTime();
+        }
+        DatePickerDialog dpd = DatePickerDialog.newInstance(
+                DrugReactionDetailsFragment.this,
+                date.get(Calendar.YEAR),
+                date.get(Calendar.MONTH),
+                date.get(Calendar.DAY_OF_MONTH)
+        );
+        dpd.setThemeDark(true);
+        dpd.vibrate(true);
+        dpd.dismissOnPause(true);
+        dpd.showYearPickerFirst(true);
+        dpd.setTitle(title);
+        //Setting max date
+        dpd.setMaxDate(Calendar.getInstance());
+
+        dpd.show(getActivity().getFragmentManager(), key+"Datepickerdialog");
     }
 
 

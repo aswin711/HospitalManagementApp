@@ -246,29 +246,40 @@ public class IncidentDetailsFragment extends Fragment implements
         eventTimeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Calendar date = Calendar.getInstance();
-                if (null != report && null != report.getIncidentTime()) {
-                    date = report.getIncidentTime();
-                }
-                DatePickerDialog dpd = DatePickerDialog.newInstance(
-                        IncidentDetailsFragment.this,
-                        date.get(Calendar.YEAR),
-                        date.get(Calendar.MONTH),
-                        date.get(Calendar.DAY_OF_MONTH)
-                );
-                dpd.setThemeDark(true);
-                dpd.vibrate(true);
-                dpd.dismissOnPause(true);
-                dpd.showYearPickerFirst(true);
-                // dpd.setAccentColor(Color.parseColor("#9C27B0"));
-                dpd.setTitle("Select Incident time");
-                //Setting max date
-                dpd.setMaxDate(Calendar.getInstance());
-
-                dpd.show(getActivity().getFragmentManager(), "EventDatepickerdialog");
+                openDatePicker();
             }
         });
 
+        eventTime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openDatePicker();
+            }
+        });
+
+    }
+
+    private void openDatePicker(){
+        Calendar date = Calendar.getInstance();
+        if (null != report && null != report.getIncidentTime()) {
+            date = report.getIncidentTime();
+        }
+        DatePickerDialog dpd = DatePickerDialog.newInstance(
+                IncidentDetailsFragment.this,
+                date.get(Calendar.YEAR),
+                date.get(Calendar.MONTH),
+                date.get(Calendar.DAY_OF_MONTH)
+        );
+        dpd.setThemeDark(true);
+        dpd.vibrate(true);
+        dpd.dismissOnPause(true);
+        dpd.showYearPickerFirst(true);
+        // dpd.setAccentColor(Color.parseColor("#9C27B0"));
+        dpd.setTitle("Select Incident time");
+        //Setting max date
+        dpd.setMaxDate(Calendar.getInstance());
+
+        dpd.show(getActivity().getFragmentManager(), "EventDatepickerdialog");
     }
 
 

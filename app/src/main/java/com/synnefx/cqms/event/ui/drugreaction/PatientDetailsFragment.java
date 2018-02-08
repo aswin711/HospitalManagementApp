@@ -227,27 +227,38 @@ public class PatientDetailsFragment extends Fragment implements
         patientDOBBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Calendar date = Calendar.getInstance();
-                if (null != report && null != report.getIncidentTime()) {
-                    date = report.getIncidentTime();
-                }
-                DatePickerDialog dpd = DatePickerDialog.newInstance(
-                        PatientDetailsFragment.this,
-                        date.get(Calendar.YEAR),
-                        date.get(Calendar.MONTH),
-                        date.get(Calendar.DAY_OF_MONTH)
-                );
-                dpd.setThemeDark(true);
-                dpd.vibrate(true);
-                dpd.dismissOnPause(true);
-                dpd.showYearPickerFirst(true);
-                // dpd.setAccentColor(Color.parseColor("#9C27B0"));
-                dpd.setTitle("Select Date of Birth");
-                //Setting max date
-                dpd.setMaxDate(Calendar.getInstance());
-                dpd.show(getActivity().getFragmentManager(), "DOBDatepickerdialog");
+                openDOBpicker();
             }
         });
+
+        patientDOB.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openDOBpicker();
+            }
+        });
+    }
+
+    private void openDOBpicker(){
+        Calendar date = Calendar.getInstance();
+        if (null != report && null != report.getIncidentTime()) {
+            date = report.getIncidentTime();
+        }
+        DatePickerDialog dpd = DatePickerDialog.newInstance(
+                PatientDetailsFragment.this,
+                date.get(Calendar.YEAR),
+                date.get(Calendar.MONTH),
+                date.get(Calendar.DAY_OF_MONTH)
+        );
+        dpd.setThemeDark(true);
+        dpd.vibrate(true);
+        dpd.dismissOnPause(true);
+        dpd.showYearPickerFirst(true);
+        // dpd.setAccentColor(Color.parseColor("#9C27B0"));
+        dpd.setTitle("Select Date of Birth");
+        //Setting max date
+        dpd.setMaxDate(Calendar.getInstance());
+        dpd.show(getActivity().getFragmentManager(), "DOBDatepickerdialog");
     }
 
 
