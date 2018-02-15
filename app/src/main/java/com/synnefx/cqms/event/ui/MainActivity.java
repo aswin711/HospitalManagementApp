@@ -12,6 +12,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.database.ContentObserver;
 import android.os.AsyncTask;
@@ -207,8 +209,12 @@ public class MainActivity extends BootstrapActivity implements NavigationView.On
         header = mNavigationView.getHeaderView(0);
         TextView user = (TextView) header.findViewById(R.id.navigation_drawer_list_header_user);
         TextView hospital = (TextView) header.findViewById(R.id.navigation_drawer_list_header_hospital);
+        TextView version = header.findViewById(R.id.version);
         user.setText(PrefUtils.getFromPrefs(getApplicationContext(), PrefUtils.PREFS_USER_DISPLAY_NAME, "User"));
         hospital.setText(PrefUtils.getFromPrefs(getApplicationContext(), PrefUtils.PREFS_HOSP_DISPLAY_NAME, "Hospital"));
+        if (getAppVersionName() != null) {
+            version.setText(getAppVersionName());
+        }
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
         checkAuth();
@@ -562,6 +568,23 @@ public class MainActivity extends BootstrapActivity implements NavigationView.On
     //clean up records aged 2 months.
     public void cleanReports(){
 
+    }
+
+    private String getAppVersionName(){
+        String currentVersion = null;
+        try{
+            PackageManager manager = getApplicationContext().getPackageManager();
+            PackageInfo info = manager.getPackageInfo(
+                    getApplicationContext().getPackageName(), 0);
+            if(null != info){
+                currentVersion = info.versionName;
+
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+
+        return currentVersion;
     }
 
 }
