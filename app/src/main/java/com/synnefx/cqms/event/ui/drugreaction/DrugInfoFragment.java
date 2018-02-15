@@ -162,12 +162,12 @@ public class DrugInfoFragment extends Fragment implements
                     eventBus.post(getString(R.string.save_btn_clicked));
                 }
             });
-            initDatepicker(drugStartedDtBtn,"Set drug started date", "Start");
+            initDatepicker(drugStartedDtBtn,"Set drug started date", "Started");
             initDatepicker(drugCeasedDtBtn,"Set drug ceased date", "Ceased");
             drugStartedDt.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    openDatePicker("Set drug started date", "Start");
+                    openDatePicker("Set drug started date", "Started");
                 }
             });
             drugCeasedDt.setOnClickListener(new View.OnClickListener() {
