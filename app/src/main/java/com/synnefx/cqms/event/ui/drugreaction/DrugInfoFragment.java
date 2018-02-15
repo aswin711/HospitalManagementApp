@@ -109,15 +109,7 @@ public class DrugInfoFragment extends Fragment implements
             }
         }
         initScreen();
-        saveDetailsBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                saveEvent();
-                eventBus.post(getString(R.string.save_btn_clicked));
-            }
-        });
-        initDatepicker(drugStartedDtBtn,"Set drug started date", "Start");
-        initDatepicker(drugCeasedDtBtn,"Set drug ceased date", "Ceased");
+
         return fragmentView;
     }
 
@@ -163,8 +155,27 @@ public class DrugInfoFragment extends Fragment implements
                     saveDetailsBtn.setText("Update");
                 }
             }
-            initDatepicker(drugStartedDtBtn, "Date Started", "Started");
-            initDatepicker(drugCeasedDtBtn, "Date Ceased", "Ceased");
+            saveDetailsBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    saveEvent();
+                    eventBus.post(getString(R.string.save_btn_clicked));
+                }
+            });
+            initDatepicker(drugStartedDtBtn,"Set drug started date", "Start");
+            initDatepicker(drugCeasedDtBtn,"Set drug ceased date", "Ceased");
+            drugStartedDt.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    openDatePicker("Set drug started date", "Start");
+                }
+            });
+            drugCeasedDt.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    openDatePicker("Set drug ceased date", "Ceased");
+                }
+            });
         }
     }
 
@@ -173,27 +184,31 @@ public class DrugInfoFragment extends Fragment implements
         dateSetter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Calendar date = Calendar.getInstance();
-                if (null != report && null != report.getIncidentTime()) {
-                    date = report.getIncidentTime();
-                }
-                DatePickerDialog dpd = DatePickerDialog.newInstance(
-                        DrugInfoFragment.this,
-                        date.get(Calendar.YEAR),
-                        date.get(Calendar.MONTH),
-                        date.get(Calendar.DAY_OF_MONTH)
-                );
-                dpd.setThemeDark(true);
-                dpd.vibrate(true);
-                dpd.dismissOnPause(true);
-                dpd.showYearPickerFirst(true);
-                dpd.setTitle(title);
-                //Setting max date
-                dpd.setMaxDate(Calendar.getInstance());
-                dpd.show(getActivity().getFragmentManager(), key+"Datepickerdialog");
+                openDatePicker(title,key);
             }
         });
 
+    }
+
+    private void openDatePicker(String title,String key){
+        Calendar date = Calendar.getInstance();
+        if (null != report && null != report.getIncidentTime()) {
+            date = report.getIncidentTime();
+        }
+        DatePickerDialog dpd = DatePickerDialog.newInstance(
+                DrugInfoFragment.this,
+                date.get(Calendar.YEAR),
+                date.get(Calendar.MONTH),
+                date.get(Calendar.DAY_OF_MONTH)
+        );
+        dpd.setThemeDark(true);
+        dpd.vibrate(true);
+        dpd.dismissOnPause(true);
+        dpd.showYearPickerFirst(true);
+        dpd.setTitle(title);
+        //Setting max date
+        dpd.setMaxDate(Calendar.getInstance());
+        dpd.show(getActivity().getFragmentManager(), key+"Datepickerdialog");
     }
 
     @Override

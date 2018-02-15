@@ -125,4 +125,5 @@
     <!--Navigation Drawer -->
     <color name="navMenu">#212121</color>
     <color name="navigation_seleceted">#fdf6e6</color>
+    <color name="password_toggle_tint">#999999</color>
 </resources>
