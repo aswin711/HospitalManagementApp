@@ -27,12 +27,12 @@
 
 
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="150dp"
+            android:layout_height="50dp"
             android:layout_centerVertical="true"
             android:layout_centerHorizontal="true"
             android:id="@+id/navigation_drawer_list_header_user_pic"
-            android:src="@drawable/avatar"/>
+            android:src="@drawable/app_icon"/>
 
         <TextView
             android:id="@+id/navigation_drawer_list_header_user"
@@ -43,7 +43,7 @@
             android:layout_marginTop="2dp"
             android:text="@string/Unknown_user"
             android:textColor="@color/text"
-            android:textSize="20sp"
+            android:textSize="18sp"
             android:textAppearance="?android:attr/textAppearanceLarge"/>
         <TextView
             android:id="@+id/navigation_drawer_list_header_hospital"
