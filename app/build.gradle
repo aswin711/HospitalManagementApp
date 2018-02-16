@@ -34,10 +34,10 @@ repositories {
 
 def computeVersionCode() {
 
-    if (System.env.BUILD_NUMBER) {              // Check if there is a system build number.
-        return "$System.env.BUILD_NUMBER".toInteger()
-    } else if (System.env.CIRCLE_BUILD_NUM) {   // Check to see if this is built on circle CI
-        return "$System.env.CIRCLE_BUILD_NUM".toInteger()
+    if (rootProject.ext.VERSION_CODE) {              // Check if there is a system build number.
+        return "$rootProject.ext.VERSION_CODE".toInteger()
+    } else if (rootProject.ext.CIRCLE_BUILD_NUM) {   // Check to see if this is built on circle CI
+        return "$rootProject.ext.CIRCLE_BUILD_NUM".toInteger()
     } else {
         return 1                                // if none is found, default to 1.
     }
@@ -114,7 +114,6 @@ android {
         }
         release {
             minifyEnabled false
-            versionNameSuffix '-release'
             buildConfigField 'String', 'API_URL', '"https://hqpulse.com/"';
             // proguardFile '..\proguard.cfg'
              signingConfig signingConfigs.release
