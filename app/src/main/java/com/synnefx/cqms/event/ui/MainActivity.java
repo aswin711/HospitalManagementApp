@@ -485,15 +485,15 @@ public class MainActivity extends BootstrapActivity implements NavigationView.On
             try {
                 if (!PrefUtils.getTokenSentToServer()) {
                     // Assign a unique token to this device
-                    String pusyToken = Pushy.register(getApplicationContext());
+                    String pushyToken = Pushy.register(getApplicationContext());
                     String deviceToken = PrefUtils.getDeviceToken();
                     SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
                     // Log it for debugging purposes
-                    Log.d("MyApp", "Pushy device token: " + pusyToken);
+                    Log.d("MyApp", "Pushy device token: " + pushyToken);
                     // Send the token to your backend server via an HTTP GET request
                     //new URL("https://{YOUR_API_HOSTNAME}/register/device?token=" + deviceToken).openConnection();
-                    if(!TextUtils.isEmpty(pusyToken) && !TextUtils.isEmpty(deviceToken)){
-                        boolean sent = serviceProvider.getAuthenticatedService().doDeviceRegistration(deviceToken, pusyToken);
+                    if(!TextUtils.isEmpty(pushyToken) && !TextUtils.isEmpty(deviceToken)){
+                        boolean sent = serviceProvider.getAuthenticatedService().doDeviceRegistration(deviceToken, pushyToken);
                         sharedPreferences.edit().putBoolean(QuickstartPreferences.SENT_TOKEN_TO_SERVER, true).apply();
                         PrefUtils.setTokenSentToServer(sent);
                     }
