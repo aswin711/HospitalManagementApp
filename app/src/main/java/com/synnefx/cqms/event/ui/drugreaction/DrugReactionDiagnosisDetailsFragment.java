@@ -322,9 +322,9 @@ public class DrugReactionDiagnosisDetailsFragment extends Fragment implements
         if (!TextUtils.isEmpty(consultantName.getText())){
             report.getPersonInvolved().setConsultantName(consultantName.getText().toString().trim());
         }
-        if (!TextUtils.isEmpty(diagnosis.getText())) {
-            report.getPersonInvolved().setDiagnosis(diagnosis.getText().toString().trim());
-        }
+
+        report.getPersonInvolved().setDiagnosis(diagnosis.getText().toString().trim());
+
 
         if (!TextUtils.isEmpty(description.getText())){
             report.setDescription(description.getText().toString().trim());
@@ -367,9 +367,9 @@ public class DrugReactionDiagnosisDetailsFragment extends Fragment implements
             report.setUnitRef(0l);
             unitsSpinner.requestFocus();
         }
-        if (!TextUtils.isEmpty(consultantName.getText())){
-            report.getPersonInvolved().setConsultantName(consultantName.getText().toString().trim());
-        }
+
+        report.getPersonInvolved().setConsultantName(consultantName.getText().toString().trim());
+
         if (TextUtils.isEmpty(diagnosis.getText())) {
             diagnosis.setError("Patient diagnosis required");
             diagnosis.requestFocus();
