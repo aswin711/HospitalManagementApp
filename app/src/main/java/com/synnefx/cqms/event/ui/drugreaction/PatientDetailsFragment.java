@@ -158,7 +158,7 @@ public class PatientDetailsFragment extends Fragment implements
 
     private void initScreen() {
 
-        ipPatient.setChecked(Boolean.FALSE);
+        ipPatient.setChecked(Boolean.TRUE);
         opPatient.setChecked(Boolean.FALSE);
         if (null != patient && null != patient.getId() && 0 < patient.getId()) {
             patientName.setText(patient.getName());
@@ -376,7 +376,6 @@ public class PatientDetailsFragment extends Fragment implements
 
     private boolean validatePatientDeatils() {
         boolean error = false;
-
         if (TextUtils.isEmpty(patientName.getText())) {
             patientName.setError("Patient name required");
             patientName.requestFocus();

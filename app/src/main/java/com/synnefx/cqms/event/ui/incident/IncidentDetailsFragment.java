@@ -144,7 +144,7 @@ public class IncidentDetailsFragment extends Fragment implements
         ViewUtils.setGone(incidentTypeHolder, false);
         setIncidentTypeSpinner();
         setUnitSpinner();
-        nearMiss.setChecked(Boolean.FALSE);
+        nearMiss.setChecked(Boolean.TRUE);
         actualHarm.setChecked(Boolean.FALSE);
         if (null != report && null != report.getId() && 0 < report.getId()) {
             description.setText(report.getDescription());
@@ -364,7 +364,6 @@ public class IncidentDetailsFragment extends Fragment implements
 
     private boolean validateIncidentDeatils() {
         boolean error = false;
-
         if (TextUtils.isEmpty(correctiveAction.getText())) {
             correctiveAction.setError("Corrective action required");
             correctiveAction.requestFocus();
@@ -420,7 +419,6 @@ public class IncidentDetailsFragment extends Fragment implements
 
         return error;
     }
-
 
     @Subscribe
     public void onEventListened(String data){
