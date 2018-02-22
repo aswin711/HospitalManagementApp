@@ -169,9 +169,14 @@ public class DrugReactionReportedByDetailsFragment extends Fragment {
     public AdverseDrugEvent saveDraft(){
         if (!TextUtils.isEmpty(reportedByName.getText())) {
             reportedBy.setLastName(reportedByName.getText().toString().trim());
+        } else {
+            reportedBy.setLastName(null);
+            reportedBy.setFirstName(null);
         }
         if (!TextUtils.isEmpty(reportedByDesignation.getText())) {
             reportedBy.setDesignation(reportedByDesignation.getText().toString().trim());
+        } else {
+            reportedBy.setDesignation(null);
         }
         return report;
     }

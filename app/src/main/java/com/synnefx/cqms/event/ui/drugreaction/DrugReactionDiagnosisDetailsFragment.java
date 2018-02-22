@@ -150,7 +150,10 @@ public class DrugReactionDiagnosisDetailsFragment extends Fragment implements
             if(!TextUtils.isEmpty(report.getPersonInvolved().getConsultantName())){
                 consultantName.setText(report.getPersonInvolved().getConsultantName());
             }
-            diagnosis.setText(report.getPersonInvolved().getDiagnosis());
+            if (!TextUtils.isEmpty(report.getPersonInvolved().getDiagnosis())){
+               diagnosis.setText(report.getPersonInvolved().getDiagnosis());
+            }
+
             if (null != report.getReactionDate()) {
                 eventTimeBtn.setText("Change");
                 eventTime.setText(CalenderUtils.formatCalendarToString(report.getReactionDate(), Constants.Common.DATE_TIME_DISPLAY_FORMAT));
@@ -321,13 +324,21 @@ public class DrugReactionDiagnosisDetailsFragment extends Fragment implements
 
         if (!TextUtils.isEmpty(consultantName.getText())){
             report.getPersonInvolved().setConsultantName(consultantName.getText().toString().trim());
+        } else {
+            report.getPersonInvolved().setConsultantName(null);
         }
 
-        report.getPersonInvolved().setDiagnosis(diagnosis.getText().toString().trim());
+        if (!TextUtils.isEmpty(diagnosis.getText())) {
+            report.getPersonInvolved().setDiagnosis(diagnosis.getText().toString().trim());
+        } else {
+            report.getPersonInvolved().setDiagnosis(null);
+        }
 
 
         if (!TextUtils.isEmpty(description.getText())){
             report.setDescription(description.getText().toString().trim());
+        }else {
+            report.setDescription(null);
         }
         report.getPersonInvolved().setId(report.getPersonInvolvedRef());
         return report;
@@ -368,7 +379,11 @@ public class DrugReactionDiagnosisDetailsFragment extends Fragment implements
             unitsSpinner.requestFocus();
         }
 
-        report.getPersonInvolved().setConsultantName(consultantName.getText().toString().trim());
+        if (!TextUtils.isEmpty(consultantName.getText().toString().trim())) {
+            report.getPersonInvolved().setConsultantName(consultantName.getText().toString().trim());
+        } else {
+            report.getPersonInvolved().setConsultantName(null);
+        }
 
         if (TextUtils.isEmpty(diagnosis.getText())) {
             diagnosis.setError("Patient diagnosis required");

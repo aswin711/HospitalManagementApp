@@ -434,8 +434,16 @@ public class IncidentDetailsFragment extends Fragment implements
         String hospitalRef = PrefUtils.getFromPrefs(getContext(), PrefUtils.PREFS_HOSP_ID, null);
 
         report.setHospital(hospitalRef);
-        report.setDescription(description.getText().toString().trim());
-        report.setCorrectiveActionTaken(correctiveAction.getText().toString().trim());
+        if (!TextUtils.isEmpty(description.getText())) {
+            report.setDescription(description.getText().toString().trim());
+        }else {
+            report.setDescription(null);
+        }
+        if (!TextUtils.isEmpty(correctiveAction.getText())) {
+            report.setCorrectiveActionTaken(correctiveAction.getText().toString().trim());
+        } else {
+            report.setCorrectiveActionTaken(null);
+        }
         List<IncidentType> types =  databaseHelper.getAllIncidentTypes(hospitalRef);
         if(!incidentTypeSpinner.getText().toString().isEmpty()){
             for (IncidentType type:types){

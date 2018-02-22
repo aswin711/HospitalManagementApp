@@ -44,13 +44,22 @@ public class IncidentReportListAdapter extends AlternatingColorListAdapter<Incid
 
     @Override
     protected void update(final int position, final IncidentReport item) {
-        setText(0, item.getIncidentTypeName());
-        String desription = item.getDescription();
-        if (!TextUtils.isEmpty(desription) && desription.length() > 250) {
-            desription = String.format("%s..", desription.substring(0, 249));
+        if (!TextUtils.isEmpty(item.getIncidentTypeName())) {
+            setText(0, item.getIncidentTypeName());
+        } else {
+            setText(0," No Incident Type added");
         }
+        String desription = item.getDescription();
+        if (TextUtils.isEmpty(desription)) {
+            desription = "No description added";
+        }
+
         setText(1, desription);
-        setText(2, item.getDepartment());
+        if (!TextUtils.isEmpty(item.getDepartment())) {
+            setText(2, item.getDepartment());
+        } else {
+            setText(2,"No Department added");
+        }
         if (null != item.getReportedBy()) {
             setText(3, item.getReportedBy().getLastName());
         } else {

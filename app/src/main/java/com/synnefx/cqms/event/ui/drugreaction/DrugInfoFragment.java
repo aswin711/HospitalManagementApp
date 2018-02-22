@@ -264,16 +264,24 @@ public class DrugInfoFragment extends Fragment implements
 
         if (!TextUtils.isEmpty(drugName.getText())) {
             drugInfo.setDrug(drugName.getText().toString().trim());
+        } else {
+            drugInfo.setDrug(null);
         }
 
         if (!TextUtils.isEmpty(drugDose.getText())) {
             drugInfo.setDose(drugDose.getText().toString().trim());
+        } else {
+            drugInfo.setDose(null);
         }
         if (!TextUtils.isEmpty(drugFreequency.getText())){
             drugInfo.setFrequency(drugFreequency.getText().toString().trim());
+        } else {
+            drugInfo.setFrequency(null);
         }
         if (!TextUtils.isEmpty(drugRoute.getText())){
             drugInfo.setRoute(drugRoute.getText().toString().trim());
+        } else {
+            drugInfo.setRoute(null);
         }
 
         return report;
