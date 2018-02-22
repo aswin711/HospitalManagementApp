@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -18,6 +19,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
+import android.widget.Toast;
 
 import com.rengwuxian.materialedittext.MaterialEditText;
 import com.synnefx.cqms.event.BootstrapApplication;
@@ -433,6 +435,12 @@ public class IncidentDetailsFragment extends Fragment implements
     public IncidentReport saveDraft(){
         String hospitalRef = PrefUtils.getFromPrefs(getContext(), PrefUtils.PREFS_HOSP_ID, null);
 
+        if (TextUtils.isEmpty(report.getIncidentTypeName()) && TextUtils.isEmpty(report.getDescription())
+                && TextUtils.isEmpty(report.getDepartment())){
+            //Toast.makeText(getContext(), "Delete all", Toast.LENGTH_SHORT).show();
+            deleteReportAlert();
+        }
+
         report.setHospital(hospitalRef);
         if (!TextUtils.isEmpty(description.getText())) {
             report.setDescription(description.getText().toString().trim());
@@ -485,6 +493,29 @@ public class IncidentDetailsFragment extends Fragment implements
         fragmentManager.beginTransaction()
                 .replace(R.id.incident_report_form_container, personDetailsFragment,"PersonDetailsFragment")
                 .commit();
+    }
+
+    public void deleteReportAlert(){
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity());
+        alertDialog.setTitle("Unable to save draft due to missing mandatory fields");
+        alertDialog.setMessage("Do you want to delete the report?");
+        alertDialog.setCancelable(true);
+        alertDialog.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+                dialog.dismiss();
+
+            }
+        });
+        alertDialog.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+
+            }
+        });
+        alertDialog.show();
     }
 
 

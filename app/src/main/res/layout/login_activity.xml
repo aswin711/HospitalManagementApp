@@ -54,7 +54,16 @@
 
 
 
-
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textSize="14sp"
+            android:textColor="#ff0000"
+            android:id="@+id/loginMessage"
+            android:visibility="gone"
+            android:text="Login credentials are wrong"
+            android:layout_marginTop="5dp"/>
 
 
 

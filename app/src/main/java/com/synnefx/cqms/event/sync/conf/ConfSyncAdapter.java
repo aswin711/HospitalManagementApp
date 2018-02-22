@@ -20,6 +20,7 @@ import com.synnefx.cqms.event.core.Constants;
 import com.synnefx.cqms.event.core.modal.IncidentType;
 import com.synnefx.cqms.event.core.modal.Unit;
 import com.synnefx.cqms.event.sqlite.DatabaseHelper;
+import com.synnefx.cqms.event.ui.MainActivity;
 import com.synnefx.cqms.event.ui.SettingsActivity;
 import com.synnefx.cqms.event.util.ConnectionUtils;
 import com.synnefx.cqms.event.util.NotificationUtils;
@@ -182,7 +183,7 @@ public class ConfSyncAdapter extends AbstractThreadedSyncAdapter {
 
     private void updateClosableNotification(String message, int notificationID) {
         if (null != notificationManager) {
-            final Intent i = new Intent(getContext(), SettingsActivity.class);
+            final Intent i = new Intent(getContext(), MainActivity.class);
             PendingIntent pendingIntent = PendingIntent.getActivity(getContext(), 0, i, 0);
             NotificationCompat.Builder builder = NotificationUtils.getNotificationBuilder(getContext(), notificationTitle+" Configuration update", message,pendingIntent)
                     .setContentText(message);

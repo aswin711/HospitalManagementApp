@@ -397,6 +397,7 @@ public class MainActivity extends BootstrapActivity implements NavigationView.On
     }
 
 
+
     private void navigateToConfig() {
         final Intent i = new Intent(this, SettingsActivity.class);
         startActivityForResult(i, 1);

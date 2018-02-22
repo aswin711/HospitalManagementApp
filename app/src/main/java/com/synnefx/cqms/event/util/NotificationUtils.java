@@ -12,6 +12,7 @@ import android.os.Build;
 import android.support.v4.app.NotificationCompat;
 
 import com.synnefx.cqms.event.R;
+import com.synnefx.cqms.event.ui.MainActivity;
 import com.synnefx.cqms.event.ui.SettingsActivity;
 
 /**
@@ -20,7 +21,8 @@ import com.synnefx.cqms.event.ui.SettingsActivity;
 public class NotificationUtils {
 
     public static Notification getNotification(Context context, String title, String message) {
-        final Intent i = new Intent(context, SettingsActivity.class);
+        final Intent i = new Intent(context, MainActivity.class);
+        i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
 
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, i, 0);
 
@@ -34,7 +36,7 @@ public class NotificationUtils {
     }
 
     public static Notification getSoundNotification(Context context, String title, String message) {
-        final Intent i = new Intent(context, SettingsActivity.class);
+        final Intent i = new Intent(context, MainActivity.class);
         return getSoundNotification(context, title, message, PendingIntent.getActivity(context, 0, i, 0));
     }
 

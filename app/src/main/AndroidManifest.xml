@@ -36,6 +36,7 @@
         </activity>
         <activity
             android:name=".ui.MainActivity"
+            android:launchMode="singleTop"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/app_name"
             android:theme="@style/Theme.Material.Dark.Main">

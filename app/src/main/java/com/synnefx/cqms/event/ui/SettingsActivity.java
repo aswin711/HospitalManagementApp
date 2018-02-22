@@ -24,6 +24,7 @@ import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.Menu;
 import android.view.View;
+import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
 import com.synnefx.cqms.event.BootstrapApplication;
@@ -115,6 +116,8 @@ public class SettingsActivity extends PreferenceActivity {
         getMenuInflater().inflate(R.menu.global, menu);
         return true;
     }
+
+
 
     /**
      * {@inheritDoc}
