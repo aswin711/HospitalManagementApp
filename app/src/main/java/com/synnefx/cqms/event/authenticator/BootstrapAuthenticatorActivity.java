@@ -166,6 +166,8 @@ public class BootstrapAuthenticatorActivity extends ActionBarAccountAuthenticato
      */
     protected boolean requestNewAccount = false;
 
+    private Toast mToast;
+
     @Override
     public void onCreate(Bundle bundle) {
         super.onCreate(bundle);
@@ -698,7 +700,9 @@ public class BootstrapAuthenticatorActivity extends ActionBarAccountAuthenticato
     }
 
     public void showErrorMessage(String error){
-        loginMessage.setVisibility(View.VISIBLE);
+        if (loginMessage.getVisibility() == View.GONE) {
+            loginMessage.setVisibility(View.VISIBLE);
+        }
         loginMessage.setText(error);
     }
 

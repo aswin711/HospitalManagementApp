@@ -317,12 +317,13 @@ public class MainActivity extends BootstrapActivity implements NavigationView.On
                 userHasAuthenticated = true;
                 registerPushyOnServer();
                 scheduleSync();
-                selectIncidentReport();
+
             }
 
             @Override
             protected void onFinally() throws RuntimeException {
                 hideLoading();
+                selectIncidentReport();
                 initiateSync();
             }
 

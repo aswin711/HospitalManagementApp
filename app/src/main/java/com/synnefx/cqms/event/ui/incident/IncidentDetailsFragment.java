@@ -59,6 +59,7 @@ public class IncidentDetailsFragment extends Fragment implements
 
 
     protected  View fragmentView;
+    private IncidentReportActivity mActivity;
 
     @Bind(R.id.incident_details_save)
     protected Button saveDetailsBtn;
@@ -98,6 +99,12 @@ public class IncidentDetailsFragment extends Fragment implements
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         BootstrapApplication.component().inject(this);
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        this.mActivity = (IncidentReportActivity)context;
     }
 
     @Override
@@ -427,6 +434,8 @@ public class IncidentDetailsFragment extends Fragment implements
         if (data.equals(getString(R.string.save_draft))){
             if(saveDraft() != null){
                 databaseHelper.insertOrUpdateIncidentReport(saveDraft());
+            } else {
+                ((DeleteReportListener)mActivity).deleteReport();
             }
         }
     }
@@ -435,10 +444,10 @@ public class IncidentDetailsFragment extends Fragment implements
     public IncidentReport saveDraft(){
         String hospitalRef = PrefUtils.getFromPrefs(getContext(), PrefUtils.PREFS_HOSP_ID, null);
 
-        if (TextUtils.isEmpty(report.getIncidentTypeName()) && TextUtils.isEmpty(report.getDescription())
-                && TextUtils.isEmpty(report.getDepartment())){
-            //Toast.makeText(getContext(), "Delete all", Toast.LENGTH_SHORT).show();
-            deleteReportAlert();
+        if ((report.getIncidentTypeRef() <= 0L || report.getIncidentTypeRef() == null )
+                && TextUtils.isEmpty(description.getText())
+                && (report.getUnitRef() <= 0L || report.getUnitRef() == null )) {
+            return null;
         }
 
         report.setHospital(hospitalRef);
@@ -495,28 +504,7 @@ public class IncidentDetailsFragment extends Fragment implements
                 .commit();
     }
 
-    public void deleteReportAlert(){
-        AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity());
-        alertDialog.setTitle("Unable to save draft due to missing mandatory fields");
-        alertDialog.setMessage("Do you want to delete the report?");
-        alertDialog.setCancelable(true);
-        alertDialog.setPositiveButton("YES", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
 
-                dialog.dismiss();
-
-            }
-        });
-        alertDialog.setNegativeButton("NO", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-
-            }
-        });
-        alertDialog.show();
-    }
 
 
     /**
@@ -528,5 +516,9 @@ public class IncidentDetailsFragment extends Fragment implements
         super.onActivityCreated(savedInstanceState);
         final InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
+    }
+
+    public interface DeleteReportListener{
+        void deleteReport();
     }
 }

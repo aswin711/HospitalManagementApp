@@ -21,7 +21,7 @@ import com.synnefx.cqms.event.ui.SettingsActivity;
 public class NotificationUtils {
 
     public static Notification getNotification(Context context, String title, String message) {
-        final Intent i = new Intent(context, MainActivity.class);
+        final Intent i = new Intent(context, SettingsActivity.class);
         i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
 
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, i, 0);

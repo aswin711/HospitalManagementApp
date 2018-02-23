@@ -196,7 +196,7 @@ public class SplashscreenActivity extends Activity {
             try {
                 databaseHelper.deleteIncidentReportsBeforeDate(cal);
                 databaseHelper.deleteAdverseDrugReportsBeforeDate(cal);
-                databaseHelper.deleteMedicalErrorReportsBeforeDate(cal);
+               // databaseHelper.deleteMedicalErrorReportsBeforeDate(cal);
                 //update new cleanup date
                 PrefUtils.updateCleanUpDate(currentDate);
             } catch (DataAccessException e) {

@@ -29,9 +29,12 @@ import android.widget.Toast;
 import com.crashlytics.android.Crashlytics;
 import com.synnefx.cqms.event.BootstrapApplication;
 import com.synnefx.cqms.event.R;
+import com.synnefx.cqms.event.util.PrefUtils;
 import com.synnefx.cqms.event.util.Toaster;
 
 import java.util.List;
+
+import javax.inject.Inject;
 
 
 /**
@@ -48,6 +51,7 @@ import java.util.List;
 public class SettingsActivity extends PreferenceActivity {
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         // requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
@@ -55,9 +59,16 @@ public class SettingsActivity extends PreferenceActivity {
         BootstrapApplication.component().inject(this);
         // Display the fragment as the main content.
 
-        getFragmentManager().beginTransaction()
-                .replace(android.R.id.content, new SettingsPreferenceFragment())
-                .commit();
+        if (!TextUtils.isEmpty(PrefUtils.getHospitalID())) {
+            getFragmentManager().beginTransaction()
+                    .replace(android.R.id.content, new SettingsPreferenceFragment())
+                    .commit();
+        } else {
+            Intent intent = new Intent(getApplicationContext(),MainActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+            finish();
+        }
 
     }
 

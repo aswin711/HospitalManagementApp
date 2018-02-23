@@ -33,6 +33,7 @@ import com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
+import org.w3c.dom.Text;
 
 import java.util.Calendar;
 
@@ -52,6 +53,7 @@ public class PatientDetailsFragment extends Fragment implements
         DatePickerDialog.OnDateSetListener{
 
     protected View fragmentView;
+    private DrugReactionActivity mActivity;
 
     @Bind(R.id.incident_details_save)
     protected Button saveDetailsBtn;
@@ -154,7 +156,11 @@ public class PatientDetailsFragment extends Fragment implements
         super.onDestroyView();
     }
 
-
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        mActivity = (DrugReactionActivity) context;
+    }
 
     private void initScreen() {
 
@@ -293,13 +299,15 @@ public class PatientDetailsFragment extends Fragment implements
     public void onEventListened(String data){
         if (data.equals(getString(R.string.save_draft))){
             if(saveDraft() != null){
-                Toast.makeText(getActivity(),"Draft saved",Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getActivity(),"Draft saved",Toast.LENGTH_SHORT).show();
                 long id = databaseHelper.insertOrUpdateAdverseDrugReaction(saveDraft());
                 report.setId(id);
                 if (0 < id){
                     databaseHelper.updateAdverseDrugEventPersonInvolved(saveDraft());
                 }
 
+            }else{
+                ((DeleteReportListener)mActivity).onDelete();
             }
         }
     }
@@ -308,15 +316,23 @@ public class PatientDetailsFragment extends Fragment implements
     private AdverseDrugEvent saveDraft(){
         String hospitalRef = PrefUtils.getFromPrefs(getActivity().getApplicationContext(), PrefUtils.PREFS_HOSP_ID, null);
         report.setHospital(hospitalRef);
+
+        if (report.getUnitRef()==null){
+            report.setUnitRef(0L);
+        }
+
+        if (TextUtils.isEmpty(report.getDescription())
+                && (report.getUnitRef() <= 0L || report.getUnitRef() == null )
+                && TextUtils.isEmpty(patientName.getText())){
+            return null;
+        }
+
         if (0 == report.getStatusCode()) {
             report.setCreatedOn(Calendar.getInstance());
         }
         report.setUpdated(Calendar.getInstance());
         patient.setPersonnelTypeCode(1);
 
-        if (report.getUnitRef()==null){
-            report.setUnitRef(0L);
-        }
 
         patient.setName(patientName.getText().toString().trim());
         patient.setHospitalNumber(patientNumber.getText().toString().trim());
@@ -462,5 +478,9 @@ public class PatientDetailsFragment extends Fragment implements
         super.onActivityCreated(savedInstanceState);
         final InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
+    }
+
+    public interface DeleteReportListener{
+        void onDelete();
     }
 }
