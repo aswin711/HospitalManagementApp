@@ -158,7 +158,6 @@ public class DrugReactionReportedByDetailsFragment extends Fragment {
     public void onEventListened(String data){
         if (data.equals(getString(R.string.save_draft))){
             if(saveDraft() != null){
-                Toast.makeText(getActivity(),"Draft saved",Toast.LENGTH_SHORT).show();
                 report.setUpdated(Calendar.getInstance());
                 report.setReportedBy(reportedBy);
                 databaseHelper.updateAdverseDrugEventReportedBy(report);

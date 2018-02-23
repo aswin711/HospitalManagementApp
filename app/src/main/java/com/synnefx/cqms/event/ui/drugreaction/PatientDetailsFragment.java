@@ -299,7 +299,6 @@ public class PatientDetailsFragment extends Fragment implements
     public void onEventListened(String data){
         if (data.equals(getString(R.string.save_draft))){
             if(saveDraft() != null){
-                //Toast.makeText(getActivity(),"Draft saved",Toast.LENGTH_SHORT).show();
                 long id = databaseHelper.insertOrUpdateAdverseDrugReaction(saveDraft());
                 report.setId(id);
                 if (0 < id){

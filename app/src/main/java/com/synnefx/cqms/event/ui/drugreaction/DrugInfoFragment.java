@@ -247,7 +247,6 @@ public class DrugInfoFragment extends Fragment implements
     public void onEventListened(String data){
         if (data.equals(getString(R.string.save_draft))){
             if(saveDraft() != null){
-                Toast.makeText(getActivity(),"Draft saved",Toast.LENGTH_SHORT).show();
                 report.setUpdated(Calendar.getInstance());
                 drugInfo.setIsSuspectedDrug(true);
                 drugInfo.setEventRef(report.getId());

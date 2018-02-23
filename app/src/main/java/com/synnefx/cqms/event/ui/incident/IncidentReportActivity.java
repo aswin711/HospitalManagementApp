@@ -70,7 +70,6 @@ public class IncidentReportActivity extends BootstrapFragmentActivity implements
         BootstrapApplication.component().inject(this);
         setContentView(R.layout.activity_incident_report);
         ButterKnife.bind(this);
-        eventBus.register(this);
 
         if (getIntent() != null && getIntent().getExtras() != null) {
             report = (IncidentReport) getIntent().getExtras().getSerializable(INCIDENT_ITEM);
@@ -103,17 +102,8 @@ public class IncidentReportActivity extends BootstrapFragmentActivity implements
     }
 
 
-    //Enable save draft feature to capture the current screen
-    @Subscribe
-    public void onEventListened(String data){
-        if (data.equals(getString(R.string.save_btn_clicked))){
-            doubleBackPressed = false;
-        }
-    }
-
     @Override
     protected void onDestroy() {
-        eventBus.unregister(this);
         super.onDestroy();
     }
 
@@ -173,22 +163,15 @@ public class IncidentReportActivity extends BootstrapFragmentActivity implements
     public void onBackPressed(){
 
         if(!doubleBackPressed && !delete){
-            //Check for mandatory fields
                 if (!saveDraftDialog.isShowing()) {
                     saveDraftDialog.show();
                 }
-
         }else if(delete){
-            deleteReportAlert();
+            if (!deleteDialog.isShowing()) {
+                deleteDialog.show();
+            }
         }else{
             navigateScreenBack();
-        }
-    }
-
-    public void deleteReportAlert(){
-
-        if (!deleteDialog.isShowing()) {
-            deleteDialog.show();
         }
     }
 

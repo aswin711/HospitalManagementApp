@@ -68,7 +68,6 @@ public class DrugReactionActivity extends BootstrapFragmentActivity implements P
         BootstrapApplication.component().inject(this);
         setContentView(R.layout.activity_incident_report);
         ButterKnife.bind(this);
-        eventBus.register(this);
         if (getIntent() != null && getIntent().getExtras() != null) {
             report = (AdverseDrugEvent) getIntent().getExtras().getSerializable(INCIDENT_ITEM);
             editable = getIntent().getBooleanExtra(EDIT_REPORT_COMMAND,false);
@@ -158,17 +157,10 @@ public class DrugReactionActivity extends BootstrapFragmentActivity implements P
 
     @Override
     protected void onDestroy() {
-        eventBus.unregister(this);
         super.onDestroy();
     }
 
-    //Enable save draft feature to capture the current screen
-    @Subscribe
-    public void onEventListened(String data){
-        if (data.equals(getString(R.string.save_btn_clicked))){
-            doubleBackPressed = false;
-        }
-    }
+
 
     protected Activity getActivity() {
         return DrugReactionActivity.this;

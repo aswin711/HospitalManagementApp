@@ -8,7 +8,9 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -180,6 +182,7 @@ public class IncidentDetailsFragment extends Fragment implements
         }
         initDatepicker();
     }
+
 
     private void setUnitSpinner() {
         String hospitalRef = PrefUtils.getFromPrefs(getActivity().getApplicationContext(), PrefUtils.PREFS_HOSP_ID, null);
@@ -521,4 +524,5 @@ public class IncidentDetailsFragment extends Fragment implements
     public interface DeleteReportListener{
         void deleteReport();
     }
+
 }
