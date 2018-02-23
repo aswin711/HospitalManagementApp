@@ -330,6 +330,8 @@ public class DrugReactionDetailsFragment extends Fragment implements
 
         if (!TextUtils.isEmpty(correctiveAction.getText())) {
             report.setCorrectiveActionTaken(correctiveAction.getText().toString().trim());
+        } else {
+            report.setCorrectiveActionTaken(null);
         }
 
         if(casesheetAddedYes.isChecked()){
@@ -339,6 +341,8 @@ public class DrugReactionDetailsFragment extends Fragment implements
         }
         if (!TextUtils.isEmpty(comments.getText())){
             report.setAdditionalInfo(comments.getText().toString().trim());
+        }else {
+            report.setAdditionalInfo(null);
         }
 
         return report;

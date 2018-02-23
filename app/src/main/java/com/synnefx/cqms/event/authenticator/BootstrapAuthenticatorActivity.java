@@ -125,6 +125,8 @@ public class BootstrapAuthenticatorActivity extends ActionBarAccountAuthenticato
     protected Button signInButton;
     @Bind(id.versionCode)
     protected TextView versionNumber;
+    @Bind(id.loginMessage)
+    protected TextView loginMessage;
 
     private final TextWatcher watcher = validationTextWatcher();
 
@@ -163,6 +165,8 @@ public class BootstrapAuthenticatorActivity extends ActionBarAccountAuthenticato
      * Was the original caller asking for an entirely new account?
      */
     protected boolean requestNewAccount = false;
+
+    private Toast mToast;
 
     @Override
     public void onCreate(Bundle bundle) {
@@ -311,6 +315,7 @@ public class BootstrapAuthenticatorActivity extends ActionBarAccountAuthenticato
      */
     public void handleLogin(final View view) {
         hideSoftKeyBoard();
+        loginMessage.setVisibility(View.GONE);
         if (authenticationTask != null) {
             return;
         }
@@ -355,10 +360,12 @@ public class BootstrapAuthenticatorActivity extends ActionBarAccountAuthenticato
                         Timber.e("Error while authentication - " + cause.getMessage(), cause);
                         Toaster.showLong(BootstrapAuthenticatorActivity.this, errorMessage);
                         Toaster.showLong(BootstrapAuthenticatorActivity.this, cause.getMessage());
+                        showErrorMessage(errorMessage);
                     }
                 } else {
                     Timber.e("Error while authentication - " + e.getMessage(), e);
                     Toaster.showLong(BootstrapAuthenticatorActivity.this, e.getMessage());
+                    showErrorMessage(e.getMessage());
                 }
             }
 
@@ -541,6 +548,7 @@ public class BootstrapAuthenticatorActivity extends ActionBarAccountAuthenticato
                         Timber.e("Error while fetching profile - " + cause.getMessage(), cause);
                         Toaster.showLong(BootstrapAuthenticatorActivity.this, errorMessage);
                         Toaster.showLong(BootstrapAuthenticatorActivity.this, cause.getMessage());
+                        showErrorMessage(errorMessage);
                     }
                 } else {
                     Timber.e("Error while fetching profile - " + e.getMessage(), e);
@@ -550,10 +558,6 @@ public class BootstrapAuthenticatorActivity extends ActionBarAccountAuthenticato
 
             @Override
             public void onSuccess(final Boolean authSuccess) {
-                //Toast.makeText(context, "Profile fetch completed.", Toast.LENGTH_SHORT).show();
-                //importing begins here......
-
-                //importing ends here
 
                 //syncConfig();
                 scheduleSync();
@@ -603,9 +607,11 @@ public class BootstrapAuthenticatorActivity extends ActionBarAccountAuthenticato
             if (requestNewAccount) {
                 Toaster.showLong(BootstrapAuthenticatorActivity.this,
                         string.message_auth_failed_new_account);
+                showErrorMessage(getString(string.message_auth_failed_new_account));
             } else {
                 Toaster.showLong(BootstrapAuthenticatorActivity.this,
                         string.message_auth_failed);
+                showErrorMessage(getString(string.message_auth_failed));
             }
         }
     }
@@ -614,6 +620,7 @@ public class BootstrapAuthenticatorActivity extends ActionBarAccountAuthenticato
     @Subscribe
     public void onNetworkErrorEvent(NetworkErrorEvent networkErrorEvent) {
         Toaster.showLong(BootstrapAuthenticatorActivity.this, R.string.message_bad_connection);
+        showErrorMessage(getString(string.message_bad_connection));
     }
 
     private boolean validateEmail(String emailTextChanged) {
@@ -690,6 +697,13 @@ public class BootstrapAuthenticatorActivity extends ActionBarAccountAuthenticato
             InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
+    }
+
+    public void showErrorMessage(String error){
+        if (loginMessage.getVisibility() == View.GONE) {
+            loginMessage.setVisibility(View.VISIBLE);
+        }
+        loginMessage.setText(error);
     }
 
 }

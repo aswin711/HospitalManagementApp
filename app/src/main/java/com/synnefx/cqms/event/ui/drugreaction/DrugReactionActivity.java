@@ -26,6 +26,7 @@ import com.synnefx.cqms.event.core.modal.event.drugreaction.DrugInfo;
 import com.synnefx.cqms.event.sqlite.DatabaseHelper;
 import com.synnefx.cqms.event.ui.MainActivity;
 import com.synnefx.cqms.event.ui.base.BootstrapFragmentActivity;
+import com.synnefx.cqms.event.ui.incident.IncidentReportActivity;
 import com.synnefx.cqms.event.ui.incident.IncidentReportViewActivity;
 import com.synnefx.cqms.event.ui.medicationerror.ErrorReportedByDetailsFragment;
 import com.synnefx.cqms.event.ui.medicationerror.MedicationErrorDetailsFragment;
@@ -45,7 +46,7 @@ import static com.synnefx.cqms.event.core.Constants.Extra.EDIT_REPORT_COMMAND;
 import static com.synnefx.cqms.event.core.Constants.Extra.INCIDENT_ITEM;
 import static com.synnefx.cqms.event.core.Constants.Extra.INCIDENT_REF;
 
-public class DrugReactionActivity extends BootstrapFragmentActivity {
+public class DrugReactionActivity extends BootstrapFragmentActivity implements PatientDetailsFragment.DeleteReportListener {
 
 
     @Inject
@@ -56,6 +57,10 @@ public class DrugReactionActivity extends BootstrapFragmentActivity {
 
     private Boolean editable;
     private boolean doubleBackPressed = false;
+    private boolean delete = false;
+
+    private AlertDialog saveDraftDialog;
+    private AlertDialog deleteDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,7 +68,6 @@ public class DrugReactionActivity extends BootstrapFragmentActivity {
         BootstrapApplication.component().inject(this);
         setContentView(R.layout.activity_incident_report);
         ButterKnife.bind(this);
-        eventBus.register(this);
         if (getIntent() != null && getIntent().getExtras() != null) {
             report = (AdverseDrugEvent) getIntent().getExtras().getSerializable(INCIDENT_ITEM);
             editable = getIntent().getBooleanExtra(EDIT_REPORT_COMMAND,false);
@@ -93,22 +97,70 @@ public class DrugReactionActivity extends BootstrapFragmentActivity {
 
 
             loadFragment();
+            createDeleteDilaog();
+            createSaveDraftDialog();
 
     }
+
+    public void createSaveDraftDialog() {
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+        alertDialog.setTitle("Save to draft before exit?");
+        alertDialog.setMessage("Do you want to save the details as a draft");
+        alertDialog.setCancelable(true);
+        alertDialog.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                eventBus.post(getString(R.string.save_draft));
+                dialog.dismiss();
+                doubleBackPressed = true;
+                onBackPressed();
+
+            }
+        });
+        alertDialog.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                DrugReactionActivity.super.onBackPressed();
+
+            }
+        });
+        saveDraftDialog = alertDialog.create();
+
+    }
+
+    public void createDeleteDilaog() {
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+        alertDialog.setTitle("Unable to save draft due to missing mandatory fields");
+        alertDialog.setMessage("Do you want to delete the report or continue editing?");
+        alertDialog.setPositiveButton("DELETE", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                databaseHelper.deleteAdverseDrugEventById(report.getId());
+                dialog.dismiss();
+                DrugReactionActivity.super.onBackPressed();
+
+            }
+        });
+        alertDialog.setNegativeButton("CONTINUE", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                delete = false;
+                doubleBackPressed = false;
+                dialog.dismiss();
+            }
+        });
+        alertDialog.setCancelable(false);
+        deleteDialog = alertDialog.create();
+    }
+
 
     @Override
     protected void onDestroy() {
-        eventBus.unregister(this);
         super.onDestroy();
     }
 
-    //Enable save draft feature to capture the current screen
-    @Subscribe
-    public void onEventListened(String data){
-        if (data.equals(getString(R.string.save_btn_clicked))){
-            doubleBackPressed = false;
-        }
-    }
+
 
     protected Activity getActivity() {
         return DrugReactionActivity.this;
@@ -118,31 +170,16 @@ public class DrugReactionActivity extends BootstrapFragmentActivity {
     @Override
     public void onBackPressed() {
         hideSoftKeyboard(getActivity());
-        if (!doubleBackPressed) {
-            AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
-            alertDialog.setCancelable(true);
-            alertDialog.setTitle("Save to Drafts");
-            alertDialog.setMessage("Do you want to save it to drafts before exit?");
-            alertDialog.setPositiveButton("YES", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.dismiss();
-                    doubleBackPressed = true;
-                    eventBus.post(getString(R.string.save_draft));
-                    onBackPressed();
-                }
-            });
-            alertDialog.setNegativeButton("NO", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.dismiss();
-                    DrugReactionActivity.super.onBackPressed();
-                }
-            });
+        if (!doubleBackPressed && !delete) {
+           if (!saveDraftDialog.isShowing()){
+               saveDraftDialog.show();
+           }
 
-            alertDialog.show();
-
-        } else {
+        } else if(delete){
+            if(!deleteDialog.isShowing()){
+                deleteDialog.show();
+            }
+        }else {
             navigateScreenBack();
         }
     }
@@ -275,4 +312,9 @@ public class DrugReactionActivity extends BootstrapFragmentActivity {
 
     }
 
+    @Override
+    public void onDelete() {
+        delete = true;
+        onBackPressed();
+    }
 }

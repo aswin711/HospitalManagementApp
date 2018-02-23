@@ -4,14 +4,19 @@ import android.accounts.OperationCanceledException;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import com.synnefx.cqms.event.BootstrapApplication;
@@ -31,6 +36,7 @@ import org.greenrobot.eventbus.Subscribe;
 
 import javax.inject.Inject;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
 
 import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
@@ -38,7 +44,7 @@ import static com.synnefx.cqms.event.core.Constants.Extra.EDIT_REPORT_COMMAND;
 import static com.synnefx.cqms.event.core.Constants.Extra.INCIDENT_ITEM;
 import static com.synnefx.cqms.event.core.Constants.Extra.INCIDENT_REF;
 
-public class IncidentReportActivity extends BootstrapFragmentActivity {
+public class IncidentReportActivity extends BootstrapFragmentActivity implements IncidentDetailsFragment.DeleteReportListener {
 
 
     @Inject
@@ -51,6 +57,12 @@ public class IncidentReportActivity extends BootstrapFragmentActivity {
 
     private Boolean doubleBackPressed = false;
 
+    private Boolean delete = false;
+
+
+    private AlertDialog deleteDialog;
+    private AlertDialog saveDraftDialog;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,7 +70,6 @@ public class IncidentReportActivity extends BootstrapFragmentActivity {
         BootstrapApplication.component().inject(this);
         setContentView(R.layout.activity_incident_report);
         ButterKnife.bind(this);
-        eventBus.register(this);
 
         if (getIntent() != null && getIntent().getExtras() != null) {
             report = (IncidentReport) getIntent().getExtras().getSerializable(INCIDENT_ITEM);
@@ -74,7 +85,6 @@ public class IncidentReportActivity extends BootstrapFragmentActivity {
                 if (null != reportRef && 0 < reportRef) {
                     report = new IncidentReport();
                     report.setId(reportRef);
-                    //report = databaseHelper.getIncidentReportById(reportRef);
                 }
             }
         }
@@ -86,54 +96,80 @@ public class IncidentReportActivity extends BootstrapFragmentActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
 
-
-
         loadFragment();
+        createDeleteDilaog();
+        createSaveDraftDialog();
     }
 
-    //Enable save draft feature to capture the current screen
-    @Subscribe
-    public void onEventListened(String data){
-        if (data.equals(getString(R.string.save_btn_clicked))){
-            doubleBackPressed = false;
-        }
-    }
 
     @Override
     protected void onDestroy() {
-        eventBus.unregister(this);
         super.onDestroy();
+    }
+
+    public void createSaveDraftDialog() {
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+        alertDialog.setTitle("Save to draft before exit?");
+        alertDialog.setMessage("Do you want to save the details as a draft");
+        alertDialog.setCancelable(true);
+        alertDialog.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                eventBus.post(getString(R.string.save_draft));
+                dialog.dismiss();
+                doubleBackPressed = true;
+                onBackPressed();
+
+            }
+        });
+        alertDialog.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                IncidentReportActivity.super.onBackPressed();
+
+            }
+        });
+        saveDraftDialog = alertDialog.create();
+
+    }
+
+    public void createDeleteDilaog() {
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+        alertDialog.setTitle("Unable to save draft due to missing mandatory fields");
+        alertDialog.setMessage("Do you want to delete the report or continue editing?");
+        alertDialog.setPositiveButton("DELETE", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                databaseHelper.deleteIncidentReportById(report.getId());
+                dialog.dismiss();
+                IncidentReportActivity.super.onBackPressed();
+
+            }
+        });
+        alertDialog.setNegativeButton("CONTINUE", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                delete = false;
+                doubleBackPressed = false;
+                dialog.dismiss();
+            }
+        });
+        alertDialog.setCancelable(false);
+        deleteDialog = alertDialog.create();
     }
 
     @Override
     public void onBackPressed(){
 
-
-
-        if(!doubleBackPressed && editable){
-            AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
-            alertDialog.setTitle("Save to draft before exit?");
-            alertDialog.setMessage("Do you want to save the details as a draft");
-            alertDialog.setCancelable(true);
-            alertDialog.setPositiveButton("YES", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    eventBus.post(getString(R.string.save_draft));
-                    dialog.dismiss();
-                    doubleBackPressed = true;
-                    onBackPressed();
-
+        if(!doubleBackPressed && !delete){
+                if (!saveDraftDialog.isShowing()) {
+                    saveDraftDialog.show();
                 }
-            });
-            alertDialog.setNegativeButton("NO", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.dismiss();
-                    IncidentReportActivity.super.onBackPressed();
-
-                }
-            });
-            alertDialog.show();
+        }else if(delete){
+            if (!deleteDialog.isShowing()) {
+                deleteDialog.show();
+            }
         }else{
             navigateScreenBack();
         }
@@ -249,4 +285,9 @@ public class IncidentReportActivity extends BootstrapFragmentActivity {
     }
 
 
+    @Override
+    public void deleteReport() {
+        delete = true;
+        onBackPressed();
+    }
 }

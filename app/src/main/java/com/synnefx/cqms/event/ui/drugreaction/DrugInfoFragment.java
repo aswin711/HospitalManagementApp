@@ -247,7 +247,6 @@ public class DrugInfoFragment extends Fragment implements
     public void onEventListened(String data){
         if (data.equals(getString(R.string.save_draft))){
             if(saveDraft() != null){
-                Toast.makeText(getActivity(),"Draft saved",Toast.LENGTH_SHORT).show();
                 report.setUpdated(Calendar.getInstance());
                 drugInfo.setIsSuspectedDrug(true);
                 drugInfo.setEventRef(report.getId());
@@ -264,16 +263,24 @@ public class DrugInfoFragment extends Fragment implements
 
         if (!TextUtils.isEmpty(drugName.getText())) {
             drugInfo.setDrug(drugName.getText().toString().trim());
+        } else {
+            drugInfo.setDrug(null);
         }
 
         if (!TextUtils.isEmpty(drugDose.getText())) {
             drugInfo.setDose(drugDose.getText().toString().trim());
+        } else {
+            drugInfo.setDose(null);
         }
         if (!TextUtils.isEmpty(drugFreequency.getText())){
             drugInfo.setFrequency(drugFreequency.getText().toString().trim());
+        } else {
+            drugInfo.setFrequency(null);
         }
         if (!TextUtils.isEmpty(drugRoute.getText())){
             drugInfo.setRoute(drugRoute.getText().toString().trim());
+        } else {
+            drugInfo.setRoute(null);
         }
 
         return report;

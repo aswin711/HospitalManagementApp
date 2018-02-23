@@ -158,7 +158,6 @@ public class DrugReactionReportedByDetailsFragment extends Fragment {
     public void onEventListened(String data){
         if (data.equals(getString(R.string.save_draft))){
             if(saveDraft() != null){
-                Toast.makeText(getActivity(),"Draft saved",Toast.LENGTH_SHORT).show();
                 report.setUpdated(Calendar.getInstance());
                 report.setReportedBy(reportedBy);
                 databaseHelper.updateAdverseDrugEventReportedBy(report);
@@ -169,9 +168,14 @@ public class DrugReactionReportedByDetailsFragment extends Fragment {
     public AdverseDrugEvent saveDraft(){
         if (!TextUtils.isEmpty(reportedByName.getText())) {
             reportedBy.setLastName(reportedByName.getText().toString().trim());
+        } else {
+            reportedBy.setLastName(null);
+            reportedBy.setFirstName(null);
         }
         if (!TextUtils.isEmpty(reportedByDesignation.getText())) {
             reportedBy.setDesignation(reportedByDesignation.getText().toString().trim());
+        } else {
+            reportedBy.setDesignation(null);
         }
         return report;
     }

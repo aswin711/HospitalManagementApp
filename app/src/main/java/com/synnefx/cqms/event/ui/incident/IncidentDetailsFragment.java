@@ -7,7 +7,10 @@ import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AlertDialog;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +21,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
+import android.widget.Toast;
 
 import com.rengwuxian.materialedittext.MaterialEditText;
 import com.synnefx.cqms.event.BootstrapApplication;
@@ -57,6 +61,7 @@ public class IncidentDetailsFragment extends Fragment implements
 
 
     protected  View fragmentView;
+    private IncidentReportActivity mActivity;
 
     @Bind(R.id.incident_details_save)
     protected Button saveDetailsBtn;
@@ -96,6 +101,12 @@ public class IncidentDetailsFragment extends Fragment implements
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         BootstrapApplication.component().inject(this);
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        this.mActivity = (IncidentReportActivity)context;
     }
 
     @Override
@@ -144,7 +155,7 @@ public class IncidentDetailsFragment extends Fragment implements
         ViewUtils.setGone(incidentTypeHolder, false);
         setIncidentTypeSpinner();
         setUnitSpinner();
-        nearMiss.setChecked(Boolean.FALSE);
+        nearMiss.setChecked(Boolean.TRUE);
         actualHarm.setChecked(Boolean.FALSE);
         if (null != report && null != report.getId() && 0 < report.getId()) {
             description.setText(report.getDescription());
@@ -171,6 +182,7 @@ public class IncidentDetailsFragment extends Fragment implements
         }
         initDatepicker();
     }
+
 
     private void setUnitSpinner() {
         String hospitalRef = PrefUtils.getFromPrefs(getActivity().getApplicationContext(), PrefUtils.PREFS_HOSP_ID, null);
@@ -364,7 +376,6 @@ public class IncidentDetailsFragment extends Fragment implements
 
     private boolean validateIncidentDeatils() {
         boolean error = false;
-
         if (TextUtils.isEmpty(correctiveAction.getText())) {
             correctiveAction.setError("Corrective action required");
             correctiveAction.requestFocus();
@@ -421,12 +432,13 @@ public class IncidentDetailsFragment extends Fragment implements
         return error;
     }
 
-
     @Subscribe
     public void onEventListened(String data){
         if (data.equals(getString(R.string.save_draft))){
             if(saveDraft() != null){
                 databaseHelper.insertOrUpdateIncidentReport(saveDraft());
+            } else {
+                ((DeleteReportListener)mActivity).deleteReport();
             }
         }
     }
@@ -435,9 +447,23 @@ public class IncidentDetailsFragment extends Fragment implements
     public IncidentReport saveDraft(){
         String hospitalRef = PrefUtils.getFromPrefs(getContext(), PrefUtils.PREFS_HOSP_ID, null);
 
+        if ((report.getIncidentTypeRef() <= 0L || report.getIncidentTypeRef() == null )
+                && TextUtils.isEmpty(description.getText())
+                && (report.getUnitRef() <= 0L || report.getUnitRef() == null )) {
+            return null;
+        }
+
         report.setHospital(hospitalRef);
-        report.setDescription(description.getText().toString().trim());
-        report.setCorrectiveActionTaken(correctiveAction.getText().toString().trim());
+        if (!TextUtils.isEmpty(description.getText())) {
+            report.setDescription(description.getText().toString().trim());
+        }else {
+            report.setDescription(null);
+        }
+        if (!TextUtils.isEmpty(correctiveAction.getText())) {
+            report.setCorrectiveActionTaken(correctiveAction.getText().toString().trim());
+        } else {
+            report.setCorrectiveActionTaken(null);
+        }
         List<IncidentType> types =  databaseHelper.getAllIncidentTypes(hospitalRef);
         if(!incidentTypeSpinner.getText().toString().isEmpty()){
             for (IncidentType type:types){
@@ -482,6 +508,8 @@ public class IncidentDetailsFragment extends Fragment implements
     }
 
 
+
+
     /**
      * Used to hide the soft input n fragment start
      * @param savedInstanceState
@@ -492,4 +520,9 @@ public class IncidentDetailsFragment extends Fragment implements
         final InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
     }
+
+    public interface DeleteReportListener{
+        void deleteReport();
+    }
+
 }

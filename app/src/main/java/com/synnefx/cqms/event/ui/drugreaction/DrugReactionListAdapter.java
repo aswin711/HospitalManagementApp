@@ -44,22 +44,21 @@ public class DrugReactionListAdapter extends AlternatingColorListAdapter<Adverse
 
     @Override
     protected void update(final int position, final AdverseDrugEvent item) {
-        String name = "Details not Provided";
+        String name = "No Patient Name";
         if(null != item.getPersonInvolved()){
             name = item.getPersonInvolved().getPatientTypeString()+"- "+ item.getPersonInvolved().getName();
         }
         setText(0, name);
         String description = item.getDescription();
-        if (!TextUtils.isEmpty(description) && description.length() > 250) {
-            description = String.format("%s..", description.substring(0, 249));
-        }else{
-            description = "Details not captured";
+        if (TextUtils.isEmpty(description)) {
+            description = "No description added";
         }
+
         setText(1, description);
         if(null != item.getDepartment()){
             setText(2, item.getDepartment());
         }else{
-            setText(2, "NA");
+            setText(2, "No Department Added");
         }
 
         if (null != item.getReportedBy()) {
