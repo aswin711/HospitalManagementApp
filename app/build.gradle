@@ -106,7 +106,7 @@ android {
             //  applicationIdSuffix '.debug'
             minifyEnabled false
             //shrinkResources true
-            buildConfigField 'String', 'API_URL', '"https://dev.cqms.synnefx.com/"';
+            buildConfigField 'String', 'API_URL', '""';
             //proguardFiles getDefaultProguardFile('proguard-android.txt'), '..\\proguard.cfg'
             debuggable true
             versionNameSuffix '-DEBUG'
@@ -114,7 +114,7 @@ android {
         }
         release {
             minifyEnabled false
-            buildConfigField 'String', 'API_URL', '"https://hqpulse.com/"';
+            buildConfigField 'String', 'API_URL', '""';
             // proguardFile '..\proguard.cfg'
              signingConfig signingConfigs.release
             //zipAlign true // this is default for release

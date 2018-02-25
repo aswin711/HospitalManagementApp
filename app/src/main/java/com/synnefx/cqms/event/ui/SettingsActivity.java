@@ -59,7 +59,7 @@ public class SettingsActivity extends PreferenceActivity {
         BootstrapApplication.component().inject(this);
         // Display the fragment as the main content.
 
-        if (!TextUtils.isEmpty(PrefUtils.getHospitalID())) {
+        if (!TextUtils.isEmpty(PrefUtils.getDeviceToken())) {
             getFragmentManager().beginTransaction()
                     .replace(android.R.id.content, new SettingsPreferenceFragment())
                     .commit();

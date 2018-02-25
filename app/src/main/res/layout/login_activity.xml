@@ -101,6 +101,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:padding="5dp"
+                android:visibility="gone"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:textColor="@color/table_text"
                 android:textColorLink="@color/colorPrimary"
@@ -129,7 +130,8 @@
             android:textSize="12dp"
             android:gravity="center"
             android:textColor="#454545"
-            android:text="www.HQPulse.com" />
+            android:visibility="gone"
+            android:text="" />
     </LinearLayout>
 
 

@@ -57,8 +57,8 @@
     <color name="lighter_gray">#ddd</color>
     <color name="darker_gray">#aaa</color>
  <!-- STart Google material design-->
-    <color name="primary">#0277bd</color>
-    <color name="primary_dark">#01579b</color>
+    <color name="primary">#686eda</color>
+    <color name="primary_dark">#4e54c8</color>
     <color name="primary_light">#e0f7fa</color>
     <color name="accent">#e91e63</color>
     <color name="primary_text">#212121</color>
@@ -69,10 +69,10 @@
 
 
     <!-- Material  https://github.com/rey5137/material -->
-    <color name="colorPrimary">#3c8dbc</color>
+    <color name="colorPrimary">#686eda</color>
     <color name="colorPrimaryLight">#283c8dbc</color>
     <color name="colorPrimaryDark">#31749b</color>
-    <color name="colorAccent">#3c8dbc</color>
+    <color name="colorAccent">#686eda</color>
     <color name="colorControlNormal">#FF78909C</color>
     <color name="colorControlActivated">#FF03A9F4</color>
     <color name="colorSwitchThumbNormal">#FF78909C</color>
